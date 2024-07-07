@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Roboto, Alegreya_Sans_SC } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import Nav from './components/global/Nav';
+import Nav from './components/common/Nav';
 import { NAVIGATION_LINKS } from './lib/global-data';
 
 const roboto = Roboto({ weight: ['400', '700'], subsets: ["latin"] });
