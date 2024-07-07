@@ -23,6 +23,7 @@ export default function RootLayout({
       <body className={roboto.className}>
         <Nav
           items={NAVIGATION_LINKS}
+          extended={false}
           className={alegreya.className + " flex z-10 justify-left"} />
         {children}
       </body>

@@ -1,10 +1,16 @@
 import Link from "next/link";
 
-const Nav = ({items, ...props}) => {
+const Nav = ({items, extended, ...props}) => {
 	return (
 		<div {...props}>
 			{items.map((item) => {
-					return <Link className="p-5" href={item.href} key={item.name} >{item.name}</Link>;
+					if(extended) {
+						return <Link className="p-5" href={item.href} key={item.name} >{item.name}</Link>;
+					} else if(extended === false && item.extended !== true ) {
+						return <Link className="p-5" href={item.href} key={item.name} >{item.name}</Link>;
+					} else {
+						return;
+					}
 				}
 			)}
 		</div>
