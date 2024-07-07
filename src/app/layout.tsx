@@ -3,6 +3,7 @@ import { Roboto, Alegreya_Sans_SC } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import Header from '@/app/components/global/Header';
+import Footer from '@/app/components/global/Footer';
 
 const roboto = Roboto({ weight: ['400', '700'], subsets: ["latin"] });
 const alegreya = Alegreya_Sans_SC({ weight: ['500', '800'], subsets: ["latin"] });
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className={roboto.className}>
         <Header className={alegreya.className + " flex z-10 justify-left"} />
         {children}
+        <Footer className={alegreya.className + " flex z-10 justify-right"} />
       </body>
     </html>
   );
