@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Roboto, Alegreya_Sans_SC } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import Nav from './components/common/Nav';
-import { NAVIGATION_LINKS } from './lib/global-data';
+import Header from '@/app/components/global/Header';
 
 const roboto = Roboto({ weight: ['400', '700'], subsets: ["latin"] });
 const alegreya = Alegreya_Sans_SC({ weight: ['500', '800'], subsets: ["latin"] });
@@ -21,10 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <Nav
-          items={NAVIGATION_LINKS}
-          extended={false}
-          className={alegreya.className + " flex z-10 justify-left"} />
+        <Header className={alegreya.className + " flex z-10 justify-left"} />
         {children}
       </body>
     </html>
