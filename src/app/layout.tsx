@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto, Alegreya_Sans_SC } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({ weight: ['400', '700'], subsets: ["latin"] });
+const alegreya = Alegreya_Sans_SC({ weight: ['500', '800'], subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,8 +18,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="flex z-10 justify-left">
+      <body className={roboto.className}>
+        <div className={roboto.className + " flex z-10 justify-left"}>
           <Link className="p-5" href="/">Home</Link>
           <Link className="p-5" href="/character">Character Manager</Link>
           <Link className="p-5" href="/vorago">Vorago</Link>
