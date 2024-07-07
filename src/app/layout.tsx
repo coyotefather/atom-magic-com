@@ -21,9 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <Header className={`${alegreya.className} flex z-10 justify-start sticky top-0`} />
+        <Header font={alegreya.className} />
         {children}
-        <Footer className={`${alegreya.className} flex z-10 justify-end`} />
+        <Footer font={alegreya.className} />
       </body>
     </html>
   );
