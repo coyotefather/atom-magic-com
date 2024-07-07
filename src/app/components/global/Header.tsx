@@ -3,7 +3,7 @@ import { NAVIGATION_LINKS } from '@/app/lib/global-data';
 
 const Header = ({font}) => {
 	return (
-		<header className="sticky top-0">
+		<header className="sticky top-0 bg-black">
 			<Nav
 				items={NAVIGATION_LINKS}
 				extended={false}

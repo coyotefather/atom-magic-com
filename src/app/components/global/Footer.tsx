@@ -3,7 +3,7 @@ import { NAVIGATION_LINKS } from '@/app/lib/global-data';
 
 const Footer = ({font}) => {
 	return (
-		<footer>
+		<footer className="bg-black">
 			<Nav
 				items={NAVIGATION_LINKS}
 				extended={true}
