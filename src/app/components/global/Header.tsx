@@ -17,7 +17,7 @@ const Header = ({font}) => {
 				<Nav
 					items={NAVIGATION_LINKS}
 					extended={false}
-					className={font + " inline-block"} />
+					className={font + " inline-block pl-2 pr-2"} />
 			</div>
 		</header>
 	);
