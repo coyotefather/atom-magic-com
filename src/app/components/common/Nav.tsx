@@ -5,9 +5,15 @@ const Nav = ({items, extended, ...props}) => {
 		<div {...props}>
 			{items.map((item) => {
 					if(extended) {
-						return <Link className="p-5 text-gold hover:brightgold" href={item.href} key={item.name} >{item.name}</Link>;
+						return <Link
+									className="p-5 text-lg tracking-widest text-gold hover:brightgold"
+									href={item.href}
+									key={item.name} >{item.name}</Link>;
 					} else if(extended === false && item.extended !== true ) {
-						return <Link className="p-5 text-gold hover:brightgold" href={item.href} key={item.name} >{item.name}</Link>;
+						return <Link
+									className="p-5 text-lg tracking-widest text-gold hover:brightgold"
+									href={item.href}
+									key={item.name} >{item.name}</Link>;
 					} else {
 						return;
 					}
