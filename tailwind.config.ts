@@ -19,7 +19,7 @@ const config: Config = {
       current: 'currentColor',
       'white': 'rgb(255, 255, 240)',
       'black': 'rgb(35, 31, 32)',
-      'gold': 'rgb(226, 185, 68)',
+      'gold': 'rgb(187, 151, 49)',
       'brightgold': 'rgb(226, 185, 68)',
       'tahiti': '#3ab7bf',
       'silver': '#ecebff',
