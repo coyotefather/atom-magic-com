@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Roboto, Alegreya_Sans_SC } from "next/font/google";
+import { Roboto, Marcellus_SC } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import Header from '@/app/components/global/Header';
 import Footer from '@/app/components/global/Footer';
 
 const roboto = Roboto({ weight: ['400', '700'], subsets: ["latin"] });
-const alegreya = Alegreya_Sans_SC({ weight: ['500', '800'], subsets: ["latin"] });
+const marcellus = Marcellus_SC({ weight: ['400'], subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,9 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <Header font={alegreya.className} />
+        <Header font={marcellus.className} />
         {children}
-        <Footer font={alegreya.className} />
+        <Footer font={marcellus.className} />
       </body>
     </html>
   );
