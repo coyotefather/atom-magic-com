@@ -16,6 +16,14 @@
   }
 }
 
+.roboto {
+  font-family: var(--font-roboto);
+}
+
+.marcellus {
+  font-family: var(--font-marcellus);
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
