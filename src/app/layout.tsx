@@ -5,8 +5,14 @@ import Link from "next/link";
 import Header from '@/app/components/global/Header';
 import Footer from '@/app/components/global/Footer';
 
-const roboto = Roboto({ weight: ['400', '700'], subsets: ["latin"] });
-const marcellus = Marcellus_SC({ weight: ['400'], subsets: ["latin"] });
+const roboto = Roboto({
+  weight: ['400', '700'],
+  variable: '--font-roboto',
+  subsets: ["latin"] });
+const marcellus = Marcellus_SC({
+  weight: ['400'],
+  variable: '--font-marcellus',
+  subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,10 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
-        <Header font={marcellus.className} />
+      <body className={`${roboto.variable} ${marcellus.variable}`}>
+        <Header />
         {children}
-        <Footer font={marcellus.className} />
+        <Footer />
       </body>
     </html>
   );
