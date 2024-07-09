@@ -4,7 +4,7 @@ const Button = ({href, variant, children}) => {
 	let buttonColor = "";
 	if(variant == "primary") { buttonColor = "bg-gold hover:bg-brightgold"; }
 	if(variant == "secondary") { buttonColor = "bg-black hover:bg-brightgold text-white" }
-	if(variant == "gradient") { buttonColor = "gradient"; }
+	if(variant == "gradient") { buttonColor = "gradient hover:bg-brightgold"; }
 	return (
 		<Link href={href}>
 		  <button
