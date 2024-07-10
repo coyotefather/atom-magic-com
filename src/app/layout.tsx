@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto, Marcellus_SC } from "next/font/google";
+import { Roboto, Inconsolata, Marcellus_SC } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import Header from '@/app/components/global/Header';
@@ -12,6 +12,10 @@ const roboto = Roboto({
 const marcellus = Marcellus_SC({
   weight: ['400'],
   variable: '--font-marcellus',
+  subsets: ["latin"] });
+const inconsolata = Inconsolata({
+  weight: ['200','400','600'],
+  variable: '--font-inconsolata',
   subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} ${marcellus.variable}`}>
+      <body className={`${roboto.variable} ${inconsolata.variable} ${marcellus.variable}`}>
         <Header />
         {children}
         <Footer />

@@ -21,6 +21,10 @@
   font-family: var(--font-roboto);
 }
 
+.inconsolata {
+  font-family: var(--font-inconsolata);
+}
+
 .marcellus {
   font-family: var(--font-marcellus);
 }

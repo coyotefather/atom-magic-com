@@ -8,8 +8,8 @@ const Button = ({href, variant, children}) => {
 	return (
 		<Link href={href}>
 		  <button
-			className={`${buttonColor} roboto uppercase tracking-widest p-2 pl-4 pr-4 rounded-full`}>
-			{children}</button>
+			className={`${buttonColor} inconsolata uppercase tracking-widest p-2 pl-4 pr-4 rounded-full`}>
+			<strong>{children}</strong></button>
 		</Link>
 	);
 };
