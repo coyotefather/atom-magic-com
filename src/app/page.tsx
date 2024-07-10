@@ -10,28 +10,16 @@ export default function Home() {
         Header text
       </div>
       <div className="mb-32 w-full grid grid-cols-2">
-        <div>
-          <div className="flex h-40 mb-4">
-            <Image
-              className="object-cover"
-              src="/Wheel_of_Cardinals.svg"
-              alt="Wheel of Cardinals"
-              width={500}
-              height={500} />
-          </div>
-          <div>
-            <h2 className="text-xl pb-2">Character Manager</h2>
-            <p className="pb-2">Build and manage a new character in minutes.</p>
-            <Button
-              href="/character"
-              variant="gradient">Character Manager</Button>
-          </div>
-        </div>
-        <div className="w-1/2 h-20">
-          <Button
-          href="/vorago"
-          variant="primary">Vorago</Button>
-        </div>
+        <Card
+          image={ { src: "/Wheel_of_Cardinals.svg", alt: "Wheel of Cardinals", width: 500, height: 500 } }
+          button={ { href: "/character", text: "Manage a Character", variant: "gradient" } }
+          title="Character Manager"
+          description="Build and manage a new character in minutes." />
+        <Card
+          image={ { src: "/Wheel_of_Cardinals.svg", alt: "Wheel of Cardinals", width: 500, height: 500 } }
+          button={ { href: "/vorage", text: "Play Vorago", variant: "gradient" } }
+          title="Vorago"
+          description="Play a game of Vorago with a friend." />
       </div>
     </main>
   );

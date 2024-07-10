@@ -1,5 +1,26 @@
-const Card = () => {
-	return <></>;
+import Image from 'next/image';
+import Button from '@/app/components/common/Button';
+
+const Card = ({image, button, title, description}) => {
+	return (
+		<div>
+		  <div className="flex h-40 mb-4">
+			<Image
+			  className="object-cover"
+			  src={image.src}
+			  alt={image.alt}
+			  width={image.width}
+			  height={image.height} />
+		  </div>
+		  <div>
+			<h2 className="text-xl pb-2">{title}</h2>
+			<p className="pb-2">{description}</p>
+			<Button
+			  href={button.href}
+			  variant={button.variant}>{button.text}</Button>
+		  </div>
+		</div>
+	);
 };
 
 export default Card;
