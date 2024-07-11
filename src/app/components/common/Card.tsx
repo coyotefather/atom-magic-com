@@ -10,7 +10,8 @@ const Card = ({image, button, title, description}) => {
 			  src={image.src}
 			  alt={image.alt}
 			  width={image.width}
-			  height={image.height} />
+			  height={image.height}
+			  priority={image.priority} />
 		  </div>
 		  <div>
 			<h2 className="text-xl pb-2">{title}</h2>
