@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Roboto, Inconsolata, Marcellus_SC } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import Header from '@/app/components/global/Header';
+import NavBar from '@/app/components/global/NavBar';
 import Footer from '@/app/components/global/Footer';
 
 const roboto = Roboto({
@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.variable} ${inconsolata.variable} ${marcellus.variable}`}>
-        <Header />
+        <NavBar />
         {children}
         <Footer />
       </body>

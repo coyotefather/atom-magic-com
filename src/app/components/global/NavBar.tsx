@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Nav from '@/app/components/common/Nav';
 import { NAVIGATION_LINKS } from '@/app/lib/global-data';
 
-const Header = () => {
+const NavBar = () => {
 	return (
 		<header className="sticky z-50 top-0 pt-2 pb-2 bg-black flex">
 			<div className="justify-start">
@@ -23,4 +23,4 @@ const Header = () => {
 	);
 };
 
-export default Header;
+export default NavBar;
