@@ -7,6 +7,8 @@
   --background-start-rgb: 255, 255, 240;
   --background-end-rgb: 255, 255, 255;
   --gold-rgb: 187, 151, 49;
+  --brightgold-rgb: 226, 185, 68;
+  --black-rgb: 35, 31, 32;
 }
 
 @media (prefers-color-scheme: light) {
@@ -39,11 +41,21 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+a {
+  color: rgb(var(--gold-rgb));
+}
+
+a:hover, a:active {
+  color: rgb(var(--brightgold-rgb));
+}
+
 button.gradient {
+  color: rgb(var(--black-rgb));
   background: linear-gradient(85deg, rgb(211, 142, 39) 0%, rgb(208, 145, 37) 11%, rgb(205, 151, 35) 23%, rgb(202, 154, 33) 34%, rgb(197, 159, 32) 46%, rgb(192, 160, 33) 57%, rgb(186, 163, 33) 68%, rgb(180, 165, 34) 79%, rgb(177, 170, 37) 90%, rgb(171, 174, 41) 100%);
 }
 
 button.gradient:hover {
+  color: rgb(var(--black-rgb));
   background: linear-gradient(85deg, rgb(241, 172, 69) 0%, rgb(238, 175, 67) 11%, rgb(235, 181, 65) 23%, rgb(232, 184, 63) 34%, rgb(227, 189, 62) 46%, rgb(222, 190, 63) 57%, rgb(216, 193, 63) 68%, rgb(210, 195, 64) 79%, rgb(207, 200, 67) 90%, rgb(201, 204, 71) 100%);
 }
 
