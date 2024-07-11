@@ -9,7 +9,7 @@ const Breadcrumb = ({name, href}) => {
 	);
 };
 
-const Breadcrumbs = ({page, parents = undefined}) => {
+const Breadcrumbs = ({page, parents = []}) => {
 	let breadcrumbs = (
 		<>
 			{parents.map((parent) => (
