@@ -1,9 +1,27 @@
 import Link from 'next/link';
 
-const Breadcrumbs = ({page, parents}) => {
+const Breadcrumb = ({name, href}) => {
+	return (
+		<>
+			<Link href={href}>{name}</Link>
+			<span> / </span>
+		</>
+	);
+};
+
+const Breadcrumbs = ({page, parents = undefined}) => {
+	let breadcrumbs = (
+		<>
+			{parents.map((parent) => (
+				<Breadcrumb key={parent.name} href={parent.href} name={parent.name} />
+			))}
+ 		{page}
+		</>
+	);
+
 	return (
 		<div>
-
+			<a href="https://atom-magic.com" alt="Atom Magic">Home</a> / {breadcrumbs}
 		</div>
 	);
 };
