@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const Breadcrumb = ({name, href}) => {
+const Breadcrumb = ({name, href}: { name: string }) => {
 	return (
 		<>
 			<Link href={href}>{name}</Link>
