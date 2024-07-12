@@ -20,7 +20,7 @@ const Cards = () => {
 					width: 600,
 					height: 600,
 					priority: true } }
-			  button={ { href: "/vorage", text: "Play Vorago", variant: "gradient" } }
+			  button={ { href: "/vorago", text: "Play Vorago", variant: "gradient" } }
 			  title="Vorago"
 			  description="Play a game of Vorago with a friend." />
 		</div>
