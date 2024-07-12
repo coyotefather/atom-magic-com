@@ -9,7 +9,7 @@ const Nav = ({
 			extended: boolean
 		}[],
 		extended: boolean,
-		props: Props & React.ComponentPropsWithoutRef<"div">
+		props: React.ComponentPropsWithoutRef<"div">
 	}) => {
 	return (
 		<div {...props}>
