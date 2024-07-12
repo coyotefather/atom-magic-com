@@ -17,7 +17,7 @@ const NavBar = () => {
 				<Nav
 					items={NAVIGATION_LINKS}
 					extended={false}
-					className="marcellus inline-block pl-2 pr-2" />
+					navClasses="inline-block pl-2 pr-2" />
 			</div>
 		</header>
 	);

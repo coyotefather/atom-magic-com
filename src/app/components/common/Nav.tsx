@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const Nav = ({
-		items, extended, ...props
+		items, extended, navClasses
 	}: {
 		items: {
 			href: string,
@@ -9,10 +9,11 @@ const Nav = ({
 			extended: boolean
 		}[],
 		extended: boolean,
-		props: React.ComponentPropsWithoutRef<"div">
+		navClasses: string
 	}) => {
+
 	return (
-		<div {...props}>
+		<div className={`marcellus ${navClasses}`}>
 			{items.map((item) => {
 					if(extended) {
 						return <Link

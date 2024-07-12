@@ -7,7 +7,7 @@ const Footer = () => {
 			<Nav
 				items={NAVIGATION_LINKS}
 				extended={true}
-				className="marcellus flex z-10 justify-end" />
+				align="flex justify-end" />
 		</footer>
 	);
 };
