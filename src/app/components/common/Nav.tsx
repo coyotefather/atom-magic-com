@@ -8,7 +8,8 @@ const Nav = ({
 			name: string,
 			extended: boolean
 		}[],
-		extended: boolean
+		extended: boolean,
+		props: Props
 	}) => {
 	return (
 		<div {...props}>
