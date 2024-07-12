@@ -1,6 +1,15 @@
 import Link from "next/link";
 
-const Nav = ({items, extended, ...props}) => {
+const Nav = ({
+		items, extended, ...props
+	}: {
+		items: {
+			href: string,
+			name: string,
+			extended: boolean
+		}[],
+		extended: boolean
+	}) => {
 	return (
 		<div {...props}>
 			{items.map((item) => {

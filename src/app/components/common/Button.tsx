@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const Button = ({href, variant, children}) => {
+const Button = ({href, variant, children}: { href: string, variant: string }) => {
 	let buttonColor = "";
 	if(variant == "primary") { buttonColor = "bg-gold hover:bg-brightgold"; }
 	if(variant == "secondary") { buttonColor = "bg-black hover:bg-brightgold text-white" }

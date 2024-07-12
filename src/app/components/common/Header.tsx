@@ -1,4 +1,8 @@
-const Header = ({title, children}) => {
+const Header = ({
+		title, children
+	}: {
+		title: string
+	}) => {
 	return (
 		<div className="w-full mt-4 mb-4">
 			<h1 className="w-full mb-2 text-2xl">{title}</h1>

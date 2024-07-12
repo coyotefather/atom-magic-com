@@ -1,7 +1,24 @@
 import Image from 'next/image';
 import Button from '@/app/components/common/Button';
 
-const Card = ({image, button, title, description}) => {
+const Card = ({
+		image, button, title, description
+	}: {
+		image: {
+			src: string,
+			alt: string,
+			width: number,
+			height: number,
+			priority: boolean
+		},
+		button: {
+			href: string,
+			variant: string,
+			text: string
+		},
+		title: string,
+		description: string
+	}) => {
 	return (
 		<div>
 		  <div className="flex h-40 mb-4">
