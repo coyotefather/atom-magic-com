@@ -7,7 +7,7 @@ const Footer = () => {
 			<Nav
 				items={NAVIGATION_LINKS}
 				extended={true}
-				align="flex justify-end" />
+				navClasses="flex justify-end" />
 		</footer>
 	);
 };
