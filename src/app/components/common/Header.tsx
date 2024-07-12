@@ -1,7 +1,8 @@
 const Header = ({
 		name, children
 	}: {
-		name: string
+		name: string,
+		children: React.ReactNode
 	}) => {
 	return (
 		<div className="w-full mt-4 mb-4">
