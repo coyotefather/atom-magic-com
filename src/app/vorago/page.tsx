@@ -10,7 +10,7 @@ const Page = () => {
 				  { href: "/tools", name: "Tools" }
 				]}
 		 />
-		  <Header title="Vorago">
+		  <Header name="Vorago">
 			  Coming soon!
 		  </Header>
 

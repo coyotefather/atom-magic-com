@@ -10,7 +10,7 @@ const Page = () => {
 				  { href: "/tools", name: "Tools" }
 				]}
 		 />
-		  <Header title="Character Manager">
+		  <Header name="Character Manager">
 			  Coming soon!
 		  </Header>
 
