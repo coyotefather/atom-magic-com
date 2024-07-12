@@ -21,7 +21,7 @@ const Breadcrumbs = ({page, parents = []}: { page: string, parents: { name: stri
 
 	return (
 		<div className="w-full">
-			<a href="https://atom-magic.com" alt="Atom Magic">Home</a> / {breadcrumbs}
+			<a href="https://atom-magic.com" title="Atom Magic">Home</a> / {breadcrumbs}
 		</div>
 	);
 };
