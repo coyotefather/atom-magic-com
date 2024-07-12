@@ -1,8 +1,8 @@
 const Header = ({title, children}) => {
 	return (
-		<div className="w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-			<h1>{title}</h1>
-			{children}
+		<div className="w-full mt-4 mb-4">
+			<h1 className="w-full mb-2 text-2xl">{title}</h1>
+			<p className="w-full mb-2">{children}</p>
 		</div>
 	);
 };
