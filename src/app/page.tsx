@@ -5,7 +5,7 @@ import Cards from '@/app/components/home/Cards';
 export default function Home() {
   return (
     <main className="inconsolata container flex min-h-screen flex-col items-center justify-between p-24 pt-12">
-      <Breadcrumbs page="Tools" />
+      <Breadcrumbs page="Tools" parents={[]} />
       <Header name="Tools">
           Some text
       </Header>
