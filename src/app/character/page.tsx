@@ -11,9 +11,9 @@ const Page = () => {
 				]}
 		 />
 		  <Header title="Character Manager">
-			  Some text
+			  Coming soon!
 		  </Header>
-		  Coming soon!
+
 		</main>
 	);
 };
