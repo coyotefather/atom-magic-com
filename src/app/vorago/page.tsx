@@ -1,19 +1,22 @@
 import Breadcrumbs from '@/app/components/common/Breadcrumbs';
 import Header from '@/app/components/common/Header';
+import Section from '@/app/components/common/Header';
 
 const Page = () => {
 	return (
-		<main className="inconsolata container flex min-h-screen flex-col items-center justify-between p-24 pt-12">
-		  <Breadcrumbs
-			  page="Vorago"
-			  parents={[
-				  { href: "/tools", name: "Tools" }
-				]}
-		 />
-		  <Header name="Vorago">
-			  Coming soon!
-		  </Header>
-
+		<main className="inconsolata min-h-screen pt-12">
+			<Header name="Vorago">
+				<Breadcrumbs
+					page="Vorago"
+					parents={[
+						{ href: "/tools", name: "Tools" }
+					]}
+				/>
+				Coming soon!
+			</Header>
+			<Section>
+				Game board here.
+			</Section>
 		</main>
 	);
 };
