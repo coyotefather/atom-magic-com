@@ -4,7 +4,7 @@ import Section from '@/app/components/common/Section';
 
 const Page = () => {
 	return (
-		<main className="inconsolata container min-h-screen pt-12">
+		<main className="inconsolata min-h-screen pt-12">
 			<Header name="Character Manager">
 				<Breadcrumbs
 					page="Character Manager"

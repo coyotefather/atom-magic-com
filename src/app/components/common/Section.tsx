@@ -4,8 +4,8 @@ interface DivProps extends React.ButtonHTMLAttributes<HTMLDivElement> {
 
 const Section = ({className, children}: DivProps) => {
 	return (
-		<div className={`flex w-full ${className}`}>
-			<div className="p-24">
+		<div className={`${className}`}>
+			<div className="container">
 				{children}
 			</div>
 		</div>
