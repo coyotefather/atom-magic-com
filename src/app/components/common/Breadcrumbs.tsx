@@ -30,7 +30,7 @@ const Breadcrumbs = ({
 	);
 
 	return (
-		<div className="w-full">
+		<div className="w-full text-sm pb-4">
 			<a href="https://atom-magic.com" title="Atom Magic">Home</a> / {breadcrumbs}
 		</div>
 	);
