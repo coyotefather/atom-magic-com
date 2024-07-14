@@ -15,10 +15,10 @@ const Section = ({
 	}) => {
 	return (
 		<div className={clsx(
-		  'pt-4 pb-4',
-		  {
-			'bg-black text-white': variant === 'dark',
-		  },
+			'pt-4 pb-4',
+			{
+				'bg-black text-white': variant === 'dark',
+			},
 		)}>
 			<div className="container">
 				<h2 className="marcellus text-xl">{name}</h2>
