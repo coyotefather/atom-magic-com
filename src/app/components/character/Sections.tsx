@@ -5,10 +5,10 @@ import RollYourCharacter from '@/app/components/character/sections/RollYourChara
 const Sections = () => {
 	return (
 		<div>
-			<Section name="The Basics.">
+			<Section>
 				<TheBasics />
 			</Section>
-			<Section variant="dark" name="Roll Your Character.">
+			<Section variant="dark">
 				<RollYourCharacter />
 			</Section>
 		</div>
