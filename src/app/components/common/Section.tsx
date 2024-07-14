@@ -11,13 +11,18 @@ const Section = ({
 	}) => {
 	return (
 		<div className={clsx(
-			'pt-4 pb-4',
+			'pt-8 pb-8',
 			{
 				'bg-black text-white': variant === 'dark',
 			},
 		)}>
 			<div className="container">
-				<h2 className="marcellus text-xl">{name}</h2>
+				<h2 className={clsx(
+					'marcellus text-xl border-b-2 border-solid mb-4',
+					{
+						'border-white': variant === 'dark',
+					},
+				)}>{name}</h2>
 				{children}
 			</div>
 		</div>
