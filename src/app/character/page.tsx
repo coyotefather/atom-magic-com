@@ -14,7 +14,7 @@ const Page = () => {
 				/>
   				Create your player character and start your journey across the world of Solum.
 			</Header>
-			<Section className="bg-black text-white" name="The Basics">
+			<Section variant="dark" name="The Basics">
   					<p>Enter and choose some basic information about your character. Note that none of the choices here affect scores. These are purely for roleplaying purposes.
 					</p>
 					<p>
