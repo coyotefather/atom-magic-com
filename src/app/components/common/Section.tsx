@@ -2,7 +2,13 @@ interface DivProps extends React.ButtonHTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-const Section = ({name, className, children}: DivProps) => {
+const Section = ({
+		name, className, children
+	}: {
+		name: String,
+		className: DivProps,
+		children: DivProps
+	}) => {
 	return (
 		<div className={`${className} pt-4 pb-4`}>
 			<div className="container">
