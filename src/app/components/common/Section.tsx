@@ -1,9 +1,5 @@
 import clsx from 'clsx';
 
-interface DivProps extends React.ButtonHTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode;
-}
-
 const Section = ({
 		name,
 		variant,
@@ -11,7 +7,7 @@ const Section = ({
 	}: {
 		name: String,
 		variant: String,
-		children: DivProps
+		children: React.ReactNode
 	}) => {
 	return (
 		<div className={clsx(
