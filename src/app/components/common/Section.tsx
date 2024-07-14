@@ -6,7 +6,7 @@ const Section = ({
 		name, className, children
 	}: {
 		name: String,
-		className: DivProps,
+		className: String,
 		children: DivProps
 	}) => {
 	return (
