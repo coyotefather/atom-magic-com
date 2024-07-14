@@ -1,10 +1,12 @@
+'use client';
 import Link from 'next/link';
 
 const Button = ({
-		href, variant, children
+		href = "", buttonFunction = () => { return; }, variant = "primary", children
 	}: {
-		href: string,
-		variant: string,
+		href: String,
+		buttonFunction: Function,
+		variant: String,
 		children: React.ReactNode
 	}) => {
 	let buttonColor = "";
@@ -14,6 +16,7 @@ const Button = ({
 	return (
 		<Link href={href}>
 		  <button
+		  	onClick={buttonFunction}
 			className={`${buttonColor} inconsolata uppercase tracking-widest p-2 pl-4 pr-4 rounded-full`}>
 			<strong>{children}</strong></button>
 		</Link>
