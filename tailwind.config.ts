@@ -31,9 +31,7 @@ const config: Config = {
     },
   },
   plugins: [
-    require("@tailwindcss/forms")({
-      strategy: 'base', // only generate global styles
-    }),
+    require("@tailwindcss/forms"),
   ],
 };
 export default config;
