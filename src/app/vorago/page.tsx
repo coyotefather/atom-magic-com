@@ -14,7 +14,7 @@ const Page = () => {
 				/>
 				Coming soon!
 			</Header>
-			<Section>
+			<Section name="Play Vorago">
 				Game board here.
 			</Section>
 		</main>
