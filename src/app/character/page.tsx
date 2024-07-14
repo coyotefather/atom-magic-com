@@ -14,12 +14,21 @@ const Page = () => {
 				/>
   				Create your player character and start your journey across the world of Solum.
 			</Header>
-			<Section variant="dark" name="The Basics">
+			<Section name="The Basics.">
 				<div>
-  					<p>Enter and choose some basic information about your character. Note that none of the choices here affect scores. These are purely for roleplaying purposes.
+					  <p>Enter and choose some basic information about your character. Note that none of the choices here affect scores. These are purely for roleplaying purposes.
 					</p>
 					<p>
-  						For more information on cultures, see <a href="https://atom-magic.com/codex/cultures" title="Cultures on Solum">Cultures on Solum</a>.
+						  For more information on cultures, see <a href="https://atom-magic.com/codex/cultures" title="Cultures on Solum">Cultures on Solum</a>.
+					</p>
+				</div>
+			</Section>
+			<Section variant="dark" name="Roll your character.">
+				<div>
+  					<p>It's time to roll and set the base numbers for each stat. You can adjust the spread of points across each sub state for any stat category.
+					</p>
+					<p>
+  						<button>sdfsdf</button>
 					</p>
 				</div>
 			</Section>
