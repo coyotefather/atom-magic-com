@@ -19,6 +19,7 @@ const config: Config = {
     },
     container: {
       center: true,
+      padding: '6rem',
     },
     colors: {
       transparent: 'transparent',
