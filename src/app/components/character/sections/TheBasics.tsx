@@ -10,9 +10,9 @@ const TheBasics = () => {
 				  For more information on cultures, see <a href="https://atom-magic.com/codex/cultures" title="Cultures on Solum">Cultures on Solum</a>.
 			</p>
 			<div className="flex justify-between mt-4">
-				<Input name="Name" width="96" required={true} />
-				<Input name="Age" width="24" required={true} />
-				<Input name="Pronouns" width="96" required={false} />
+				<Input name="Name" type="text" width="96" required={true} />
+				<Input name="Age" type="number" width="24" required={true} />
+				<Input name="Pronouns" type="text" width="96" required={false} />
 
 				<label className="block">
 					<span className="block text-sm font-medium text-slate-700">Culture</span>
