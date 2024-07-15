@@ -17,14 +17,27 @@ const TheBasics = () => {
 				</label>
 				<label className="block">
 					<span className="block text-sm font-medium text-slate-700">Age</span>
-					<input type="number" name="Age" className="peer form-input rounded-md border-2 focus:ring-gold focus:border-gold"/>
+					<input type="number" name="Age" className="peer form-input w-24 rounded-md border-2 focus:ring-gold focus:border-gold"/>
 					<p className="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
 						Please enter an age.
 					</p>
 				</label>
 				<label className="block">
 					<span className="block text-sm font-medium text-slate-700">Pronouns</span>
-					<input type="text" name="Pronouns" className="form-input w-80 rounded-md border-2 focus:ring-gold focus:border-gold"/>
+					<input type="text" name="Pronouns" className="form-input w-56 rounded-md border-2 focus:ring-gold focus:border-gold"/>
+				</label>
+				<label className="block">
+					<span className="block text-sm font-medium text-slate-700">Culture</span>
+					<select name="Culture" className="peer form-select w-96 rounded-md border-2 focus:ring-gold focus:border-gold">
+						<option>Spiranos</option>
+						<option>Boreanos</option>
+						<option>Feranos</option>
+						<option>Umbra</option>
+						<option>Autogena</option>
+					</select>
+					<p className="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
+						Please select a culture.
+					</p>
 				</label>
 			</div>
 		</div>
