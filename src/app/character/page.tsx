@@ -14,7 +14,9 @@ const Page = () => {
 				/>
   				Create your player character and start your journey across the world of Solum.
 			</Header>
-			<Sections />
+			<form>
+				<Sections />
+			</form>
 		</main>
 	);
 };
