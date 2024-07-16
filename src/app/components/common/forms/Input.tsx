@@ -4,10 +4,10 @@ const Input = ({
 		type = "text",
 		required = false,
 	}: {
-		name: String,
-		widthClass: String,
-		type: String,
-		required: Boolean,
+		name: string,
+		widthClass: string,
+		type: string,
+		required: boolean,
 	}) => {
 	let requiredElement = (<></>);
 	if(required) {

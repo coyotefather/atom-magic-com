@@ -9,9 +9,9 @@ const Section = ({
 		buttonFunction = () => { return true; },
 		children
 	}: {
-		variant: String,
-		name: String,
-		buttonText: String,
+		variant: string,
+		name: string,
+		buttonText: string,
 		buttonFunction: Function,
 		children: React.ReactNode
 	}) => {

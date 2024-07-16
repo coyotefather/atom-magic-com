@@ -4,12 +4,12 @@ const Select = ({
 		required,
 		options,
 	}: {
-		name: String,
-		widthClass: String,
-		required: Boolean,
+		name: string,
+		widthClass: string,
+		required: boolean,
 		options: {
-			name: String,
-			value: String
+			name: string,
+			value: string
 		}[]
 	}) => {
 	let requiredElement = (<></>);
