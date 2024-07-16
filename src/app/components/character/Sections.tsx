@@ -27,7 +27,9 @@ const Sections = () => {
 			</Section>
 			<Section
 				name="Scores"
-				variant="light">
+				variant="light"
+				buttonText
+				buttonFunction>
 				<Scores />
 			</Section>
 		</div>
