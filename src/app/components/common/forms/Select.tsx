@@ -1,11 +1,11 @@
 const Select = ({
 		name,
-		width,
+		widthClass,
 		required,
 		options,
 	}: {
 		name: String,
-		width: String,
+		widthClass: String,
 		required: Boolean,
 		options: {
 			name: String,
@@ -21,9 +21,9 @@ const Select = ({
 		);
 	}
 	return (
-		<label className={`block w-${width}`}>
+		<label className={`block ${widthClass}`}>
 			<span className="block text-sm font-medium text-slate-700">{name}</span>
-			<select name={name} className={`peer form-select w-${width} rounded-md border-2 focus:ring-gold focus:border-gold`}>
+			<select name={name} className={`peer form-select ${widthClass} rounded-md border-2 focus:ring-gold focus:border-gold`}>
 				{options.map((option) => (
 					<option key={`${option.name}-${option.value}`} value={option.value}>{option.name}</option>
 				))}

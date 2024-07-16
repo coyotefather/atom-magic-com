@@ -1,11 +1,11 @@
 const Input = ({
 		name,
-		width = "auto",
+		widthClass = "auto",
 		type = "text",
 		required = false,
 	}: {
 		name: String,
-		width: String,
+		widthClass: String,
 		type: String,
 		required: Boolean,
 	}) => {
@@ -18,9 +18,9 @@ const Input = ({
 		);
 	}
 	return (
-		<label className={`block w-${width}`}>
+		<label className={`block ${widthClass}`}>
 			<span className="block text-sm font-medium text-slate-700">{name}</span>
-			<input type={type} name={name} className={`peer form-input w-${width} rounded-md border-2 focus:ring-gold focus:border-gold`}/>
+			<input type={type} name={name} className={`peer form-input ${widthClass} rounded-md border-2 focus:ring-gold focus:border-gold`} />
 			{requiredElement}
 		</label>
 	);
