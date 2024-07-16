@@ -1,4 +1,5 @@
 import Input from '@/app/components/common/forms/Input';
+import Select from '@/app/components/common/forms/Select';
 
 const TheBasics = () => {
 	return (
@@ -13,20 +14,17 @@ const TheBasics = () => {
 				<Input name="Name" type="text" width="96" required={true} />
 				<Input name="Age" type="number" width="24" required={true} />
 				<Input name="Pronouns" type="text" width="96" required={false} />
-
-				<label className="block">
-					<span className="block text-sm font-medium text-slate-700">Culture</span>
-					<select name="Culture" className="peer form-select w-96 rounded-md border-2 focus:ring-gold focus:border-gold">
-						<option>Spiranos</option>
-						<option>Boreanos</option>
-						<option>Feranos</option>
-						<option>Umbra</option>
-						<option>Autogena</option>
-					</select>
-					<p className="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
-						Please select a culture.
-					</p>
-				</label>
+				<Select
+					name="Culture"
+					width="96"
+					required={true}
+					options={[
+						{ name: "Spiranos", value: "0" },
+						{ name: "Boreanos", value: "1" },
+						{ name: "Feranos", value: "2" },
+						{ name: "Umbra", value: "3" },
+						{ name: "Autogena", value: "4" },
+					]} />
 			</div>
 		</div>
 	);
