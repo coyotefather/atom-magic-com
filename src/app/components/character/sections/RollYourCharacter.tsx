@@ -1,5 +1,3 @@
-import Button from '@/app/components/common/Button';
-
 const RollYourCharacter = () => {
 	return (
 		<div>
