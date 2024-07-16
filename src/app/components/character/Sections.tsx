@@ -4,7 +4,7 @@ import TheBasics from '@/app/components/character/sections/TheBasics';
 import RollYourCharacter from '@/app/components/character/sections/RollYourCharacter';
 
 const Sections = () => {
-	let dummyFunction = () => { return; };
+	let dummyFunction = () => { return true; };
 	let rollFunction = () => {
 		console.log("roll character");
 	};

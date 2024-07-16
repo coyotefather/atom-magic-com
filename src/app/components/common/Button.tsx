@@ -2,7 +2,7 @@
 import Link from 'next/link';
 
 const Button = ({
-		href = "", buttonFunction = () => { return; }, variant = "primary", children
+		href = "", buttonFunction = () => { return true; }, variant = "primary", children
 	}: {
 		href: String,
 		buttonFunction: Function,
