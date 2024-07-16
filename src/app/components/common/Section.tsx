@@ -34,7 +34,6 @@ const Section = ({
 					<div className="m-auto">
 						<Button
 					  	buttonFunction={buttonFunction}
-						href=""
 					  	variant="gradient">{buttonText}</Button>
 					</div>
 				</div>
