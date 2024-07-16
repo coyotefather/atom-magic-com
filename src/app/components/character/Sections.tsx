@@ -2,6 +2,7 @@
 import Section from '@/app/components/common/Section';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import RollYourCharacter from '@/app/components/character/sections/RollYourCharacter';
+import Scores from '@/app/components/character/sections/Scores';
 
 const Sections = () => {
 	let dummyFunction = () => { return true; };
@@ -23,6 +24,11 @@ const Sections = () => {
 				buttonText="Roll Character"
 				buttonFunction={() => rollFunction()}>
 				<RollYourCharacter />
+			</Section>
+			<Section
+				name="Scores"
+				variant="light">
+				<Scores />
 			</Section>
 		</div>
 	);
