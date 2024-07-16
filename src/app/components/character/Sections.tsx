@@ -11,9 +11,7 @@ const Sections = () => {
 		<div>
 			<Section
 				name="The Basics"
-				variant="light"
-				buttonText="none"
-				buttonFunction={() => {return;}}>
+				variant="light">
 				<TheBasics />
 			</Section>
 			<Section
