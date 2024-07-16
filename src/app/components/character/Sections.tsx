@@ -12,8 +12,8 @@ const Sections = () => {
 			<Section
 				name="The Basics"
 				variant="light"
-				buttonText={undefined}
-				buttonFunction={undefined}>
+				buttonText=""
+				buttonFunction={() => {return;}}>
 				<TheBasics />
 			</Section>
 			<Section
