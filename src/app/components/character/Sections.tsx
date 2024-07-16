@@ -4,6 +4,7 @@ import TheBasics from '@/app/components/character/sections/TheBasics';
 import RollYourCharacter from '@/app/components/character/sections/RollYourCharacter';
 
 const Sections = () => {
+	let dummyFunction = () => { return; };
 	let rollFunction = () => {
 		console.log("roll character");
 	};
@@ -11,7 +12,9 @@ const Sections = () => {
 		<div>
 			<Section
 				name="The Basics"
-				variant="light">
+				variant="light"
+				buttonText=""
+				buttonFunction={() => dummyFunction()}>>
 				<TheBasics />
 			</Section>
 			<Section
