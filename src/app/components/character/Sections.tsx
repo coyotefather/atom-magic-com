@@ -9,7 +9,11 @@ const Sections = () => {
 	};
 	return (
 		<div>
-			<Section name="The Basics">
+			<Section
+				name="The Basics"
+				variant="light"
+				buttonText={undefined}
+				buttonFunction={undefined}>
 				<TheBasics />
 			</Section>
 			<Section
