@@ -14,7 +14,7 @@ const Sections = () => {
 				name="The Basics"
 				variant="light"
 				buttonText=""
-				buttonFunction={() => dummyFunction()}>>
+				buttonFunction={() => dummyFunction()}>
 				<TheBasics />
 			</Section>
 			<Section
