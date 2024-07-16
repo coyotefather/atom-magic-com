@@ -18,7 +18,7 @@ const Input = ({
 		);
 	}
 	return (
-		<label className="block">
+		<label className={`block w-${width}`}>
 			<span className="block text-sm font-medium text-slate-700">{name}</span>
 			<input type={type} name={name} className={`peer form-input w-${width} rounded-md border-2 focus:ring-gold focus:border-gold`}/>
 			{requiredElement}
