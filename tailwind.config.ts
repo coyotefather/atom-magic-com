@@ -10,6 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         "gold": 'rgb(187, 151, 49)',
+        'brightgold': 'rgb(226, 185, 68)',
+        'white': 'rgb(255, 255, 240)',
+        'black': 'rgb(35, 31, 32)',
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
