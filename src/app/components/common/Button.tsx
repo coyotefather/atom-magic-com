@@ -4,7 +4,7 @@ import Link from 'next/link';
 const Button = ({
 		href = "", buttonFunction = () => { return; }, variant = "primary", children
 	}: {
-		href: String,
+		href: Url,
 		buttonFunction: Function,
 		variant: String,
 		children: React.ReactNode
