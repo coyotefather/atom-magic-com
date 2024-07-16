@@ -17,7 +17,7 @@ const Button = ({
 	if(href == "") {
 		button = (
 			<button
-				onClick={buttonFunction}
+				onClick={() => buttonFunction()}
 				className={`${buttonColor} inconsolata uppercase tracking-widest p-2 pl-4 pr-4 rounded-full`}>
 				<strong>{children}</strong></button>
 		);
@@ -25,7 +25,6 @@ const Button = ({
 		button = (
 			<Link href={href}>
 				<button
-					onClick={buttonFunction}
 					className={`${buttonColor} inconsolata uppercase tracking-widest p-2 pl-4 pr-4 rounded-full`}>
 					<strong>{children}</strong></button>
 			</Link>
