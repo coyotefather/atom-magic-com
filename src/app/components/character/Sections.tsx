@@ -12,7 +12,7 @@ const Sections = () => {
 			<Section
 				name="The Basics"
 				variant="light"
-				buttonText=""
+				buttonText="none"
 				buttonFunction={() => {return;}}>
 				<TheBasics />
 			</Section>

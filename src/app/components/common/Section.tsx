@@ -16,7 +16,7 @@ const Section = ({
 		children: React.ReactNode
 	}) => {
 	let content = (<></>);
-	if(buttonText === "") {
+	if(buttonText == "none") {
 		content = (
 			<div className="container">
 				<h2 className="marcellus text-xl border-b-2 border-solid mb-4">{name}</h2>
