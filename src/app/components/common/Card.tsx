@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Button from '@/app/components/common/Button';
+import LinkButton from '@/app/components/common/LinkButton';
 
 const Card = ({
 		image, button, title, description
@@ -33,9 +33,9 @@ const Card = ({
 		  <div>
 			<h2 className="text-xl pb-2">{title}</h2>
 			<p className="pb-2">{description}</p>
-			<Button
+			<LinkButton
 			  href={button.href}
-			  variant={button.variant}>{button.text}</Button>
+			  variant={button.variant}>{button.text}</LinkButton>
 		  </div>
 		</div>
 	);

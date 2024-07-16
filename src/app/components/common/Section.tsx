@@ -1,12 +1,12 @@
 'use client';
 import clsx from 'clsx';
-import Button from '@/app/components/common/Button';
+import FunctionButton from '@/app/components/common/FunctionButton';
 
 const Section = ({
 		variant,
 		name = "",
 		buttonText = "",
-		buttonFunction = () => { return; },
+		buttonFunction = () => { return true; },
 		children
 	}: {
 		variant: String,
@@ -32,9 +32,9 @@ const Section = ({
 						{children}
 					</div>
 					<div className="m-auto">
-						<Button
+						<FunctionButton
 					  	buttonFunction={buttonFunction}
-					  	variant="gradient">{buttonText}</Button>
+					  	variant="gradient">{buttonText}</FunctionButton>
 					</div>
 				</div>
 			</div>
