@@ -24,7 +24,7 @@ const Sections = () => {
 				<RollYourCharacter />
 			</ButtonSection>
 			<Section
-				name="Scores"
+				name="Adjust Your Scores"
 				variant="light">
 				<Scores />
 			</Section>
