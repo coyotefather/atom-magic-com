@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "clsx": "^2.0.0",
     "next": "^14.2.5",
     "react": "^18.3.1",

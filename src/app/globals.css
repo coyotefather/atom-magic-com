@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("@mdi/font/css/materialdesignicons.css");
 
 :root {
   --foreground-rgb: 0, 0, 0;
