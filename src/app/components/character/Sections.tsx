@@ -4,6 +4,7 @@ import ButtonSection from '@/app/components/common/ButtonSection';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import RollYourCharacter from '@/app/components/character/sections/RollYourCharacter';
 import Scores from '@/app/components/character/sections/scores/Scores';
+import { mdiDiceMultiple } from '@mdi/js';
 
 const Sections = () => {
 	let rollFunction = () => {
@@ -20,6 +21,7 @@ const Sections = () => {
 				name="Roll Your Character"
 				variant="dark"
 				buttonText="Roll Character"
+				buttonIcon={mdiDiceMultiple}
 				buttonFunction={() => rollFunction()}>
 				<RollYourCharacter />
 			</ButtonSection>

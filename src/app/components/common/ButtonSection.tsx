@@ -6,12 +6,14 @@ const ButtonSection = ({
 		variant,
 		name = "",
 		buttonText = "",
+		buttonIcon = "",
 		buttonFunction = () => { return true; },
 		children
 	}: {
 		variant: string,
 		name: string,
 		buttonText: string,
+		buttonIcon: string,
 		buttonFunction: Function,
 		children: React.ReactNode
 	}) => {
@@ -31,6 +33,7 @@ const ButtonSection = ({
 					<div className="m-auto">
 						<FunctionButton
 						  buttonFunction={buttonFunction}
+						  buttonIcon={buttonIcon}
 						  variant="gradient">{buttonText}</FunctionButton>
 					</div>
 				</div>
