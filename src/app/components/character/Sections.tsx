@@ -3,7 +3,7 @@ import Section from '@/app/components/common/Section';
 import ButtonSection from '@/app/components/common/ButtonSection';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import RollYourCharacter from '@/app/components/character/sections/RollYourCharacter';
-import Scores from '@/app/components/character/sections/Scores';
+import Scores from '@/app/components/character/sections/scores/Scores';
 
 const Sections = () => {
 	let rollFunction = () => {
