@@ -6,7 +6,7 @@ const Header = ({
 	}) => {
 	return (
 		<div className="container">
-			<h1 className="w-full mb-2 text-2xl">{name}</h1>
+			<h1 className="w-full mb-2 marcellus text-4xl">{name}</h1>
 			<div className="w-full mb-2">{children}</div>
 		</div>
 	);

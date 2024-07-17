@@ -25,7 +25,7 @@ const ButtonSection = ({
 			<div className="container">
 				<div className="grid grid-flow-col auto-cols-auto">
 					<div>
-						<h2 className="marcellus text-xl border-b-2 border-white border-solid mb-4">{name}</h2>
+						<h2 className="marcellus text-3xl border-b-2 border-white border-solid mb-4">{name}</h2>
 						{children}
 					</div>
 					<div className="m-auto">
