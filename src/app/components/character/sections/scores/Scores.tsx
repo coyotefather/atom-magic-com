@@ -1,3 +1,5 @@
+import Score from '@/app/components/character/sections/scores/Score';
+
 const Scores = () => {
 	return (
 		<div>
@@ -10,8 +12,11 @@ const Scores = () => {
 			<p className="pb-4">
 				For more information on scoring, see <a href="https://atom-magic.com/codex/Scores" target="_new">Character scores</a>.
 			</p>
-			<div>
-				Scores
+			<div className="grid grid-cols-2 gap-16">
+				<Score score="Physical" />
+				<Score score="Interpersonal" />
+				<Score score="Intellect" />
+				<Score score="Psyche" />
 			</div>
 		</div>
 	);
