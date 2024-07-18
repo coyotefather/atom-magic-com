@@ -1,4 +1,5 @@
 import Score from '@/app/components/character/sections/scores/Score';
+import { SCORES } from '@/app/lib/global-data';
 
 const Scores = () => {
 	return (
