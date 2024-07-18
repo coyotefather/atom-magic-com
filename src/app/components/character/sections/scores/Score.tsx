@@ -22,7 +22,6 @@ const Score = ({
 	}) => {
 	const [rotated, setRotated] = useState(false);
 	const rotate = () => {
-		console.log(rotated);
 		rotated ? setRotated(false) : setRotated(true);
 	};
 	return (
