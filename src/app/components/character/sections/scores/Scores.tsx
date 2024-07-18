@@ -14,10 +14,10 @@ const Scores = () => {
 				For more information on scoring, see <a href="https://atom-magic.com/codex/Scores" target="_new">Character scores</a>.
 			</p>
 			<div className="grid grid-cols-2 gap-16">
-				<Score score="Physical" />
-				<Score score="Interpersonal" />
-				<Score score="Intellect" />
-				<Score score="Psyche" />
+				<Score score={SCORES.physical} />
+				<Score score={SCORES.interpersonal} />
+				<Score score={SCORES.intellect} />
+				<Score score={SCORES.psyche} />
 			</div>
 		</div>
 	);
