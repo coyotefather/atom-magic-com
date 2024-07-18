@@ -1,4 +1,9 @@
 'use client';
+import { useState } from 'react';
+import clsx from 'clsx';
+import {Accordion, AccordionItem} from "@nextui-org/accordion";
+import Icon from '@mdi/react';
+import { mdiPlusCircleOutline } from '@mdi/js';
 
 const Score = ({
 		score,
@@ -15,6 +20,11 @@ const Score = ({
 			}
 		},
 	}) => {
+	const [rotated, setRotated] = useState(false);
+	const rotate = () => {
+		console.log(rotated);
+		rotated ? setRotated(false) : setRotated(true);
+	};
 	return (
 		<div className="w-full mb-4">
 			<h3 className="marcellus text-lg border-b-2 border-solid mb-4">
@@ -25,7 +35,31 @@ const Score = ({
 				<div className="mb-4" key={subscore.name}>
 					{subscore.name}
 					<span className="float-right">50</span>
-					<div className="text-sm">Modifiers</div>
+					<div className="text-right w-full">
+						<Accordion
+							className="border-0 focus:border-0 outline-none focus:outline-none"
+							isCompact
+							fullWidth
+							onSelectionChange={ () => rotate() }>
+							<AccordionItem
+								key={`${subscore.name}_modifiers`}
+								aria-label={`${subscore.name}_modifiers`}
+								title="Modifiers"
+								indicator={
+									<Icon
+										className={clsx(
+										'transition-transform ml-2',
+										{
+											'rotate-90': rotated === true,
+										})}
+										path={mdiPlusCircleOutline}
+										size={1} />
+
+								}>
+								some modifiers
+							</AccordionItem>
+						</Accordion>
+					</div>
 				</div>
 			))}
 			<div className="mt-2 mb-8">
