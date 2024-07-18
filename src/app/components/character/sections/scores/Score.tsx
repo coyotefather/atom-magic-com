@@ -27,14 +27,14 @@ const Score = ({
 	};
 	return (
 		<div className="w-full mb-4">
-			<h3 className="marcellus text-lg border-b-2 border-solid mb-4">
+			<h3 className="marcellus text-2xl border-b-2 border-solid mb-4">
 				{score.name}
 				<span className="float-right font-bold">50</span>
 			</h3>
 			{score.children.map((subscore) => (
 				<div className="mb-4" key={subscore.name}>
-					{subscore.name}
-					<span className="float-right">50</span>
+					<span className="text-xl">{subscore.name}</span>
+					<span className="text-xl float-right">50</span>
 					<div className="text-right w-full">
 						<Accordion
 							className="border-0 focus:border-0 outline-none focus:outline-none"
