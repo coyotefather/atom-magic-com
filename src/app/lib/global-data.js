@@ -5,7 +5,7 @@ export const NAVIGATION_LINKS = [
 	{ href: "/tools", name: "TOOLS", icon: "", extended: false }
 ];
 
-export const STATS = {
+export const SCORES = {
 	physical: {
 		name: "Physical",
 		children: [
