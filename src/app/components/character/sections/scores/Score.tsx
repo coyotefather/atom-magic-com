@@ -35,7 +35,7 @@ const Score = ({
 				<div className="mb-4" key={subscore.name}>
 					<span className="text-xl">{subscore.name}</span>
 					<span className="text-xl float-right">50</span>
-					<div className="text-right w-full">
+					<div className="w-full">
 						<Accordion
 							className="border-0 focus:border-0 outline-none focus:outline-none"
 							isCompact
@@ -56,7 +56,18 @@ const Score = ({
 										size={1} />
 
 								}>
-								some modifiers
+								<div className="border-b">
+									some modifiers
+									<span className="float-right">+0</span>
+								</div>
+								<div className="border-b">
+									some modifiers
+									<span className="float-right">+0</span>
+								</div>
+								<div className="">
+									some modifiers
+									<span className="float-right">+0</span>
+								</div>
 							</AccordionItem>
 						</Accordion>
 					</div>
