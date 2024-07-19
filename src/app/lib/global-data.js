@@ -6,11 +6,11 @@ export const NAVIGATION_LINKS = [
 ];
 
 export const CULTURES = [
-	{ name: "Spiranos", id: "spiranos" },
-	{ name: "Boreanos", id: "boreanos" },
-	{ name: "Feranos", id: "Feranos" },
-	{ name: "Umbra", id: "Umbra" },
-	{ name: "Autogena", id: "Autogena" },
+	{ name: "Spiranos", value: "spiranos" },
+	{ name: "Boreanos", value: "boreanos" },
+	{ name: "Feranos", value: "Feranos" },
+	{ name: "Umbra", value: "Umbra" },
+	{ name: "Autogena", value: "Autogena" },
 ];
 
 export const SCORES = {
