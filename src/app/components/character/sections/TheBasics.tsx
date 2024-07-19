@@ -1,5 +1,6 @@
 import Input from '@/app/components/common/forms/Input';
 import Select from '@/app/components/common/forms/Select';
+import { CULTURES } from '@/app/lib/global-data';
 
 const TheBasics = () => {
 	return (
@@ -18,13 +19,7 @@ const TheBasics = () => {
 					name="Culture"
 					widthClass="w-96"
 					required={true}
-					options={[
-						{ name: "Spiranos", value: "0" },
-						{ name: "Boreanos", value: "1" },
-						{ name: "Feranos", value: "2" },
-						{ name: "Umbra", value: "3" },
-						{ name: "Autogena", value: "4" },
-					]} />
+					options={CULTURES} />
 			</div>
 		</div>
 	);
