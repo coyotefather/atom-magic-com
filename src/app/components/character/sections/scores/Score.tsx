@@ -25,20 +25,20 @@ const Score = ({
 		rotated ? setRotated(false) : setRotated(true);
 	};
 	return (
-		<div className="w-full mb-4">
-			<h3 className="marcellus text-2xl border-b-2 border-solid mb-4">
+		<div className="w-full mb-2">
+			<h3 className="marcellus text-2xl border-b-2 border-solid mb-2">
 				{score.name}
 				<span className="float-right font-bold">50</span>
 			</h3>
 			{score.children.map((subscore) => (
-				<div className="mb-4" key={subscore.name}>
+				<div className="mb-2" key={subscore.name}>
 					<span className="text-xl">{subscore.name}</span>
-					<div className="text-xl float-right">
-						<Icon className="inline" path={mdiMinus} size={0.75} />
+					<div className="text-xl w-24 float-right flex justify-between">
+						<Icon className="my-auto" path={mdiMinus} size={0.75} />
 						50
-						<Icon className="inline" path={mdiPlus} size={0.75} />
+						<Icon className="my-auto" path={mdiPlus} size={0.75} />
 					</div>
-					<div className="w-full">
+					<div className="pb-2 w-full text-sm">
 						<Accordion
 							className="border-0 focus:border-0 outline-none focus:outline-none"
 							isCompact
@@ -51,7 +51,7 @@ const Score = ({
 								indicator={
 									<Icon
 										className={clsx(
-										'transition-transform baseline ml-2',
+										'transition-transform baseline ml-2 my-auto',
 										{
 											'rotate-90': rotated === true,
 										})}
@@ -59,26 +59,30 @@ const Score = ({
 										size={0.75} />
 
 								}>
-								<div className="border-b">
-									some modifiers
-									<span className="float-right">+0</span>
+								<div className="border-b text-sm">
+									Base Score
+									<span className="float-right">50</span>
 								</div>
-								<div className="border-b">
-									some modifiers
-									<span className="float-right">+0</span>
+								<div className="border-b text-sm">
+									Elective Modifier
+									<span className="float-right">0</span>
 								</div>
-								<div className="">
-									some modifiers
-									<span className="float-right">+0</span>
+								<div className="text-sm">
+									Path Modifier
+									<span className="float-right">0</span>
 								</div>
 							</AccordionItem>
 						</Accordion>
 					</div>
 				</div>
 			))}
-			<div className="mt-2 mb-8">
+			<div className="text-xl mt-2 mb-8">
 				{score.elective.name}
-				<span className="float-right">5</span>
+				<div className="float-right flex justify-between w-24">
+					<Icon className="my-auto" path={mdiMinus} size={0.75} />
+					5
+					<Icon className="my-auto" path={mdiPlus} size={0.75} />
+				</div>
 			</div>
 			<div className="text-sm text-right">
 				<div>
