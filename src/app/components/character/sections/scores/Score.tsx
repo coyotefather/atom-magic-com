@@ -51,12 +51,12 @@ const Score = ({
 								indicator={
 									<Icon
 										className={clsx(
-										'transition-transform ml-2',
+										'transition-transform baseline ml-2',
 										{
 											'rotate-90': rotated === true,
 										})}
 										path={mdiPlusCircleOutline}
-										size={1} />
+										size={0.75} />
 
 								}>
 								<div className="border-b">
