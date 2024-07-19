@@ -5,6 +5,14 @@ export const NAVIGATION_LINKS = [
 	{ href: "/tools", name: "TOOLS", icon: "", extended: false }
 ];
 
+export const CULTURES = [
+	{ name: "Spiranos", id: "spiranos" },
+	{ name: "Boreanos", id: "boreanos" },
+	{ name: "Feranos", id: "Feranos" },
+	{ name: "Umbra", id: "Umbra" },
+	{ name: "Autogena", id: "Autogena" },
+];
+
 export const SCORES = {
 	physical: {
 		name: "Physical",
