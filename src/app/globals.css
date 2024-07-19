@@ -9,6 +9,14 @@
   --gold-rgb: 187, 151, 49;
   --brightgold-rgb: 226, 185, 68;
   --black-rgb: 35, 31, 32;
+  --ivory-black: #231F20;
+  --ivory-black-lighter: #3E3A36;
+  --ivory: #fffff0;
+  --pale-blue: #ADE4E4;
+  --adobe: #bd6c48;
+  --olive-green: #BAB86C;
+  --dark-olive-green: #8A8841;
+  --goldenrod: #daa520;
 }
 
 @media (prefers-color-scheme: light) {

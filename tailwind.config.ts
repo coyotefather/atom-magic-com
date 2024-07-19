@@ -13,6 +13,14 @@ const config: Config = {
         'brightgold': 'rgb(226, 185, 68)',
         'white': 'rgb(255, 255, 240)',
         'black': 'rgb(35, 31, 32)',
+        'ivory-black': '#231F20',
+        'ivory-black-lighter': '#3E3A36',
+        'ivory': '#fffff0',
+        'pale-blue': '#ADE4E4',
+        'adobe': '#bd6c48',
+        'olive-green': '#BAB86C',
+        'dark-olive-green': '#8A8841',
+        'goldenrod': '#daa520'
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -31,10 +39,14 @@ const config: Config = {
       'black': 'rgb(35, 31, 32)',
       'gold': 'rgb(187, 151, 49)',
       'brightgold': 'rgb(226, 185, 68)',
-      'tahiti': '#3ab7bf',
-      'silver': '#ecebff',
-      'bubble-gum': '#ff77e9',
-      'bermuda': '#78dcca',
+      'ivory-black': '#231F20',
+      'ivory-black-lighter': '#3E3A36',
+      'ivory': '#fffff0',
+      'pale-blue': '#ADE4E4',
+      'adobe': '#bd6c48',
+      'olive-green': '#BAB86C',
+      'dark-olive-green': '#8A8841',
+      'goldenrod': '#daa520'
     },
   },
   plugins: [
