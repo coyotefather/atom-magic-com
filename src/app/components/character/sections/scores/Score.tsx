@@ -3,7 +3,7 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import {Accordion, AccordionItem} from "@nextui-org/accordion";
 import Icon from '@mdi/react';
-import { mdiPlusCircleOutline } from '@mdi/js';
+import { mdiPlusCircleOutline, mdiPlus, mdiMinus } from '@mdi/js';
 
 const Score = ({
 		score,
@@ -33,7 +33,11 @@ const Score = ({
 			{score.children.map((subscore) => (
 				<div className="mb-4" key={subscore.name}>
 					<span className="text-xl">{subscore.name}</span>
-					<span className="text-xl float-right">50</span>
+					<div className="text-xl float-right">
+						<Icon className="inline" path={mdiMinus} size={0.75} />
+						50
+						<Icon className="inline" path={mdiPlus} size={0.75} />
+					</div>
 					<div className="w-full">
 						<Accordion
 							className="border-0 focus:border-0 outline-none focus:outline-none"
