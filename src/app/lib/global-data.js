@@ -70,21 +70,21 @@ export const SCORES = {
 
 export const PATHS = [
 	{
-		title: "Theurgist",
+		name: "Theurgist",
 		value: "theurgist",
 		latin: "Doctrina Acadēmia",
 		icon: "mdiFileCertificate",
 		description: "Educated by the masters from the Academia Theurgiae Atomi, their rigorous and highly structured education system has shaped you into one of the premier atom mages of Solum.",
 	},
 	{
-		title: "Iconoclast",
+		name: "Iconoclast",
 		value: "iconoclast",
 		latin: "Discipulīna Audax",
 		icon: "mdiScriptText",
 		description: "Schooled by heretical atom mages who shun the restraint and erudite style of the Academia Theurgiae Atomi, you have learned forbidden techniques and must evade the eyes of the Academy.",
 	},
 	{
-		title: "Autodidact",
+		name: "Autodidact",
 		value: "autodidact",
 		latin: "Erudītio Sui",
 		icon: "mdiHeadCog",
