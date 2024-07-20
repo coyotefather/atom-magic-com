@@ -1,8 +1,29 @@
 import Input from '@/app/components/common/forms/Input';
-import Select from '@/app/components/common/forms/Select';
 import { PATHS } from '@/app/lib/global-data';
+import { mdiFileCertificate, mdiScriptText, mdiHeadCog } from '@mdi/js';
+import {Select, SelectSection, SelectItem} from "@nextui-org/select";
 
 const ChoosePath = () => {
+
+	let details = (<div></div>);
+
+	const handleSelectChange = (event) => {
+		console.log(event.target.value);
+		if(event.target.value !== "") {
+			details = (
+				<div className="flex justify-around">
+					<div>ICON</div>
+					<div>
+						<h3>TITLE</h3>
+						<div>
+							{event.target.value}
+						</div>
+					</div>
+				</div>
+			);
+		}
+	};
+
 	return (
 		<div>
 			<div className="grid grid-cols-2 gap-4">
@@ -16,15 +37,23 @@ const ChoosePath = () => {
 				</div>
 				<div className="m-auto">
 					<Select
-						name="Path"
-						widthClass="w-96"
-						required={true}
-						options={PATHS} />
+						isRequired
+						variant="bordered"
+						radius="sm"
+						label="Path"
+						placeholder="Select a Path"
+						className="w-96"
+						onChange={(event) => handleSelectChange(event)}
+					  >
+						{PATHS.map((path) => (
+						  <SelectItem key={path.value}>
+							{path.name}
+						  </SelectItem>
+						))}
+					</Select>
 				</div>
 			</div>
-			<div>
-				details
-			</div>
+			{details}
 		</div>
 	);
 };
