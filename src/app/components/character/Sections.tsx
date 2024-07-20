@@ -8,8 +8,11 @@ import RollGear from '@/app/components/character/sections/RollGear';
 import { mdiDiceMultiple } from '@mdi/js';
 
 const Sections = () => {
-	let rollFunction = () => {
+	let rollCharacter= () => {
 		console.log("roll character");
+	};
+	let rollGear = () => {
+		console.log("roll gear");
 	};
 	return (
 		<div>
@@ -23,7 +26,7 @@ const Sections = () => {
 				variant="dark"
 				buttonText="Roll Character"
 				buttonIcon={mdiDiceMultiple}
-				buttonFunction={() => rollFunction()}>
+				buttonFunction={() => rollCharacter()}>
 				<RollYourCharacter />
 			</ButtonSection>
 			<Section
@@ -36,7 +39,7 @@ const Sections = () => {
 				variant="dark"
 				buttonText="Roll Items"
 				buttonIcon={mdiDiceMultiple}
-				buttonFunction={() => rollFunction()}>
+				buttonFunction={() => rollGear()}>
 				<RollYourCharacter />
 			</ButtonSection>
 		</div>
