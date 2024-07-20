@@ -17,19 +17,25 @@ const TheBasics = () => {
 					isRequired
 					type="text"
 					label="Name"
+					variant="bordered"
+					radius="sm"
 					className="w-96"
 					placeholder="Enter Character Name" />
 				<Input
 					isRequired
 					type="number"
 					label="Age"
-					className="w-24"
+					variant="bordered"
+					radius="sm"
+					className="w-28"
 					placeholder="Enter Age" />
 				<Input
 					isRequired
 					type="text"
 					label="Pronouns"
-					className="w-96"
+					variant="bordered"
+					radius="sm"
+					className="w-80"
 					placeholder="Enter Character Pronouns" />
 				<Select
 					isRequired
