@@ -21,7 +21,7 @@ const ChoosePath = () => {
 			if(path != undefined) {
 				setDetails(
 					<div className="flex justify-around max-w-[800px] mx-auto my-8 transition-all duration-200 ease-linear">
-						<div className="m-2">
+						<div className="mx-2 my-auto">
 							<Icon
 								path={icons[path.icon][path.icon]}
 								className="inline ml-2"
