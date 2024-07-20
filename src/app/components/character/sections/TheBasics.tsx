@@ -5,7 +5,7 @@ import { CULTURES } from '@/app/lib/global-data';
 const TheBasics = () => {
 	return (
 		<div>
-			<p>
+			<p className="pb-2">
 				Enter and choose some basic information about your character. Note that none of the choices here affect scores. These are purely for roleplaying purposes.
 			</p>
 			<p>
