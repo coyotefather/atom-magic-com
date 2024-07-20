@@ -1,5 +1,5 @@
 import Input from '@/app/components/common/forms/Input';
-import Select from '@/app/components/common/forms/Select';
+import {Select, SelectSection, SelectItem} from "@nextui-org/select";
 import { CULTURES } from '@/app/lib/global-data';
 
 const TheBasics = () => {
@@ -16,10 +16,19 @@ const TheBasics = () => {
 				<Input name="Age" type="number" widthClass="w-24" required={true} />
 				<Input name="Pronouns" type="text" widthClass="w-96" required={false} />
 				<Select
-					name="Culture"
-					widthClass="w-96"
-					required={true}
-					options={CULTURES} />
+					isRequired
+					variant="bordered"
+					radius="sm"
+					label="Culture"
+					placeholder="Select a Culture"
+					className="w-96"
+				  >
+					{CULTURES.map((culture) => (
+					  <SelectItem key={culture.value}>
+						{culture.name}
+					  </SelectItem>
+					))}
+				</Select>
 			</div>
 		</div>
 	);
