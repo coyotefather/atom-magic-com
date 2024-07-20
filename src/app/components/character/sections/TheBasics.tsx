@@ -1,4 +1,5 @@
-import Input from '@/app/components/common/forms/Input';
+'use client';
+import {Input} from "@nextui-org/input";
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
 import { CULTURES } from '@/app/lib/global-data';
 
@@ -12,9 +13,24 @@ const TheBasics = () => {
 				  For more information on cultures, see <a href="https://atom-magic.com/codex/cultures" title="Cultures on Solum">Cultures on Solum</a>.
 			</p>
 			<div className="flex justify-between mt-4">
-				<Input name="Name" type="text" widthClass="w-96" required={true} />
-				<Input name="Age" type="number" widthClass="w-24" required={true} />
-				<Input name="Pronouns" type="text" widthClass="w-96" required={false} />
+				<Input
+					isRequired
+					type="text"
+					label="Name"
+					className="w-96"
+					placeholder="Enter Character Name" />
+				<Input
+					isRequired
+					type="number"
+					label="Age"
+					className="w-24"
+					placeholder="Enter Age" />
+				<Input
+					isRequired
+					type="text"
+					label="Pronouns"
+					className="w-96"
+					placeholder="Enter Character Pronouns" />
 				<Select
 					isRequired
 					variant="bordered"
