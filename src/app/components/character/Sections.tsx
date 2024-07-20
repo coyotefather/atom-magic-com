@@ -46,7 +46,7 @@ const Sections = () => {
 				buttonText="Roll Items"
 				buttonIcon={mdiDiceMultiple}
 				buttonFunction={() => rollGear()}>
-				<RollYourCharacter />
+				<RollGear />
 			</ButtonSection>
 		</div>
 	);
