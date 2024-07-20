@@ -66,4 +66,28 @@ export const SCORES = {
 			value: "faith"
 		},
 	},
-}
+};
+
+export const PATHS = [
+	{
+		title: "Theurgist",
+		value: "theurgist",
+		latin: "Doctrina Acadēmia",
+		icon: "mdiFileCertificate",
+		description: "Educated by the masters from the Academia Theurgiae Atomi, their rigorous and highly structured education system has shaped you into one of the premier atom mages of Solum.",
+	},
+	{
+		title: "Iconoclast",
+		value: "iconoclast",
+		latin: "Discipulīna Audax",
+		icon: "mdiScriptText",
+		description: "Schooled by heretical atom mages who shun the restraint and erudite style of the Academia Theurgiae Atomi, you have learned forbidden techniques and must evade the eyes of the Academy.",
+	},
+	{
+		title: "Autodidact",
+		value: "autodidact",
+		latin: "Erudītio Sui",
+		icon: "mdiHeadCog",
+		description: "A wild prodigy, you have learned everything you know through grit, determination, and trial and error. The Academy may turn its nose up at you, but they will still employ you none the less.",
+	},
+];
