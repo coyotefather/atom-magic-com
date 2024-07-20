@@ -1,26 +1,43 @@
 import Input from '@/app/components/common/forms/Input';
 import { PATHS } from '@/app/lib/global-data';
+import Icon from '@mdi/react';
 import { mdiFileCertificate, mdiScriptText, mdiHeadCog } from '@mdi/js';
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
+import { useState } from 'react';
+
+const icons = {
+	"mdiFileCertificate": {mdiFileCertificate},
+	"mdiScriptText": {mdiScriptText},
+	"mdiHeadCog": {mdiHeadCog},
+};
 
 const ChoosePath = () => {
 
-	let details = (<div></div>);
+	const [details, setDetails] = useState(<div></div>);
 
 	const handleSelectChange = (event) => {
-		console.log(event.target.value);
 		if(event.target.value !== "") {
-			details = (
-				<div className="flex justify-around">
-					<div>ICON</div>
-					<div>
-						<h3>TITLE</h3>
-						<div>
-							{event.target.value}
+			let path = PATHS.find((path) => path.value === event.target.value);
+			if(path != undefined) {
+				setDetails(
+					<div className="flex justify-around max-w-[800px] mx-auto my-8 transition-all duration-200 ease-linear">
+						<div className="m-2">
+							<Icon
+								path={icons[path.icon][path.icon]}
+								className="inline ml-2"
+								size={3}
+								horizontal
+								vertical />
+						</div>
+						<div className="m-2">
+							<h3 className="text-2xl border-b-2 mb-2">{path.name}</h3>
+							<div>
+								{path.description}
+							</div>
 						</div>
 					</div>
-				</div>
-			);
+				);
+			}
 		}
 	};
 
