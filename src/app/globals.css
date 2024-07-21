@@ -67,6 +67,21 @@ button.gradient:hover {
   background: linear-gradient(85deg, rgb(241, 172, 69) 0%, rgb(238, 175, 67) 11%, rgb(235, 181, 65) 23%, rgb(232, 184, 63) 34%, rgb(227, 189, 62) 46%, rgb(222, 190, 63) 57%, rgb(216, 193, 63) 68%, rgb(210, 195, 64) 79%, rgb(207, 200, 67) 90%, rgb(201, 204, 71) 100%);
 }
 
+.fade-enter{
+   opacity: 0;
+}
+.fade-exit{
+   opacity: 1;
+}
+.fade-enter-active{
+   opacity: 1;
+   transition: opacity 500ms ease-in;
+}
+.fade-exit-active{
+   opacity: 0;
+   transition: opacity 500ms ease-in;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
