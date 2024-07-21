@@ -5,16 +5,14 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 const Section = ({
 		variant,
 		name = "",
-		showHeadTag = true,
 		children
 	}: {
 		variant: string,
 		name: string,
-		showHeadTag: boolean,
 		children: React.ReactNode
 	}) => {
 	let headTag = (<></>);
-	if(showHeadTag) {
+	if(name !== "") {
 		headTag = (<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">{name}</h2>);
 	}
 	return (
