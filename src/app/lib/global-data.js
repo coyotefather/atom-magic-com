@@ -98,7 +98,7 @@ export const CARDINALS = [
 	{
 		name: "Anathema",
 		value: "anathema",
-		svgSrc: "./public/sigils/Anathema.svg",
+		svgSrc: "/sigils/Anathema.svg",
 		latin: "ANATHEMUM",
 		epithet: "The Hammer of Umos",
 		epithetLatin: "Malleus Umi",
@@ -108,7 +108,7 @@ export const CARDINALS = [
 	{
 		name: "Aura",
 		value: "aura",
-		svgSrc: "./public/sigils/Aura.svg",
+		svgSrc: "/sigils/Aura.svg",
 		latin: "AURA",
 		epithet: "The Eternal Shadow of Umos",
 		epithetLatin: "Umbra Aeterna Umi",
@@ -118,7 +118,7 @@ export const CARDINALS = [
 	{
 		name: "Arcadia",
 		value: "arcadia",
-		svgSrc: "./public/sigils/Arcadia.svg",
+		svgSrc: "/sigils/Arcadia.svg",
 		latin: "AMOROS",
 		epithet: "The Sower of Life",
 		epithetLatin: "Sator Vitae",
@@ -128,7 +128,7 @@ export const CARDINALS = [
 	{
 		name: "Cadence",
 		value: "cadence",
-		svgSrc: "./public/sigils/Cadence.svg",
+		svgSrc: "/sigils/Cadence.svg",
 		latin: "METRONUM",
 		epithet: "The Steward of Time",
 		epithetLatin: "Prōcūrātor Temporis",
@@ -138,7 +138,7 @@ export const CARDINALS = [
 	{
 		name: "Charlatan",
 		value: "charlatan",
-		svgSrc: "./public/sigils/Charlatan.svg",
+		svgSrc: "/sigils/Charlatan.svg",
 		latin: "OBSCUROS",
 		epithet: "The Master of Lies",
 		epithetLatin: "Dominus Mendāciorum",
@@ -148,7 +148,7 @@ export const CARDINALS = [
 	{
 		name: "Gamma",
 		value: "gamma",
-		svgSrc: "./public/sigils/Gamma.svg",
+		svgSrc: "/sigils/Gamma.svg",
 		latin: "PERDITOR",
 		epithet: "The Savage Destroyer",
 		epithetLatin: "Ātrox Deletor",
@@ -158,7 +158,7 @@ export const CARDINALS = [
 	{
 		name: "Magna",
 		value: "magna",
-		svgSrc: "./public/sigils/Magna.svg",
+		svgSrc: "/sigils/Magna.svg",
 		latin: "LEXINUM",
 		epithet: "The Prime Ambassador",
 		epithetLatin: "Lēgātus Primus",
@@ -168,7 +168,7 @@ export const CARDINALS = [
 	{
 		name: "Mnemonic",
 		value: "mnemonic",
-		svgSrc: "./public/sigils/Mnemonic.svg",
+		svgSrc: "c/sigils/Mnemonic.svg",
 		latin: "TABULARUM",
 		epithet: "The Memory of Umos",
 		epithetLatin: "Memoria Umi",
@@ -178,7 +178,7 @@ export const CARDINALS = [
 	{
 		name: "Polyphony",
 		value: "polyphony",
-		svgSrc: "./public/sigils/Polyphony.svg",
+		svgSrc: "/sigils/Polyphony.svg",
 		latin: "CANTOS",
 		epithet: "The Chief Artist",
 		epithetLatin: "Artifex Primus",
@@ -188,7 +188,7 @@ export const CARDINALS = [
 	{
 		name: "Rubicon",
 		value: "rubicon",
-		svgSrc: "./public/sigils/Rubicon.svg",
+		svgSrc: "/sigils/Rubicon.svg",
 		latin: "FATIOS",
 		epithet: "The Terror of Kings",
 		epithetLatin: "Formīdo Regum",
@@ -198,7 +198,7 @@ export const CARDINALS = [
 	{
 		name: "Sovereign",
 		value: "sovereign",
-		svgSrc: "./public/sigils/Sovereign.svg",
+		svgSrc: "/sigils/Sovereign.svg",
 		latin: "ORDINATUM",
 		epithet: "The Power of the State",
 		epithetLatin: "Potestas Imperii",
@@ -208,7 +208,7 @@ export const CARDINALS = [
 	{
 		name: "Spectrum",
 		value: "spectrum",
-		svgSrc: "./public/sigils/Spectrum.svg",
+		svgSrc: "/sigils/Spectrum.svg",
 		latin: "SPECTROS",
 		epithet: "The Heart of Solum",
 		epithetLatin: "Pectus Soli",
@@ -218,7 +218,7 @@ export const CARDINALS = [
 	{
 		name: "Vertigo",
 		value: "vertigo",
-		svgSrc: "./public/sigils/Vertigo.svg",
+		svgSrc: "/sigils/Vertigo.svg",
 		latin: "ARCOS",
 		epithet: "The Voice of Discord",
 		epithetLatin: "Vox Discordii",
