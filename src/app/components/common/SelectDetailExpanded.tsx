@@ -23,7 +23,7 @@ const SelectDetail = ({
 				'hidden': disabled === true,
 			})}>
 				<h3 className="marcellus text-3xl border-b-2">{name}</h3>
-				<div className="flex justify-around">
+				<div className="flex justify-between">
 					<div className="mt-2">
 						{description}
 					</div>
@@ -31,8 +31,8 @@ const SelectDetail = ({
 						<Image
 							src={imagePath}
 							alt={`Sigil of ${name}`}
-							className='inline ml-2'
-							width={100} />
+							className='inline ml-2 mt-4'
+							width={200} />
 					</div>
 				</div>
 				<div>
