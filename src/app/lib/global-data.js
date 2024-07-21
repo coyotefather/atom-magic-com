@@ -98,6 +98,7 @@ export const Cardinals = [
 	{
 		name: "Anathema",
 		value: "anathema",
+		svgSrc: "./public/sigils/Anathema.svg",
 		latin: "ANATHEMUM",
 		epithet: "The Hammer of Umos",
 		epithetLatin: "Malleus Umi",
@@ -107,6 +108,7 @@ export const Cardinals = [
 	{
 		name: "Aura",
 		value: "aura",
+		svgSrc: "./public/sigils/Aura.svg",
 		latin: "AURA",
 		epithet: "The Eternal Shadow of Umos",
 		epithetLatin: "Umbra Aeterna Umi",
@@ -116,6 +118,7 @@ export const Cardinals = [
 	{
 		name: "Arcadia",
 		value: "arcadia",
+		svgSrc: "./public/sigils/Arcadia.svg",
 		latin: "AMOROS",
 		epithet: "The Sower of Life",
 		epithetLatin: "Sator Vitae",
@@ -125,6 +128,7 @@ export const Cardinals = [
 	{
 		name: "Cadence",
 		value: "cadence",
+		svgSrc: "./public/sigils/Cadence.svg",
 		latin: "METRONUM",
 		epithet: "The Steward of Time",
 		epithetLatin: "Prōcūrātor Temporis",
@@ -134,6 +138,7 @@ export const Cardinals = [
 	{
 		name: "Charlatan",
 		value: "charlatan",
+		svgSrc: "./public/sigils/Charlatan.svg",
 		latin: "OBSCUROS",
 		epithet: "The Master of Lies",
 		epithetLatin: "Dominus Mendāciorum",
@@ -143,6 +148,7 @@ export const Cardinals = [
 	{
 		name: "Gamma",
 		value: "gamma",
+		svgSrc: "./public/sigils/Gamma.svg",
 		latin: "PERDITOR",
 		epithet: "The Savage Destroyer",
 		epithetLatin: "Ātrox Deletor",
@@ -152,6 +158,7 @@ export const Cardinals = [
 	{
 		name: "Magna",
 		value: "magna",
+		svgSrc: "./public/sigils/Magna.svg",
 		latin: "LEXINUM",
 		epithet: "The Prime Ambassador",
 		epithetLatin: "Lēgātus Primus",
@@ -161,6 +168,7 @@ export const Cardinals = [
 	{
 		name: "Mnemonic",
 		value: "mnemonic",
+		svgSrc: "./public/sigils/Mnemonic.svg",
 		latin: "TABULARUM",
 		epithet: "The Memory of Umos",
 		epithetLatin: "Memoria Umi",
@@ -170,6 +178,7 @@ export const Cardinals = [
 	{
 		name: "Polyphony",
 		value: "polyphony",
+		svgSrc: "./public/sigils/Polyphony.svg",
 		latin: "CANTOS",
 		epithet: "The Chief Artist",
 		epithetLatin: "Artifex Primus",
@@ -179,6 +188,7 @@ export const Cardinals = [
 	{
 		name: "Rubicon",
 		value: "rubicon",
+		svgSrc: "./public/sigils/Rubicon.svg",
 		latin: "FATIOS",
 		epithet: "The Terror of Kings",
 		epithetLatin: "Formīdo Regum",
@@ -188,6 +198,7 @@ export const Cardinals = [
 	{
 		name: "Sovereign",
 		value: "sovereign",
+		svgSrc: "./public/sigils/Sovereign.svg",
 		latin: "ORDINATUM",
 		epithet: "The Power of the State",
 		epithetLatin: "Potestas Imperii",
@@ -197,6 +208,7 @@ export const Cardinals = [
 	{
 		name: "Spectrum",
 		value: "spectrum",
+		svgSrc: "./public/sigils/Spectrum.svg",
 		latin: "SPECTROS",
 		epithet: "The Heart of Solum",
 		epithetLatin: "Pectus Soli",
@@ -206,6 +218,7 @@ export const Cardinals = [
 	{
 		name: "Vertigo",
 		value: "vertigo",
+		svgSrc: "./public/sigils/Vertigo.svg",
 		latin: "ARCOS",
 		epithet: "The Voice of Discord",
 		epithetLatin: "Vox Discordii",
