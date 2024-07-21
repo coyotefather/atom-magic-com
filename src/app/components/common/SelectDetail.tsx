@@ -14,7 +14,7 @@ const SelectDetail = ({
 		disabled: boolean
 	}) => {
 	return (
-		<div>
+		<>
 			<div className={clsx(
 			'',
 			{
@@ -38,20 +38,20 @@ const SelectDetail = ({
 				</div>
 			</div>
 			<div className={clsx(
-			'my-auto',
+			'h-full grid grid-cols-1 content-center',
 			{
 				'hidden': disabled === false,
 			})}>
 				<Icon
 					path={iconPath}
 					className={clsx(
-					'm-auto',
+					'mx-auto',
 					{
-						'opacity-25': disabled === true,
+						'opacity-5': disabled === true,
 					})}
-					size={5} />
+					size={8} />
 			</div>
-		</div>
+		</>
 	);
 };
 
