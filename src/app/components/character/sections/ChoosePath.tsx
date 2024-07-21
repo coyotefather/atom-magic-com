@@ -44,7 +44,7 @@ const ChoosePath = () => {
 						Paths indicate how your character came to be skilled in the arts of atom magic. While many techniques are common to all three, some are specific to each path.
 					</p>
 					<p>
-						For more information, see <a href="https://atom-magic.com/codex/cPaths" title="Paths">Character paths</a>.
+						For more information, see <a href="https://atom-magic.com/codex/Paths" title="Paths">Character paths</a>.
 					</p>
 					<div className="m-auto">
 						<Select
