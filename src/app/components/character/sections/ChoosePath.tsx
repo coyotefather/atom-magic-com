@@ -1,16 +1,10 @@
 'use client';
 import SelectDetail from '@/app/components/common/SelectDetail';
 import { PATHS } from '@/app/lib/global-data';
-import { mdiBookshelf, mdiScriptText, mdiHeadCog, mdiAtom } from '@mdi/js';
+import { mdiAtom } from '@mdi/js';
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-
-const icons = {
-	"mdiBookshelf": {mdiBookshelf},
-	"mdiScriptText": {mdiScriptText},
-	"mdiHeadCog": {mdiHeadCog},
-};
 
 const ChoosePath = () => {
 	const detailsRef = useRef(null);
@@ -32,7 +26,7 @@ const ChoosePath = () => {
 			if(path != undefined) {
 				setDetails(
 					<SelectDetail
-						iconPath={icons[path.icon][path.icon]}
+						iconPath={path.icon}
 						name={path.name}
 						description={path.description}
 						disabled={false} />
