@@ -71,7 +71,7 @@ const ChoosePath = () => {
 							   key={detailsUpdated ? "x" : "y"}
 							   nodeRef={detailsRef}
 							   timeout={300}
-							   addEndListener={(done) => detailsRef.current.addEventListener("transitionend", done, false)}
+							   addEndListener={(done: React.ChangeEvent) => detailsRef.current.addEventListener("transitionend", done, false)}
 							   classNames='fade'
 							 >
 							 	<div ref={detailsRef}>
