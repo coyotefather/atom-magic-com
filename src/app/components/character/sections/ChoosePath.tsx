@@ -1,13 +1,13 @@
 'use client';
 import SelectDetail from '@/app/components/common/SelectDetail';
 import { PATHS } from '@/app/lib/global-data';
-import { mdiFileCertificate, mdiScriptText, mdiHeadCog, mdiAtom } from '@mdi/js';
+import { mdiBookshelf, mdiScriptText, mdiHeadCog, mdiAtom } from '@mdi/js';
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const icons = {
-	"mdiFileCertificate": {mdiFileCertificate},
+	"mdiBookshelf": {mdiBookshelf},
 	"mdiScriptText": {mdiScriptText},
 	"mdiHeadCog": {mdiHeadCog},
 };
@@ -44,6 +44,7 @@ const ChoosePath = () => {
 		<div>
 			<div className="grid grid-cols-2 gap-4">
 				<div>
+					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose a Path</h2>
 					<p className="pb-2">
 						Paths indicate how your character came to be skilled in the arts of atom magic. While many techniques are common to all three, some are specific to each path.
 					</p>
@@ -69,7 +70,7 @@ const ChoosePath = () => {
 					</div>
 				</div>
 				<div>
-					<div className="max-w-[600px] mx-auto my-8 transition-all duration-200 ease-linear">
+					<div className="transition-all duration-200 ease-linear">
 						<SwitchTransition mode="out-in">
 							<CSSTransition
 							   key={detailsUpdated}
