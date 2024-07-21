@@ -5,6 +5,7 @@ import TheBasics from '@/app/components/character/sections/TheBasics';
 import RollYourCharacter from '@/app/components/character/sections/RollYourCharacter';
 import Scores from '@/app/components/character/sections/scores/Scores';
 import ChoosePath from '@/app/components/character/sections/ChoosePath';
+import ChoosePatronage from '@/app/components/character/sections/ChoosePatronage';
 import RollGear from '@/app/components/character/sections/RollGear';
 import { mdiDiceMultiple } from '@mdi/js';
 
@@ -39,6 +40,11 @@ const Sections = () => {
 				name=""
 				variant="light">
 				<ChoosePath />
+			</Section>
+			<Section
+				name=""
+				variant="light">
+				<ChoosePatronage />
 			</Section>
 			<ButtonSection
 				name="Roll Gear and Wealth"
