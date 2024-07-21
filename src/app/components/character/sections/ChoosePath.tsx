@@ -16,7 +16,7 @@ const ChoosePath = () => {
 			description="Select an option from the dropdown."
 			disabled={true} />
 	);
-	const [detailsUpdated, setDetailsUpdated] = useState(false);
+	const [detailsUpdated, setDetailsUpdated] = useState(true);
 
 	const handleSelectChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
