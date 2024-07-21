@@ -16,7 +16,7 @@ const ChoosePath = () => {
 			description="Select an option from the dropdown."
 			disabled={true} />
 	);
-	const [detailsUpdated, setDetailsUpdated] = useState(true);
+	const [detailsUpdated, setDetailsUpdated] = useState(false);
 
 	const handleSelectChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
@@ -68,12 +68,10 @@ const ChoosePath = () => {
 					<div className="transition-all duration-200 ease-linear">
 						<SwitchTransition mode="out-in">
 							<CSSTransition
-							   key={detailsUpdated}
+							   key={detailsUpdated ? "x" : "y"}
 							   nodeRef={detailsRef}
-							   addEndListener={(done) => {
-								 detailsRef.current.addEventListener("transitionend", done, false);
-							   }}
 							   timeout={300}
+							   addEndListener={(done) => detailsRef.current.addEventListener("transitionend", done, false)}
 							   classNames='fade'
 							 >
 							 	<div ref={detailsRef}>
