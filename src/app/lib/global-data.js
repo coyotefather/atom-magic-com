@@ -1,3 +1,5 @@
+import { mdiBookshelf, mdiScriptText, mdiHeadCog, mdiAtom } from '@mdi/js';
+
 export const NAVIGATION_LINKS = [
 	{ href: "https://atom-magic.com/codex", name: "CODEX", icon: "", extended: false },
 	{ href: "/character", name: "CHARACTER MANAGER", icon: "", extended: true },
@@ -73,21 +75,21 @@ export const PATHS = [
 		name: "Theurgist",
 		value: "theurgist",
 		latin: "Doctrina Acadēmia",
-		icon: "mdiBookshelf",
+		icon: mdiBookshelf,
 		description: "Educated by the masters from the Academia Theurgiae Atomi, their rigorous and highly structured education system has shaped you into one of the premier atom mages of Solum.",
 	},
 	{
 		name: "Iconoclast",
 		value: "iconoclast",
 		latin: "Discipulīna Audax",
-		icon: "mdiScriptText",
+		icon: mdiScriptText,
 		description: "Schooled by heretical atom mages who shun the restraint and erudite style of the Academia Theurgiae Atomi, you have learned forbidden techniques and must evade the eyes of the Academy.",
 	},
 	{
 		name: "Autodidact",
 		value: "autodidact",
 		latin: "Erudītio Sui",
-		icon: "mdiHeadCog",
+		icon: mdiHeadCog,
 		description: "A wild prodigy, you have learned everything you know through grit, determination, and trial and error. The Academy may turn its nose up at you, but they will still employ you none the less.",
 	},
 ];
