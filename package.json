@@ -14,6 +14,7 @@
     "@nextui-org/react": "^2.4.6",
     "@nextui-org/system": "^2.2.5",
     "@nextui-org/theme": "^2.2.9",
+    "@types/react-transition-group": "^4.4.10",
     "clsx": "^2.0.0",
     "framer-motion": "^11.3.8",
     "next": "^14.2.5",
