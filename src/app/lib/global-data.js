@@ -94,7 +94,7 @@ export const PATHS = [
 	},
 ];
 
-export const Cardinals = [
+export const CARDINALS = [
 	{
 		name: "Anathema",
 		value: "anathema",
