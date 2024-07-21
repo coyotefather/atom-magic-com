@@ -73,7 +73,7 @@ export const PATHS = [
 		name: "Theurgist",
 		value: "theurgist",
 		latin: "Doctrina Acadēmia",
-		icon: "mdiFileCertificate",
+		icon: "mdiBookshelf",
 		description: "Educated by the masters from the Academia Theurgiae Atomi, their rigorous and highly structured education system has shaped you into one of the premier atom mages of Solum.",
 	},
 	{
