@@ -1,9 +1,10 @@
-import Input from '@/app/components/common/forms/Input';
+'use client';
+import SelectDetail from '@/app/components/common/SelectDetail';
 import { PATHS } from '@/app/lib/global-data';
-import Icon from '@mdi/react';
-import { mdiFileCertificate, mdiScriptText, mdiHeadCog } from '@mdi/js';
+import { mdiFileCertificate, mdiScriptText, mdiHeadCog, mdiAtom } from '@mdi/js';
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const icons = {
 	"mdiFileCertificate": {mdiFileCertificate},
@@ -12,30 +13,28 @@ const icons = {
 };
 
 const ChoosePath = () => {
+	const detailsRef = useRef(null);
 
-	const [details, setDetails] = useState(<div></div>);
+	const [details, setDetails] = useState(
+		<SelectDetail
+			iconPath={mdiAtom}
+			name="Choose a Path"
+			description="Select an option from the dropdown."
+			disabled={true} />
+	);
+	const [detailsUpdated, setDetailsUpdated] = useState(false);
 
 	const handleSelectChange = (event) => {
 		if(event.target.value !== "") {
+			setDetailsUpdated(detailsUpdated => !detailsUpdated);
 			let path = PATHS.find((path) => path.value === event.target.value);
 			if(path != undefined) {
 				setDetails(
-					<div className="flex justify-around max-w-[800px] mx-auto my-8 transition-all duration-200 ease-linear">
-						<div className="mx-2 my-auto">
-							<Icon
-								path={icons[path.icon][path.icon]}
-								className="inline ml-2"
-								size={3}
-								horizontal
-								vertical />
-						</div>
-						<div className="m-2">
-							<h3 className="text-2xl border-b-2 mb-2">{path.name}</h3>
-							<div>
-								{path.description}
-							</div>
-						</div>
-					</div>
+					<SelectDetail
+						iconPath={icons[path.icon][path.icon]}
+						name={path.name}
+						description={path.description}
+						disabled={false} />
 				);
 			}
 		}
@@ -51,26 +50,44 @@ const ChoosePath = () => {
 					<p>
 						For more information, see <a href="https://atom-magic.com/codex/cPaths" title="Paths">Character paths</a>.
 					</p>
+					<div className="m-auto">
+						<Select
+							isRequired
+							variant="bordered"
+							radius="sm"
+							label="Path"
+							placeholder="Select a Path"
+							className="w-96 mt-8"
+							onChange={(event) => handleSelectChange(event)}
+						  >
+							{PATHS.map((path) => (
+							  <SelectItem key={path.value}>
+								{path.name}
+							  </SelectItem>
+							))}
+						</Select>
+					</div>
 				</div>
-				<div className="m-auto">
-					<Select
-						isRequired
-						variant="bordered"
-						radius="sm"
-						label="Path"
-						placeholder="Select a Path"
-						className="w-96"
-						onChange={(event) => handleSelectChange(event)}
-					  >
-						{PATHS.map((path) => (
-						  <SelectItem key={path.value}>
-							{path.name}
-						  </SelectItem>
-						))}
-					</Select>
+				<div>
+					<div className="max-w-[600px] mx-auto my-8 transition-all duration-200 ease-linear">
+						<SwitchTransition mode="out-in">
+							<CSSTransition
+							   key={detailsUpdated}
+							   nodeRef={detailsRef}
+							   addEndListener={(done) => {
+								 detailsRef.current.addEventListener("transitionend", done, false);
+							   }}
+							   timeout={300}
+							   classNames='fade'
+							 >
+							 	<div ref={detailsRef}>
+								 	{details}
+							 	</div>
+							</CSSTransition>
+						</SwitchTransition>
+					</div>
 				</div>
 			</div>
-			{details}
 		</div>
 	);
 };
