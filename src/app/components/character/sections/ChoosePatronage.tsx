@@ -55,9 +55,9 @@ const ChoosePatronage = () => {
 							className="w-96 mt-8"
 							onChange={(event) => handleSelectChange(event)}
 						  >
-							{PATHS.map((path) => (
-							  <SelectItem key={path.value}>
-								{path.name}
+							{CARDINALS.map((cardinal) => (
+							  <SelectItem key={cardinal.value}>
+								{cardinal.name}
 							  </SelectItem>
 							))}
 						</Select>
