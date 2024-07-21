@@ -22,7 +22,7 @@ const SelectDetail = ({
 			})}>
 				<h3 className="marcellus text-3xl border-b-2">{name}</h3>
 				<div className="flex justify-around">
-					<div className="mt-4">
+					<div className="mt-2">
 						{description}
 					</div>
 					<div className="mx-2">
@@ -38,7 +38,7 @@ const SelectDetail = ({
 				</div>
 			</div>
 			<div className={clsx(
-			'',
+			'my-auto',
 			{
 				'hidden': disabled === false,
 			})}>
