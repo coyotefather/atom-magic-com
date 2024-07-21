@@ -38,12 +38,12 @@ const ChoosePatronage = () => {
 		<div>
 			<div className="grid grid-cols-2 gap-4">
 				<div>
-					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose a Path</h2>
+					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose a Patron</h2>
 					<p className="pb-2">
-						Paths indicate how your character came to be skilled in the arts of atom magic. While many techniques are common to all three, some are specific to each path.
+						Optionally choose a patronage from a Cardinal. This doesn&apos;t directly affect your base or calculated scores but can affect actions you take.
 					</p>
 					<p>
-						For more information, see <a href="https://atom-magic.com/codex/cPaths" title="Paths">Character paths</a>.
+						For more information, see <a href="https://atom-magic.com/codex/Cardinal_Forces" title="Paths">Cardinal Forces</a>.
 					</p>
 					<div className="m-auto">
 						<Select
