@@ -21,7 +21,7 @@ const SelectDetail = ({
 				'hidden': disabled === true,
 			})}>
 				<h3 className="marcellus text-3xl border-b-2">{name}</h3>
-				<div className="flex justify-around">
+				<div className="flex justify-between">
 					<div className="mt-2">
 						{description}
 					</div>
