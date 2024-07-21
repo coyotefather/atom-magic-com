@@ -24,7 +24,7 @@ const ChoosePath = () => {
 	);
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 
-	const handleSelectChange = (event) => {
+	const handleSelectChange = (event: React.ChangeEvent) => {
 		if(event.target.value !== "") {
 			setDetailsUpdated(detailsUpdated => !detailsUpdated);
 			let path = PATHS.find((path) => path.value === event.target.value);
