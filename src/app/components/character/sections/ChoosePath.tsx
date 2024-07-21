@@ -64,22 +64,18 @@ const ChoosePath = () => {
 						</Select>
 					</div>
 				</div>
-				<div>
-					<div className="transition-all duration-200 ease-linear">
-						<SwitchTransition mode="out-in">
-							<CSSTransition
-							   key={detailsUpdated ? "x" : "y"}
-							   nodeRef={detailsRef}
-							   timeout={300}
-							   classNames='fade'
-							 >
-							 	<div ref={detailsRef}>
-								 	{details}
-							 	</div>
-							</CSSTransition>
-						</SwitchTransition>
-					</div>
-				</div>
+				<SwitchTransition mode="out-in">
+					<CSSTransition
+					   key={detailsUpdated ? "x" : "y"}
+					   nodeRef={detailsRef}
+					   timeout={300}
+					   classNames='fade'
+					 >
+					 	<div ref={detailsRef}>
+						 	{details}
+					 	</div>
+					</CSSTransition>
+				</SwitchTransition>
 			</div>
 		</div>
 	);
