@@ -36,7 +36,7 @@ const Sections = () => {
 				<Scores />
 			</Section>
 			<Section
-				name="Choose Path"
+				name=""
 				variant="light">
 				<ChoosePath />
 			</Section>
