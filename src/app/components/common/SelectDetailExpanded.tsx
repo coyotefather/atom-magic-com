@@ -1,5 +1,6 @@
 'use client';
 import Icon from '@mdi/react';
+import { mdiAtom } from '@mdi/js';
 import {Image} from "@nextui-org/image";
 import clsx from 'clsx';
 
@@ -28,7 +29,7 @@ const SelectDetail = ({
 					</div>
 					<div className="mx-2">
 						<Image
-							src={`./public/sigils/${imagePath}.svg`}
+							src={imagePath}
 							alt={`Sigil of ${name}`}
 							className='inline ml-2'
 							width={100} />
@@ -44,7 +45,7 @@ const SelectDetail = ({
 				'hidden': disabled === false,
 			})}>
 				<Icon
-					path={iconPath}
+					path={mdiAtom}
 					className={clsx(
 					'mx-auto',
 					{
