@@ -75,11 +75,11 @@ button.gradient:hover {
 }
 .fade-enter-active{
    opacity: 1;
-   transition: opacity 500ms ease-in;
+   transition: opacity 150ms ease-in;
 }
 .fade-exit-active{
    opacity: 0;
-   transition: opacity 500ms ease-in;
+   transition: opacity 150ms ease-in;
 }
 
 @layer utilities {
