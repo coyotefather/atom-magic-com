@@ -25,9 +25,10 @@ const ChoosePath = () => {
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 
 	const handleSelectChange = (event: React.ChangeEvent) => {
-		if(event.target.value !== "") {
+		let val = (event.target as HTMLInputElement).value;
+		if(val !== "") {
 			setDetailsUpdated(detailsUpdated => !detailsUpdated);
-			let path = PATHS.find((path) => path.value === event.target.value);
+			let path = PATHS.find((path) => path.value === val);
 			if(path != undefined) {
 				setDetails(
 					<SelectDetail
