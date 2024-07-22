@@ -32,7 +32,7 @@ const SelectDetail = ({
 							src={imagePath}
 							alt={`Sigil of ${name}`}
 							className='inline ml-2 mt-4'
-							width={200} />
+							width={100} />
 					</div>
 				</div>
 				<div>
