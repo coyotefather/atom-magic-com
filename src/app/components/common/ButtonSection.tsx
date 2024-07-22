@@ -19,7 +19,7 @@ const ButtonSection = ({
 	}) => {
 	return (
 		<div className={clsx(
-			'pt-8 pb-8',
+			'pt-16 pb-16',
 			{
 				'bg-black text-white': variant === 'dark',
 			},
