@@ -19,17 +19,6 @@ const ChoosePatronage = () => {
 			<div></div>
 		</SelectDetailExpanded>
 	);
-	//const [patronageEffects, setPatronageEffects] = useState(<div>test</div>);
-	const columns = [
-		{
-			key: "name",
-			label: "Name",
-		},
-		{
-			key: "description",
-			label: "Description",
-		},
-	];
 
 	const handleSelectChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
@@ -41,16 +30,28 @@ const ChoosePatronage = () => {
 				console.log(cardinal);
 				patronageEffects = (
 					<div className="dark">
-						<Table removeWrapper aria-label="Example table with dynamic content">
-							<TableHeader columns={columns}>
-								{(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+						<Table removeWrapper aria-label={`${cardinal.name} Patronage Effects`}>
+							<TableHeader>
+								{["Name","Description","Effects"].map((tc) => (
+									<TableColumn
+										key={tc}
+										className="marcellus text-white text-md bg-transparent border-b-2 border-white">
+										{tc}
+									</TableColumn>
+								))}
 							</TableHeader>
-							<TableBody items={cardinal.effects}>
-								{(item) => (
-									<TableRow key={item.key}>
-										{(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
+							<TableBody>
+								{(cardinal.effects).map((effect) => (
+									<TableRow key={effect.name}>
+										<TableCell>{effect.name}</TableCell>
+										<TableCell className="w-1/3">{effect.description}</TableCell>
+										<TableCell>{effect.levels.map((level) => (
+											<div key={level.name}>
+												{level.name}: {level.description}
+											</div>
+										))}</TableCell>
 									</TableRow>
-								)}
+								))}
 							</TableBody>
 						</Table>
 					</div>
