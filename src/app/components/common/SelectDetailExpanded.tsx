@@ -5,6 +5,7 @@ import {Image} from "@nextui-org/image";
 import NextImage from "next/image";
 import clsx from 'clsx';
 
+
 const SelectDetail = ({
 		imagePath,
 		name,
@@ -18,6 +19,20 @@ const SelectDetail = ({
 		disabled: boolean,
 		children: React.ReactNode
 	}) => {
+
+	let image = (<></>);
+	if(imagePath !== "") {
+		image = (
+			<Image
+				as={NextImage}
+				width={100}
+				height={100}
+				src={imagePath}
+				alt={`Sigil of ${name}`}
+				className='inline ml-2 mt-4' />
+		);
+	}
+
 	return (
 		<>
 			<div className={clsx(
@@ -31,13 +46,7 @@ const SelectDetail = ({
 						{description}
 					</div>
 					<div className="mx-2">
-						<Image
-							as={NextImage}
-							width={100}
-							height={100}
-							src={imagePath}
-							alt={`Sigil of ${name}`}
-							className='inline ml-2 mt-4' />
+						{image}
 					</div>
 				</div>
 				<div>
