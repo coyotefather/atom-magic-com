@@ -38,12 +38,12 @@ const Sections = () => {
 			</Section>
 			<Section
 				name=""
-				variant="light">
+				variant="dual">
 				<ChoosePath />
 			</Section>
 			<Section
 				name=""
-				variant="light">
+				variant="dual">
 				<ChoosePatronage />
 			</Section>
 			<ButtonSection
