@@ -36,9 +36,9 @@ const ChoosePath = () => {
 	};
 
 	return (
-		<div>
-			<div className="grid grid-cols-2 gap-4">
-				<div>
+		<div className="grid grid-cols-2">
+			<div className="flex justify-end pt-16 pb-16">
+				<div className="max-w-[673px] pr-4">
 					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose a Path</h2>
 					<p className="pb-2">
 						Paths indicate how your character came to be skilled in the arts of atom magic. While many techniques are common to all three, some are specific to each path.
@@ -55,27 +55,31 @@ const ChoosePath = () => {
 							placeholder="Select a Path"
 							className="w-96 mt-8"
 							onChange={(event) => handleSelectChange(event)}
-						  >
+					  	>
 							{PATHS.map((path) => (
-							  <SelectItem key={path.value}>
+						  	<SelectItem key={path.value}>
 								{path.name}
-							  </SelectItem>
+						  	</SelectItem>
 							))}
 						</Select>
 					</div>
 				</div>
-				<SwitchTransition mode="out-in">
-					<CSSTransition
-					   key={detailsUpdated ? "x" : "y"}
-					   nodeRef={detailsRef}
-					   timeout={300}
-					   classNames='fade'
-					 >
-					 	<div ref={detailsRef}>
-						 	{details}
-					 	</div>
-					</CSSTransition>
-				</SwitchTransition>
+			</div>
+			<div className="bg-black text-white pt-16 pb-16">
+				<div className="max-w-[768px] pl-4">
+					<SwitchTransition mode="out-in">
+						<CSSTransition
+				   		key={detailsUpdated ? "x" : "y"}
+				   		nodeRef={detailsRef}
+				   		timeout={300}
+				   		classNames='fade'
+				 		>
+				 			<div ref={detailsRef}>
+					 			{details}
+				 			</div>
+						</CSSTransition>
+					</SwitchTransition>
+				</div>
 			</div>
 		</div>
 	);

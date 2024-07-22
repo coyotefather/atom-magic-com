@@ -35,17 +35,17 @@ const ChoosePatronage = () => {
 	};
 
 	return (
-		<div>
-			<div className="grid grid-cols-2 gap-4">
-				<div>
-					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose a Patron</h2>
-					<p className="pb-2">
+		<div className="grid grid-cols-2">
+			<div className="flex justify-end pt-16 pb-16">
+				<div className="max-w-[673px] pr-4">
+					<h2 className="marcellus text-3xl w-full border-b-2 border-solid mb-4">Choose a Patron</h2>
+					<p className="pb-2 w-full">
 						Optionally choose a patronage from a Cardinal. This doesn&apos;t directly affect your base or calculated scores but can affect actions you take.
 					</p>
-					<p>
+					<p className="pb-2 w-full">
 						For more information, see <a href="https://atom-magic.com/codex/Cardinal_Forces" title="Paths">Cardinal Forces</a>.
 					</p>
-					<div className="m-auto">
+					<div className="m-auto w-full">
 						<Select
 							isRequired
 							variant="bordered"
@@ -53,28 +53,31 @@ const ChoosePatronage = () => {
 							label="Path"
 							placeholder="Select a Path"
 							className="w-96 mt-8"
-							onChange={(event) => handleSelectChange(event)}
-						  >
+							onChange={(event) => handleSelectChange(event)}>
 							{CARDINALS.map((cardinal) => (
-							  <SelectItem key={cardinal.value}>
+						  	<SelectItem key={cardinal.value}>
 								{cardinal.name}
-							  </SelectItem>
+						  	</SelectItem>
 							))}
 						</Select>
 					</div>
 				</div>
-				<SwitchTransition mode="out-in">
-					<CSSTransition
-					   key={detailsUpdated ? "x" : "y"}
-					   nodeRef={detailsRef}
-					   timeout={300}
-					   classNames='fade'
-					 >
-					 	<div ref={detailsRef}>
-						 	{details}
-					 	</div>
-					</CSSTransition>
-				</SwitchTransition>
+			</div>
+			<div className="bg-black text-white pt-16 pb-16">
+				<div className="max-w-[768px] pl-4">
+					<SwitchTransition mode="out-in">
+						<CSSTransition
+							key={detailsUpdated ? "x" : "y"}
+							nodeRef={detailsRef}
+							timeout={300}
+							classNames='fade'
+							>
+							<div ref={detailsRef}>
+								{details}
+							</div>
+						</CSSTransition>
+					</SwitchTransition>
+				</div>
 			</div>
 		</div>
 	);
