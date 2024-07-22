@@ -9,12 +9,14 @@ const SelectDetail = ({
 		imagePath,
 		name,
 		description,
-		disabled
+		disabled,
+		children
 	}: {
 		imagePath: string,
 		name: string,
 		description: string,
-		disabled: boolean
+		disabled: boolean,
+		children: React.ReactNode
 	}) => {
 	return (
 		<>
@@ -39,7 +41,7 @@ const SelectDetail = ({
 					</div>
 				</div>
 				<div>
-					Patronage Benefits table
+					{children}
 				</div>
 			</div>
 			<div className={clsx(
