@@ -25,7 +25,7 @@ const SelectDetail = ({
 					<div className="mt-2">
 						{description}
 					</div>
-					<div className="mx-2">
+					<div>
 						<Icon
 							path={iconPath}
 							className={clsx(
