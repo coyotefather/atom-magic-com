@@ -104,6 +104,34 @@ export const CARDINALS = [
 		epithetLatin: "Malleus Umi",
 		description: "Tyranny, Oppression, Domination, and Control.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "Iron Fist",
+					latin: "PUGNUS FERREUS",
+					icon: "mdiAnvil",
+					description: "Your callous nature makes it easy for you to ignore the concerns of others.",
+					levels: {
+						i: "+10% of chance of compelling others to do your will.",
+						ii: "+15% of chance of compelling others to do your will.",
+						iii: "+20% of chance of compelling others to do your will.",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Bad Reputation",
+					latin: "FAMA MALA",
+					icon: "mdiBullhorn",
+					description: "Word of your nature has built infamy around your name.",
+					levels: {
+						i: "-%10 to reputation.",
+						ii: "-%15 to reputation.",
+						iii: "-%20 to reputation.",
+					}
+				}
+			],
+		},
 	},
 	{
 		name: "Aura",
@@ -114,6 +142,34 @@ export const CARDINALS = [
 		epithetLatin: "Umbra Aeterna Umi",
 		description: "Matter, Anti-matter, Energy, and Atom Magic.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "Man is Matter",
+					latin: "HOMO MATERIA EST",
+					icon: "mdiAtom",
+					description: "Matter and anti-matter are especially receptive to your will.",
+					levels: {
+						i: "+10% to atom magic techniques.",
+						ii: "+15% to atom magic techniques.",
+						iii: "+20% to atom magic techniques.",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Explosive Touch",
+					latin: "CONTAGIO DISPLOSA",
+					icon: "mdiFire",
+					description: "Your heightened atomic powers sometimes cause unexpected things to happen with physical contact.",
+					levels: {
+						i: "%10 chance of object spontaneously combusting when touched.",
+						ii: "%15 chance of object spontaneously combusting when touched.",
+						iii: "%20 chance of object spontaneously combusting when touched.",
+					}
+				}
+			],
+		}
 	},
 	{
 		name: "Arcadia",
@@ -124,6 +180,34 @@ export const CARDINALS = [
 		epithetLatin: "Sator Vitae",
 		description: "Growth, Fertility, and New Beginnings.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "Reset",
+					latin: "",
+					icon: "mdiAtom",
+					description: "",
+					levels: {
+						i: "+10% to atom magic techniques.",
+						ii: "+15% to atom magic techniques.",
+						iii: "+20% to atom magic techniques.",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Overgrown",
+					latin: "",
+					icon: "mdiFire",
+					description: "",
+					levels: {
+						i: "%10 chance of object spontaneously combusting when touched.",
+						ii: "%15 chance of object spontaneously combusting when touched.",
+						iii: "%20 chance of object spontaneously combusting when touched.",
+					}
+				}
+			],
+		}
 	},
 	{
 		name: "Cadence",
@@ -134,6 +218,34 @@ export const CARDINALS = [
 		epithetLatin: "Prōcūrātor Temporis",
 		description: "Time and measurement.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "Like Clockwork",
+					latin: "",
+					icon: "mdiAtom",
+					description: "",
+					levels: {
+						i: "+10%",
+						ii: "+15%",
+						iii: "+20%",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Losing Track of Time",
+					latin: "",
+					icon: "mdiFire",
+					description: "",
+					levels: {
+						i: "%10",
+						ii: "%15",
+						iii: "%20",
+					}
+				}
+			],
+		}
 	},
 	{
 		name: "Charlatan",
@@ -144,6 +256,34 @@ export const CARDINALS = [
 		epithetLatin: "Dominus Mendāciorum",
 		description: "Trickery, Manipulation, Deception, and Cheating.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "Master Manipulator",
+					latin: "",
+					icon: "mdiAtom",
+					description: "",
+					levels: {
+						i: "+10%",
+						ii: "+15%",
+						iii: "+20%",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Untrustworthy",
+					latin: "",
+					icon: "mdiFire",
+					description: "",
+					levels: {
+						i: "%10",
+						ii: "%15",
+						iii: "%20",
+					}
+				}
+			],
+		}
 	},
 	{
 		name: "Gamma",
@@ -154,6 +294,34 @@ export const CARDINALS = [
 		epithetLatin: "Ātrox Deletor",
 		description: "Death, Destruction, and Decay.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "",
+					latin: "",
+					icon: "mdiAtom",
+					description: "",
+					levels: {
+						i: "+10%",
+						ii: "+15%",
+						iii: "+20%",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Half-life",
+					latin: "",
+					icon: "mdiFire",
+					description: "",
+					levels: {
+						i: "%10",
+						ii: "%15",
+						iii: "%20",
+					}
+				}
+			],
+		}
 	},
 	{
 		name: "Magna",
@@ -164,6 +332,34 @@ export const CARDINALS = [
 		epithetLatin: "Lēgātus Primus",
 		description: "Accords, Deals, Laws, and Compacts.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "",
+					latin: "",
+					icon: "mdiAtom",
+					description: "",
+					levels: {
+						i: "+10%",
+						ii: "+15%",
+						iii: "+20%",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Half-life",
+					latin: "",
+					icon: "mdiFire",
+					description: "",
+					levels: {
+						i: "%10",
+						ii: "%15",
+						iii: "%20",
+					}
+				}
+			],
+		}
 	},
 	{
 		name: "Mnemonic",
@@ -174,6 +370,34 @@ export const CARDINALS = [
 		epithetLatin: "Memoria Umi",
 		description: "Knowledge and Memory.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "",
+					latin: "",
+					icon: "mdiAtom",
+					description: "",
+					levels: {
+						i: "+10%",
+						ii: "+15%",
+						iii: "+20%",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Half-life",
+					latin: "",
+					icon: "mdiFire",
+					description: "",
+					levels: {
+						i: "%10",
+						ii: "%15",
+						iii: "%20",
+					}
+				}
+			],
+		}
 	},
 	{
 		name: "Polyphony",
@@ -184,6 +408,34 @@ export const CARDINALS = [
 		epithetLatin: "Artifex Primus",
 		description: "Music, Arts, Writing, Speech, and Wisdom.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "",
+					latin: "",
+					icon: "mdiAtom",
+					description: "",
+					levels: {
+						i: "+10%",
+						ii: "+15%",
+						iii: "+20%",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Half-life",
+					latin: "",
+					icon: "mdiFire",
+					description: "",
+					levels: {
+						i: "%10",
+						ii: "%15",
+						iii: "%20",
+					}
+				}
+			],
+		}
 	},
 	{
 		name: "Rubicon",
@@ -194,6 +446,34 @@ export const CARDINALS = [
 		epithetLatin: "Formīdo Regum",
 		description: "Independence, Revolution, Resistance, and Usurpation.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "",
+					latin: "",
+					icon: "mdiAtom",
+					description: "",
+					levels: {
+						i: "+10%",
+						ii: "+15%",
+						iii: "+20%",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Half-life",
+					latin: "",
+					icon: "mdiFire",
+					description: "",
+					levels: {
+						i: "%10",
+						ii: "%15",
+						iii: "%20",
+					}
+				}
+			],
+		}
 	},
 	{
 		name: "Sovereign",
@@ -204,6 +484,34 @@ export const CARDINALS = [
 		epithetLatin: "Potestas Imperii",
 		description: "Hierarchy, Government, Monarchy, and Structure.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "",
+					latin: "",
+					icon: "mdiAtom",
+					description: "",
+					levels: {
+						i: "+10%",
+						ii: "+15%",
+						iii: "+20%",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Half-life",
+					latin: "",
+					icon: "mdiFire",
+					description: "",
+					levels: {
+						i: "%10",
+						ii: "%15",
+						iii: "%20",
+					}
+				}
+			],
+		}
 	},
 	{
 		name: "Spectrum",
@@ -214,6 +522,34 @@ export const CARDINALS = [
 		epithetLatin: "Pectus Soli",
 		description: "Love, Hate, and Emotions.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "",
+					latin: "",
+					icon: "mdiAtom",
+					description: "",
+					levels: {
+						i: "+10%",
+						ii: "+15%",
+						iii: "+20%",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Half-life",
+					latin: "",
+					icon: "mdiFire",
+					description: "",
+					levels: {
+						i: "%10",
+						ii: "%15",
+						iii: "%20",
+					}
+				}
+			],
+		}
 	},
 	{
 		name: "Vertigo",
@@ -224,5 +560,33 @@ export const CARDINALS = [
 		epithetLatin: "Vox Discordii",
 		description: "Madness, Chaos, Confusion, and Randomness.",
 		icon: "",
+		effects: {
+			positive: [
+				{
+					name: "",
+					latin: "",
+					icon: "mdiAtom",
+					description: "",
+					levels: {
+						i: "+10%",
+						ii: "+15%",
+						iii: "+20%",
+					}
+				}
+			],
+			negative: [
+				{
+					name: "Half-life",
+					latin: "",
+					icon: "mdiFire",
+					description: "",
+					levels: {
+						i: "%10",
+						ii: "%15",
+						iii: "%20",
+					}
+				}
+			],
+		}
 	}
 ];
