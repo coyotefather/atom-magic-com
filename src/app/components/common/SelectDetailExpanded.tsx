@@ -25,11 +25,10 @@ const SelectDetail = ({
 		image = (
 			<Image
 				as={NextImage}
-				width={100}
-				height={100}
+				width={150}
+				height={150}
 				src={imagePath}
-				alt={`Sigil of ${name}`}
-				className='inline ml-2 mt-4' />
+				alt={`Sigil of ${name}`} />
 		);
 	}
 
@@ -40,12 +39,14 @@ const SelectDetail = ({
 			{
 				'hidden': disabled === true,
 			})}>
-				<h3 className="marcellus text-3xl border-b-2">{name}</h3>
-				<div className="flex justify-between">
-					<div className="mt-2">
+				<div className="grid grid-cols-3 gap-4">
+					<div className="col-span-2">
+						<h3 className="marcellus text-3xl border-b-2">{name}</h3>
+						<div className="mt-2">
 						{description}
+						</div>
 					</div>
-					<div className="mx-2">
+					<div className="flex justify-around">
 						{image}
 					</div>
 				</div>
