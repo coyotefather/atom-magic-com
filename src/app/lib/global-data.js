@@ -111,11 +111,11 @@ export const CARDINALS = [
 				latin: "PUGNUS FERREUS",
 				icon: "mdiAnvil",
 				description: "Your callous nature makes it easy for you to ignore the concerns of others.",
-				levels: {
-					i: "+10% of chance of compelling others to do your will.",
-					ii: "+15% of chance of compelling others to do your will.",
-					iii: "+20% of chance of compelling others to do your will.",
-				}
+				levels: [
+					{ name: "i", description: "+10% of chance of compelling others." },
+					{ name: "ii", description: "+15% of chance of compelling others." },
+					{ name: "iii", description: "+20% of chance of compelling others." }
+				]
 			},
 			{
 				key: "2",
@@ -123,11 +123,11 @@ export const CARDINALS = [
 				latin: "FAMA MALA",
 				icon: "mdiBullhorn",
 				description: "Word of your nature has built infamy around your name.",
-				levels: {
-					i: "-%10 to reputation.",
-					ii: "-%15 to reputation.",
-					iii: "-%20 to reputation.",
-				}
+				levels: [
+					{ name: "i", description: "-%10 to reputation." },
+					{ name: "ii", description: "-%15 to reputation." },
+					{ name: "iii", description: "-%20 to reputation." }
+				]
 			}
 		]
 	},
@@ -147,11 +147,11 @@ export const CARDINALS = [
 				latin: "HOMO MATERIA EST",
 				icon: "mdiAtom",
 				description: "Matter and anti-matter are especially receptive to your will.",
-				levels: {
-					i: "+10% to atom magic techniques.",
-					ii: "+15% to atom magic techniques.",
-					iii: "+20% to atom magic techniques.",
-				}
+				levels: [
+					{ name: "i", description: "+10% to atom magic techniques." },
+					{ name: "ii", description: "+15% to atom magic techniques." },
+					{ name: "iii", description: "+20% to atom magic techniques." }
+				]
 			},
 			{
 				key: "2",
@@ -159,11 +159,11 @@ export const CARDINALS = [
 				latin: "CONTAGIO DISPLOSA",
 				icon: "mdiFire",
 				description: "Your heightened atomic powers sometimes cause unexpected things to happen with physical contact.",
-				levels: {
-					i: "%10 chance of object spontaneously combusting when touched.",
-					ii: "%15 chance of object spontaneously combusting when touched.",
-					iii: "%20 chance of object spontaneously combusting when touched.",
-				}
+				levels: [
+					{ name: "i", description: "%10 chance of object spontaneously combusting when touched." },
+					{ name: "ii", description: "%15 chance of object spontaneously combusting when touched." },
+					{ name: "iii", description: "%20 chance of object spontaneously combusting when touched." }
+				]
 			}
 		]
 	},
@@ -183,11 +183,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
-				levels: {
-					i: "+10% to atom magic techniques.",
-					ii: "+15% to atom magic techniques.",
-					iii: "+20% to atom magic techniques.",
-				}
+				levels: [
+					{ name: "i", description: "+10% to atom magic techniques." },
+					{ name: "ii", description: "+15% to atom magic techniques." },
+					{ name: "iii", description: "+20% to atom magic techniques." }
+				]
 			},
 			{
 				key: "2",
@@ -195,11 +195,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiFire",
 				description: "",
-				levels: {
-					i: "%10 chance of object spontaneously combusting when touched.",
-					ii: "%15 chance of object spontaneously combusting when touched.",
-					iii: "%20 chance of object spontaneously combusting when touched.",
-				}
+				levels: [
+					{ name: "i", description: "%10 chance of object spontaneously combusting when touched." },
+					{ name: "ii", description: "%15 chance of object spontaneously combusting when touched." },
+					{ name: "iii", description: "%20 chance of object spontaneously combusting when touched." }
+				]
 			}
 		]
 	},
@@ -219,11 +219,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
-				levels: {
-					i: "+10%",
-					ii: "+15%",
-					iii: "+20%",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			},
 			{
 				key: "2",
@@ -231,11 +231,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiFire",
 				description: "",
-				levels: {
-					i: "%10",
-					ii: "%15",
-					iii: "%20",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			}
 		]
 	},
@@ -255,11 +255,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
-				levels: {
-					i: "+10%",
-					ii: "+15%",
-					iii: "+20%",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			},
 			{
 				key: "2",
@@ -267,11 +267,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiFire",
 				description: "",
-				levels: {
-					i: "%10",
-					ii: "%15",
-					iii: "%20",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			}
 		]
 	},
@@ -291,11 +291,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
-				levels: {
-					i: "+10%",
-					ii: "+15%",
-					iii: "+20%",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			},
 			{
 				key: "2",
@@ -303,11 +303,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiFire",
 				description: "",
-				levels: {
-					i: "%10",
-					ii: "%15",
-					iii: "%20",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			}
 		]
 	},
@@ -327,11 +327,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
-				levels: {
-					i: "+10%",
-					ii: "+15%",
-					iii: "+20%",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			},
 			{
 				key: "2",
@@ -339,11 +339,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiFire",
 				description: "",
-				levels: {
-					i: "%10",
-					ii: "%15",
-					iii: "%20",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			}
 		]
 	},
@@ -363,11 +363,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
-				levels: {
-					i: "+10%",
-					ii: "+15%",
-					iii: "+20%",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			},
 			{
 				key: "2",
@@ -375,11 +375,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiFire",
 				description: "",
-				levels: {
-					i: "%10",
-					ii: "%15",
-					iii: "%20",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			}
 		]
 	},
@@ -399,11 +399,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
-				levels: {
-					i: "+10%",
-					ii: "+15%",
-					iii: "+20%",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			},
 			{
 				key: "2",
@@ -411,11 +411,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiFire",
 				description: "",
-				levels: {
-					i: "%10",
-					ii: "%15",
-					iii: "%20",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			}
 		]
 	},
@@ -435,11 +435,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
-				levels: {
-					i: "+10%",
-					ii: "+15%",
-					iii: "+20%",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			},
 			{
 				key: "2",
@@ -447,11 +447,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiFire",
 				description: "",
-				levels: {
-					i: "%10",
-					ii: "%15",
-					iii: "%20",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			}
 		]
 	},
@@ -471,11 +471,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
-				levels: {
-					i: "+10%",
-					ii: "+15%",
-					iii: "+20%",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			},
 			{
 				key: "2",
@@ -483,11 +483,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiFire",
 				description: "",
-				levels: {
-					i: "%10",
-					ii: "%15",
-					iii: "%20",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			}
 		]
 	},
@@ -507,11 +507,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
-				levels: {
-					i: "+10%",
-					ii: "+15%",
-					iii: "+20%",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			},
 			{
 				key: "2",
@@ -519,11 +519,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiFire",
 				description: "",
-				levels: {
-					i: "%10",
-					ii: "%15",
-					iii: "%20",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			}
 		]
 	},
@@ -543,11 +543,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
-				levels: {
-					i: "+10%",
-					ii: "+15%",
-					iii: "+20%",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			},
 			{
 				key: "2",
@@ -555,11 +555,11 @@ export const CARDINALS = [
 				latin: "",
 				icon: "mdiFire",
 				description: "",
-				levels: {
-					i: "%10",
-					ii: "%15",
-					iii: "%20",
-				}
+				levels: [
+					{ name: "i", description: "+10%" },
+					{ name: "ii", description: "+15%" },
+					{ name: "iii", description: "+20%" }
+				]
 			}
 		]
 	}
