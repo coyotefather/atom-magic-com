@@ -108,6 +108,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "Iron Fist",
+				page: "Iron_Fist",
 				latin: "PUGNUS FERREUS",
 				icon: "mdiAnvil",
 				description: "Your callous nature makes it easy for you to ignore the concerns of others.",
@@ -120,6 +121,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Bad Reputation",
+				page: "Bad_Reputation",
 				latin: "FAMA MALA",
 				icon: "mdiBullhorn",
 				description: "Word of your nature has built infamy around your name.",
@@ -144,6 +146,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "Man is Matter",
+				page: "Man_is_Matter",
 				latin: "HOMO MATERIA EST",
 				icon: "mdiAtom",
 				description: "Matter and anti-matter are especially receptive to your will.",
@@ -156,6 +159,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Explosive Touch",
+				page: "Explosive_Touch",
 				latin: "CONTAGIO DISPLOSA",
 				icon: "mdiFire",
 				description: "Your heightened atomic powers sometimes cause unexpected things to happen with physical contact.",
@@ -180,6 +184,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "Reset",
+				page: "Reset",
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
@@ -192,6 +197,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Overgrown",
+				page: "Overgrown",
 				latin: "",
 				icon: "mdiFire",
 				description: "",
@@ -216,6 +222,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "Like Clockwork",
+				page: "Like_Clockwork",
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
@@ -228,6 +235,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Losing Track of Time",
+				page: "Losing_Track_of_Time",
 				latin: "",
 				icon: "mdiFire",
 				description: "",
@@ -252,6 +260,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "Master Manipulator",
+				page: "Master_Manipulator",
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
@@ -264,6 +273,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Untrustworthy",
+				page: "Untrustworthy",
 				latin: "",
 				icon: "mdiFire",
 				description: "",
@@ -288,6 +298,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "",
+				page: "",
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
@@ -300,6 +311,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Half-life",
+				page: "Half-life",
 				latin: "",
 				icon: "mdiFire",
 				description: "",
@@ -324,6 +336,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "",
+				page: "",
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
@@ -336,6 +349,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Half-life",
+				page: "Half-life",
 				latin: "",
 				icon: "mdiFire",
 				description: "",
@@ -360,6 +374,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "",
+				page: "",
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
@@ -372,6 +387,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Half-life",
+				page: "",
 				latin: "",
 				icon: "mdiFire",
 				description: "",
@@ -396,6 +412,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "",
+				page: "",
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
@@ -408,6 +425,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Half-life",
+				page: "",
 				latin: "",
 				icon: "mdiFire",
 				description: "",
@@ -432,6 +450,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "",
+				page: "",
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
@@ -444,6 +463,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Half-life",
+				page: "",
 				latin: "",
 				icon: "mdiFire",
 				description: "",
@@ -468,6 +488,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "",
+				page: "",
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
@@ -480,6 +501,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Half-life",
+				page: "",
 				latin: "",
 				icon: "mdiFire",
 				description: "",
@@ -504,6 +526,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "",
+				page: "",
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
@@ -516,6 +539,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Half-life",
+				page: "",
 				latin: "",
 				icon: "mdiFire",
 				description: "",
@@ -540,6 +564,7 @@ export const CARDINALS = [
 			{
 				key: "1",
 				name: "",
+				page: "",
 				latin: "",
 				icon: "mdiAtom",
 				description: "",
@@ -552,6 +577,7 @@ export const CARDINALS = [
 			{
 				key: "2",
 				name: "Half-life",
+				page: "",
 				latin: "",
 				icon: "mdiFire",
 				description: "",
