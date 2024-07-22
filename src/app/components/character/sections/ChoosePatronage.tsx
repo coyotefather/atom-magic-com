@@ -41,7 +41,7 @@ const ChoosePatronage = () => {
 				console.log(cardinal);
 				patronageEffects = (
 					<div className="dark">
-						<Table aria-label="Example table with dynamic content">
+						<Table removeWrapper aria-label="Example table with dynamic content">
 							<TableHeader columns={columns}>
 								{(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
 							</TableHeader>
