@@ -27,7 +27,6 @@ const ChoosePatronage = () => {
 			setDetailsUpdated(detailsUpdated => !detailsUpdated);
 			let cardinal = CARDINALS.find((cardinal) => cardinal.value === val);
 			if(cardinal != undefined) {
-				console.log(cardinal);
 				patronageEffects = (
 					<div className="dark">
 						<Table removeWrapper aria-label={`${cardinal.name} Patronage Effects`}>
@@ -59,7 +58,7 @@ const ChoosePatronage = () => {
 				setDetails(
 					<SelectDetailExpanded
 						imagePath={cardinal.svgSrc}
-						name={cardinal.name}
+						name={`${cardinal.name}, ${cardinal.epithet}`}
 						description={cardinal.description}
 						disabled={false}>
 						{patronageEffects}
