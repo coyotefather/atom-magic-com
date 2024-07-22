@@ -15,7 +15,9 @@ const ChoosePatronage = () => {
 			imagePath=""
 			name="Choose a Patron"
 			description="Select an option from the dropdown."
-			disabled={true} />
+			disabled={true}>
+			<div></div>
+		</SelectDetailExpanded>
 	);
 	//const [patronageEffects, setPatronageEffects] = useState(<div>test</div>);
 	const columns = [
@@ -59,7 +61,6 @@ const ChoosePatronage = () => {
 						name={cardinal.name}
 						description={cardinal.description}
 						disabled={false}>
-						jhbjhbj
 						{patronageEffects}
 					</SelectDetailExpanded>
 				);
