@@ -17,15 +17,13 @@ const Section = ({
 	}
 	return (
 		<div className={clsx(
-			'pt-8 pb-8',
+			'',
 			{
-				'bg-black text-white': variant === 'dark',
+				'pt-16 pb-16 container': variant === 'dark' || variant === 'light'
 			},
 		)}>
-			<div className="container">
-				{headTag}
-				{children}
-			</div>
+			{headTag}
+			{children}
 		</div>
 	);
 };
