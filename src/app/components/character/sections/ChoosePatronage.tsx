@@ -2,8 +2,10 @@
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import { CARDINALS } from '@/app/lib/global-data';
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+
 
 const ChoosePatronage = () => {
 	const detailsRef = useRef(null);
