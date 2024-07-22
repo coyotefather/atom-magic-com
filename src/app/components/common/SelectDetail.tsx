@@ -20,12 +20,14 @@ const SelectDetail = ({
 			{
 				'hidden': disabled === true,
 			})}>
-				<h3 className="marcellus text-3xl border-b-2">{name}</h3>
-				<div className="flex justify-between">
-					<div className="mt-2">
-						{description}
+				<div className="grid grid-cols-3 gap-4">
+					<div className="col-span-2">
+						<h3 className="marcellus text-3xl border-b-2 mb-4">{name}</h3>
+						<div>
+							{description}
+						</div>
 					</div>
-					<div>
+					<div className="flex justify-around">
 						<Icon
 							path={iconPath}
 							className={clsx(
@@ -33,7 +35,7 @@ const SelectDetail = ({
 							{
 								'opacity-25': disabled === true,
 							})}
-							size={5} />
+							size={6} />
 					</div>
 				</div>
 			</div>
