@@ -41,9 +41,9 @@ const SelectDetail = ({
 			})}>
 				<div className="grid grid-cols-3 gap-4">
 					<div className="col-span-2">
-						<h3 className="marcellus text-3xl border-b-2">{name}</h3>
-						<div className="mt-2">
-						{description}
+						<h3 className="marcellus text-3xl border-b-2 mb-4">{name}</h3>
+						<div>
+							{description}
 						</div>
 					</div>
 					<div className="flex justify-around">
