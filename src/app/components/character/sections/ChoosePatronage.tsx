@@ -1,5 +1,6 @@
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
+import ExternalLink from '@/app/components/common/ExternalLink';
 import { CARDINALS } from '@/app/lib/global-data';
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
@@ -42,12 +43,16 @@ const ChoosePatronage = () => {
 							<TableBody>
 								{(cardinal.effects).map((effect) => (
 									<TableRow key={effect.name}>
-										<TableCell>{effect.name}</TableCell>
+										<TableCell className="text-base">
+											<ExternalLink
+											href={`https://atom-magic.com/codex/${effect.page}`} name={effect.name} />
+										</TableCell>
 										<TableCell className="w-1/3">{effect.description}</TableCell>
 										<TableCell>{effect.levels.map((level) => (
-											<div key={level.name}>
-												{level.name}: {level.description}
-											</div>
+											<dl key={level.name} className="flex">
+												<dt className="uppercase w-12">{level.name}:</dt>
+												<dd className="">{level.description}</dd>
+											</dl>
 										))}</TableCell>
 									</TableRow>
 								))}
