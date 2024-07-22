@@ -9,7 +9,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const ChoosePatronage = () => {
 	const detailsRef = useRef(null);
-
+	const [detailsUpdated, setDetailsUpdated] = useState(false);
 	const [details, setDetails] = useState(
 		<SelectDetailExpanded
 			imagePath=""
@@ -17,20 +17,51 @@ const ChoosePatronage = () => {
 			description="Select an option from the dropdown."
 			disabled={true} />
 	);
-	const [detailsUpdated, setDetailsUpdated] = useState(false);
+	//const [patronageEffects, setPatronageEffects] = useState(<div>test</div>);
+	const columns = [
+		{
+			key: "name",
+			label: "Name",
+		},
+		{
+			key: "description",
+			label: "Description",
+		},
+	];
 
 	const handleSelectChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
+		let patronageEffects = (<></>);
 		if(val !== "") {
 			setDetailsUpdated(detailsUpdated => !detailsUpdated);
 			let cardinal = CARDINALS.find((cardinal) => cardinal.value === val);
 			if(cardinal != undefined) {
+				console.log(cardinal);
+				patronageEffects = (
+					<div className="dark">
+						<Table aria-label="Example table with dynamic content">
+							<TableHeader columns={columns}>
+								{(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+							</TableHeader>
+							<TableBody items={cardinal.effects}>
+								{(item) => (
+									<TableRow key={item.key}>
+										{(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
+									</TableRow>
+								)}
+							</TableBody>
+						</Table>
+					</div>
+				);
 				setDetails(
 					<SelectDetailExpanded
 						imagePath={cardinal.svgSrc}
 						name={cardinal.name}
 						description={cardinal.description}
-						disabled={false} />
+						disabled={false}>
+						jhbjhbj
+						{patronageEffects}
+					</SelectDetailExpanded>
 				);
 			}
 		}
