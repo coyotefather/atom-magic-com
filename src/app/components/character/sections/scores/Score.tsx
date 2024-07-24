@@ -21,8 +21,9 @@ const Score = ({
 		},
 	}) => {
 	const [rotated, setRotated] = useState(false);
-	const rotate = () => {
-		rotated ? setRotated(false) : setRotated(true);
+	const handSelectChange = () => {
+		//rotated ? setRotated(false) : setRotated(true);
+		setRotated( (isRotated) => !isRotated );
 	};
 	return (
 		<div className="w-full mb-2">
@@ -43,7 +44,7 @@ const Score = ({
 							className="border-0 focus:border-0 outline-none focus:outline-none"
 							isCompact
 							fullWidth
-							onSelectionChange={ () => rotate() }>
+							onSelectionChange={handSelectChange}>
 							<AccordionItem
 								key={`${subscore.name}_modifiers`}
 								aria-label={`${subscore.name}_modifiers`}
