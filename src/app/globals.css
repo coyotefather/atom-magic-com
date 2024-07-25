@@ -69,17 +69,28 @@ button.gradient:hover {
 
 .fade-enter{
    opacity: 0;
+   max-height: 0;
+   overflow: hidden;
 }
 .fade-exit{
    opacity: 1;
+   max-height: 700px;
 }
 .fade-enter-active{
    opacity: 1;
-   transition: opacity 150ms ease-in;
+   max-height: 700px;
+   transition: max-height 0.5s ease-out, opacity 300ms ease-in;
 }
 .fade-exit-active{
    opacity: 0;
-   transition: opacity 150ms ease-in;
+   max-height: 0;
+   overflow: hidden;
+   transition: max-height 0.5s ease-out, opacity 300ms ease-in;
+}
+
+.grow-vertical {
+  max-height: 0;
+  overflow: hidden;
 }
 
 @layer utilities {
