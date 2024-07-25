@@ -77,12 +77,12 @@ const ChoosePatronage = () => {
 		<div className="grid grid-cols-2">
 			<div className="flex justify-end pt-16 pb-16">
 				<div className="max-w-[673px] pr-4">
-					<h2 className="marcellus text-3xl w-full border-b-2 border-solid mb-4">Choose a Patron</h2>
+					<h2 className="marcellus text-3xl w-full border-b-2 border-solid mb-4">Choose a Patronage</h2>
 					<p className="pb-2 w-full">
 						Optionally choose a patronage from a Cardinal. This doesn&apos;t directly affect your base or calculated scores but can affect actions you take.
 					</p>
 					<p className="pb-2 w-full">
-						For more information, see <a href="https://atom-magic.com/codex/Cardinal_Forces" title="Paths">Cardinal Forces</a>.
+						For more information, see <a href="https://atom-magic.com/codex/Cardinal_Forces" title="Cardinal Forces">Cardinal Forces</a>.
 					</p>
 					<div className="m-auto w-full">
 						<Select
@@ -90,7 +90,7 @@ const ChoosePatronage = () => {
 							variant="bordered"
 							radius="sm"
 							label="Path"
-							placeholder="Select a Path"
+							placeholder="Select a Patron"
 							className="w-96 mt-8"
 							onChange={(event) => handleSelectChange(event)}>
 							{CARDINALS.map((cardinal) => (
