@@ -59,14 +59,15 @@ const SelectDetail = ({
 			{
 				'hidden': disabled === false,
 			})}>
-				<Icon
-					path={mdiAtom}
-					className={clsx(
-					'mx-auto',
-					{
-						'opacity-5': disabled === true,
-					})}
-					size={8} />
+				<NextImage
+					width={150}
+					height={150}
+					src="/atom-magic-circle-white.png"
+					className="opacity-25 mx-auto"
+					alt="Atom Magic Circle" />
+				<div className="text-center m-8 text-sm opacity-75">
+					Choose a patron to see more information.
+				</div>
 			</div>
 		</>
 	);
