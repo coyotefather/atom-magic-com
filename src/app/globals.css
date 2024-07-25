@@ -69,7 +69,7 @@ button.gradient:hover {
 
 .fade-enter{
    opacity: 0;
-   max-height: 0;
+   max-height: 200px;
    overflow: hidden;
 }
 .fade-exit{
@@ -83,7 +83,7 @@ button.gradient:hover {
 }
 .fade-exit-active{
    opacity: 0;
-   max-height: 0;
+   max-height: 200px;
    overflow: hidden;
    transition: max-height 0.5s ease-out, opacity 300ms ease-in;
 }
