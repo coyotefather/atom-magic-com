@@ -1,10 +1,11 @@
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
+import ExternalLink from '@/app/components/common/ExternalLink';
 import { PATHS } from '@/app/lib/global-data';
-import { mdiAtom } from '@mdi/js';
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
 import { useState, useRef } from 'react';
+import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const ChoosePath = () => {
@@ -67,8 +68,16 @@ const ChoosePath = () => {
 										<TableCell>
 											{m.name}
 										</TableCell>
-										<TableCell>
-											{m.value > 0 ? "+" : "-"}
+										<TableCell className={clsx(
+											'',
+											{
+												'text-adobe': m.value < 0
+											},
+											{
+												'text-olive-green': m.value > 0
+											},
+										)}>
+											{m.value > 0 ? "+" : ""}
 											{m.value}
 										</TableCell>
 									</TableRow>
