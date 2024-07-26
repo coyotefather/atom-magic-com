@@ -82,40 +82,40 @@ export const PATHS = [
 				name: "Physical",
 				id: "physical",
 				modifier: [
-					{ id: "agility", name: "Agility", value: 5 },
-					{ id: "speed", name: "speed", value: 0 },
-					{ id: "reflex", name: "reflex", value: 5 },
-					{ id: "endurance", name: "endurance", value: 0 }
+					{ id: "agility", name: "Agility", parentId: "physical", value: 5 },
+					{ id: "speed", name: "speed", parentId: "physical", value: 0 },
+					{ id: "reflex", name: "reflex", parentId: "physical", value: 5 },
+					{ id: "endurance", name: "endurance", parentId: "physical", value: 0 }
 				]
 			},
 			{
 				name: "Interpersonal",
 				id: "interpersonal",
 				modifier: [
-					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", value: 5 },
-					{ id: "charm", name: "Charm", value: 0 },
-					{ id: "speech", name: "Speech", value: 5 },
-					{ id: "empathy", name: "Empathy", value: 0 }
+					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", parentId: "interpersonal", value: 5 },
+					{ id: "charm", name: "Charm", parentId: "interpersonal", value: 0 },
+					{ id: "speech", name: "Speech", parentId: "interpersonal", value: 5 },
+					{ id: "empathy", name: "Empathy", parentId: "interpersonal", value: 0 }
 				]
 			},
 			{
 				name: "Intellect",
 				id: "intellect",
 				modifier: [
-					{ id: "knowledge", name: "Knowledge", value: 5 },
-					{ id: "criticalThinking", name: "Critical Thinking", value: 0 },
-					{ id: "analysis", name: "Analysis", value: 5 },
-					{ id: "judgement", name: "Judgement", value: 0 }
+					{ id: "knowledge", name: "Knowledge", parentId: "intellect", value: 5 },
+					{ id: "criticalThinking", name: "Critical Thinking", parentId: "intellect", value: 0 },
+					{ id: "analysis", name: "Analysis", parentId: "intellect", value: 5 },
+					{ id: "judgement", name: "Judgement", parentId: "intellect", value: 0 }
 				]
 			},
 			{
 				name: "Psyche",
 				id: "psyche",
 				modifier: [
-					{ id: "mentalStability", name: "Mental Stability", value: 5 },
-					{ id: "emotionalStability", name: "Emotional Stability", value: 0 },
-					{ id: "focusAndConcentration", name: "Focus and Concentration", value: 5 },
-					{ id: "courageAndConviction", name: "Courage and Conviction", value: 0 }
+					{ id: "mentalStability", name: "Mental Stability", parentId: "psyche", value: 5 },
+					{ id: "emotionalStability", name: "Emotional Stability", parentId: "psyche", value: 0 },
+					{ id: "focusAndConcentration", name: "Focus and Concentration", parentId: "psyche", value: 5 },
+					{ id: "courageAndConviction", name: "Courage and Conviction", parentId: "psyche", value: 0 }
 				]
 			}
 		]
@@ -131,40 +131,40 @@ export const PATHS = [
 				name: "physical",
 				id: "physical",
 				modifier: [
-					{ id: "agility", name: "Agility", value: 0 },
-					{ id: "speed", name: "speed", value: 5 },
-					{ id: "reflex", name: "reflex", value: 5 },
-					{ id: "endurance", name: "endurance", value: 0 }
+					{ id: "agility", name: "Agility", parentId: "physical", value: 0 },
+					{ id: "speed", name: "speed", parentId: "physical", value: 5 },
+					{ id: "reflex", name: "reflex", parentId: "physical", value: 5 },
+					{ id: "endurance", name: "endurance", parentId: "physical", value: 0 }
 				]
 			},
 			{
 				name: "interpersonal",
 				id: "interpersonal",
 				modifier: [
-					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", value: 0 },
-					{ id: "charm", name: "Charm", value: 5 },
-					{ id: "speech", name: "Speech", value: 0 },
-					{ id: "empathy", name: "Empathy", value: 0 }
+					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", parentId: "interpersonal", value: 0 },
+					{ id: "charm", name: "Charm", parentId: "interpersonal", value: 5 },
+					{ id: "speech", name: "Speech", parentId: "interpersonal", value: 0 },
+					{ id: "empathy", name: "Empathy", parentId: "interpersonal", value: 0 }
 				]
 			},
 			{
 				name: "intellect",
 				id: "intellect",
 				modifier: [
-					{ id: "knowledge", name: "Knowledge", value: 0 },
-					{ id: "criticalThinking", name: "Critical Thinking", value: 5 },
-					{ id: "analysis", name: "Analysis", value: 5 },
-					{ id: "judgement", name: "Judgement", value: 0 }
+					{ id: "knowledge", name: "Knowledge", parentId: "intellect", value: 0 },
+					{ id: "criticalThinking", name: "Critical Thinking", parentId: "intellect", value: 5 },
+					{ id: "analysis", name: "Analysis", parentId: "intellect", value: 5 },
+					{ id: "judgement", name: "Judgement", parentId: "intellect", value: 0 }
 				]
 			},
 			{
 				name: "psyche",
 				id: "psyche",
 				modifier: [
-					{ id: "mentalStability", name: "Mental Stability", value: 0 },
-					{ id: "emotionalStability", name: "Emotional Stability", value: 5 },
-					{ id: "focusAndConcentration", name: "Focus and Concentration", value: 5 },
-					{ id: "courageAndConviction", name: "Courage and Conviction", value: 0 }
+					{ id: "mentalStability", name: "Mental Stability", parentId: "psyche", value: 0 },
+					{ id: "emotionalStability", name: "Emotional Stability", parentId: "psyche", value: 5 },
+					{ id: "focusAndConcentration", name: "Focus and Concentration", parentId: "psyche", value: 5 },
+					{ id: "courageAndConviction", name: "Courage and Conviction", parentId: "psyche", value: 0 }
 				]
 			}
 		]
@@ -180,10 +180,10 @@ export const PATHS = [
 				name: "physical",
 				id: "physical",
 				modifier: [
-					{ id: "agility", name: "Agility", value: 0 },
-					{ id: "speed", name: "speed", value: 0 },
-					{ id: "reflex", name: "reflex", value: 5 },
-					{ id: "endurance", name: "endurance", value: 5 }
+					{ id: "agility", name: "Agility", parentId: "physical", value: 0 },
+					{ id: "speed", name: "speed", parentId: "physical", value: 0 },
+					{ id: "reflex", name: "reflex", parentId: "physical", value: 5 },
+					{ id: "endurance", name: "endurance", parentId: "physical", value: 5 }
 				]
 			},
 			{
@@ -191,29 +191,29 @@ export const PATHS = [
 				id: "interpersonal",
 				modifier: [
 					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", value: 0 },
-					{ id: "charm", name: "Charm", value: 0 },
-					{ id: "speech", name: "Speech", value: 5 },
-					{ id: "empathy", name: "Empathy", value: 5 }
+					{ id: "charm", name: "Charm", parentId: "interpersonal", value: 0 },
+					{ id: "speech", name: "Speech", parentId: "interpersonal", value: 5 },
+					{ id: "empathy", name: "Empathy", parentId: "interpersonal", value: 5 }
 				]
 			},
 			{
 				name: "intellect",
 				id: "intellect",
 				modifier: [
-					{ id: "knowledge", name: "Knowledge", value: 0 },
-					{ id: "criticalThinking", name: "Critical Thinking", value: 5 },
-					{ id: "analysis", name: "Analysis", value: 0 },
-					{ id: "judgement", name: "Judgement", value: 5 }
+					{ id: "knowledge", name: "Knowledge", parentId: "intellect", value: 0 },
+					{ id: "criticalThinking", name: "Critical Thinking", parentId: "intellect", value: 5 },
+					{ id: "analysis", name: "Analysis", parentId: "intellect", value: 0 },
+					{ id: "judgement", name: "Judgement", parentId: "intellect", value: 5 }
 				]
 			},
 			{
 				name: "psyche",
 				id: "psyche",
 				modifier: [
-					{ id: "mentalStability", name: "Mental Stability", value: 0 },
-					{ id: "emotionalStability", name: "Emotional Stability", value: 0 },
-					{ id: "focusAndConcentration", name: "Focus and Concentration", value: 5 },
-					{ id: "courageAndConviction", name: "Courage and Conviction", value: 5 }
+					{ id: "mentalStability", name: "Mental Stability", parentId: "psyche", value: 0 },
+					{ id: "emotionalStability", name: "Emotional Stability", parentId: "psyche", value: 0 },
+					{ id: "focusAndConcentration", name: "Focus and Concentration", parentId: "psyche", value: 5 },
+					{ id: "courageAndConviction", name: "Courage and Conviction", parentId: "psyche", value: 5 }
 				]
 			},
 		]
