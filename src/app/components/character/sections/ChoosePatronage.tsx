@@ -25,7 +25,7 @@ const ChoosePatronage = () => {
 		let val = (event.target as HTMLInputElement).value;
 		let patronageEffects = (<></>);
 		if(val !== "") {
-			setDetailsUpdated(detailsUpdated => !detailsUpdated);
+			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
 			let cardinal = CARDINALS.find((cardinal) => cardinal.value === val);
 			if(cardinal != undefined) {
 				patronageEffects = (
