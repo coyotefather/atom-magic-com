@@ -25,11 +25,13 @@ const ChoosePath = () => {
 	const handleSelectChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
 		let modifiers = (<></>);
+		let nameWithUnderscores = "";
 		if(val !== "") {
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
 			let path = PATHS.find((path) => path.value === val);
 			let allModifiers: {
 				parentName: string,
+				page: string,
 				id: string,
 				name: string,
 				parentId: string,
@@ -39,8 +41,10 @@ const ChoosePath = () => {
 				path.modifiers.map((subscore) => {
 					subscore.modifier.map((m) => {
 						if(m.value != 0) {
+							nameWithUnderscores = m.name.replace(/ /g,"_");
 							allModifiers.push({
 								parentName: subscore.name,
+								page: `${subscore.name}#${nameWithUnderscores}`,
 								...m
 							});
 						}
@@ -65,8 +69,9 @@ const ChoosePath = () => {
 										<TableCell>
 											{m.parentName}
 										</TableCell>
-										<TableCell>
-											{m.name}
+										<TableCell className="text-base">
+											<ExternalLink
+											href={`https://atom-magic.com/codex/${m.page}`} name={m.name} />
 										</TableCell>
 										<TableCell className={clsx(
 											'',
