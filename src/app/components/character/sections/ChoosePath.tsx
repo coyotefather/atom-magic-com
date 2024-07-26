@@ -27,9 +27,14 @@ const ChoosePath = () => {
 		if(val !== "") {
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
 			let path = PATHS.find((path) => path.value === val);
-			let allModifiers = [];
+			let allModifiers: {
+				name: string,
+				id: string,
+				parentId: string,
+				parentName: string,
+				value: number
+			}[] = [];
 			if(path != undefined) {
-				//console.log(path.modifiers);
 				path.modifiers.map((subscore) => {
 					subscore.modifier.map((m) => {
 						if(m.value != 0) {
