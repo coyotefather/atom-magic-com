@@ -1,8 +1,9 @@
 'use client';
-import SelectDetail from '@/app/components/common/SelectDetail';
+import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import { PATHS } from '@/app/lib/global-data';
 import { mdiAtom } from '@mdi/js';
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
@@ -10,26 +11,75 @@ const ChoosePath = () => {
 	const detailsRef = useRef(null);
 
 	const [details, setDetails] = useState(
-		<SelectDetail
-			iconPath={mdiAtom}
+		<SelectDetailExpanded
+			imagePath=""
 			name="Choose a Path"
 			description="Select an option from the dropdown."
-			disabled={true} />
+			disabled={true}>
+			<div></div>
+		</SelectDetailExpanded>
 	);
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 
 	const handleSelectChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
+		let modifiers = (<></>);
 		if(val !== "") {
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
 			let path = PATHS.find((path) => path.value === val);
+			let allModifiers = [];
 			if(path != undefined) {
+				//console.log(path.modifiers);
+				path.modifiers.map((subscore) => {
+					subscore.modifier.map((m) => {
+						if(m.value != 0) {
+							allModifiers.push({
+								parentName: subscore.name,
+								...m
+							});
+						}
+					});
+				});
+
+				modifiers = (
+					<div className="dark">
+						<Table removeWrapper aria-label={`${path.name} Modifiers`}>
+							<TableHeader>
+								{["Score","Subscore","Modifier"].map((tc) => (
+									<TableColumn
+										key={tc}
+										className="marcellus text-white text-md bg-transparent border-b-2 border-white">
+										{tc}
+									</TableColumn>
+								))}
+							</TableHeader>
+							<TableBody>
+								{allModifiers.map((m) => (
+									<TableRow key={m.id}>
+										<TableCell>
+											{m.parentName}
+										</TableCell>
+										<TableCell>
+											{m.name}
+										</TableCell>
+										<TableCell>
+											{m.value > 0 ? "+" : "-"}
+											{m.value}
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					</div>
+				);
 				setDetails(
-					<SelectDetail
-						iconPath={path.icon}
+					<SelectDetailExpanded
+						imagePath="/atom-magic-circle-white.png"
 						name={path.name}
 						description={path.description}
-						disabled={false} />
+						disabled={false}>
+						{modifiers}
+					</SelectDetailExpanded>
 				);
 			}
 		}
