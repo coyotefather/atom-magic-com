@@ -28,10 +28,10 @@ const ChoosePath = () => {
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
 			let path = PATHS.find((path) => path.value === val);
 			let allModifiers: {
-				name: string,
-				id: string,
-				parentId: string,
 				parentName: string,
+				id: string,
+				name: string,
+				parentId: string,
 				value: number
 			}[] = [];
 			if(path != undefined) {
