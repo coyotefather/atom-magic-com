@@ -77,6 +77,48 @@ export const PATHS = [
 		latin: "Doctrina Acadēmia",
 		icon: mdiBookshelf,
 		description: "Educated by the masters from the Academia Theurgiae Atomi, their rigorous and highly structured education system has shaped you into one of the premier atom mages of Solum.",
+		modifiers: [
+			{
+				name: "Physical"
+				id: "physical",
+				modifier: [
+					{ id: "agility", name: "Agility", value: 5 },
+					{ id: "speed", name: "speed", value: 0 },
+					{ id: "reflex", name: "reflex", value: 5 },
+					{ id: "endurance", name: "endurance", value: 0 }
+				]
+			},
+			{
+				name: "Interpersonal",
+				id: "interpersonal",
+				modifier: [
+					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", value: 5 },
+					{ id: "charm", name: "Charm", value: 0 },
+					{ id: "speech", name: "Speech", value: 5 },
+					{ id: "empathy", name: "Empathy", value: 0 }
+				]
+			},
+			{
+				name: "Intellect",
+				id: "intellect",
+				modifier: [
+					{ id: "knowledge", name: "Knowledge", value: 5 },
+					{ id: "criticalThinking", name: "Critical Thinking", value: 0 },
+					{ id: "analysis", name: "Analysis", value: 5 },
+					{ id: "judgement", name: "Judgement", value: 0 }
+				]
+			},
+			{
+				name: "Psyche",
+				id: "psyche",
+				modifier: [
+					{ id: "mentalStability", name: "Mental Stability", value: 5 },
+					{ id: "emotionalStability", name: "Emotional Stability", value: 0 },
+					{ id: "focusAndConcentration", name: "Focus and Concentration", value: 5 },
+					{ id: "courageAndConviction", name: "Courage and Conviction", value: 0 }
+				]
+			],
+		}
 	},
 	{
 		name: "Iconoclast",
@@ -84,6 +126,48 @@ export const PATHS = [
 		latin: "Discipulīna Audax",
 		icon: mdiScriptText,
 		description: "Schooled by heretical atom mages who shun the restraint and erudite style of the Academia Theurgiae Atomi, you have learned forbidden techniques and must evade the eyes of the Academy.",
+		modifiers: {
+			{
+				name: "physical",
+				id: "physical",
+				modifier: [
+					{ id: "agility", name: "Agility", value: 0 },
+					{ id: "speed", name: "speed", value: 5 },
+					{ id: "reflex", name: "reflex", value: 5 },
+					{ id: "endurance", name: "endurance", value: 0 }
+				]
+			},
+			{
+				name: "interpersonal",
+				id: "interpersonal",
+				modifier: [
+					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", value: 0 },
+					{ id: "charm", name: "Charm", value: 5 },
+					{ id: "speech", name: "Speech", value: 0 },
+					{ id: "empathy", name: "Empathy", value: 0 }
+				]
+			},
+			{
+				name: "intellect",
+				id: "intellect",
+				modifier: [
+					{ id: "knowledge", name: "Knowledge", value: 0 },
+					{ id: "criticalThinking", name: "Critical Thinking", value: 5 },
+					{ id: "analysis", name: "Analysis", value: 5 },
+					{ id: "judgement", name: "Judgement", value: 0 }
+				]
+			},
+			{
+				name: "psyche",
+				id: "psyche",
+				modifier: [
+					{ id: "mentalStability", name: "Mental Stability", value: 0 },
+					{ id: "emotionalStability", name: "Emotional Stability", value: 5 },
+					{ id: "focusAndConcentration", name: "Focus and Concentration", value: 5 },
+					{ id: "courageAndConviction", name: "Courage and Conviction", value: 0 }
+				]
+			},
+		}
 	},
 	{
 		name: "Autodidact",
@@ -91,6 +175,48 @@ export const PATHS = [
 		latin: "Erudītio Sui",
 		icon: mdiHeadCog,
 		description: "A wild prodigy, you have learned everything you know through grit, determination, and trial and error. The Academy may turn its nose up at you, but they will still employ you none the less.",
+		modifiers: {
+			{
+				name: "physical",
+				id: "physical",
+				modifier: [
+					{ id: "agility", name: "Agility", value: 0 },
+					{ id: "speed", name: "speed", value: 0 },
+					{ id: "reflex", name: "reflex", value: 5 },
+					{ id: "endurance", name: "endurance", value: 5 }
+				]
+			},
+			{
+				name: "interpersonal",
+				id: "interpersonal",
+				modifier: [
+					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", value: 0 },
+					{ id: "charm", name: "Charm", value: 0 },
+					{ id: "speech", name: "Speech", value: 5 },
+					{ id: "empathy", name: "Empathy", value: 5 }
+				]
+			},
+			{
+				name: "intellect",
+				id: "intellect",
+				modifier: [
+					{ id: "knowledge", name: "Knowledge", value: 0 },
+					{ id: "criticalThinking", name: "Critical Thinking", value: 5 },
+					{ id: "analysis", name: "Analysis", value: 0 },
+					{ id: "judgement", name: "Judgement", value: 5 }
+				]
+			},
+			{
+				name: "psyche",
+				id: "psyche",
+				modifier: [
+					{ id: "mentalStability", name: "Mental Stability", value: 0 },
+					{ id: "emotionalStability", name: "Emotional Stability", value: 0 },
+					{ id: "focusAndConcentration", name: "Focus and Concentration", value: 5 },
+					{ id: "courageAndConviction", name: "Courage and Conviction", value: 5 }
+				]
+			},
+		}
 	},
 ];
 
