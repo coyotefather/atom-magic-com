@@ -83,9 +83,9 @@ export const PATHS = [
 				id: "physical",
 				modifier: [
 					{ id: "agility", name: "Agility", parentId: "physical", value: 5 },
-					{ id: "speed", name: "speed", parentId: "physical", value: -5 },
-					{ id: "reflex", name: "reflex", parentId: "physical", value: 5 },
-					{ id: "endurance", name: "endurance", parentId: "physical", value: 0 }
+					{ id: "speed", name: "Speed", parentId: "physical", value: -5 },
+					{ id: "reflex", name: "Reflex", parentId: "physical", value: 5 },
+					{ id: "endurance", name: "Endurance", parentId: "physical", value: 0 }
 				]
 			},
 			{
@@ -128,17 +128,17 @@ export const PATHS = [
 		description: "Schooled by heretical atom mages who shun the restraint and erudite style of the Academia Theurgiae Atomi, you have learned forbidden techniques and must evade the eyes of the Academy.",
 		modifiers: [
 			{
-				name: "physical",
+				name: "Physical",
 				id: "physical",
 				modifier: [
 					{ id: "agility", name: "Agility", parentId: "physical", value: 0 },
-					{ id: "speed", name: "speed", parentId: "physical", value: 5 },
-					{ id: "reflex", name: "reflex", parentId: "physical", value: 5 },
-					{ id: "endurance", name: "endurance", parentId: "physical", value: 0 }
+					{ id: "speed", name: "Speed", parentId: "physical", value: 5 },
+					{ id: "reflex", name: "Reflex", parentId: "physical", value: 5 },
+					{ id: "endurance", name: "Endurance", parentId: "physical", value: 0 }
 				]
 			},
 			{
-				name: "interpersonal",
+				name: "Interpersonal",
 				id: "interpersonal",
 				modifier: [
 					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", parentId: "interpersonal", value: -5 },
@@ -148,7 +148,7 @@ export const PATHS = [
 				]
 			},
 			{
-				name: "intellect",
+				name: "Intellect",
 				id: "intellect",
 				modifier: [
 					{ id: "knowledge", name: "Knowledge", parentId: "intellect", value: 0 },
@@ -158,7 +158,7 @@ export const PATHS = [
 				]
 			},
 			{
-				name: "psyche",
+				name: "Psyche",
 				id: "psyche",
 				modifier: [
 					{ id: "mentalStability", name: "Mental Stability", parentId: "psyche", value: -5 },
@@ -177,17 +177,17 @@ export const PATHS = [
 		description: "A wild prodigy, you have learned everything you know through grit, determination, and trial and error. The Academy may turn its nose up at you, but they will still employ you none the less.",
 		modifiers: [
 			{
-				name: "physical",
+				name: "Physical",
 				id: "physical",
 				modifier: [
 					{ id: "agility", name: "Agility", parentId: "physical", value: -5 },
-					{ id: "speed", name: "speed", parentId: "physical", value: -5 },
-					{ id: "reflex", name: "reflex", parentId: "physical", value: 5 },
-					{ id: "endurance", name: "endurance", parentId: "physical", value: 5 }
+					{ id: "speed", name: "Speed", parentId: "physical", value: -5 },
+					{ id: "reflex", name: "Reflex", parentId: "physical", value: 5 },
+					{ id: "endurance", name: "Endurance", parentId: "physical", value: 5 }
 				]
 			},
 			{
-				name: "interpersonal",
+				name: "Interpersonal",
 				id: "interpersonal",
 				modifier: [
 					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", parentId: "interpersonal", value: 0 },
@@ -197,7 +197,7 @@ export const PATHS = [
 				]
 			},
 			{
-				name: "intellect",
+				name: "Intellect",
 				id: "intellect",
 				modifier: [
 					{ id: "knowledge", name: "Knowledge", parentId: "intellect", value: -5 },
@@ -207,7 +207,7 @@ export const PATHS = [
 				]
 			},
 			{
-				name: "psyche",
+				name: "Psyche",
 				id: "psyche",
 				modifier: [
 					{ id: "mentalStability", name: "Mental Stability", parentId: "psyche", value: 0 },
