@@ -79,7 +79,7 @@ export const PATHS = [
 		description: "Educated by the masters from the Academia Theurgiae Atomi, their rigorous and highly structured education system has shaped you into one of the premier atom mages of Solum.",
 		modifiers: [
 			{
-				name: "Physical"
+				name: "Physical",
 				id: "physical",
 				modifier: [
 					{ id: "agility", name: "Agility", value: 5 },
@@ -117,8 +117,8 @@ export const PATHS = [
 					{ id: "focusAndConcentration", name: "Focus and Concentration", value: 5 },
 					{ id: "courageAndConviction", name: "Courage and Conviction", value: 0 }
 				]
-			],
-		}
+			}
+		]
 	},
 	{
 		name: "Iconoclast",
@@ -126,7 +126,7 @@ export const PATHS = [
 		latin: "Discipulīna Audax",
 		icon: mdiScriptText,
 		description: "Schooled by heretical atom mages who shun the restraint and erudite style of the Academia Theurgiae Atomi, you have learned forbidden techniques and must evade the eyes of the Academy.",
-		modifiers: {
+		modifiers: [
 			{
 				name: "physical",
 				id: "physical",
@@ -166,8 +166,8 @@ export const PATHS = [
 					{ id: "focusAndConcentration", name: "Focus and Concentration", value: 5 },
 					{ id: "courageAndConviction", name: "Courage and Conviction", value: 0 }
 				]
-			},
-		}
+			}
+		]
 	},
 	{
 		name: "Autodidact",
@@ -175,7 +175,7 @@ export const PATHS = [
 		latin: "Erudītio Sui",
 		icon: mdiHeadCog,
 		description: "A wild prodigy, you have learned everything you know through grit, determination, and trial and error. The Academy may turn its nose up at you, but they will still employ you none the less.",
-		modifiers: {
+		modifiers: [
 			{
 				name: "physical",
 				id: "physical",
@@ -216,7 +216,7 @@ export const PATHS = [
 					{ id: "courageAndConviction", name: "Courage and Conviction", value: 5 }
 				]
 			},
-		}
+		]
 	},
 ];
 
