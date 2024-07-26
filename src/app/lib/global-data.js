@@ -190,7 +190,7 @@ export const PATHS = [
 				name: "interpersonal",
 				id: "interpersonal",
 				modifier: [
-					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", value: 0 },
+					{ id: "percievedAttractiveness", name: "Percieved Attractiveness", parentId: "interpersonal", value: 0 },
 					{ id: "charm", name: "Charm", parentId: "interpersonal", value: 0 },
 					{ id: "speech", name: "Speech", parentId: "interpersonal", value: 5 },
 					{ id: "empathy", name: "Empathy", parentId: "interpersonal", value: 5 }
