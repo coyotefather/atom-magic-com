@@ -15,7 +15,7 @@ const ChoosePath = () => {
 		<SelectDetailExpanded
 			imagePath=""
 			name="Choose a Path"
-			description="Select an option from the dropdown."
+			description="Select a path from the dropdown."
 			disabled={true}>
 			<div></div>
 		</SelectDetailExpanded>
