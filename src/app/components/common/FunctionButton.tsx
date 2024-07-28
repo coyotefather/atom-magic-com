@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next/link';
+import { Button, Link } from "@nextui-org/react";
 import Icon from '@mdi/react';
 
 const FunctionButton = ({
@@ -16,8 +16,8 @@ const FunctionButton = ({
 	let buttonColor = "";
 	let icon = (<></>);
 	if(variant == "primary") { buttonColor = "bg-gold hover:bg-brightgold"; }
-	if(variant == "secondary") { buttonColor = "bg-black hover:bg-brightgold text-white" }
-	if(variant == "gradient") { buttonColor = "gradient hover:bg-brightgold"; }
+	if(variant == "secondary") { buttonColor = "bg-black border-white hover:bg-white hover:text-black text-white hover:border-black" }
+	if(variant == "gradient") { buttonColor = "gradient border-black hover:bg-brightgold"; }
 	if(buttonIcon != "") { icon = (
 		<Icon
 			path={buttonIcon}
@@ -27,14 +27,18 @@ const FunctionButton = ({
 			vertical />
 	); }
 	return (
-		<button
+		<Button
 			onClick={() => buttonFunction()}
-			className={`${buttonColor} inconsolata uppercase tracking-widest p-2 pl-4 pr-4 rounded-full`}>
-			<strong>
-				{children}
-				{icon}
-			</strong>
-		</button>);
+			radius="full"
+			size="lg"
+			variant="bordered"
+			className={`${buttonColor} inconsolata uppercase tracking-widest p-2 pl-4 pr-4`}>
+		  		<strong>
+			  		{children}
+			  		{icon}
+		  		</strong>
+		</Button>
+	);
 };
 
 export default FunctionButton;
