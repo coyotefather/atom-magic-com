@@ -32,11 +32,6 @@ const Sections = () => {
 				<RollYourCharacter />
 			</ButtonSection>
 			<Section
-				name="Adjust Your Scores"
-				variant="light">
-				<Scores />
-			</Section>
-			<Section
 				name=""
 				variant="dual">
 				<ChoosePath />
@@ -45,6 +40,11 @@ const Sections = () => {
 				name=""
 				variant="dual">
 				<ChoosePatronage />
+			</Section>
+			<Section
+				name="Adjust Your Scores"
+				variant="light">
+				<Scores />
 			</Section>
 			<ButtonSection
 				name="Roll Gear and Wealth"
