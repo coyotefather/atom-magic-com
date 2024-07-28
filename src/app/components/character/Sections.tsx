@@ -23,14 +23,11 @@ const Sections = () => {
 				variant="light">
 				<TheBasics />
 			</Section>
-			<ButtonSection
-				name="Roll Your Character"
-				variant="dark"
-				buttonText="Roll Character"
-				buttonIcon={mdiDiceMultiple}
-				buttonFunction={() => rollCharacter()}>
+			<Section
+				name=""
+				variant="dual">
 				<RollYourCharacter />
-			</ButtonSection>
+			</Section>
 			<Section
 				name=""
 				variant="dual">
