@@ -66,7 +66,7 @@ const SelectDetail = ({
 					className="opacity-25 mx-auto"
 					alt="Atom Magic Circle" />
 				<div className="text-center m-8 text-sm opacity-75">
-					Choose a patron to see more information.
+					{description}
 				</div>
 			</div>
 		</>
