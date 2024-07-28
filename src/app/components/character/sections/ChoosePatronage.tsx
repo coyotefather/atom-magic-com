@@ -15,7 +15,7 @@ const ChoosePatronage = () => {
 		<SelectDetailExpanded
 			imagePath=""
 			name="Choose a Patron"
-			description="Select an option from the dropdown."
+			description="Select a patron from the dropdown."
 			disabled={true}>
 			<div></div>
 		</SelectDetailExpanded>
