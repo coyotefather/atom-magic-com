@@ -1,7 +1,7 @@
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
-import { PATHS } from '@/app/lib/global-data';
+import { CULTURES } from '@/app/lib/global-data';
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
 import { useState, useRef } from 'react';
@@ -14,7 +14,7 @@ const ChooseCulture = () => {
 	const [details, setDetails] = useState(
 		<SelectDetailExpanded
 			imagePath=""
-			name="Choose a Path"
+			name="Choose a Culture"
 			description="Select a path from the dropdown."
 			disabled={true}>
 			<div></div>
@@ -24,38 +24,16 @@ const ChooseCulture = () => {
 
 	const handleSelectChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
-		let modifiers = (<></>);
-		let nameWithUnderscores = "";
+		let aspects = (<></>);
 		if(val !== "") {
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
-			let path = PATHS.find((path) => path.value === val);
-			let allModifiers: {
-				parentName: string,
-				page: string,
-				id: string,
-				name: string,
-				parentId: string,
-				value: number
-			}[] = [];
-			if(path != undefined) {
-				path.modifiers.map((subscore) => {
-					subscore.modifier.map((m) => {
-						if(m.value != 0) {
-							nameWithUnderscores = m.name.replace(/ /g,"_");
-							allModifiers.push({
-								parentName: subscore.name,
-								page: `${subscore.name}#${nameWithUnderscores}`,
-								...m
-							});
-						}
-					});
-				});
-
-				modifiers = (
+			let culture = CULTURES.find((culture) => culture.value === val);
+			if(culture != undefined) {
+				aspects = (
 					<div className="dark">
-						<Table removeWrapper aria-label={`${path.name} Modifiers`}>
+						<Table removeWrapper aria-label={`${culture.name}`}>
 							<TableHeader>
-								{["Score","Subscore","Modifier"].map((tc) => (
+								{["Aspect","Description"].map((tc) => (
 									<TableColumn
 										key={tc}
 										className="marcellus text-white text-md bg-transparent border-b-2 border-white">
@@ -64,26 +42,14 @@ const ChooseCulture = () => {
 								))}
 							</TableHeader>
 							<TableBody>
-								{allModifiers.map((m) => (
-									<TableRow key={m.id}>
-										<TableCell>
-											{m.parentName}
-										</TableCell>
+								{culture.aspects.map((aspect) => (
+									<TableRow key={aspect.value}>
 										<TableCell className="text-base">
 											<ExternalLink
-											href={`https://atom-magic.com/codex/${m.page}`} name={m.name} />
+											href={`https://atom-magic.com/codex/${aspect.page}`} name={aspect.name} />
 										</TableCell>
-										<TableCell className={clsx(
-											'',
-											{
-												'text-adobe': m.value < 0
-											},
-											{
-												'text-olive-green': m.value > 0
-											},
-										)}>
-											{m.value > 0 ? "+" : ""}
-											{m.value}
+										<TableCell>
+											{aspect.description}
 										</TableCell>
 									</TableRow>
 								))}
@@ -94,10 +60,10 @@ const ChooseCulture = () => {
 				setDetails(
 					<SelectDetailExpanded
 						imagePath="/atom-magic-circle-white.png"
-						name={path.name}
-						description={path.description}
+						name={culture.name}
+						description={culture.description}
 						disabled={false}>
-						{modifiers}
+						{aspects}
 					</SelectDetailExpanded>
 				);
 			}
@@ -108,26 +74,26 @@ const ChooseCulture = () => {
 		<div className="grid grid-cols-2">
 			<div className="flex justify-end pt-16 pb-16">
 				<div className="max-w-[673px] pr-4">
-					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose a Path</h2>
+					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose a Culture</h2>
 					<p className="pb-2">
-						Paths indicate how your character came to be skilled in the arts of atom magic. While many techniques are common to all three, some are specific to each path.
+						There are many cultures across Solum, though most beings are a member of one of the five main cultures. Choosing a culture will give you two unique aspects.
 					</p>
 					<p>
-						For more information, see <a href="https://atom-magic.com/codex/Paths" title="Paths">Character paths</a>.
+						For more information, see <a href="https://atom-magic.com/codex/Cultures" title="Cultures">Cultures</a>.
 					</p>
 					<div className="m-auto">
 						<Select
 							isRequired
 							variant="bordered"
 							radius="sm"
-							label="Path"
-							placeholder="Select a Path"
+							label="Culture"
+							placeholder="Select a Culture"
 							className="w-96 mt-8"
 							onChange={(event) => handleSelectChange(event)}
 					  	>
-							{PATHS.map((path) => (
-						  	<SelectItem key={path.value}>
-								{path.name}
+							{CULTURES.map((culture) => (
+						  	<SelectItem key={culture.value}>
+								{culture.name}
 						  	</SelectItem>
 							))}
 						</Select>
