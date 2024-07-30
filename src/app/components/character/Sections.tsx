@@ -20,8 +20,8 @@ const Sections = () => {
 	return (
 		<div>
 			<Section
-				name="The Basics"
-				variant="light">
+				name=""
+				variant="dual">
 				<TheBasics />
 			</Section>
 			<Section
