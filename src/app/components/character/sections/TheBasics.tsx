@@ -1,7 +1,5 @@
 'use client';
 import {Input} from "@nextui-org/input";
-import {Select, SelectSection, SelectItem} from "@nextui-org/select";
-import { CULTURES } from '@/app/lib/global-data';
 
 const TheBasics = () => {
 	return (
@@ -37,20 +35,6 @@ const TheBasics = () => {
 					radius="sm"
 					className="w-80"
 					placeholder="Enter Character Pronouns" />
-				<Select
-					isRequired
-					variant="bordered"
-					radius="sm"
-					label="Culture"
-					placeholder="Select a Culture"
-					className="w-96"
-				  >
-					{CULTURES.map((culture) => (
-					  <SelectItem key={culture.value}>
-						{culture.name}
-					  </SelectItem>
-					))}
-				</Select>
 			</div>
 		</div>
 	);
