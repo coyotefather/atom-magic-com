@@ -117,7 +117,7 @@ const TheBasics = () => {
 							placeholder="Enter Character Pronouns" />
 					</div>
 					<Textarea
-						onChange={(e) => handleDescriptionTextareaChange(e)}
+						onChange={handleDescriptionTextareaChange}
 						variant="bordered"
 						label="Description"
 						labelPlacement="inside"
