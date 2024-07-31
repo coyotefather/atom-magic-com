@@ -5,7 +5,7 @@ import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import ExternalLink from '@/app/components/common/ExternalLink';
 
-const reducer = (state: State, action: Action) => {
+const reducer = (state: any, action: any) => {
 	if (action.type === 'update_name') {
 		return {
 			name: action.value,
