@@ -94,7 +94,6 @@ const TheBasics = () => {
 							className="w-72"
 							placeholder="Enter Character Name" />
 						<Input
-							isRequired
 							value={state.age}
 							onChange={handleAgeInputChange}
 							type="number"
@@ -104,7 +103,6 @@ const TheBasics = () => {
 							className="w-20"
 							placeholder="Enter Age" />
 						<Input
-							isRequired
 							value={state.pronouns}
 							onChange={handlePronounsInputChange}
 							type="text"
