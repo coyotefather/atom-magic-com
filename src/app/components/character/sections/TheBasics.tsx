@@ -54,16 +54,16 @@ const TheBasics = () => {
 		detailsUpdated: false
 	});
 
-	const handleNameInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+	const handleNameInputChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		dispatch({ type: 'update_name', value: e.target.value });
 	}
-	const handleAgeInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+	const handleAgeInputChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		dispatch({ type: 'update_age', value: e.target.value });
 	}
-	const handlePronounsInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+	const handlePronounsInputChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		dispatch({ type: 'update_pronouns', value: e.target.value });
 	}
-	const handleDescriptionTextareaChange = (e: React.FormEvent<HTMLInputElement>) => {
+	const handleDescriptionTextareaChange = (e: React.FormEvent<HTMLInputElement>): void => {
 		dispatch({ type: 'update_description', value: e.target.value });
 	}
 
