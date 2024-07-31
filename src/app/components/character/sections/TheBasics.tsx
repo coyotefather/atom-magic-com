@@ -59,7 +59,7 @@ const TheBasics = () => {
 		dispatch({ type: updateType, value: inputTarget.value });
 	}
 
-	let subtitle = "Enter basic information about your character.";
+	let subtitle = "";
 	if(state.age != 0 && state.pronouns === "") {
 		subtitle = `${state.age}`;
 	} else if(state.pronouns != "" && state.age === 0) {
