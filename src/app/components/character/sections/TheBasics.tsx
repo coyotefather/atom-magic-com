@@ -54,21 +54,9 @@ const TheBasics = () => {
 		detailsUpdated: false
 	});
 
-	const handleNameInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+	const handleChange  = (event: React.ChangeEvent<HTMLInputElement>, updateType: string): void => {
 		const inputTarget = event.target as HTMLInputElement;
-		dispatch({ type: 'update_name', value: inputTarget.value });
-	}
-	const handleAgeInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		const inputTarget = event.target as HTMLInputElement;
-		dispatch({ type: 'update_age', value: inputTarget.value });
-	}
-	const handlePronounsInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		const inputTarget = event.target as HTMLInputElement;
-		dispatch({ type: 'update_pronouns', value: inputTarget.value });
-	}
-	const handleDescriptionTextareaChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		const textAreaTarget = event.target as HTMLInputElement;
-		dispatch({ type: 'update_description', value: textAreaTarget.value });
+		dispatch({ type: updateType, value: inputTarget.value });
 	}
 
 	let subtitle = "Enter basic information about your character.";
@@ -90,7 +78,7 @@ const TheBasics = () => {
 						<Input
 							isRequired
 							value={state.name}
-							onChange={handleNameInputChange}
+							onChange={(e) => handleChange(e, 'update_name')}
 							type="text"
 							label="Name"
 							variant="bordered"
@@ -99,7 +87,7 @@ const TheBasics = () => {
 							placeholder="Enter Character Name" />
 						<Input
 							value={state.age}
-							onChange={handleAgeInputChange}
+							onChange={(e) => handleChange(e, 'update_age')}
 							type="number"
 							label="Age"
 							variant="bordered"
@@ -108,7 +96,7 @@ const TheBasics = () => {
 							placeholder="Enter Age" />
 						<Input
 							value={state.pronouns}
-							onChange={handlePronounsInputChange}
+							onChange={(e) => handleChange(e, 'update_pronouns')}
 							type="text"
 							label="Pronouns"
 							variant="bordered"
@@ -117,7 +105,7 @@ const TheBasics = () => {
 							placeholder="Enter Character Pronouns" />
 					</div>
 					<Textarea
-						onChange={handleDescriptionTextareaChange}
+						onChange={(e) => handleChange(e, 'update_description')}
 						variant="bordered"
 						label="Description"
 						labelPlacement="inside"
