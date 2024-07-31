@@ -67,7 +67,7 @@ const TheBasics = () => {
 		dispatch({ type: 'update_pronouns', value: inputTarget.value });
 	}
 	const handleDescriptionTextareaChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		const textAreaTarget = event.target as HTMLTextAreaElement;
+		const textAreaTarget = event.target as HTMLInputElement;
 		dispatch({ type: 'update_description', value: textAreaTarget.value });
 	}
 
