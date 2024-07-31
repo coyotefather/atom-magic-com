@@ -54,20 +54,20 @@ const TheBasics = () => {
 		detailsUpdated: false
 	});
 
-	const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-		const inputTarget = e.target as HTMLInputElement;
+	const handleNameInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		const inputTarget = event.target as HTMLInputElement;
 		dispatch({ type: 'update_name', value: inputTarget.value });
 	}
-	const handleAgeInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-		const inputTarget = e.target as HTMLInputElement;
+	const handleAgeInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		const inputTarget = event.target as HTMLInputElement;
 		dispatch({ type: 'update_age', value: inputTarget.value });
 	}
-	const handlePronounsInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-		const inputTarget = e.target as HTMLInputElement;
+	const handlePronounsInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		const inputTarget = event.target as HTMLInputElement;
 		dispatch({ type: 'update_pronouns', value: inputTarget.value });
 	}
-	const handleDescriptionTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
-		const textAreaTarget = e.target as HTMLTextAreaElement;
+	const handleDescriptionTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+		const textAreaTarget = event.target as HTMLTextAreaElement;
 		dispatch({ type: 'update_description', value: textAreaTarget.value });
 	}
 
