@@ -27,12 +27,12 @@ const Sections = () => {
 			<Section
 				name=""
 				variant="dual">
-				<ChooseCulture />
+				<RollYourCharacter />
 			</Section>
 			<Section
 				name=""
 				variant="dual">
-				<RollYourCharacter />
+				<ChooseCulture />
 			</Section>
 			<Section
 				name=""
