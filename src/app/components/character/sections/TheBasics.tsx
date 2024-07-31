@@ -60,10 +60,15 @@ const TheBasics = () => {
 	}
 
 	let subtitle = "Enter basic information about your character.";
-	state.name !== "" || state.age !== 0 || state.pronouns !== "" ? subtitle = "" : undefined;
-	state.age != 0 ? subtitle = `${state.age}` : undefined;
-	state.age != 0 && state.pronouns != "" ? subtitle = `${subtitle}, ` : subtitle;
-	state.pronouns != "" ? subtitle = subtitle + `${state.pronouns}` : subtitle;
+	if(state.age != 0 && state.pronouns === "") {
+		subtitle = `${state.age}`;
+	} else if(state.pronouns != "" && state.age === 0) {
+		subtitle = `${state.pronouns}`;
+	} else if(state.age != 0 && state.pronouns != "") {
+		subtitle = `${state.age}, ${state.pronouns}`;
+	} else {
+		subtitle = "Enter basic information about your character.";
+	}
 
 	return (
 
