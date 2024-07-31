@@ -67,8 +67,9 @@ const TheBasics = () => {
 		dispatch({ type: 'update_description', value: e.target.value });
 	}
 
-	let subtitle = "";
-	state.age != 0 ? subtitle = `${state.age}` : "";
+	let subtitle = "Enter basic information about your character.";
+	state.name !== "" || state.age !== 0 || state.pronouns !== "" ? subtitle = "" : undefined;
+	state.age != 0 ? subtitle = `${state.age}` : undefined;
 	state.age != 0 && state.pronouns != "" ? subtitle = `${subtitle}, ` : subtitle;
 	state.pronouns != "" ? subtitle = subtitle + `${state.pronouns}` : subtitle;
 
@@ -117,7 +118,7 @@ const TheBasics = () => {
 						onChange={handleDescriptionTextareaChange}
 						variant="bordered"
 						label="Description"
-						labelPlacement="outside"
+						labelPlacement="inside"
 						placeholder="Enter Character Description"
 					/>
 				</div>
