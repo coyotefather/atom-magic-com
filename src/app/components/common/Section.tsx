@@ -1,6 +1,8 @@
 'use client';
 import clsx from 'clsx';
 import FunctionButton from '@/app/components/common/FunctionButton';
+import {Image} from "@nextui-org/image";
+import NextImage from "next/image";
 
 const Section = ({
 		variant,
@@ -17,13 +19,26 @@ const Section = ({
 	}
 	return (
 		<div className={clsx(
-			'',
+			'relative overflow-y-visible',
 			{
 				'pt-16 pb-16 container': variant === 'dark' || variant === 'light'
+			},
+			{
+				'border-t-2 border-black': variant === 'dual'
 			},
 		)}>
 			{headTag}
 			{children}
+			<div className="w-[100px] h-[100px] absolute left-1/2 -bottom-[35px]">
+				<div className="bg-standard-gradient border-4 rounded-full w-[70px] h-[70px] grid grid-cols-1 content-center z-10 absolute -left-[35px] bottom-0">
+					<NextImage
+					width={40}
+					height={40}
+					src="/atom-magic-circle-black.png"
+					className="mx-auto"
+					alt="Atom Magic Circle" />
+				</div>
+			</div>
 		</div>
 	);
 };
