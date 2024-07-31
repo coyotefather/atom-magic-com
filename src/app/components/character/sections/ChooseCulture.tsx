@@ -79,7 +79,7 @@ const ChooseCulture = () => {
 						There are many cultures across Solum, though most beings are a member of one of the five main cultures. Choosing a culture will give you two unique aspects.
 					</p>
 					<p>
-						For more information, see <a href="https://atom-magic.com/codex/Cultures" title="Cultures">Cultures</a>.
+						For more information, see <ExternalLink href="https://atom-magic.com/codex/Cultures" name="Cultures" />
 					</p>
 					<div className="m-auto">
 						<Select
