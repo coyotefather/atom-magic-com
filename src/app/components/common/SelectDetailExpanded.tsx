@@ -63,7 +63,7 @@ const SelectDetail = ({
 					width={150}
 					height={150}
 					src="/atom-magic-circle-white.png"
-					className="opacity-25 mx-auto"
+					className="opacity-5 mx-auto"
 					alt="Atom Magic Circle" />
 				<div className="text-center m-8 text-sm opacity-75">
 					{description}
