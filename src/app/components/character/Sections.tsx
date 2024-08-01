@@ -3,6 +3,7 @@ import Section from '@/app/components/common/Section';
 import ButtonSection from '@/app/components/common/ButtonSection';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import RollYourCharacter from '@/app/components/character/sections/RollYourCharacter';
+import AdjustScores from '@/app/components/character/sections/scores/AdjustScores';
 import Scores from '@/app/components/character/sections/scores/Scores';
 import ChooseCulture from '@/app/components/character/sections/ChooseCulture';
 import ChoosePath from '@/app/components/character/sections/ChoosePath';
@@ -45,8 +46,13 @@ const Sections = () => {
 				<ChoosePatronage />
 			</Section>
 			<Section
-				name="Adjust Your Scores"
-				variant="light">
+				name=""
+				variant="dark">
+				<AdjustScores />
+			</Section>
+			<Section
+				name=""
+				variant="dual">
 				<Scores />
 			</Section>
 			<ButtonSection
