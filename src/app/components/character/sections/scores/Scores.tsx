@@ -3,21 +3,18 @@ import { SCORES } from '@/app/lib/global-data';
 
 const Scores = () => {
 	return (
-		<div>
-			<p className="pb-2">
-				Each category of scores below has its own pool of points as indicated by the available points listed beneath each. If you subtract from one score, you&apos;ll see you have more points available to add to another in that category.
-			</p>
-			<p className="pb-2">
-				Also note that one score is separated below the others. This is the elective score for the elective and has a score on a scale of 1 to 10. Increasing or decreasing the score will add bonuses or demerits to other scores in the category.
-			</p>
-			<p className="pb-4">
-				For more information on scoring, see <a href="https://atom-magic.com/codex/Scores" target="_new">Character scores</a>.
-			</p>
-			<div className="grid grid-cols-2 gap-16">
-				<Score score={SCORES.physical} />
-				<Score score={SCORES.interpersonal} />
-				<Score score={SCORES.intellect} />
-				<Score score={SCORES.psyche} />
+		<div className="grid grid-cols-2">
+			<div className="flex justify-end pt-16 pb-16">
+				<div className="max-w-[673px] w-full pr-16">
+					<Score score={SCORES.physical} textColor="black" />
+					<Score score={SCORES.interpersonal} textColor="black" />
+				</div>
+			</div>
+			<div className="bg-black text-white pt-16 pb-16">
+				<div className="max-w-[673px] w-full pl-16">
+					<Score score={SCORES.intellect} textColor="white" />
+					<Score score={SCORES.psyche} textColor="white" />
+				</div>
 			</div>
 		</div>
 	);
