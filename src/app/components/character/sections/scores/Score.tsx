@@ -7,6 +7,7 @@ import { mdiPlusCircleOutline, mdiPlus, mdiMinus } from '@mdi/js';
 
 const Score = ({
 		score,
+		textColor
 	}: {
 		score: {
 			name: string,
@@ -19,6 +20,7 @@ const Score = ({
 				value: string
 			}
 		},
+		textColor: string
 	}) => {
 	const [rotated, setRotated] = useState(false);
 	const handSelectChange = () => {
@@ -41,7 +43,15 @@ const Score = ({
 					</div>
 					<div className="pb-2 w-full text-sm">
 						<Accordion
-							className="border-0 focus:border-0 outline-none focus:outline-none"
+							variant="bordered"
+							className="border-0 focus:border-0 outline-none focus:outline-none pl-0"
+							itemClasses={
+								{
+									base: 'pl-0 pr-2',
+									title: `text-${textColor}`,
+									trigger: "w-[120px]",
+								}
+							}
 							isCompact
 							fullWidth
 							onSelectionChange={handSelectChange}>
