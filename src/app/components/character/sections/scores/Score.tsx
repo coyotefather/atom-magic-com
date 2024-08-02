@@ -22,12 +22,15 @@ const Score = ({
 
 	// hardcode path for now until store is built
 	const curPath = PATHS.find((path) => path.value === "theurgist");
-	let curModifiers = {
-		name: "",
-		id: "",
-		modifier: [
-			{ id: "", name: "", parentId: "", value: 0 },
-		]
+	let curModifiers: {
+		name: string,
+		parentId: string,
+		modifier: {
+			id: string,
+			name: string,
+			parentId: string,
+			value: number
+		}[]
 	};
 	if(curPath !== undefined) {
 		curModifiers = curPath.modifiers.find((m) => m.name === score.name);
