@@ -50,10 +50,7 @@ const Score = ({
 			value: number
 		}[]
 	};
-	let curModifiers: Modifiers | [];
-	//console.log(curModifiers)
-	if(path) {
-		curModifiers= path.modifiers.find((m) => m.name === score.name) ?? [{
+	let curModifiers: Modifiers | [{
 			name: "",
 			id: "",
 			modifier: [
@@ -65,6 +62,9 @@ const Score = ({
 				}
 			]
 		}];
+	//console.log(curModifiers)
+	if(path) {
+		curModifiers= path.modifiers.find((m) => m.name === score.name) ?? [];
 	}
 	//console.log(curModifiers);
 
