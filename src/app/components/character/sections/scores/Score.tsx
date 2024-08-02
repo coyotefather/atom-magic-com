@@ -25,6 +25,11 @@ const Score = ({
 			value: number
 		}[]
 	}) => {
+
+	const val = (str: keyof typeof values) => {
+		return values[str];
+	};
+
 	return (
 		<div className="w-full mb-8">
 			<h3 className="marcellus text-2xl border-b-2 border-solid mb-2">
@@ -34,7 +39,7 @@ const Score = ({
 			{score.children.map((subscore) => (
 				<SubScore
 					subscore={subscore.name}
-					value={values[subscore.name]}
+					value={val(subscore.name)}
 					key={subscore.value} />
 			))}
 			<div className="text-xl mt-2 mb-8">
