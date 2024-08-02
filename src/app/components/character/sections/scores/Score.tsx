@@ -50,9 +50,11 @@ const Score = ({
 			value: number
 		}[]
 	};
-
+	let curModifiers: Modifiers | [];
 	//console.log(curModifiers)
-	const curModifiers: Modifiers = path.modifiers.find((m) => m.name === score.name);
+	if(path) {
+		curModifiers= path.modifiers.find((m) => m.name === score.name) ?? [];
+	}
 	//console.log(curModifiers);
 
 	return (
