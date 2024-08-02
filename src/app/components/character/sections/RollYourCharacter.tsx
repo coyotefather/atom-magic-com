@@ -11,8 +11,8 @@ const RollYourCharacter = () => {
 		<div className="grid grid-cols-2 w-full bg-standard-gradient">
 			<div className="flex justify-end pt-16 pb-16">
 				<div className="max-w-[673px] pr-4">
-					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Roll a Character</h2>
-					It&apos;s time to roll and set the base numbers for each stat. You can adjust the spread of points across each sub state for any stat category.
+					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Roll a Character?</h2>
+					Want to skip manually creating a character and just create one automatically? You can adjust everything later. If not, continue below to create your character.
 				</div>
 			</div>
 			<div className="pt-16 pb-16">
