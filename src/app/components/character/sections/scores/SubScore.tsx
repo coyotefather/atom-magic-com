@@ -35,7 +35,6 @@ const SubScore = ({
 							indicator: "text-gold",
 						}
 					}
-					isCompact
 					fullWidth>
 					<AccordionItem
 						key={`${subscore.name}_modifiers`}
