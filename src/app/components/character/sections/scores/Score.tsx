@@ -53,7 +53,18 @@ const Score = ({
 	let curModifiers: Modifiers | [];
 	//console.log(curModifiers)
 	if(path) {
-		curModifiers= path.modifiers.find((m) => m.name === score.name) ?? [];
+		curModifiers= path.modifiers.find((m) => m.name === score.name) ?? [{
+			name: "",
+			id: "",
+			modifier: [
+				{
+					id: "",
+					name: "",
+					parentId: "",
+					value: 0
+				}
+			]
+		}];
 	}
 	//console.log(curModifiers);
 
@@ -66,7 +77,7 @@ const Score = ({
 			{score.children.map((subscore) => (
 				<SubScore
 					subscore={subscore.name}
-					value={curModifiers.modifier.find((m) => m.name === subscore.name).value ?? 0}
+					value={curModifiers.modifier.find((m) => m.name === subscore.name).value}
 					key={subscore.value} />
 			))}
 			<div className="text-xl mt-2 mb-8">
