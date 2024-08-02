@@ -20,9 +20,7 @@ const Score = ({
 				value: string
 			}
 		},
-		values: {
-			value: number
-		}[]
+		values: number[]
 	}) => {
 
 	const val = (str: keyof typeof values) => {
