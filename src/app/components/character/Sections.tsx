@@ -19,16 +19,16 @@ const Sections = () => {
 		console.log("roll gear");
 	};
 	return (
-		<div>
-			<Section
-				name=""
-				variant="dual">
-				<TheBasics />
-			</Section>
+		<div className="mt-8">
 			<Section
 				name=""
 				variant="dual">
 				<RollYourCharacter />
+			</Section>
+			<Section
+				name=""
+				variant="dual">
+				<TheBasics />
 			</Section>
 			<Section
 				name=""
