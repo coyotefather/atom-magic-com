@@ -1,13 +1,11 @@
 'use client';
-import { useState } from 'react';
-import clsx from 'clsx';
-import {Accordion, AccordionItem} from "@nextui-org/accordion";
 import Icon from '@mdi/react';
-import { mdiPlusCircleOutline, mdiPlus, mdiMinus } from '@mdi/js';
+import { mdiPlus, mdiMinus } from '@mdi/js';
+import { PATHS } from '@/app/lib/global-data';
+import SubScore from '@/app/components/character/sections/scores/SubScore';
 
 const Score = ({
-		score,
-		textColor
+		score
 	}: {
 		score: {
 			name: string,
@@ -19,73 +17,24 @@ const Score = ({
 				name: string,
 				value: string
 			}
-		},
-		textColor: string
+		}
 	}) => {
-	const [rotated, setRotated] = useState(false);
-	const handSelectChange = () => {
-		//rotated ? setRotated(false) : setRotated(true);
-		setRotated( (isRotated) => !isRotated );
-	};
+
+	// hardcode path for now until store is built
+	const curPath = PATHS.find((path) => path.value === "theurgist");
+	const curModifiers = curPath.modifiers.find((m) => m.name === score.name);
+
 	return (
-		<div className="w-full mb-2">
+		<div className="w-full mb-8">
 			<h3 className="marcellus text-2xl border-b-2 border-solid mb-2">
 				{score.name}
 				<span className="float-right font-bold">50</span>
 			</h3>
 			{score.children.map((subscore) => (
-				<div className="mb-2" key={subscore.name}>
-					<span className="text-xl">{subscore.name}</span>
-					<div className="text-xl w-24 float-right flex justify-between">
-						<Icon className="my-auto" path={mdiMinus} size={0.75} />
-						50
-						<Icon className="my-auto" path={mdiPlus} size={0.75} />
-					</div>
-					<div className="pb-2 w-full text-sm">
-						<Accordion
-							variant="bordered"
-							className="border-0 focus:border-0 outline-none focus:outline-none pl-0"
-							itemClasses={
-								{
-									base: 'pl-0 pr-2',
-									title: `text-${textColor}`,
-									trigger: "w-[120px]",
-								}
-							}
-							isCompact
-							fullWidth
-							onSelectionChange={handSelectChange}>
-							<AccordionItem
-								key={`${subscore.name}_modifiers`}
-								aria-label={`${subscore.name}_modifiers`}
-								title="Modifiers"
-								indicator={
-									<Icon
-										className={clsx(
-										'transition-transform baseline ml-2 my-auto',
-										{
-											'rotate-90': rotated === true,
-										})}
-										path={mdiPlusCircleOutline}
-										size={0.75} />
-
-								}>
-								<div className="border-b text-sm">
-									Base Score
-									<span className="float-right">50</span>
-								</div>
-								<div className="border-b text-sm">
-									Elective Modifier
-									<span className="float-right">0</span>
-								</div>
-								<div className="text-sm">
-									Path Modifier
-									<span className="float-right">0</span>
-								</div>
-							</AccordionItem>
-						</Accordion>
-					</div>
-				</div>
+				<SubScore
+					subscore={subscore}
+					value={curModifiers.modifier.find((m) => m.name === subscore.name).value}
+					key={subscore.value} />
 			))}
 			<div className="text-xl mt-2 mb-8">
 				{score.elective.name}
