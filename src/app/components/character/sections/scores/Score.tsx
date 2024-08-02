@@ -5,7 +5,8 @@ import { PATHS } from '@/app/lib/global-data';
 import SubScore from '@/app/components/character/sections/scores/SubScore';
 
 const Score = ({
-		score
+		score,
+		path
 	}: {
 		score: {
 			name: string,
@@ -17,11 +18,28 @@ const Score = ({
 				name: string,
 				value: string
 			}
+		},
+		path: {
+			name: string,
+			value: string,
+			latin: string,
+			icon: string,
+			description: string,
+			modifiers: {
+				name: string,
+				id: string,
+				modifier: {
+					id: string,
+					name: string,
+					parentId: string,
+					value: number
+				}[],
+			}[],
 		}
 	}) => {
 
 	// hardcode path for now until store is built
-	const curPath = PATHS.find((path) => path.value === "theurgist");
+	//const curPath = PATHS.find((path) => path.value === "theurgist");
 	let curModifiers: {
 		name: string,
 		id: string,
@@ -32,8 +50,9 @@ const Score = ({
 			value: number
 		}[]
 	};
-	if(curPath !== undefined) {
-		curModifiers = curPath.modifiers.find((m) => m.name === score.name);
+	if(path !== undefined) {
+		//console.log(path)
+		curModifiers = path.modifiers.find((m) => m.name === score.name);
 	}
 
 	return (
