@@ -6,14 +6,14 @@ const Scores = () => {
 		<div className="grid grid-cols-2">
 			<div className="flex justify-end pt-16 pb-16">
 				<div className="max-w-[673px] w-full pr-16">
-					<Score score={SCORES.physical} textColor="black" />
-					<Score score={SCORES.interpersonal} textColor="black" />
+					<Score score={SCORES.physical} />
+					<Score score={SCORES.interpersonal} />
 				</div>
 			</div>
 			<div className="bg-black text-white pt-16 pb-16">
 				<div className="max-w-[673px] w-full pl-16">
-					<Score score={SCORES.intellect} textColor="white" />
-					<Score score={SCORES.psyche} textColor="white" />
+					<Score score={SCORES.intellect} />
+					<Score score={SCORES.psyche} />
 				</div>
 			</div>
 		</div>
