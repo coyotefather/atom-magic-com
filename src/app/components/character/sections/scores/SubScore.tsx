@@ -11,11 +11,6 @@ const SubScore = ({
 		subscore: string,
 		value: number
 	}) => {
-
-	// {
-	// 	curModifiers.modifier.find((m) => m.name === subscore.name).value
-	// }
-
 	return (
 		<div className="mb-2" key={subscore}>
 			<span className="text-xl">{subscore}</span>

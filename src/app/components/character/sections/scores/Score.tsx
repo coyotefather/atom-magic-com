@@ -6,7 +6,8 @@ import SubScore from '@/app/components/character/sections/scores/SubScore';
 
 const Score = ({
 		score,
-		path
+		values
+		//path
 	}: {
 		score: {
 			name: string,
@@ -19,50 +20,11 @@ const Score = ({
 				value: string
 			}
 		},
-		path: {
+		values: {
 			name: string,
-			value: string,
-			latin: string,
-			icon: string,
-			description: string,
-			modifiers: {
-				name: string,
-				id: string,
-				modifier: {
-					id: string,
-					name: string,
-					parentId: string,
-					value: number
-				}[],
-			}[],
-		}
-	}) => {
-
-	// hardcode path for now until store is built
-	//const curPath = PATHS.find((path) => path.value === "theurgist");
-	type Modifiers = {
-		name: string,
-		id: string,
-		modifier: {
-			id: string,
-			name: string,
-			parentId: string,
 			value: number
 		}[]
-	};
-	let curModifiers: Modifiers;
-	let modifierValues:number[] = [];
-	//console.log(curModifiers)
-	if(path) {
-		curModifiers= path.modifiers.find((m) => m.name === score.name) ?? [];
-		if(curModifiers.modifier) {
-			curModifiers.modifier.map((m) => (
-				modifierValues[m.name] = m.value
-			));
-		}
-	}
-	//console.log(curModifiers);
-
+	}) => {
 	return (
 		<div className="w-full mb-8">
 			<h3 className="marcellus text-2xl border-b-2 border-solid mb-2">
@@ -72,7 +34,7 @@ const Score = ({
 			{score.children.map((subscore) => (
 				<SubScore
 					subscore={subscore.name}
-					value={modifierValues[subscore.name]}
+					value={values[subscore.name]}
 					key={subscore.value} />
 			))}
 			<div className="text-xl mt-2 mb-8">
