@@ -3,7 +3,7 @@ import { SCORES, PATHS } from '@/app/lib/global-data';
 
 // hardcode path for now until store is built
 const curPath = PATHS.find((path) => path.value === "theurgist");
-let values: { [key: string]: any[] } = {};
+const values: Record<string, number> = {};
 if(curPath) {
 	curPath.modifiers.forEach( (score) => {
 		score.modifier.forEach( (m) => {
