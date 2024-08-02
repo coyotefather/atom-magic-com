@@ -17,8 +17,8 @@ const SubScore = ({
 	// }
 
 	return (
-		<div className="mb-2" key={subscore.name}>
-			<span className="text-xl">{subscore.name}</span>
+		<div className="mb-2" key={subscore}>
+			<span className="text-xl">{subscore}</span>
 			<div className="text-xl w-24 float-right flex justify-between">
 				<Icon className="my-auto" path={mdiMinus} size={0.75} />
 				50
@@ -37,8 +37,8 @@ const SubScore = ({
 					}
 					fullWidth>
 					<AccordionItem
-						key={`${subscore.name}_modifiers`}
-						aria-label={`${subscore.name}_modifiers`}
+						key={`${subscore}_modifiers`}
+						aria-label={`${subscore}_modifiers`}
 						title="Modifiers">
 						<div className="border-b text-sm">
 							Base Score

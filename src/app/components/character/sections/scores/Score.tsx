@@ -65,7 +65,7 @@ const Score = ({
 			</h3>
 			{score.children.map((subscore) => (
 				<SubScore
-					subscore={subscore}
+					subscore={subscore.name}
 					value={curModifiers.modifier.find((m) => m.name === subscore.name).value}
 					key={subscore.value} />
 			))}
