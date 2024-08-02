@@ -51,7 +51,7 @@ const Score = ({
 		}[]
 	};
 	let curModifiers: Modifiers;
-	let modifierValues = [];
+	let modifierValues:number = [];
 	//console.log(curModifiers)
 	if(path) {
 		curModifiers= path.modifiers.find((m) => m.name === score.name) ?? [];
