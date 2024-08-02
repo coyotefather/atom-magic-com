@@ -146,12 +146,12 @@ export const SCORES = {
 		},
 	},
 	psyche: {
-		name: "psyche",
+		name: "Psyche",
 		children: [
 			{ name: "Mental Stability", value: "mentalStability" },
 			{ name: "Emotional Stability", value: "emotionalStability" },
-			{ name: "Focus And Concentration", value: "focusAndConcentration" },
-			{ name: "Courage And Conviction", value: "courageAndConviction" },
+			{ name: "Focus and Concentration", value: "focusAndConcentration" },
+			{ name: "Courage and Conviction", value: "courageAndConviction" },
 		],
 		elective: {
 			name: "Faith",
