@@ -21,7 +21,6 @@ const Score = ({
 			}
 		},
 		values: {
-			name: string,
 			value: number
 		}[]
 	}) => {
