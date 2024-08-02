@@ -24,7 +24,7 @@ const Score = ({
 	const curPath = PATHS.find((path) => path.value === "theurgist");
 	let curModifiers: {
 		name: string,
-		parentId: string,
+		id: string,
 		modifier: {
 			id: string,
 			name: string,
