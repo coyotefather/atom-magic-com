@@ -40,7 +40,7 @@ const Score = ({
 
 	// hardcode path for now until store is built
 	//const curPath = PATHS.find((path) => path.value === "theurgist");
-	let curModifiers: {
+	type Modifiers = {
 		name: string,
 		id: string,
 		modifier: {
@@ -50,10 +50,10 @@ const Score = ({
 			value: number
 		}[]
 	};
-	if(path !== undefined) {
-		//console.log(path)
-		curModifiers = path.modifiers.find((m) => m.name === score.name);
-	}
+
+	//console.log(curModifiers)
+	const curModifiers: Modifiers = path.modifiers.find((m) => m.name === score.name);
+	//console.log(curModifiers);
 
 	return (
 		<div className="w-full mb-8">
