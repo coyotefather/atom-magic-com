@@ -21,7 +21,7 @@ const Score = ({
 				value: number
 			}
 		},
-		modifiers: Map
+		modifiers: Map<string, number>
 	}) => {
 	return (
 		<div className="w-full mb-8">
