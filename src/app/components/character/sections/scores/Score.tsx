@@ -32,7 +32,7 @@ const Score = ({
 			{score.children.map((subscore) => (
 				<SubScore
 					subscore={subscore.name}
-					value={modifiers.get(subscore.id)}
+					value={modifiers.get(subscore.id) ? modifiers.get(subscore.id) : 0}
 					key={subscore.id} />
 			))}
 			<div className="text-xl mt-2 mb-8">
