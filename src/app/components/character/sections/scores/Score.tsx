@@ -5,28 +5,22 @@ import { PATHS } from '@/app/lib/global-data';
 import SubScore from '@/app/components/character/sections/scores/SubScore';
 
 const Score = ({
-		score,
-		values
-		//path
+		score
 	}: {
 		score: {
 			name: string,
 			children: {
 				name: string,
-				value: string
+				id: string,
+				value: number
 			}[],
 			elective: {
 				name: string,
-				value: string
+				id: string,
+				value: number
 			}
-		},
-		values: number[]
+		}
 	}) => {
-
-	const val = (str: keyof typeof values) => {
-		return values[str];
-	};
-
 	return (
 		<div className="w-full mb-8">
 			<h3 className="marcellus text-2xl border-b-2 border-solid mb-2">
@@ -36,8 +30,8 @@ const Score = ({
 			{score.children.map((subscore) => (
 				<SubScore
 					subscore={subscore.name}
-					value={val(subscore.name)}
-					key={subscore.value} />
+					value={subscore.value}
+					key={subscore.id} />
 			))}
 			<div className="text-xl mt-2 mb-8">
 				{score.elective.name}

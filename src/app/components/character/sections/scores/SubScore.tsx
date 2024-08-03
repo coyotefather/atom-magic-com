@@ -12,7 +12,7 @@ const SubScore = ({
 		value: number
 	}) => {
 	return (
-		<div className="mb-2" key={subscore}>
+		<div className="mb-2">
 			<span className="text-xl">{subscore}</span>
 			<div className="text-xl w-24 float-right flex justify-between">
 				<Icon className="my-auto" path={mdiMinus} size={0.75} />
