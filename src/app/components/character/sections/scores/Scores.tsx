@@ -6,12 +6,14 @@ let allScores = SCORES;
 const curPath = PATHS.find((path) => path.value === "theurgist");
 const values: Record<string, number> = {};
 
-curPath.modifiers.forEach((score) =>  {
-	score.modifier.forEach((m) => {
-		let foundIndex = allScores[score.id]['children'].findIndex(x => x.id == m.id);
-		allScores[score.id]['children'][foundIndex].value = m.value;
+if(curPath){
+	curPath.modifiers.forEach((score) =>  {
+		score.modifier.forEach((m) => {
+			let foundIndex = allScores[score.id]['children'].findIndex(x => x.id == m.id);
+			allScores[score.id]['children'][foundIndex].value = m.value;
+		});
 	});
-})
+}
 
 const Scores = () => {
 	return (
