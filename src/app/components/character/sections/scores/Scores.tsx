@@ -11,7 +11,7 @@ if(curPath){
 		score.modifier.forEach((m) => {
 			let thisSubscore = allScores[score.id as keyof typeof allScores].children;
 			let foundIndex:keyof typeof thisSubscore = thisSubscore.findIndex(x => x.id == m.id);
-			allScores[score.id as keyof typeof allScores].children[foundIndex:keyof typeof thisSubscore].value = m.value;
+			allScores[score.id as keyof typeof allScores].children[foundIndex as keyof typeof thisSubscore].value = m.value;
 		});
 	});
 }
