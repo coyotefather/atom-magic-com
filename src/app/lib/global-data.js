@@ -116,7 +116,7 @@ export const SCORES = {
 		],
 		elective: {
 			name: "Energy",
-			value: "energy",
+			id: "energy",
 			value: 0
 		},
 	},
@@ -130,7 +130,7 @@ export const SCORES = {
 		],
 		elective: {
 			name: "Personality",
-			value: "personality",
+			id: "personality",
 			value: 0
 		},
 	},
@@ -144,7 +144,7 @@ export const SCORES = {
 		],
 		elective: {
 			name: "IQ",
-			value: "iq",
+			id: "iq",
 			value: 0
 		},
 	},
@@ -158,7 +158,7 @@ export const SCORES = {
 		],
 		elective: {
 			name: "Faith",
-			value: "faith",
+			id: "faith",
 			value: 0
 		},
 	},
