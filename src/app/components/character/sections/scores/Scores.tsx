@@ -2,16 +2,14 @@ import Score from '@/app/components/character/sections/scores/Score';
 import { SCORES, PATHS } from '@/app/lib/global-data';
 
 // hardcode path for now until store is built
-let allScores = SCORES;
 const curPath = PATHS.find((path) => path.value === "theurgist");
-const values: Record<string, number> = {};
+const allScores = SCORES;
+let modifiersMap = new Map<string, number>([]);
 
 if(curPath){
 	curPath.modifiers.forEach((score) =>  {
 		score.modifier.forEach((m) => {
-			let thisSubscore = allScores[score.id as keyof typeof allScores].children;
-			let foundIndex:keyof typeof thisSubscore = thisSubscore.findIndex(x => x.id == m.id);
-			allScores[score.id as keyof typeof allScores].children[foundIndex as keyof typeof thisSubscore].value = m.value;
+			modifiersMap.set(m.id, m.value);
 		});
 	});
 }
@@ -21,14 +19,14 @@ const Scores = () => {
 		<div className="grid grid-cols-2">
 			<div className="flex justify-end pt-16 pb-16">
 				<div className="max-w-[673px] w-full pr-16">
-					<Score score={allScores.physical} />
-					<Score score={allScores.interpersonal} />
+					<Score score={SCORES.physical} modifiers={modifiersMap} />
+					<Score score={SCORES.interpersonal} modifiers={modifiersMap} />
 				</div>
 			</div>
 			<div className="bg-black text-white pt-16 pb-16">
 				<div className="max-w-[673px] w-full pl-16">
-					<Score score={allScores.intellect} />
-					<Score score={allScores.psyche} />
+					<Score score={SCORES.intellect} modifiers={modifiersMap} />
+					<Score score={SCORES.psyche} modifiers={modifiersMap} />
 				</div>
 			</div>
 		</div>

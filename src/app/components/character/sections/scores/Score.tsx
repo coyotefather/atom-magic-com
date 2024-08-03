@@ -5,7 +5,8 @@ import { PATHS } from '@/app/lib/global-data';
 import SubScore from '@/app/components/character/sections/scores/SubScore';
 
 const Score = ({
-		score
+		score,
+		modifiers
 	}: {
 		score: {
 			name: string,
@@ -19,7 +20,8 @@ const Score = ({
 				id: string,
 				value: number
 			}
-		}
+		},
+		modifiers: Map
 	}) => {
 	return (
 		<div className="w-full mb-8">
@@ -30,7 +32,7 @@ const Score = ({
 			{score.children.map((subscore) => (
 				<SubScore
 					subscore={subscore.name}
-					value={subscore.value}
+					value={modifiers.get(subscore.id)}
 					key={subscore.id} />
 			))}
 			<div className="text-xl mt-2 mb-8">
