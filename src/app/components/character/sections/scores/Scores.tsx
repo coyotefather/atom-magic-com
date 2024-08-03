@@ -9,7 +9,8 @@ const values: Record<string, number> = {};
 if(curPath){
 	curPath.modifiers.forEach((score) =>  {
 		score.modifier.forEach((m) => {
-			let foundIndex:keyof typeof allScores = allScores[score.id]['children'].findIndex(x => x.id == m.id);
+			let thisSubscore = allScores[score.id]['children'];
+			let foundIndex:keyof typeof thisSubscore = thisSubscore.findIndex(x => x.id == m.id);
 			allScores[score.id]['children'][foundIndex].value = m.value;
 		});
 	});
