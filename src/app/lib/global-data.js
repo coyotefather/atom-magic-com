@@ -109,53 +109,57 @@ export const SCORES = {
 	physical: {
 		name: "Physical",
 		children: [
-			{ name: "Agility", value: "agility" },
-			{ name: "Speed", value: "speed" },
-			{ name: "Reflex", value: "reflex" },
-			{ name: "Endurance", value: "endurance" },
+			{ name: "Agility", id: "agility", value: 0 },
+			{ name: "Speed", id: "speed", value: 0 },
+			{ name: "Reflex", id: "reflex", value: 0 },
+			{ name: "Endurance", id: "endurance", value: 0 },
 		],
 		elective: {
 			name: "Energy",
-			value: "energy"
+			value: "energy",
+			value: 0
 		},
 	},
 	interpersonal: {
 		name: "Interpersonal",
 		children: [
-			{ name: "Percieved Attractiveness", value: "percievedAttractiveness" },
-			{ name: "Charm", value: "charm" },
-			{ name: "Speech", value: "speech" },
-			{ name: "Empathy", value: "empathy" },
+			{ name: "Percieved Attractiveness", id: "percievedAttractiveness", value: 0 },
+			{ name: "Charm", id: "charm", value: 0 },
+			{ name: "Speech", id: "speech", value: 0 },
+			{ name: "Empathy", id: "empathy", value: 0 },
 		],
 		elective: {
 			name: "Personality",
-			value: "personality"
+			value: "personality",
+			value: 0
 		},
 	},
 	intellect: {
 		name: "Intellect",
 		children: [
-			{ name: "Knowledge", value: "knowledge" },
-			{ name: "Critical Thinking", value: "criticalThinking" },
-			{ name: "Analysis", value: "analysis" },
-			{ name: "Judgement", value: "judgement" },
+			{ name: "Knowledge", id: "knowledge", value: 0 },
+			{ name: "Critical Thinking", id: "criticalThinking", value: 0 },
+			{ name: "Analysis", id: "analysis", value: 0 },
+			{ name: "Judgement", id: "judgement", value: 0 },
 		],
 		elective: {
 			name: "IQ",
-			value: "iq"
+			value: "iq",
+			value: 0
 		},
 	},
 	psyche: {
 		name: "Psyche",
 		children: [
-			{ name: "Mental Stability", value: "mentalStability" },
-			{ name: "Emotional Stability", value: "emotionalStability" },
-			{ name: "Focus and Concentration", value: "focusAndConcentration" },
-			{ name: "Courage and Conviction", value: "courageAndConviction" },
+			{ name: "Mental Stability", id: "mentalStability", value: 0 },
+			{ name: "Emotional Stability", id: "emotionalStability", value: 0 },
+			{ name: "Focus and Concentration", id: "focusAndConcentration", value: 0 },
+			{ name: "Courage and Conviction", id: "courageAndConviction", value: 0 },
 		],
 		elective: {
 			name: "Faith",
-			value: "faith"
+			value: "faith",
+			value: 0
 		},
 	},
 };
