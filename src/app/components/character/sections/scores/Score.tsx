@@ -21,7 +21,7 @@ const Score = ({
 				value: number
 			}
 		},
-		modifiers: Map<string, number | undefined>
+		modifiers: Map<string, number>
 	}) => {
 	return (
 		<div className="w-full mb-8">
@@ -32,7 +32,7 @@ const Score = ({
 			{score.children.map((subscore) => (
 				<SubScore
 					subscore={subscore.name}
-					value={modifiers.get(subscore.id) ? modifiers.get(subscore.id) : 0}
+					value={modifiers.get(subscore.id)!}
 					key={subscore.id} />
 			))}
 			<div className="text-xl mt-2 mb-8">
