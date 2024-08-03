@@ -5,10 +5,12 @@ import {Image} from "@nextui-org/image";
 import NextImage from "next/image";
 
 const Section = ({
+		expanded,
 		variant,
 		name = "",
 		children
 	}: {
+		expanded: Boolean,
 		variant: string,
 		name: string,
 		children: React.ReactNode
@@ -19,7 +21,13 @@ const Section = ({
 	}
 	return (
 		<div className={clsx(
-			'relative overflow-y-visible',
+			'relative',
+			{
+				'h-0 hidden': expanded === false
+			},
+			{
+				'h-auto border-t-2 overflow-y-visible': expanded === true
+			},
 			{
 				'pt-16 pb-16 container': variant === 'light'
 			},
@@ -27,10 +35,10 @@ const Section = ({
 				'bg-black text-white': variant === 'dark'
 			},
 			{
-				'bg-standard-gradient border-t-2': variant === 'gradient'
+				'bg-standard-gradient': variant === 'gradient'
 			},
 			{
-				'border-t-2 border-black': variant === 'dual'
+				'border-black': variant === 'dual'
 			},
 		)}>
 			{headTag}
