@@ -17,7 +17,7 @@ if(curPath){
 const Scores = () => {
 	return (
 		<div className="grid grid-cols-2">
-			<div className="flex justify-end pt-16 pb-16">
+			<div className="flex justify-end pt-16 pb-16 bg-white">
 				<div className="max-w-[673px] w-full pr-16">
 					<Score score={SCORES.physical} modifiers={modifiersMap} />
 					<Score score={SCORES.interpersonal} modifiers={modifiersMap} />
