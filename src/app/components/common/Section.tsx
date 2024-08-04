@@ -24,12 +24,12 @@ const Section = ({
 
 	const sectionRef = useRef(null);
 	const buttonRef = useRef(null);
+	const bottomRef = useRef(null);
 	const [buttonGraphic, setButtonGraphic] = useState(false);
 	const buttonIcon = (
 		<Icon
 			path={mdiArrowUpBoldCircleOutline}
 			className="mx-auto text-black"
-			title="Expand Next Section"
 			size={2}
 			horizontal
 			vertical />
@@ -44,8 +44,13 @@ const Section = ({
 	);
 
 	const handleClick = () => {
-		setButtonGraphic(true);
 		expandFunction();
+		if (bottomRef) {
+			setTimeout( () => {
+				bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
+			}, 1000 );
+		}
+		setButtonGraphic(true);
 	};
 
 	return (
@@ -104,6 +109,7 @@ const Section = ({
 							</SwitchTransition>
 						</div>
 					</div>
+					<div ref={bottomRef}></div>
 				</div>
 			</CSSTransition>
 		</SwitchTransition>
