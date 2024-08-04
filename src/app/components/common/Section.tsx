@@ -24,7 +24,7 @@ const Section = ({
 
 	const sectionRef = useRef(null);
 	const buttonRef = useRef(null);
-	const bottomRef = useRef(null);
+	const bottomRef = useRef<null | HTMLDivElement>(null);
 	const [buttonGraphic, setButtonGraphic] = useState(false);
 	const buttonIcon = (
 		<Icon
