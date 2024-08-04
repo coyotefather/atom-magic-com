@@ -72,7 +72,7 @@ const ChooseCulture = () => {
 
 	return (
 		<div className="grid grid-cols-2">
-			<div className="flex justify-end pt-16 pb-16">
+			<div className="flex justify-end pt-16 pb-16 bg-white">
 				<div className="max-w-[673px] pr-4">
 					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose a Culture</h2>
 					<p className="pb-2">
@@ -107,7 +107,7 @@ const ChooseCulture = () => {
 				   		key={detailsUpdated ? "x" : "y"}
 				   		nodeRef={detailsRef}
 				   		timeout={300}
-				   		classNames='fade'
+				   		classNames='fade-grow'
 				 		>
 				 			<div ref={detailsRef}>
 					 			{details}
