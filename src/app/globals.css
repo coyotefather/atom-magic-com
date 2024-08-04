@@ -88,9 +88,21 @@ button.gradient:hover {
    transition: max-height 0.5s ease-out, opacity 300ms ease-in;
 }
 
-.grow-vertical {
-  max-height: 0;
-  overflow: hidden;
+.grow-enter{
+   max-height: 0px;
+   overflow: hidden;
+}
+.grow-exit{
+   max-height: 2000px;
+}
+.grow-enter-active{
+   max-height: 2000px;
+   transition: max-height 0.5s ease-in;
+}
+.grow-exit-active{
+   max-height: 0px;
+   overflow: hidden;
+   transition: max-height 0.5s ease-in;
 }
 
 @layer utilities {
