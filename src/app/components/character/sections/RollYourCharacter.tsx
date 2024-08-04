@@ -1,9 +1,20 @@
+import { useRef } from 'react';
 import { mdiDiceMultiple } from '@mdi/js';
 import FunctionButton from '@/app/components/common/FunctionButton';
 
-const RollYourCharacter = () => {
-
-	let rollCharacter = () => {
+const RollYourCharacter = ({
+		buttonFunction,
+	}: {
+		buttonFunction: Function
+	}) => {
+	const bottomRef = useRef<null | HTMLDivElement>(null);
+	const handleClick = () => {
+		buttonFunction();
+		if (bottomRef) {
+			setTimeout( () => {
+				bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
+			}, 500 );
+		}
 		console.log("roll character");
 	};
 
@@ -19,12 +30,13 @@ const RollYourCharacter = () => {
 				<div className="max-w-[768px] pl-4 h-full grid grid-cols-1 content-center">
 					<div className="text-center">
 						<FunctionButton
-							buttonFunction={rollCharacter}
+							buttonFunction={handleClick}
 							buttonIcon={mdiDiceMultiple}
 							variant="secondary">Roll Character</FunctionButton>
 					</div>
 				</div>
 			</div>
+			<div ref={bottomRef}></div>
 		</div>
 	);
 };
