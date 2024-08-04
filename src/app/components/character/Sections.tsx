@@ -14,72 +14,76 @@ import { mdiDiceMultiple } from '@mdi/js';
 
 const Sections = () => {
 
-	const [advancedEditing, setAdvancedEditing] = useState(false);
-	const [expanded, setExpanded] = useState({
-		RollYourCharacter: true,
-		TheBasics: false,
-		ChooseCulture: false,
-		ChoosePath: false,
-		ChoosePatronage: false,
-		AdjustScoresAndScores: false,
-		RollGearAndGear: false
-	});
+	const [showTheBasics, setShowTheBasics] = useState(false);
+	const [showChooseCulture, setShowChooseCulture] = useState(false);
+	const [showChoosePath, setShowChoosePath] = useState(false);
+	const [showChoosePatronage, setShowChoosePatronage] = useState(false);
+	const [showAdjustScoresAndScores, setShowAdjustScoresAndScores] = useState(false);
+	const [showRollGearAndGear, setShowRollGearAndGear] = useState(false);
 
-	let rollCharacter= () => {
+	const rollCharacter = () => {
 		console.log("roll character");
-		setAdvancedEditing(true);
 	};
-	let rollGear = () => {
+
+	const rollGear = () => {
 		console.log("roll gear");
 	};
 	return (
 		<div className="mt-8">
 			<Section
-				expanded={expanded.RollYourCharacter}
+				expanded={true}
 				name=""
-				variant="dual">
+				variant="dual"
+				expandFunction={() => setShowTheBasics(true)}>
 				<RollYourCharacter />
 			</Section>
 			<Section
-				expanded={expanded.TheBasics}
+				expanded={showTheBasics}
 				name=""
-				variant="dual">
+				variant="dual"
+				expandFunction={() => setShowChooseCulture(true)}>
 				<TheBasics />
 			</Section>
 			<Section
-				expanded={expanded.ChooseCulture}
+				expanded={showChooseCulture}
 				name=""
-				variant="dual">
+				variant="dual"
+				expandFunction={() => setShowChoosePath(true)}>
 				<ChooseCulture />
 			</Section>
 			<Section
-				expanded={expanded.ChoosePath}
+				expanded={showChoosePath}
 				name=""
-				variant="dual">
+				variant="dual"
+				expandFunction={() => setShowChoosePatronage(true)}>
 				<ChoosePath />
 			</Section>
 			<Section
-				expanded={expanded.ChoosePatronage}
+				expanded={showChoosePatronage}
 				name=""
-				variant="dual">
+				variant="dual"
+				expandFunction={() => setShowAdjustScoresAndScores(true)}>
 				<ChoosePatronage />
 			</Section>
 			<Section
-				expanded={expanded.AdjustScoresAndScores}
+				expanded={showAdjustScoresAndScores}
 				name=""
-				variant="dark">
+				variant="dark"
+				expandFunction={() => { return; }}>
 				<AdjustScores />
 			</Section>
 			<Section
-				expanded={expanded.AdjustScoresAndScores}
+				expanded={showAdjustScoresAndScores}
 				name=""
-				variant="dual">
+				variant="dual"
+				expandFunction={() => setShowRollGearAndGear(true)}>
 				<Scores />
 			</Section>
 			<Section
-				expanded={expanded.RollGearAndGear}
+				expanded={showRollGearAndGear}
 				name=""
-				variant="dual">
+				variant="dual"
+				expandFunction={() => { return; }}>
 				<RollGear />
 			</Section>
 		</div>
