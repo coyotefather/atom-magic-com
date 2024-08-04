@@ -4,27 +4,55 @@ import clsx from 'clsx';
 import FunctionButton from '@/app/components/common/FunctionButton';
 import {Image} from "@nextui-org/image";
 import NextImage from "next/image";
+import { mdiArrowUpBoldCircleOutline } from '@mdi/js';
+import Icon from '@mdi/react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const Section = ({
 		expanded,
 		variant,
-		name = "",
+		showExpandButton,
 		expandFunction,
 		children
 	}: {
 		expanded: Boolean,
 		variant: string,
-		name: string,
+		showExpandButton: Boolean,
 		expandFunction: Function,
 		children: React.ReactNode
 	}) => {
+
+	const sectionRef = useRef(null);
+	const buttonRef = useRef(null);
+	const [buttonGraphic, setButtonGraphic] = useState(false);
+	const buttonIcon = (
+		<Icon
+			path={mdiArrowUpBoldCircleOutline}
+			className="mx-auto text-black"
+			alt="Expand Next Section"
+			size={2}
+			horizontal
+			vertical />
+	);
+	const buttonImage = (
+		<NextImage
+			width={40}
+			height={40}
+			src="/atom-magic-circle-black.png"
+			className="mx-auto"
+			alt="Review Below Section" />
+	);
 
 	let headTag = (<></>);
 	if(name !== "") {
 		headTag = (<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">{name}</h2>);
 	}
-	const sectionRef = useRef(null);
+
+	const handleClick = () => {
+		setButtonGraphic(true);
+		expandFunction();
+	};
+
 	return (
 		<SwitchTransition mode="out-in">
 			<CSSTransition
@@ -39,7 +67,7 @@ const Section = ({
 						'max-x-0 hidden': expanded === false
 					},
 					{
-						'border-t-2 overflow-y-visible': expanded === true
+						'border-b-2 overflow-y-visible': expanded === true
 					},
 					{
 						'pt-16 pb-16 container': variant === 'light'
@@ -56,15 +84,30 @@ const Section = ({
 				)}>
 					{headTag}
 					{children}
-					<div className="w-[100px] h-[100px] absolute left-1/2 -bottom-[35px]">
-						<div className="bg-standard-gradient border-4 border-black rounded-full w-[70px] h-[70px] grid grid-cols-1 content-center z-10 absolute -left-[35px] bottom-0">
-							<NextImage
-								onClick={expandFunction}
-								width={40}
-								height={40}
-								src="/atom-magic-circle-black.png"
-								className="mx-auto"
-								alt="Atom Magic Circle" />
+					<div className={clsx(
+					'w-[100px] h-[100px] absolute left-1/2 -bottom-[35px]',
+					{
+						'w-[100px] h-[100px]': showExpandButton === true
+					},
+					{
+						'w-[0px] h-[0px] hidden': showExpandButton === false
+					},
+					)}>
+						<div
+							className="bg-standard-gradient border-4 border-black rounded-full w-[70px] h-[70px] grid grid-cols-1 content-center z-10 absolute -left-[35px] bottom-0"
+							onClick={handleClick}>
+							<SwitchTransition mode="out-in">
+								<CSSTransition
+									key={buttonGraphic ? "x" : "y"}
+									nodeRef={buttonRef}
+									timeout={300}
+									classNames='fade'>
+									<div ref={buttonRef}>
+										{buttonGraphic === false ? buttonIcon : (<></>)}
+										{buttonGraphic === true ? buttonImage : (<></>)}
+									</div>
+								</CSSTransition>
+							</SwitchTransition>
 						</div>
 					</div>
 				</div>

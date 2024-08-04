@@ -14,7 +14,7 @@ import { mdiDiceMultiple } from '@mdi/js';
 
 const Sections = () => {
 
-	const [showTheBasics, setShowTheBasics] = useState(false);
+	const [showTheBasics, setShowTheBasics] = useState(true);
 	const [showChooseCulture, setShowChooseCulture] = useState(false);
 	const [showChoosePath, setShowChoosePath] = useState(false);
 	const [showChoosePatronage, setShowChoosePatronage] = useState(false);
@@ -32,56 +32,56 @@ const Sections = () => {
 		<div className="mt-8">
 			<Section
 				expanded={true}
-				name=""
+				showExpandButton={false}
 				variant="dual"
 				expandFunction={() => setShowTheBasics(true)}>
 				<RollYourCharacter />
 			</Section>
 			<Section
 				expanded={showTheBasics}
-				name=""
+				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowChooseCulture(true)}>
 				<TheBasics />
 			</Section>
 			<Section
 				expanded={showChooseCulture}
-				name=""
+				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowChoosePath(true)}>
 				<ChooseCulture />
 			</Section>
 			<Section
 				expanded={showChoosePath}
-				name=""
+				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowChoosePatronage(true)}>
 				<ChoosePath />
 			</Section>
 			<Section
 				expanded={showChoosePatronage}
-				name=""
+				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowAdjustScoresAndScores(true)}>
 				<ChoosePatronage />
 			</Section>
 			<Section
 				expanded={showAdjustScoresAndScores}
-				name=""
-				variant="dark"
+				showExpandButton={false}
+				variant="gradient"
 				expandFunction={() => { return; }}>
 				<AdjustScores />
 			</Section>
 			<Section
 				expanded={showAdjustScoresAndScores}
-				name=""
+				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowRollGearAndGear(true)}>
 				<Scores />
 			</Section>
 			<Section
 				expanded={showRollGearAndGear}
-				name=""
+				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => { return; }}>
 				<RollGear />
