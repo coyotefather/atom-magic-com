@@ -22,6 +22,11 @@ const Sections = () => {
 	const [showRollGearAndGear, setShowRollGearAndGear] = useState(false);
 
 	const rollCharacter = () => {
+		setShowChooseCulture(true);
+		setShowChoosePath(true);
+		setShowChoosePatronage(true);
+		setShowAdjustScoresAndScores(true);
+		setShowRollGearAndGear(true);
 		console.log("roll character");
 	};
 
@@ -32,13 +37,16 @@ const Sections = () => {
 		<div className="mt-8">
 			<Section
 				expanded={true}
+				nextExpanded={true}
 				showExpandButton={false}
 				variant="dual"
-				expandFunction={() => setShowTheBasics(true)}>
-				<RollYourCharacter />
+				expandFunction={() => { return; }}>
+				<RollYourCharacter
+					buttonFunction={() => rollCharacter()} />
 			</Section>
 			<Section
 				expanded={showTheBasics}
+				nextExpanded={showChooseCulture}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowChooseCulture(true)}>
@@ -46,6 +54,7 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showChooseCulture}
+				nextExpanded={showChoosePath}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowChoosePath(true)}>
@@ -53,6 +62,7 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showChoosePath}
+				nextExpanded={showChoosePatronage}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowChoosePatronage(true)}>
@@ -60,6 +70,7 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showChoosePatronage}
+				nextExpanded={true}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowAdjustScoresAndScores(true)}>
@@ -67,6 +78,7 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showAdjustScoresAndScores}
+				nextExpanded={false}
 				showExpandButton={false}
 				variant="gradient"
 				expandFunction={() => { return; }}>
@@ -74,6 +86,7 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showAdjustScoresAndScores}
+				nextExpanded={showRollGearAndGear}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowRollGearAndGear(true)}>
@@ -81,6 +94,7 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showRollGearAndGear}
+				nextExpanded={true}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => { return; }}>

@@ -10,12 +10,14 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const Section = ({
 		expanded,
+		nextExpanded,
 		variant,
 		showExpandButton,
 		expandFunction,
 		children
 	}: {
 		expanded: Boolean,
+		nextExpanded: Boolean,
 		variant: string,
 		showExpandButton: Boolean,
 		expandFunction: Function,
@@ -25,24 +27,6 @@ const Section = ({
 	const sectionRef = useRef(null);
 	const buttonRef = useRef(null);
 	const bottomRef = useRef<null | HTMLDivElement>(null);
-	const [buttonGraphic, setButtonGraphic] = useState(false);
-	const buttonIcon = (
-		<Icon
-			path={mdiArrowUpBoldCircleOutline}
-			className="mx-auto text-black"
-			size={2}
-			horizontal
-			vertical />
-	);
-	const buttonImage = (
-		<NextImage
-			width={40}
-			height={40}
-			src="/atom-magic-circle-black.png"
-			className="mx-auto"
-			alt="Review Below Section" />
-	);
-
 	const handleClick = () => {
 		expandFunction();
 		if (bottomRef) {
@@ -50,8 +34,26 @@ const Section = ({
 				bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
 			}, 1000 );
 		}
-		setButtonGraphic(true);
 	};
+
+	let buttonGraphic = (
+		<Icon
+			path={mdiArrowUpBoldCircleOutline}
+			className="mx-auto text-black"
+			size={2}
+			horizontal
+			vertical />
+	);
+	if(nextExpanded) {
+		buttonGraphic = (
+			<NextImage
+				width={40}
+				height={40}
+				src="/atom-magic-circle-black.png"
+				className="mx-auto"
+				alt="Review Below Section" />
+		);
+	}
 
 	return (
 		<SwitchTransition mode="out-in">
@@ -97,13 +99,12 @@ const Section = ({
 							onClick={handleClick}>
 							<SwitchTransition mode="out-in">
 								<CSSTransition
-									key={buttonGraphic ? "x" : "y"}
+									key={nextExpanded ? "x" : "y"}
 									nodeRef={buttonRef}
 									timeout={300}
 									classNames='fade'>
 									<div ref={buttonRef}>
-										{buttonGraphic === false ? buttonIcon : (<></>)}
-										{buttonGraphic === true ? buttonImage : (<></>)}
+										{buttonGraphic}
 									</div>
 								</CSSTransition>
 							</SwitchTransition>
