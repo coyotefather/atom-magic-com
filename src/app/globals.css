@@ -69,19 +69,34 @@ button.gradient:hover {
 
 .fade-enter{
    opacity: 0;
-   max-height: 200px;
-   overflow: hidden;
 }
 .fade-exit{
    opacity: 1;
-   max-height: 700px;
 }
 .fade-enter-active{
+   opacity: 1;
+   transition: opacity 300ms ease-out;
+}
+.fade-exit-active{
+   opacity: 0;
+   transition: opacity 300ms ease-out;
+}
+
+.fade-grow-enter{
+   opacity: 0;
+   max-height: 200px;
+   overflow: hidden;
+}
+.fade-grow-exit{
+   opacity: 1;
+   max-height: 700px;
+}
+.fade-grow-enter-active{
    opacity: 1;
    max-height: 700px;
    transition: max-height 0.5s ease-out, opacity 300ms ease-in;
 }
-.fade-exit-active{
+.fade-grow-exit-active{
    opacity: 0;
    max-height: 200px;
    overflow: hidden;
