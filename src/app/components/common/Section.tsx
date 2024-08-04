@@ -29,7 +29,7 @@ const Section = ({
 		<Icon
 			path={mdiArrowUpBoldCircleOutline}
 			className="mx-auto text-black"
-			alt="Expand Next Section"
+			title="Expand Next Section"
 			size={2}
 			horizontal
 			vertical />
@@ -42,11 +42,6 @@ const Section = ({
 			className="mx-auto"
 			alt="Review Below Section" />
 	);
-
-	let headTag = (<></>);
-	if(name !== "") {
-		headTag = (<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">{name}</h2>);
-	}
 
 	const handleClick = () => {
 		setButtonGraphic(true);
@@ -82,7 +77,6 @@ const Section = ({
 						'border-black': variant === 'dual'
 					},
 				)}>
-					{headTag}
 					{children}
 					<div className={clsx(
 					'w-[100px] h-[100px] absolute left-1/2 -bottom-[35px]',
