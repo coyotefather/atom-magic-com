@@ -21,10 +21,8 @@ const FunctionButton = ({
 	if(buttonIcon != "") { icon = (
 		<Icon
 			path={buttonIcon}
-			className="inline ml-2"
-			size={1}
-			horizontal
-			vertical />
+			className="inline ml-2 transform-none"
+			size={1} />
 	); }
 	return (
 		<Button
@@ -32,10 +30,10 @@ const FunctionButton = ({
 			radius="full"
 			size="lg"
 			variant="bordered"
+			endContent={icon}
 			className={`${buttonColor} inconsolata uppercase tracking-widest p-2 pl-4 pr-4`}>
 		  		<strong>
 			  		{children}
-			  		{icon}
 		  		</strong>
 		</Button>
 	);
