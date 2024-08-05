@@ -70,7 +70,7 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showChoosePatronage}
-				nextExpanded={true}
+				nextExpanded={showAdjustScoresAndScores}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowAdjustScoresAndScores(true)}>
