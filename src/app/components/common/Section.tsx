@@ -95,7 +95,12 @@ const Section = ({
 					},
 					)}>
 						<div
-							className="bg-standard-gradient border-4 border-black rounded-full w-[70px] h-[70px] grid grid-cols-1 content-center z-10 absolute -left-[35px] bottom-0"
+							className={clsx(
+								"bg-gold border-4 border-black rounded-full w-[70px] h-[70px] grid grid-cols-1 content-center z-10 absolute -left-[35px] bottom-0 transition-all ease-out duration-150",
+								{
+									'cursor-pointer hover:bg-adobe': nextExpanded === false
+								},
+							)}
 							onClick={handleClick}>
 							<SwitchTransition mode="out-in">
 								<CSSTransition
