@@ -100,6 +100,8 @@ const Sections = () => {
 				expandFunction={() => { return; }}>
 				<RollGear />
 			</Section>
+
+
 		</div>
 	);
 };
