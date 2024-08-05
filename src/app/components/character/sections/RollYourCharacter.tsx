@@ -37,28 +37,33 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 
 	return (
 		<div className="bg-standard-gradient border-t-2">
-			<div className="container grid grid-cols-3 pt-8 pb-8">
-				<div className="text-center">
+			<div className="container grid grid-cols-2 pt-8 pb-8">
+				<div>
 					<div className="text-lg pb-4">Make a New Character</div>
 					<FunctionButton
+						iconOnly={false}
 						buttonFunction={handleStartClick}
 						buttonIcon={mdiArrowDownBoldCircleOutline}
 						variant="secondary">Start</FunctionButton>
 				</div>
-					<div className="text-center">
-						<div className="text-lg pb-4">Manage a Character</div>
+				<div className="flex justify-between align-end">
+					<div>
+						<span className="text-lg pb-4">Manage a Character</span>
 						<FunctionButton
+							iconOnly={true}
 							buttonFunction={handleUploadClick}
 							buttonIcon={mdiUploadCircleOutline}
-							variant="secondary">Upload</FunctionButton>
+							variant="secondary"></FunctionButton>
 					</div>
-					<div className="text-center">
-						<div className="text-lg pb-4">Generate a Character</div>
-						<FunctionButton
-							buttonFunction={handleGenerateClick}
-							buttonIcon={mdiDiceMultiple}
-							variant="secondary">Generate</FunctionButton>
+					<div>
+					<span className="text-lg pb-4">Generate a Character</span>
+					<FunctionButton
+						iconOnly={true}
+						buttonFunction={handleGenerateClick}
+						buttonIcon={mdiDiceMultiple}
+						variant="secondary"></FunctionButton>
 					</div>
+				</div>
 			</div>
 			<div ref={bottomRef}></div>
 		</div>
