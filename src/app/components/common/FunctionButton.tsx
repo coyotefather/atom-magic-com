@@ -1,16 +1,19 @@
 'use client';
 import { Button, Link } from "@nextui-org/react";
+import clsx from 'clsx';
 import Icon from '@mdi/react';
 
 const FunctionButton = ({
 		buttonFunction = () => { return true; },
 		buttonIcon = "",
 		variant = "primary",
+		iconOnly,
 		children
 	}: {
 		buttonFunction: Function,
 		buttonIcon: string,
 		variant: string,
+		iconOnly: Boolean
 		children: React.ReactNode
 	}) => {
 	let buttonColor = "";
@@ -21,7 +24,6 @@ const FunctionButton = ({
 	if(buttonIcon != "") { icon = (
 		<Icon
 			path={buttonIcon}
-			className="inline ml-2 transform-none"
 			size={1} />
 	); }
 	return (
@@ -30,11 +32,17 @@ const FunctionButton = ({
 			radius="full"
 			size="lg"
 			variant="bordered"
+			isIconOnly={iconOnly}
 			endContent={icon}
-			className={`${buttonColor} inconsolata uppercase tracking-widest p-2 pl-4 pr-4`}>
-		  		<strong>
+			className={clsx(
+				`${buttonColor}`,
+				{
+					'inconsolata uppercase tracking-widest p-2 pl-4 pr-4' : iconOnly === false
+				}
+			)}>
+		  		<span>
 			  		{children}
-		  		</strong>
+		  		</span>
 		</Button>
 	);
 };
