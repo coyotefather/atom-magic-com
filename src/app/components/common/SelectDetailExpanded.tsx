@@ -62,7 +62,7 @@ const SelectDetail = ({
 				<NextImage
 					width={150}
 					height={150}
-					src="/atom-magic-circle-white.png"
+					src="/atom-magic-circle-black.png"
 					className="opacity-5 mx-auto"
 					alt="Atom Magic Circle" />
 				<div className="text-center m-8 text-sm opacity-75">

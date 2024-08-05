@@ -59,7 +59,7 @@ const ChooseCulture = () => {
 				);
 				setDetails(
 					<SelectDetailExpanded
-						imagePath="/atom-magic-circle-white.png"
+						imagePath="/atom-magic-circle-black.png"
 						name={culture.name}
 						description={culture.description}
 						disabled={false}>
@@ -71,8 +71,8 @@ const ChooseCulture = () => {
 	};
 
 	return (
-		<div className="grid grid-cols-2">
-			<div className="flex justify-end pt-16 pb-16 bg-white">
+		<div className="grid grid-cols-2 divide-x-2 bg-white">
+			<div className="flex justify-end pt-16 pb-16">
 				<div className="max-w-[673px] pr-4">
 					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose a Culture</h2>
 					<p className="pb-2">
@@ -100,7 +100,7 @@ const ChooseCulture = () => {
 					</div>
 				</div>
 			</div>
-			<div className="bg-black text-white pt-16 pb-16">
+			<div className="pt-16 pb-16">
 				<div className="max-w-[768px] pl-4">
 					<SwitchTransition mode="out-in">
 						<CSSTransition

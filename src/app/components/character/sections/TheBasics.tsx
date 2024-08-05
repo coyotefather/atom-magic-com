@@ -72,8 +72,8 @@ const TheBasics = () => {
 
 	return (
 
-		<div className="grid grid-cols-2">
-			<div className="flex justify-end pt-16 pb-16 bg-white">
+		<div className="grid grid-cols-2 divide-x-2 bg-white">
+			<div className="flex justify-end pt-16 pb-16">
 				<div className="max-w-[673px] pr-4">
 					<h2 className="marcellus text-3xl w-full border-b-2 border-solid mb-4">Enter Basics</h2>
 					<p className="pb-2 w-full">
@@ -118,7 +118,7 @@ const TheBasics = () => {
 					/>
 				</div>
 			</div>
-			<div className="bg-black text-white pt-16 pb-16">
+			<div className="pt-16 pb-16">
 				<div className="max-w-[768px] pl-4">
 					<SwitchTransition mode="out-in">
 						<CSSTransition
