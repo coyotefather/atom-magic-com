@@ -32,7 +32,7 @@ const Section = ({
 		if (bottomRef) {
 			setTimeout( () => {
 				bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
-			}, 1000 );
+			}, 500 );
 		}
 	};
 
@@ -60,7 +60,7 @@ const Section = ({
 			<CSSTransition
 				key={expanded ? "x" : "y"}
 				nodeRef={sectionRef}
-				timeout={300}
+				timeout={100}
 				classNames='grow'
 				>
 				<div ref={sectionRef} className={clsx(
@@ -106,7 +106,7 @@ const Section = ({
 								<CSSTransition
 									key={nextExpanded ? "x" : "y"}
 									nodeRef={buttonRef}
-									timeout={300}
+									timeout={100}
 									classNames='fade'>
 									<div ref={buttonRef}>
 										{buttonGraphic}
