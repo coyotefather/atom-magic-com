@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { mdiDiceMultiple } from '@mdi/js';
+import { mdiDownloadCircleOutline, mdiDiceMultiple } from '@mdi/js';
 import FunctionButton from '@/app/components/common/FunctionButton';
 
 const RollYourCharacter = ({
@@ -8,7 +8,24 @@ const RollYourCharacter = ({
 		buttonFunction: Function
 	}) => {
 	const bottomRef = useRef<null | HTMLDivElement>(null);
-	const handleClick = () => {
+	const handleStartClick = () => {
+		if (bottomRef) {
+			setTimeout( () => {
+				bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
+			}, 500 );
+		}
+		console.log("start character");
+	};
+	const handleUploadClick = () => {
+		buttonFunction();
+		if (bottomRef) {
+			setTimeout( () => {
+				bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
+			}, 500 );
+		}
+		console.log("upload character");
+	};
+	const handleGenerateClick = () => {
 		buttonFunction();
 		if (bottomRef) {
 			setTimeout( () => {
@@ -19,22 +36,29 @@ const RollYourCharacter = ({
 	};
 
 	return (
-		<div className="grid grid-cols-2 w-full bg-standard-gradient border-t-2">
-			<div className="flex justify-end pt-16 pb-16">
-				<div className="max-w-[673px] pr-4">
-					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Roll a Character?</h2>
-					Want to skip manually creating a character and just create one automatically? You can adjust everything later. If not, continue below to create your character.
+		<div className="bg-standard-gradient border-t-2">
+			<div className="container flex justify-around pt-8 pb-8">
+				<div>
+					<div>Making a new character? Start below.</div>
+					<FunctionButton
+						buttonFunction={handleStartClick}
+						buttonIcon={mdiDownloadCircleOutline}
+						variant="secondary">Start</FunctionButton>
 				</div>
-			</div>
-			<div className="pt-16 pb-16">
-				<div className="max-w-[768px] pl-4 h-full grid grid-cols-1 content-center">
-					<div className="text-center">
+					<div>
+						<div>Have a character already? Upload it to manage it.</div>
 						<FunctionButton
-							buttonFunction={handleClick}
-							buttonIcon={mdiDiceMultiple}
-							variant="secondary">Roll Character</FunctionButton>
+							buttonFunction={handleUploadClick}
+							buttonIcon={mdiDownloadCircleOutline}
+							variant="secondary">Upload and Manage</FunctionButton>
 					</div>
-				</div>
+					<div>
+						<div>Want to skip the line and quickly generate a character?</div>
+						<FunctionButton
+							buttonFunction={handleGenerateClick}
+							buttonIcon={mdiDiceMultiple}
+							variant="secondary">Generate</FunctionButton>
+					</div>
 			</div>
 			<div ref={bottomRef}></div>
 		</div>
