@@ -1,8 +1,8 @@
 import { useRef } from 'react';
-import { mdiDownloadCircleOutline, mdiDiceMultiple } from '@mdi/js';
+import { mdiArrowDownBoldCircleOutline, mdiUploadCircleOutline, mdiDiceMultiple } from '@mdi/js';
 import FunctionButton from '@/app/components/common/FunctionButton';
 
-const RollYourCharacter = ({
+ const RollYourCharacter = ({
 		buttonFunction,
 	}: {
 		buttonFunction: Function
@@ -37,23 +37,23 @@ const RollYourCharacter = ({
 
 	return (
 		<div className="bg-standard-gradient border-t-2">
-			<div className="container flex justify-around pt-8 pb-8">
-				<div>
-					<div>Making a new character? Start below.</div>
+			<div className="container grid grid-cols-3 pt-8 pb-8">
+				<div className="text-center">
+					<div className="text-lg pb-4">Make a New Character</div>
 					<FunctionButton
 						buttonFunction={handleStartClick}
-						buttonIcon={mdiDownloadCircleOutline}
+						buttonIcon={mdiArrowDownBoldCircleOutline}
 						variant="secondary">Start</FunctionButton>
 				</div>
-					<div>
-						<div>Have a character already? Upload it to manage it.</div>
+					<div className="text-center">
+						<div className="text-lg pb-4">Manage a Character</div>
 						<FunctionButton
 							buttonFunction={handleUploadClick}
-							buttonIcon={mdiDownloadCircleOutline}
-							variant="secondary">Upload and Manage</FunctionButton>
+							buttonIcon={mdiUploadCircleOutline}
+							variant="secondary">Upload</FunctionButton>
 					</div>
-					<div>
-						<div>Want to skip the line and quickly generate a character?</div>
+					<div className="text-center">
+						<div className="text-lg pb-4">Generate a Character</div>
 						<FunctionButton
 							buttonFunction={handleGenerateClick}
 							buttonIcon={mdiDiceMultiple}
