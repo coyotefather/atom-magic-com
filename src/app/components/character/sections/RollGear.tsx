@@ -21,6 +21,7 @@ const RollGear = () => {
 						<FunctionButton
 							buttonFunction={rollGear}
 							buttonIcon={mdiDiceMultiple}
+							iconOnly={false}
 							variant="secondary">Roll Gear</FunctionButton>
 					</div>
 				</div>
