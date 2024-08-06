@@ -14,7 +14,7 @@ const marcellus = Marcellus_SC({
   variable: '--font-marcellus',
   subsets: ["latin"] });
 const inconsolata = Inconsolata({
-  weight: ['200','400','600'],
+  weight: ['200', '300', '400', '500', '600', '700', '800'],
   variable: '--font-inconsolata',
   subsets: ["latin"] });
 
