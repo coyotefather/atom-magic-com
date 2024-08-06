@@ -13,7 +13,7 @@ const FunctionButton = ({
 		buttonFunction: Function,
 		buttonIcon: string,
 		variant: string,
-		iconOnly: Boolean
+		iconOnly: boolean
 		children: React.ReactNode
 	}) => {
 	let buttonColor = "";
