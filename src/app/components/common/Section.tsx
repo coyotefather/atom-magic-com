@@ -2,10 +2,10 @@
 import { useState, useRef } from 'react';
 import clsx from 'clsx';
 import FunctionButton from '@/app/components/common/FunctionButton';
-import {Image} from "@nextui-org/image";
 import NextImage from "next/image";
-import { mdiArrowUpBoldCircleOutline } from '@mdi/js';
+import { mdiArrowDownBoldCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
+import { Button, Link, Image } from "@nextui-org/react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const Section = ({
@@ -38,19 +38,16 @@ const Section = ({
 
 	let buttonGraphic = (
 		<Icon
-			path={mdiArrowUpBoldCircleOutline}
-			className="mx-auto text-black"
-			size={2}
-			horizontal
-			vertical />
+			path={mdiArrowDownBoldCircleOutline}
+			className="text-black"
+			size={1} />
 	);
 	if(nextExpanded) {
 		buttonGraphic = (
 			<NextImage
-				width={40}
-				height={40}
+				width={20}
+				height={20}
 				src="/atom-magic-circle-black.png"
-				className="mx-auto"
 				alt="Review Below Section" />
 		);
 	}
@@ -94,26 +91,40 @@ const Section = ({
 						'w-[0px] h-[0px] hidden': showExpandButton === false
 					},
 					)}>
-						<div
-							className={clsx(
-								"bg-gold border-4 border-black rounded-full w-[70px] h-[70px] grid grid-cols-1 content-center z-10 absolute -left-[35px] bottom-0 transition-all ease-out duration-150",
-								{
-									'cursor-pointer hover:bg-adobe': nextExpanded === false
-								},
-							)}
-							onClick={handleClick}>
-							<SwitchTransition mode="out-in">
-								<CSSTransition
-									key={nextExpanded ? "x" : "y"}
-									nodeRef={buttonRef}
-									timeout={100}
-									classNames='fade'>
-									<div ref={buttonRef}>
-										{buttonGraphic}
-									</div>
-								</CSSTransition>
-							</SwitchTransition>
-						</div>
+						<SwitchTransition mode="out-in">
+							<CSSTransition
+								key={nextExpanded ? "x" : "y"}
+								nodeRef={buttonRef}
+								timeout={100}
+								classNames='fade'>
+								<div className={clsx(
+									"rounded-full z-10 absolute bottom-[10px] bg-sunset-gradient border-black transition-all duration-300 ease-out",
+									{ '-left-[74px]': !nextExpanded },
+									{ '-left-[23px]': nextExpanded },
+								)}>
+									<Button
+										ref={buttonRef}
+										onClick={handleClick}
+										radius="full"
+										size="lg"
+										variant="bordered"
+										isIconOnly={nextExpanded}
+										endContent={buttonGraphic}
+										isDisabled={nextExpanded}
+										disableRipple={true}
+										className={clsx("text-black inconsolata font-bold border-black bg-transparent transition-all duration-300 ease-out",
+											{
+												'hover:bg-sunset-red uppercase tracking-widest p-2 pl-4 pr-4': nextExpanded === false
+											},
+											{
+												'cursor-default bg-white opacity-100': nextExpanded === true
+											},
+										)}>
+										{ nextExpanded ? "" : "CONTINUE"}
+									</Button>
+								</div>
+							</CSSTransition>
+						</SwitchTransition>
 					</div>
 					<div ref={bottomRef}></div>
 				</div>
