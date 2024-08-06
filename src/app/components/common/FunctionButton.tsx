@@ -35,7 +35,7 @@ const FunctionButton = ({
 			isIconOnly={iconOnly}
 			endContent={icon}
 			className={clsx(
-				`${buttonColor}`,
+				`${buttonColor} font-bold`,
 				{
 					'inconsolata uppercase tracking-widest p-2 pl-4 pr-4' : iconOnly === false
 				}
