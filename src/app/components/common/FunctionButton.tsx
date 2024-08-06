@@ -7,7 +7,7 @@ const FunctionButton = ({
 		buttonFunction = () => { return true; },
 		buttonIcon = "",
 		variant = "primary",
-		iconOnly,
+		iconOnly = false,
 		children
 	}: {
 		buttonFunction: Function,
