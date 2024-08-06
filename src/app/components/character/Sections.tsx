@@ -80,7 +80,7 @@ const Sections = () => {
 				expanded={showAdjustScoresAndScores}
 				nextExpanded={false}
 				showExpandButton={false}
-				variant="gradient"
+				variant="dark"
 				expandFunction={() => { return; }}>
 				<AdjustScores />
 			</Section>
