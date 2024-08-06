@@ -16,10 +16,10 @@ const Section = ({
 		expandFunction,
 		children
 	}: {
-		expanded: Boolean,
-		nextExpanded: Boolean,
+		expanded: boolean,
+		nextExpanded: boolean,
 		variant: string,
-		showExpandButton: Boolean,
+		showExpandButton: boolean,
 		expandFunction: Function,
 		children: React.ReactNode
 	}) => {
