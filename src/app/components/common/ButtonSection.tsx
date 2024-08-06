@@ -34,6 +34,7 @@ const ButtonSection = ({
 						<FunctionButton
 						  buttonFunction={buttonFunction}
 						  buttonIcon={buttonIcon}
+						  iconOnly={false}
 						  variant="gradient">{buttonText}</FunctionButton>
 					</div>
 				</div>
