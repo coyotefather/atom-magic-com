@@ -36,33 +36,31 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 	};
 
 	return (
-		<div className="bg-standard-gradient border-t-2">
-			<div className="container grid grid-cols-2 pt-8 pb-8">
-				<div>
-					<div className="text-lg pb-4">Make a New Character</div>
+		<div className="bg-sunset-gradient border-t-2">
+			<div className="container grid grid-cols-3 pt-8 pb-8">
+				<div className="text-center">
+					<div className="text-xl pb-4">Make a New Character</div>
 					<FunctionButton
 						iconOnly={false}
 						buttonFunction={handleStartClick}
 						buttonIcon={mdiArrowDownBoldCircleOutline}
 						variant="secondary">Start</FunctionButton>
 				</div>
-				<div className="flex justify-between align-end">
-					<div>
-						<span className="text-lg pb-4">Manage a Character</span>
-						<FunctionButton
-							iconOnly={true}
-							buttonFunction={handleUploadClick}
-							buttonIcon={mdiUploadCircleOutline}
-							variant="secondary"></FunctionButton>
-					</div>
-					<div>
-					<span className="text-lg pb-4">Generate a Character</span>
+				<div className="text-center">
+					<div className="text-xl pb-4">Manage a Character</div>
 					<FunctionButton
-						iconOnly={true}
+						iconOnly={false}
+						buttonFunction={handleUploadClick}
+						buttonIcon={mdiUploadCircleOutline}
+						variant="secondary">Manage</FunctionButton>
+				</div>
+				<div className="text-center">
+					<div className="text-xl pb-4">Generate a Character</div>
+					<FunctionButton
+						iconOnly={false}
 						buttonFunction={handleGenerateClick}
 						buttonIcon={mdiDiceMultiple}
-						variant="secondary"></FunctionButton>
-					</div>
+						variant="secondary">Generate</FunctionButton>
 				</div>
 			</div>
 			<div ref={bottomRef}></div>
