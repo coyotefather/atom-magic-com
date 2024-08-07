@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Section from '@/app/components/common/Section';
 import ButtonSection from '@/app/components/common/ButtonSection';
 import TheBasics from '@/app/components/character/sections/TheBasics';
-import RollYourCharacter from '@/app/components/character/sections/RollYourCharacter';
+import CharacterOptions from '@/app/components/character/sections/CharacterOptions';
 import AdjustScores from '@/app/components/character/sections/scores/AdjustScores';
 import Scores from '@/app/components/character/sections/scores/Scores';
 import ChooseCulture from '@/app/components/character/sections/ChooseCulture';
@@ -41,7 +41,7 @@ const Sections = () => {
 				showExpandButton={false}
 				variant="dual"
 				expandFunction={() => { return; }}>
-				<RollYourCharacter
+				<CharacterOptions
 					buttonFunction={() => rollCharacter()} />
 			</Section>
 			<Section

@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { mdiArrowDownBoldCircleOutline, mdiUploadCircleOutline, mdiDiceMultiple } from '@mdi/js';
 import FunctionButton from '@/app/components/common/FunctionButton';
 
- const RollYourCharacter = ({
+ const CharacterOptions = ({
 		buttonFunction,
 	}: {
 		buttonFunction: Function
@@ -68,4 +68,4 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 	);
 };
 
-export default RollYourCharacter;
+export default CharacterOptions;
