@@ -9,7 +9,7 @@ import Scores from '@/app/components/character/sections/scores/Scores';
 import ChooseCulture from '@/app/components/character/sections/ChooseCulture';
 import ChoosePath from '@/app/components/character/sections/ChoosePath';
 import ChoosePatronage from '@/app/components/character/sections/ChoosePatronage';
-import RollGear from '@/app/components/character/sections/RollGear';
+import ManageGear from '@/app/components/character/sections/ManageGear';
 import { mdiDiceMultiple } from '@mdi/js';
 
 const Sections = () => {
@@ -19,14 +19,14 @@ const Sections = () => {
 	const [showChoosePath, setShowChoosePath] = useState(false);
 	const [showChoosePatronage, setShowChoosePatronage] = useState(false);
 	const [showAdjustScoresAndScores, setShowAdjustScoresAndScores] = useState(false);
-	const [showRollGearAndGear, setShowRollGearAndGear] = useState(false);
+	const [showManageGear, setShowManageGear] = useState(false);
 
 	const rollCharacter = () => {
 		setShowChooseCulture(true);
 		setShowChoosePath(true);
 		setShowChoosePatronage(true);
 		setShowAdjustScoresAndScores(true);
-		setShowRollGearAndGear(true);
+		setShowManageGear(true);
 		console.log("roll character");
 	};
 
@@ -86,19 +86,19 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showAdjustScoresAndScores}
-				nextExpanded={showRollGearAndGear}
+				nextExpanded={showManageGear}
 				showExpandButton={true}
 				variant="dual"
-				expandFunction={() => setShowRollGearAndGear(true)}>
+				expandFunction={() => setShowManageGear(true)}>
 				<Scores />
 			</Section>
 			<Section
-				expanded={showRollGearAndGear}
-				nextExpanded={true}
+				expanded={showManageGear}
+				nextExpanded={false}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => { return; }}>
-				<RollGear />
+				<ManageGear />
 			</Section>
 
 
