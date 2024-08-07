@@ -2,7 +2,7 @@
 import clsx from 'clsx';
 import {Accordion, AccordionItem} from "@nextui-org/accordion";
 import Icon from '@mdi/react';
-import { mdiPlus, mdiMinus } from '@mdi/js';
+import { mdiPlus, mdiMinus, mdiChevronLeftCircle } from '@mdi/js';
 
 const SubScore = ({
 		subscore,
@@ -26,14 +26,15 @@ const SubScore = ({
 					itemClasses={
 						{
 							base: 'pl-0 pr-0',
-							title: `text-gold text-right`,
-							indicator: "text-gold",
+							title: `text-right`,
+							indicator: "",
 						}
 					}
 					fullWidth>
 					<AccordionItem
 						key={`${subscore}_modifiers`}
 						aria-label={`${subscore}_modifiers`}
+						indicator={<Icon path={mdiChevronLeftCircle} size={0.75} />}
 						title="Modifiers">
 						<div className="border-b text-sm">
 							Base Score
@@ -46,10 +47,10 @@ const SubScore = ({
 						<div className={clsx(
 							"text-sm",
 							{
-								"text-adobe" : value < 0
+								"text-adobe font-semibold" : value < 0
 							},
 							{
-								"text-dark-olive-green" : value > 0
+								"text-dark-olive-green font-semibold" : value > 0
 							},
 						)}>
 							Path Modifier
