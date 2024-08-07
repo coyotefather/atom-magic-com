@@ -810,3 +810,186 @@ export const CARDINALS = [
 		]
 	}
 ];
+
+export const GEAR = {
+	weapons: {
+		theurgist: [
+			{
+				name: "Basic Staff",
+				latin: "Baculum Simplex",
+				description: "A simple and unadorned staff for focusing and directing energy.",
+				type: "staff",
+				damageBonus: 0,
+				shieldBonus: 0,
+				modifiers: [],
+				value: 1
+			},
+			{
+				name: "Basic Staff of Endurance",
+				latin: "Baculum Simplex Patientiae",
+				description: "This basic staff absorbs energy on behalf of the owner, increasing their endurance.",
+				type: "staff",
+				damageBonus: 0,
+				shieldBonus: 0,
+				modifers: [
+					{ parent: "physical", child: "endurance", value: 5, }
+				],
+				value: 2
+			},
+			{
+				name: "Basic Staff of Electron Excitement",
+				latin: "Baculum Simplex Īrae Ēlectōrum",
+				description: "This staff heightens the excitement of electrons that pass through it, giving a bonus to damage.",
+				type: "weapon",
+				damageBonus: 5,
+				shieldBonus: 0,
+				modifier: [],
+				value: 3
+			},
+		],
+		iconoclast: [
+			{
+				name: "Basic Sword",
+				latin: "Gladius Simplex",
+				description: "A simple and unadorned sword for hacking, slashing, and stabbing.",
+				type: "sword",
+				damageBonus: 0,
+				shieldBonus: 0,
+				modifiers: [],
+				value: 1
+			},
+			{
+				name: "Basic Sword of Endurance",
+				latin: "Gladius Simplex Patientiae",
+				description: "This basic sword absorbs energy on behalf of the owner, increasing their endurance.",
+				type: "sword",
+				damageBonus: 0,
+				shieldBonus: 0,
+				modifers: [
+					{ parent: "physical", child: "endurance", value: 5, }
+				],
+				value: 2
+			},
+		],
+		autodidact: [
+			{
+				name: "Basic Sword",
+				latin: "Gladius Simplex",
+				description: "A simple and unadorned sword for hacking, slashing, and stabbing.",
+				type: "sword",
+				damageBonus: 0,
+				shieldBonus: 0,
+				modifiers: [],
+				value: 1
+			},
+			{
+				name: "Basic Sword of Endurance",
+				latin: "Gladius Simplex Patientiae",
+				description: "This basic sword absorbs energy on behalf of the owner, increasing their endurance.",
+				type: "sword",
+				damageBonus: 0,
+				shieldBonus: 0,
+				modifers: [
+					{ parent: "physical", child: "endurance", value: 5, }
+				],
+				value: 2
+			},
+		],
+	},
+	armor: {
+		theurgist: [
+			{
+				name: "Basic Cloak",
+				latin: "Lacerna Simplex",
+				description: "A basic wool cloak fastened at the shoulder.",
+				type: "armor",
+				damageBonus: 0,
+				shieldBonus: 5,
+				modifiers: [],
+				value: 1
+			},
+			{
+				name: "Basic Cloak of Endurance",
+				latin: "Lacerna Simplex Patientiae",
+				description: "A basic wool cloak that fastens at the shoulder and aborbs energy on behalf of the wearer, increasing endurance.",
+				type: "armor",
+				damageBonus: 0,
+				shieldBonus: 5,
+				modifiers: [
+					{ parent: "physical", child: "endurance", value: 5, }
+				],
+				value: 2
+			},
+		],
+		iconoclast: [
+			{
+				name: "Basic Curiass",
+				latin: "Lōrīca Simplex",
+				description: "A basic leather cuirass fitted to the wearer.",
+				type: "armor",
+				damageBonus: 0,
+				shieldBonus: 5,
+				modifiers: [],
+				value: 1
+			},
+			{
+				name: "Basic Cuirass of Endurance",
+				latin: "Lōrīca Simplex Patientiae",
+				description: "A basic wool cloak that fastens at the shoulder and aborbs energy on behalf of the wearer, increasing endurance.",
+				type: "armor",
+				damageBonus: 0,
+				shieldBonus: 5,
+				modifiers: [
+					{ parent: "physical", child: "endurance", value: 5, }
+				],
+				value: 2
+			},
+		],
+		autodidact: [
+			{
+				name: "Basic Curiass",
+				latin: "Lōrīca Simplex",
+				description: "A basic leather cuirass fitted to the wearer.",
+				type: "armor",
+				damageBonus: 0,
+				shieldBonus: 5,
+				modifiers: [],
+				value: 1
+			},
+			{
+				name: "Basic Cuirass of Endurance",
+				latin: "Lōrīca Simplex Patientiae",
+				description: "A basic wool cloak that fastens at the shoulder and aborbs energy on behalf of the wearer, increasing endurance.",
+				type: "armor",
+				damageBonus: 0,
+				shieldBonus: 5,
+				modifiers: [
+					{ parent: "physical", child: "endurance", value: 5, }
+				],
+				value: 2
+			},
+		],
+	},
+	other: [
+		{
+			name: "Basic Item",
+			latin: "",
+			description: "Asdfsdf",
+			type: "other",
+			damageBonus: 0,
+			shieldBonus: 0,
+			modifiers: [],
+			value: 1
+		},
+		{
+			name: "Basic Item of something",
+			latin: "",
+			description: "Asdfsdf",
+			type: "other",
+			damageBonus: 0,
+			shieldBonus: 0,
+			modifiers: [],
+			value: 2
+		},
+	]
+};
