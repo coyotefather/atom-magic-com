@@ -82,7 +82,7 @@ const ChoosePatronage = () => {
 						Optionally choose a patronage from a Cardinal. This doesn&apos;t directly affect your base or calculated scores but can affect actions you take.
 					</p>
 					<p className="pb-2 w-full">
-						For more information, see <a href="https://atom-magic.com/codex/Cardinal_Forces" title="Cardinal Forces">Cardinal Forces</a>.
+						For more information, see <ExternalLink href="https://atom-magic.com/codex/Cardinal_Forces" name="Cardinal Forces" />.
 					</p>
 					<div className="m-auto w-full">
 						<Select
