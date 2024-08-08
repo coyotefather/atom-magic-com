@@ -821,7 +821,9 @@ export const GEAR = {
 				type: "staff",
 				damageBonus: 0,
 				shieldBonus: 0,
-				modifiers: [],
+				modifiers: [
+					{ parent: "physical", child: "speed", value: 5, }
+				],
 				value: 1
 			},
 			{
@@ -831,7 +833,7 @@ export const GEAR = {
 				type: "staff",
 				damageBonus: 0,
 				shieldBonus: 0,
-				modifers: [
+				modifiers: [
 					{ parent: "physical", child: "endurance", value: 5, }
 				],
 				value: 2
@@ -843,7 +845,9 @@ export const GEAR = {
 				type: "weapon",
 				damageBonus: 5,
 				shieldBonus: 0,
-				modifier: [],
+				modifiers: [
+					{ parent: "physical", child: "reflex", value: 5, }
+				],
 				value: 3
 			},
 		],
@@ -855,7 +859,9 @@ export const GEAR = {
 				type: "sword",
 				damageBonus: 0,
 				shieldBonus: 0,
-				modifiers: [],
+				modifiers: [
+					{ parent: "physical", child: "endurance", value: 5, }
+				],
 				value: 1
 			},
 			{
@@ -865,8 +871,8 @@ export const GEAR = {
 				type: "sword",
 				damageBonus: 0,
 				shieldBonus: 0,
-				modifers: [
-					{ parent: "physical", child: "endurance", value: 5, }
+				modifiers: [
+					{ parent: "physical", child: "reflex", value: 5, }
 				],
 				value: 2
 			},
@@ -879,7 +885,9 @@ export const GEAR = {
 				type: "sword",
 				damageBonus: 0,
 				shieldBonus: 0,
-				modifiers: [],
+				modifiers: [
+					{ parent: "physical", child: "reflex", value: 5, }
+				],
 				value: 1
 			},
 			{
@@ -889,7 +897,7 @@ export const GEAR = {
 				type: "sword",
 				damageBonus: 0,
 				shieldBonus: 0,
-				modifers: [
+				modifiers: [
 					{ parent: "physical", child: "endurance", value: 5, }
 				],
 				value: 2
@@ -905,7 +913,9 @@ export const GEAR = {
 				type: "armor",
 				damageBonus: 0,
 				shieldBonus: 5,
-				modifiers: [],
+				modifiers: [
+					{ parent: "physical", child: "reflex", value: 5, }
+				],
 				value: 1
 			},
 			{
@@ -929,7 +939,9 @@ export const GEAR = {
 				type: "armor",
 				damageBonus: 0,
 				shieldBonus: 5,
-				modifiers: [],
+				modifiers: [
+					{ parent: "physical", child: "speed", value: 5, }
+				],
 				value: 1
 			},
 			{
@@ -953,7 +965,9 @@ export const GEAR = {
 				type: "armor",
 				damageBonus: 0,
 				shieldBonus: 5,
-				modifiers: [],
+				modifiers: [
+					{ parent: "physical", child: "speed", value: 5, }
+				],
 				value: 1
 			},
 			{
