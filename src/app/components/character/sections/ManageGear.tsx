@@ -3,13 +3,22 @@ import { useState, useRef } from 'react';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
 import FunctionButton from '@/app/components/common/FunctionButton';
-import { PATHS } from '@/app/lib/global-data';
+import { GEAR } from '@/app/lib/global-data';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
 import clsx from 'clsx';
 import { mdiDiceMultiple } from '@mdi/js';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const ManageGear = () => {
+
+	// function via Mozilla docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+	function getRandomInt(min, max) {
+		const minCeiled = Math.ceil(min);
+		const maxFloored = Math.floor(max);
+		return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+	}
+
+
 	const detailsRef = useRef(null);
 
 	const [details, setDetails] = useState(
@@ -24,88 +33,82 @@ const ManageGear = () => {
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 
 	let rollGear = () => {
-		console.log("roll gear");
-	};
+		// hardcode path for now
+		const pathId = "theurgist";
+		// all three are arrays of objects
+		const weaponsList = GEAR.weapons[pathId];
+		const armorList = GEAR.armor[pathId];
+		const otherList = GEAR.other;
 
-	const handleSelectChange = (event: React.ChangeEvent) => {
-		let val = (event.target as HTMLInputElement).value;
-		let modifiers = (<></>);
-		let nameWithUnderscores = "";
-		if(val !== "") {
+		const weapon = weaponsList[ getRandomInt(0, (weaponsList.length) )];
+		const armor = armorList[ getRandomInt(0, (armorList.length) )];
+		let content = (<></>);
+
+		if(weapon && armor && otherList) {
+			content = (
+				<div>
+					<Table removeWrapper hideHeader aria-label="Gear">
+						<TableHeader>
+							{["Gear","Details"].map((tc) => (
+								<TableColumn
+									key={tc}
+									className="marcellus text-md bg-transparent border-b-2">
+									{tc}
+								</TableColumn>
+							))}
+						</TableHeader>
+						<TableBody>
+							<TableRow>
+								<TableCell className="flex justify-start pl-0">
+									{weapon.name}
+								</TableCell>
+								<TableCell>
+									{weapon.description}
+									<h4 className="border-b-2 mt-4 mb-2 font-semibold">Weapon Modifiers</h4>
+									{weapon.modifiers.map( (wm, index) => (
+										<div className={clsx(
+											"grid grid-cols-2 capitalize",
+											{ "border-b-1" : index % 2 == 0 && weapon.modifiers.length > 1 }
+										)} key={wm.child}>
+											<div>{wm.child}</div>
+											<div className={clsx(
+												"",
+												{ "text-olive-green" : wm.value > 0 },
+												{ "text-adobe" : wm.value < 0 },
+											)}>
+												{wm.value > 0 ? "+" : ""}
+												{wm.value}
+											</div>
+										</div>
+									))}
+								</TableCell>
+							</TableRow>
+							<TableRow>
+								<TableCell>
+									{armor.name}
+								</TableCell>
+								<TableCell>
+									{armor.description}
+									{armor.modifiers.map( (am) => (
+										<div key={am.child}>
+											{am.child} - {am.value}
+										</div>
+									))}
+								</TableCell>
+							</TableRow>
+						</TableBody>
+					</Table>
+				</div>
+			);
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
-			let path = PATHS.find((path) => path.value === val);
-			let allModifiers: {
-				parentName: string,
-				page: string,
-				id: string,
-				name: string,
-				parentId: string,
-				value: number
-			}[] = [];
-			if(path != undefined) {
-				path.modifiers.map((subscore) => {
-					subscore.modifier.map((m) => {
-						if(m.value != 0) {
-							nameWithUnderscores = m.name.replace(/ /g,"_");
-							allModifiers.push({
-								parentName: subscore.name,
-								page: `${subscore.name}#${nameWithUnderscores}`,
-								...m
-							});
-						}
-					});
-				});
-
-				modifiers = (
-					<div className="dark">
-						<Table removeWrapper aria-label={`${path.name} Modifiers`}>
-							<TableHeader>
-								{["Score","Subscore","Modifier"].map((tc) => (
-									<TableColumn
-										key={tc}
-										className="marcellus text-white text-md bg-transparent border-b-2 border-white">
-										{tc}
-									</TableColumn>
-								))}
-							</TableHeader>
-							<TableBody>
-								{allModifiers.map((m) => (
-									<TableRow key={m.id}>
-										<TableCell>
-											{m.parentName}
-										</TableCell>
-										<TableCell className="text-base">
-											<ExternalLink
-											href={`https://atom-magic.com/codex/${m.page}`} name={m.name} />
-										</TableCell>
-										<TableCell className={clsx(
-											'',
-											{
-												'text-adobe': m.value < 0
-											},
-											{
-												'text-olive-green': m.value > 0
-											},
-										)}>
-											{m.value > 0 ? "+" : ""}
-											{m.value}
-										</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-					</div>
-				);
-				setDetails(
-					<SelectDetailExpanded
-						imagePath="/atom-magic-circle-black.png"
-						name={path.name}
-						description={path.description}
-						disabled={false}>
-						{modifiers}
-					</SelectDetailExpanded>
-				);
-			}
+			setDetails(
+				<SelectDetailExpanded
+					imagePath=""
+					name="Gear"
+					description=""
+					disabled={false}>
+					{content}
+				</SelectDetailExpanded>);
 		}
 	};
 
@@ -119,10 +122,11 @@ const ManageGear = () => {
 					</p>
 					<div className="m-auto mt-4">
 						<FunctionButton
-						buttonFunction={rollGear}
-						buttonIcon={mdiDiceMultiple}
-						iconOnly={false}
-						variant="secondary">Roll Gear</FunctionButton>
+							isDisabled={detailsUpdated}
+							buttonFunction={rollGear}
+							buttonIcon={mdiDiceMultiple}
+							iconOnly={false}
+							variant="secondary">Roll Gear</FunctionButton>
 					</div>
 				</div>
 			</div>
