@@ -41,6 +41,7 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 				<div className="text-center">
 					<div className="text-xl pb-4">Make a New Character</div>
 					<FunctionButton
+						isDisabled={false}
 						iconOnly={false}
 						buttonFunction={handleStartClick}
 						buttonIcon={mdiArrowDownBoldCircleOutline}
@@ -49,6 +50,7 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 				<div className="text-center">
 					<div className="text-xl pb-4">Manage a Character</div>
 					<FunctionButton
+						isDisabled={false}
 						iconOnly={false}
 						buttonFunction={handleUploadClick}
 						buttonIcon={mdiUploadCircleOutline}
@@ -57,6 +59,7 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 				<div className="text-center">
 					<div className="text-xl pb-4">Generate a Character</div>
 					<FunctionButton
+						isDisabled={false}
 						iconOnly={false}
 						buttonFunction={handleGenerateClick}
 						buttonIcon={mdiDiceMultiple}

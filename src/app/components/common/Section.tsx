@@ -1,7 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
 import clsx from 'clsx';
-import FunctionButton from '@/app/components/common/FunctionButton';
 import NextImage from "next/image";
 import { mdiArrowDownBoldCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';

@@ -32,6 +32,7 @@ const ButtonSection = ({
 					</div>
 					<div className="m-auto">
 						<FunctionButton
+							isDisabled={false}
 						  buttonFunction={buttonFunction}
 						  buttonIcon={buttonIcon}
 						  iconOnly={false}

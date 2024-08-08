@@ -8,12 +8,14 @@ const FunctionButton = ({
 		buttonIcon = "",
 		variant = "primary",
 		iconOnly = false,
+		isDisabled = false,
 		children
 	}: {
 		buttonFunction: Function,
 		buttonIcon: string,
 		variant: string,
-		iconOnly: boolean
+		iconOnly: boolean,
+		isDisabled: boolean,
 		children: React.ReactNode
 	}) => {
 	let buttonColor = "";
@@ -28,6 +30,7 @@ const FunctionButton = ({
 	); }
 	return (
 		<Button
+			isDisabled={isDisabled}
 			onClick={() => buttonFunction()}
 			radius="full"
 			size="lg"
