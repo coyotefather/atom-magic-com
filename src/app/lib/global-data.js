@@ -816,37 +816,40 @@ export const GEAR = {
 		theurgist: [
 			{
 				name: "Basic Staff",
+				key: "basicStaff",
 				latin: "Baculum Simplex",
 				description: "A simple and unadorned staff for focusing and directing energy.",
 				type: "staff",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
-					{ parent: "physical", child: "speed", value: 5, }
+					{ key: "speed", parent: "physical", child: "speed", value: 5, }
 				],
 				value: 1
 			},
 			{
 				name: "Basic Staff of Endurance",
+				key: "basicStaffOfEndurance",
 				latin: "Baculum Simplex Patientiae",
 				description: "This basic staff absorbs energy on behalf of the owner, increasing their endurance.",
 				type: "staff",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
-					{ parent: "physical", child: "endurance", value: 5, }
+					{ key: "endurance", parent: "physical", child: "endurance", value: 5, }
 				],
 				value: 2
 			},
 			{
 				name: "Basic Staff of Electron Excitement",
+				key: "basicStaffofElectronExcitement",
 				latin: "Baculum Simplex Īrae Ēlectōrum",
 				description: "This staff heightens the excitement of electrons that pass through it, giving a bonus to damage.",
 				type: "weapon",
 				damageBonus: 5,
 				shieldBonus: 0,
 				modifiers: [
-					{ parent: "physical", child: "reflex", value: 5, }
+					{ key: "reflex", parent: "physical", child: "reflex", value: 5, }
 				],
 				value: 3
 			},
@@ -854,25 +857,27 @@ export const GEAR = {
 		iconoclast: [
 			{
 				name: "Basic Sword",
+				key: "basicSword",
 				latin: "Gladius Simplex",
 				description: "A simple and unadorned sword for hacking, slashing, and stabbing.",
 				type: "sword",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
-					{ parent: "physical", child: "endurance", value: 5, }
+					{ key: "endurance", parent: "physical", child: "endurance", value: 5, }
 				],
 				value: 1
 			},
 			{
 				name: "Basic Sword of Endurance",
+				key: "basicSwordOfEndurance",
 				latin: "Gladius Simplex Patientiae",
 				description: "This basic sword absorbs energy on behalf of the owner, increasing their endurance.",
 				type: "sword",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
-					{ parent: "physical", child: "reflex", value: 5, }
+					{ key: "reflex", parent: "physical", child: "reflex", value: 5, }
 				],
 				value: 2
 			},
@@ -880,25 +885,27 @@ export const GEAR = {
 		autodidact: [
 			{
 				name: "Basic Sword",
+				key: "basicSword",
 				latin: "Gladius Simplex",
 				description: "A simple and unadorned sword for hacking, slashing, and stabbing.",
 				type: "sword",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
-					{ parent: "physical", child: "reflex", value: 5, }
+					{ key: "reflex", parent: "physical", child: "reflex", value: 5, }
 				],
 				value: 1
 			},
 			{
 				name: "Basic Sword of Endurance",
+				key: "basicSwordOfEndurance",
 				latin: "Gladius Simplex Patientiae",
 				description: "This basic sword absorbs energy on behalf of the owner, increasing their endurance.",
 				type: "sword",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
-					{ parent: "physical", child: "endurance", value: 5, }
+					{ key: "endurance", parent: "physical", child: "endurance", value: 5, }
 				],
 				value: 2
 			},
@@ -908,25 +915,27 @@ export const GEAR = {
 		theurgist: [
 			{
 				name: "Basic Cloak",
+				key: "basicCloak",
 				latin: "Lacerna Simplex",
 				description: "A basic wool cloak fastened at the shoulder.",
 				type: "armor",
 				damageBonus: 0,
 				shieldBonus: 5,
 				modifiers: [
-					{ parent: "physical", child: "reflex", value: 5, }
+					{ key: "reflex", parent: "physical", child: "reflex", value: 5, }
 				],
 				value: 1
 			},
 			{
 				name: "Basic Cloak of Endurance",
+				key: "basicCloakOfEndurance",
 				latin: "Lacerna Simplex Patientiae",
 				description: "A basic wool cloak that fastens at the shoulder and aborbs energy on behalf of the wearer, increasing endurance.",
 				type: "armor",
 				damageBonus: 0,
 				shieldBonus: 5,
 				modifiers: [
-					{ parent: "physical", child: "endurance", value: 5, }
+					{ key: "endurance", parent: "physical", child: "endurance", value: 5, }
 				],
 				value: 2
 			},
@@ -934,25 +943,27 @@ export const GEAR = {
 		iconoclast: [
 			{
 				name: "Basic Curiass",
+				key: "basicCuirass",
 				latin: "Lōrīca Simplex",
 				description: "A basic leather cuirass fitted to the wearer.",
 				type: "armor",
 				damageBonus: 0,
 				shieldBonus: 5,
 				modifiers: [
-					{ parent: "physical", child: "speed", value: 5, }
+					{ key: "speed", parent: "physical", child: "speed", value: 5, }
 				],
 				value: 1
 			},
 			{
 				name: "Basic Cuirass of Endurance",
+				key: "basicCuirassOfEndurance",
 				latin: "Lōrīca Simplex Patientiae",
 				description: "A basic wool cloak that fastens at the shoulder and aborbs energy on behalf of the wearer, increasing endurance.",
 				type: "armor",
 				damageBonus: 0,
 				shieldBonus: 5,
 				modifiers: [
-					{ parent: "physical", child: "endurance", value: 5, }
+					{ key: "endurance", parent: "physical", child: "endurance", value: 5, }
 				],
 				value: 2
 			},
@@ -960,25 +971,27 @@ export const GEAR = {
 		autodidact: [
 			{
 				name: "Basic Curiass",
+				key: "basicCuirass",
 				latin: "Lōrīca Simplex",
 				description: "A basic leather cuirass fitted to the wearer.",
 				type: "armor",
 				damageBonus: 0,
 				shieldBonus: 5,
 				modifiers: [
-					{ parent: "physical", child: "speed", value: 5, }
+					{ key: "speed", parent: "physical", child: "speed", value: 5, }
 				],
 				value: 1
 			},
 			{
 				name: "Basic Cuirass of Endurance",
+				key: "basicCuirassOfEndurance",
 				latin: "Lōrīca Simplex Patientiae",
 				description: "A basic wool cloak that fastens at the shoulder and aborbs energy on behalf of the wearer, increasing endurance.",
 				type: "armor",
 				damageBonus: 0,
 				shieldBonus: 5,
 				modifiers: [
-					{ parent: "physical", child: "endurance", value: 5, }
+					{ key: "endurance", parent: "physical", child: "endurance", value: 5, }
 				],
 				value: 2
 			},
@@ -987,6 +1000,7 @@ export const GEAR = {
 	other: [
 		{
 			name: "Basic Item",
+			key: "basicItem",
 			latin: "",
 			description: "Asdfsdf",
 			type: "other",
@@ -997,6 +1011,7 @@ export const GEAR = {
 		},
 		{
 			name: "Basic Item of something",
+			key: "basicItemOfSomething",
 			latin: "",
 			description: "Asdfsdf",
 			type: "other",
