@@ -44,7 +44,7 @@ const ChooseCulture = () => {
 							<TableBody>
 								{culture.aspects.map((aspect) => (
 									<TableRow key={aspect.value}>
-										<TableCell className="text-base">
+										<TableCell className="align-top min-w-44">
 											<ExternalLink
 											href={`https://atom-magic.com/codex/${aspect.page}`} name={aspect.name} />
 										</TableCell>
