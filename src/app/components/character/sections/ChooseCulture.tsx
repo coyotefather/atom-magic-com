@@ -101,7 +101,7 @@ const ChooseCulture = () => {
 				</div>
 			</div>
 			<div className="pt-16 pb-16">
-				<div className="max-w-[768px] pl-4">
+				<div className="max-w-[673px] pl-4">
 					<SwitchTransition mode="out-in">
 						<CSSTransition
 				   		key={detailsUpdated ? "x" : "y"}
