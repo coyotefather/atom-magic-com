@@ -52,44 +52,42 @@ const ChoosePath = () => {
 				});
 
 				modifiers = (
-					<div className="dark">
-						<Table removeWrapper aria-label={`${path.name} Modifiers`}>
-							<TableHeader>
-								{["Score","Subscore","Modifier"].map((tc) => (
-									<TableColumn
-										key={tc}
-										className="marcellus text-white text-md bg-transparent border-b-2 border-white">
-										{tc}
-									</TableColumn>
-								))}
-							</TableHeader>
-							<TableBody>
-								{allModifiers.map((m) => (
-									<TableRow key={m.id}>
-										<TableCell>
-											{m.parentName}
-										</TableCell>
-										<TableCell className="text-base">
-											<ExternalLink
-											href={`https://atom-magic.com/codex/${m.page}`} name={m.name} />
-										</TableCell>
-										<TableCell className={clsx(
-											'',
-											{
-												'text-adobe': m.value < 0
-											},
-											{
-												'text-olive-green': m.value > 0
-											},
-										)}>
-											{m.value > 0 ? "+" : ""}
-											{m.value}
-										</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-					</div>
+					<Table isCompact removeWrapper aria-label={`${path.name} Modifiers`}>
+						<TableHeader>
+							{["Score","Subscore","Modifier"].map((tc) => (
+								<TableColumn
+									key={tc}
+									className="bg-transparent border-b-2 pl-0">
+									{tc}
+								</TableColumn>
+							))}
+						</TableHeader>
+						<TableBody>
+							{allModifiers.map((m) => (
+								<TableRow key={m.id} >
+									<TableCell className="align-top pl-0">
+										{m.parentName}
+									</TableCell>
+									<TableCell className="text-base pl-0">
+										<ExternalLink
+										href={`https://atom-magic.com/codex/${m.page}`} name={m.name} />
+									</TableCell>
+									<TableCell className={clsx(
+										'pl-0 font-bold',
+										{
+											'text-adobe': m.value < 0
+										},
+										{
+											'text-dark-olive-green': m.value > 0
+										},
+									)}>
+										{m.value > 0 ? "+" : ""}
+										{m.value}
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
 				);
 				setDetails(
 					<SelectDetailExpanded
