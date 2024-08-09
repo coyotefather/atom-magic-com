@@ -819,7 +819,7 @@ export const GEAR = {
 				key: "basicStaff",
 				latin: "Baculum Simplex",
 				description: "A simple and unadorned staff for focusing and directing energy.",
-				type: "staff",
+				type: "weapon",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
@@ -832,7 +832,7 @@ export const GEAR = {
 				key: "basicStaffOfEndurance",
 				latin: "Baculum Simplex Patientiae",
 				description: "This basic staff absorbs energy on behalf of the owner, increasing their endurance.",
-				type: "staff",
+				type: "weapon",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
@@ -860,7 +860,7 @@ export const GEAR = {
 				key: "basicSword",
 				latin: "Gladius Simplex",
 				description: "A simple and unadorned sword for hacking, slashing, and stabbing.",
-				type: "sword",
+				type: "weapon",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
@@ -873,7 +873,7 @@ export const GEAR = {
 				key: "basicSwordOfEndurance",
 				latin: "Gladius Simplex Patientiae",
 				description: "This basic sword absorbs energy on behalf of the owner, increasing their endurance.",
-				type: "sword",
+				type: "weapon",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
@@ -888,7 +888,7 @@ export const GEAR = {
 				key: "basicSword",
 				latin: "Gladius Simplex",
 				description: "A simple and unadorned sword for hacking, slashing, and stabbing.",
-				type: "sword",
+				type: "weapon",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
@@ -901,7 +901,7 @@ export const GEAR = {
 				key: "basicSwordOfEndurance",
 				latin: "Gladius Simplex Patientiae",
 				description: "This basic sword absorbs energy on behalf of the owner, increasing their endurance.",
-				type: "sword",
+				type: "weapon",
 				damageBonus: 0,
 				shieldBonus: 0,
 				modifiers: [
