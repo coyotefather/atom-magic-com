@@ -71,7 +71,7 @@ const ManageGear = () => {
 				<div className="max-w-[673px] pr-4">
 					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Roll Gear</h2>
 					<p className="pb-2">
-						Every character starts with a basic gear kit and rolls additional unique items and wealth.
+						Every character starts with a basic gear kit and rolls additional unique items based on the chosen path. Some gear will also grant modifiers to scores, giving you further benefits or even penalties.
 					</p>
 					<div className="m-auto mt-4">
 						<FunctionButton
@@ -79,7 +79,7 @@ const ManageGear = () => {
 							buttonFunction={rollGear}
 							buttonIcon={mdiDiceMultiple}
 							iconOnly={false}
-							variant="secondary">Roll Gear</FunctionButton>
+							variant="bordered">Roll Gear</FunctionButton>
 					</div>
 				</div>
 			</div>
