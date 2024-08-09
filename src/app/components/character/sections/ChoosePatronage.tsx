@@ -29,36 +29,37 @@ const ChoosePatronage = () => {
 			let cardinal = CARDINALS.find((cardinal) => cardinal.value === val);
 			if(cardinal != undefined) {
 				patronageEffects = (
-					<div className="dark">
-						<Table removeWrapper aria-label={`${cardinal.name} Patronage Effects`}>
-							<TableHeader>
-								{["Name","Description","Effects"].map((tc) => (
-									<TableColumn
-										key={tc}
-										className="marcellus text-white text-md bg-transparent border-b-2 border-white">
-										{tc}
-									</TableColumn>
-								))}
-							</TableHeader>
-							<TableBody>
-								{(cardinal.effects).map((effect) => (
-									<TableRow key={effect.name}>
-										<TableCell className="text-base">
-											<ExternalLink
-											href={`https://atom-magic.com/codex/${effect.page}`} name={effect.name} />
-										</TableCell>
-										<TableCell className="w-1/3">{effect.description}</TableCell>
-										<TableCell>{effect.levels.map((level) => (
-											<dl key={level.name} className="flex">
-												<dt className="uppercase w-12">{level.name}:</dt>
-												<dd className="">{level.description}</dd>
-											</dl>
-										))}</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-					</div>
+					<Table
+						removeWrapper
+						aria-label={`${cardinal.name} Patronage Effects`}
+						className="mt-8">
+						<TableHeader>
+							{["Name","Description","Effects"].map((tc) => (
+								<TableColumn
+									key={tc}
+									className="bg-transparent border-b-2 pl-0">
+									{tc}
+								</TableColumn>
+							))}
+						</TableHeader>
+						<TableBody>
+							{(cardinal.effects).map((effect) => (
+								<TableRow key={effect.name}>
+									<TableCell className="align-top pl-0">
+										<ExternalLink
+										href={`https://atom-magic.com/codex/${effect.page}`} name={effect.name} />
+									</TableCell>
+									<TableCell className="w-1/3 pl-0">{effect.description}</TableCell>
+									<TableCell className="pl-0">{effect.levels.map((level) => (
+										<dl key={level.name} className="flex">
+											<dt className="uppercase w-12">{level.name}:</dt>
+											<dd className="">{level.description}</dd>
+										</dl>
+									))}</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
 				);
 				setDetails(
 					<SelectDetailExpanded
