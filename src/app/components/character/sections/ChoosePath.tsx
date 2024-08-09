@@ -52,7 +52,7 @@ const ChoosePath = () => {
 				});
 
 				modifiers = (
-					<Table isCompact removeWrapper aria-label={`${path.name} Modifiers`}>
+					<Table isCompact removeWrapper aria-label={`${path.name} Modifiers`} className="mt-8">
 						<TableHeader>
 							{["Score","Subscore","Modifier"].map((tc) => (
 								<TableColumn
