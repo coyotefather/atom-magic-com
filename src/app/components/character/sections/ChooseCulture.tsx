@@ -30,7 +30,11 @@ const ChooseCulture = () => {
 			let culture = CULTURES.find((culture) => culture.value === val);
 			if(culture != undefined) {
 				aspects = (
-					<Table isCompact removeWrapper aria-label={`${culture.name}`}>
+					<Table
+						isCompact
+						removeWrapper
+						aria-label={`${culture.name}`}
+						className="mt-8">
 						<TableHeader>
 							{["Aspect","Description"].map((tc) => (
 								<TableColumn
