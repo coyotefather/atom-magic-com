@@ -333,9 +333,9 @@ export const CARDINALS = [
 				icon: "mdiAnvil",
 				description: "Your callous nature makes it easy for you to ignore the concerns of others.",
 				levels: [
-					{ name: "i", description: "+10% of chance of compelling others." },
-					{ name: "ii", description: "+15% of chance of compelling others." },
-					{ name: "iii", description: "+20% of chance of compelling others." }
+					{ name: "i", description: "+10% to compell." },
+					{ name: "ii", description: "+15% to compell." },
+					{ name: "iii", description: "+20% to compell." }
 				]
 			},
 			{
@@ -371,9 +371,9 @@ export const CARDINALS = [
 				icon: "mdiAtom",
 				description: "Matter and anti-matter are especially receptive to your will.",
 				levels: [
-					{ name: "i", description: "+10% to atom magic techniques." },
-					{ name: "ii", description: "+15% to atom magic techniques." },
-					{ name: "iii", description: "+20% to atom magic techniques." }
+					{ name: "i", description: "+10% to atom magic." },
+					{ name: "ii", description: "+15% to atom magic." },
+					{ name: "iii", description: "+20% to atom magic." }
 				]
 			},
 			{
