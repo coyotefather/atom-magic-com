@@ -112,19 +112,24 @@ const GearTable = ({
 								</AccordionItem>
 							</Accordion>
 						</TableCell>
-						{[g.damageBonus, g.shieldBonus].map((d, index) => (
-							<TableCell
-								key={`${d}-${index}`}
-								className={clsx(
-									"capitalize max-w-8 align-top",
-									{ "font-bold text-dark-olive-green" : d > 0 },
-									{ "font-bold text-adobe" : d < 0 },
-								)}>
-								{ d > 0 ? `+${d}` : "" }
-								{ d < 0 || !Number.isInteger(d) ? d : "" }
-								{ d === 0 ? "-" : "" }
-							</TableCell>
-						))}
+						<TableCell
+							className={clsx(
+								"capitalize max-w-8 align-top",
+								{ "font-bold text-dark-olive-green" : g.damageBonus > 0 },
+								{ "font-bold text-adobe" : g.damageBonus < 0 },
+							)}>
+							{ g.damageBonus > 0 ? `+${g.damageBonus}` : "" }
+							{ g.damageBonus < 0 || g.damageBonus === 0 ? g.damageBonus : "" }
+						</TableCell>
+						<TableCell
+							className={clsx(
+								"capitalize max-w-8 align-top",
+								{ "font-bold text-dark-olive-green" : g.shieldBonus > 0 },
+								{ "font-bold text-adobe" : g.shieldBonus < 0 },
+							)}>
+							{ g.shieldBonus > 0 ? `+${g.shieldBonus}` : "" }
+							{ g.shieldBonus < 0 || g.shieldBonus === 0 ? g.shieldBonus : "" }
+						</TableCell>
 						<TableCell className="max-w-28 align-top">
 							{g.modifiers.map( (gm, index) => (
 								<div className={clsx(
