@@ -30,32 +30,30 @@ const ChooseCulture = () => {
 			let culture = CULTURES.find((culture) => culture.value === val);
 			if(culture != undefined) {
 				aspects = (
-					<div className="dark">
-						<Table removeWrapper aria-label={`${culture.name}`}>
-							<TableHeader>
-								{["Aspect","Description"].map((tc) => (
-									<TableColumn
-										key={tc}
-										className="marcellus text-white text-md bg-transparent border-b-2 border-white">
-										{tc}
-									</TableColumn>
-								))}
-							</TableHeader>
-							<TableBody>
-								{culture.aspects.map((aspect) => (
-									<TableRow key={aspect.value}>
-										<TableCell className="align-top min-w-44">
-											<ExternalLink
-											href={`https://atom-magic.com/codex/${aspect.page}`} name={aspect.name} />
-										</TableCell>
-										<TableCell>
-											{aspect.description}
-										</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-					</div>
+					<Table isCompact removeWrapper aria-label={`${culture.name}`}>
+						<TableHeader>
+							{["Aspect","Description"].map((tc) => (
+								<TableColumn
+									key={tc}
+									className="bg-transparent border-b-2 pl-0">
+									{tc}
+								</TableColumn>
+							))}
+						</TableHeader>
+						<TableBody>
+							{culture.aspects.map((aspect) => (
+								<TableRow key={aspect.value}>
+									<TableCell className="align-top min-w-44 pl-0">
+										<ExternalLink
+										href={`https://atom-magic.com/codex/${aspect.page}`} name={aspect.name} />
+									</TableCell>
+									<TableCell className="pl-0">
+										{aspect.description}
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
 				);
 				setDetails(
 					<SelectDetailExpanded
