@@ -40,7 +40,11 @@ const SelectDetail = ({
 				'hidden': disabled === true,
 			})}>
 				<div className="grid grid-cols-3 gap-4">
-					<div className="col-span-2">
+					<div className={clsx(
+						"",
+						{ "col-span-2": imagePath !== "" },
+						{ "col-span-3": imagePath === "" },
+					)}>
 						<h3 className="marcellus text-3xl border-b-2 mb-4">{name}</h3>
 						<div>
 							{description}
