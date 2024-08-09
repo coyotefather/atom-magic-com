@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef } from 'react';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
+import GearTable from '@/app/components/character/sections/gear/GearTable'
 import ExternalLink from '@/app/components/common/ExternalLink';
 import FunctionButton from '@/app/components/common/FunctionButton';
 import { GEAR } from '@/app/lib/global-data';
@@ -42,63 +43,16 @@ const ManageGear = () => {
 
 		const weapon = weaponsList[ getRandomInt(0, (weaponsList.length) )];
 		const armor = armorList[ getRandomInt(0, (armorList.length) )];
+		const gear = [
+			weapon,
+			armor,
+			...otherList
+		];
 		let content = (<></>);
 
 		if(weapon && armor && otherList) {
 			content = (
-				<div>
-					<Table removeWrapper hideHeader aria-label="Gear">
-						<TableHeader>
-							{["Gear","Details"].map((tc) => (
-								<TableColumn
-									key={tc}
-									className="marcellus text-md bg-transparent border-b-2">
-									{tc}
-								</TableColumn>
-							))}
-						</TableHeader>
-						<TableBody>
-							<TableRow>
-								<TableCell className="flex justify-start pl-0">
-									{weapon.name}
-								</TableCell>
-								<TableCell>
-									{weapon.description}
-									<h4 className="border-b-2 mt-4 mb-2 font-semibold">Weapon Modifiers</h4>
-									{weapon.modifiers.map( (wm, index) => (
-										<div className={clsx(
-											"grid grid-cols-2 capitalize",
-											{ "border-b-1" : index % 2 == 0 && weapon.modifiers.length > 1 }
-										)} key={wm.child}>
-											<div>{wm.child}</div>
-											<div className={clsx(
-												"",
-												{ "text-olive-green" : wm.value > 0 },
-												{ "text-adobe" : wm.value < 0 },
-											)}>
-												{wm.value > 0 ? "+" : ""}
-												{wm.value}
-											</div>
-										</div>
-									))}
-								</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>
-									{armor.name}
-								</TableCell>
-								<TableCell>
-									{armor.description}
-									{armor.modifiers.map( (am) => (
-										<div key={am.child}>
-											{am.child} - {am.value}
-										</div>
-									))}
-								</TableCell>
-							</TableRow>
-						</TableBody>
-					</Table>
-				</div>
+				<GearTable gear={gear} />
 			);
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
 			setDetails(
@@ -131,7 +85,7 @@ const ManageGear = () => {
 				</div>
 			</div>
 			<div className="pt-16 pb-16">
-				<div className="max-w-[768px] pl-4">
+				<div className="max-w-[673px] pl-4">
 					<SwitchTransition mode="out-in">
 						<CSSTransition
 				   		key={detailsUpdated ? "x" : "y"}
