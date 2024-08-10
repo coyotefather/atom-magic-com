@@ -6,7 +6,7 @@ import SubScore from '@/app/components/character/sections/scores/SubScore';
 
 const Score = ({
 		score,
-		modifiers
+		pathModifiers
 	}: {
 		score: {
 			name: string,
@@ -21,7 +21,7 @@ const Score = ({
 				value: number
 			}
 		},
-		modifiers: Map<string, number>
+		pathModifiers: Map<string, number>
 	}) => {
 	return (
 		<div className="mb-8">
@@ -32,7 +32,7 @@ const Score = ({
 			{score.children.map((subscore) => (
 				<SubScore
 					subscore={subscore.name}
-					value={modifiers.get(subscore.id)!}
+					value={pathModifiers.get(subscore.id)!}
 					key={subscore.id} />
 			))}
 			<div className="text-xl mt-2 mb-8">
