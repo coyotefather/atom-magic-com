@@ -24,7 +24,7 @@ const Score = ({
 		modifiers: Map<string, number>
 	}) => {
 	return (
-		<div className="w-full mb-8">
+		<div className="mb-8">
 			<h3 className="marcellus text-2xl border-b-2 border-solid mb-2">
 				{score.name}
 				<span className="float-right font-bold">50</span>
