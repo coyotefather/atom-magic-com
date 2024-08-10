@@ -47,7 +47,7 @@ const SubScore = ({
 							<span className="float-right">0</span>
 						</div>
 						<div className={clsx(
-							"text-sm",
+							"text-sm border-b",
 							{
 								"text-adobe font-semibold" : pathModifier < 0
 							},
