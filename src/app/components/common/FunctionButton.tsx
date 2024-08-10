@@ -34,7 +34,7 @@ const FunctionButton = ({
 			onClick={() => buttonFunction()}
 			radius="full"
 			size="lg"
-			variant={variant}
+			variant="bordered"
 			isIconOnly={iconOnly}
 			endContent={icon}
 			className={clsx(
