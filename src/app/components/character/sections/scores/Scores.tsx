@@ -38,14 +38,26 @@ const Scores = () => {
 		<div className="grid grid-cols-2 divide-x-2 bg-white container">
 			<div className="pt-16 pb-16">
 				<div className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-8 pr-4">
-					<Score score={SCORES.physical} pathModifiers={pathModifiersMap} />
-					<Score score={SCORES.interpersonal} pathModifiers={pathModifiersMap} />
+					<Score
+						score={SCORES.physical}
+						pathModifiers={pathModifiersMap}
+						gearModifiers={gearModifiersMap} />
+					<Score
+						score={SCORES.interpersonal}
+						pathModifiers={pathModifiersMap}
+						gearModifiers={gearModifiersMap} />
 				</div>
 			</div>
 			<div className="pt-16 pb-16">
 				<div className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-8 pl-4">
-					<Score score={SCORES.intellect} pathModifiers={pathModifiersMap} />
-					<Score score={SCORES.psyche} pathModifiers={pathModifiersMap} />
+					<Score
+						score={SCORES.intellect}
+						pathModifiers={pathModifiersMap}
+						gearModifiers={gearModifiersMap} />
+					<Score
+						score={SCORES.psyche}
+						pathModifiers={pathModifiersMap}
+						gearModifiers={gearModifiersMap} />
 				</div>
 			</div>
 		</div>

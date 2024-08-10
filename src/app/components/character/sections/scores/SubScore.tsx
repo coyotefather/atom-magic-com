@@ -6,10 +6,12 @@ import { mdiPlus, mdiMinus, mdiChevronLeftCircle } from '@mdi/js';
 
 const SubScore = ({
 		subscore,
-		value = 0
+		pathModifier = 0,
+		gearModifier = 0
 	}: {
 		subscore: string,
-		value: number
+		pathModifier: number,
+		gearModifier: number
 	}) => {
 	return (
 		<div className="mb-2">
@@ -47,16 +49,31 @@ const SubScore = ({
 						<div className={clsx(
 							"text-sm",
 							{
-								"text-adobe font-semibold" : value < 0
+								"text-adobe font-semibold" : pathModifier < 0
 							},
 							{
-								"text-dark-olive-green font-semibold" : value > 0
+								"text-dark-olive-green font-semibold" : pathModifier > 0
 							},
 						)}>
 							Path Modifier
 							<span className="float-right">
-								{ value > 0 ? "+" : "" }
-								{value}
+								{ pathModifier > 0 ? "+" : "" }
+								{pathModifier}
+							</span>
+						</div>
+						<div className={clsx(
+							"text-sm",
+							{
+								"text-adobe font-semibold" : gearModifier < 0
+							},
+							{
+								"text-dark-olive-green font-semibold" : gearModifier > 0
+							},
+						)}>
+							Gear Modifier
+							<span className="float-right">
+								{ gearModifier > 0 ? "+" : "" }
+								{gearModifier}
 							</span>
 						</div>
 					</AccordionItem>
