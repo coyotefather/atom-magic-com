@@ -13,8 +13,8 @@ const SubScore = ({
 	}) => {
 	return (
 		<div className="mb-2">
-			<span className="text-xl">{subscore}</span>
-			<div className="text-xl w-24 float-right flex justify-between">
+			<span className="font-semibold">{subscore}</span>
+			<div className="w-20 float-right flex justify-between">
 				<Icon className="my-auto" path={mdiMinus} size={0.75} />
 				50
 				<Icon className="my-auto" path={mdiPlus} size={0.75} />
@@ -26,7 +26,7 @@ const SubScore = ({
 					itemClasses={
 						{
 							base: 'pl-0 pr-0',
-							title: `text-right`,
+							title: `text-right text-sm`,
 							indicator: "",
 						}
 					}
