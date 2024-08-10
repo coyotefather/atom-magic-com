@@ -77,7 +77,7 @@ const Section = ({
 						'bg-standard-gradient': variant === 'gradient'
 					},
 					{
-						'border-black': variant === 'dual'
+						'border-black bg-white': variant === 'dual'
 					},
 				)}>
 					{children}
