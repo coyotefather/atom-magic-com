@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto, Inconsolata, Marcellus_SC } from "next/font/google";
 import "./globals.css";
+import StoreProvider from "@/app/StoreProvider";
 import Link from "next/link";
 import NavBar from '@/app/components/global/NavBar';
 import Footer from '@/app/components/global/Footer';
@@ -32,7 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${roboto.variable} ${inconsolata.variable} ${marcellus.variable}`}>
         <NavBar />
-        {children}
+        <StoreProvider>{children}</StoreProvider>
         <Footer />
       </body>
     </html>

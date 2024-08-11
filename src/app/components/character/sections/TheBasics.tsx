@@ -1,71 +1,56 @@
 'use client';
-import { useState, useReducer, useRef} from 'react';
+import { useState, useReducer, useRef } from 'react';
+import { useAppSelector, useAppDispatch, useAppStore } from '@/app/lib/hooks'
+import { setCharacterName, setCharacterAge, setCharacterPronouns, setCharacterDescription } from "@/app/lib/slices/characterSlice";
 import { Input, Textarea } from "@nextui-org/input";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import ExternalLink from '@/app/components/common/ExternalLink';
 
-const reducer = (state: any, action: any) => {
-	if (action.type === 'update_name') {
-		return {
-			name: action.value,
-			age: state.age,
-			pronouns: state.pronouns,
-			description: state.description,
-			detailsUpdated: true
-		};
-	} else if (action.type === 'update_age') {
-		return {
-			name: state.name,
-			age: action.value,
-			pronouns: state.pronouns,
-			description: state.description,
-			detailsUpdated: true
-		};
-	} else if (action.type === 'update_pronouns') {
-		return {
-			name: state.name,
-			age: state.age,
-  			pronouns: action.value,
-			description: state.description,
-			detailsUpdated: true
-		};
-	}
-	else if (action.type === 'update_description') {
-		return {
-			name: state.name,
-			age: state.age,
-			pronouns: state.pronouns,
-			description: action.value,
-			detailsUpdated: true
-		};
-	}
-	throw Error('Unknown action.');
-}
 
 const TheBasics = () => {
 	const detailsRef = useRef(null);
+	// Initialize the store with the product information
+	const store = useAppStore()
 
-	const [state, dispatch] = useReducer(reducer, {
-		name: "",
-		age: 0,
-		pronouns: "",
-		description: "",
-		detailsUpdated: false
-	});
+	const name = useAppSelector(state => state.character.name);
+	const age = useAppSelector(state => state.character.age);
+	const pronouns = useAppSelector(state => state.character.pronouns);
+	const description = useAppSelector(state => state.character.description);
+	const [detailsUpdated, setDetailsUpdated] = useState(false);
+	const dispatch = useAppDispatch()
 
 	const handleChange  = (event: React.ChangeEvent<HTMLInputElement>, updateType: string): void => {
 		const inputTarget = event.target as HTMLInputElement;
-		dispatch({ type: updateType, value: inputTarget.value });
+		switch(updateType) {
+			case "update_name":
+				dispatch(setCharacterName(inputTarget.value));
+				setDetailsUpdated(true);
+				break;
+			case "update_age":
+				dispatch(setCharacterAge(inputTarget.value));
+				setDetailsUpdated(true);
+				break;
+			case "update_pronouns":
+				dispatch(setCharacterPronouns(inputTarget.value));
+				setDetailsUpdated(true);
+				break;
+			case "update_description":
+				dispatch(setCharacterDescription(inputTarget.value));
+				setDetailsUpdated(true);
+				break;
+			default:
+				break;
+		}
 	}
 
 	let subtitle = "";
-	if(state.age != 0 && state.pronouns === "") {
-		subtitle = `${state.age}`;
-	} else if(state.pronouns != "" && state.age === 0) {
-		subtitle = `${state.pronouns}`;
-	} else if(state.age != 0 && state.pronouns != "") {
-		subtitle = `${state.age}, ${state.pronouns}`;
+	if(age != 0 && pronouns === "") {
+		subtitle = `${age}`;
+	} else if(pronouns != "" && age === 0) {
+		subtitle = `${pronouns}`;
+	} else if(age != 0 && pronouns != "") {
+		subtitle = `${age}, ${pronouns}`;
 	} else {
 		subtitle = "Enter basic information about your character.";
 	}
@@ -82,7 +67,7 @@ const TheBasics = () => {
 					<div className="mb-2 flex justify-between">
 						<Input
 							isRequired
-							value={state.name}
+							value={name}
 							onChange={(e) => handleChange(e, 'update_name')}
 							type="text"
 							label="Name"
@@ -91,7 +76,7 @@ const TheBasics = () => {
 							className="w-72"
 							placeholder="Enter Character Name" />
 						<Input
-							value={state.age}
+							value={age}
 							onChange={(e) => handleChange(e, 'update_age')}
 							type="number"
 							label="Age"
@@ -100,7 +85,7 @@ const TheBasics = () => {
 							className="w-20"
 							placeholder="Enter Age" />
 						<Input
-							value={state.pronouns}
+							value={pronouns}
 							onChange={(e) => handleChange(e, 'update_pronouns')}
 							type="text"
 							label="Pronouns"
@@ -122,7 +107,7 @@ const TheBasics = () => {
 				<div className="max-w-[768px] pl-4">
 					<SwitchTransition mode="out-in">
 						<CSSTransition
-						   key={state.detailsUpdated ? "x" : "y"}
+						   key={detailsUpdated ? "x" : "y"}
 						   nodeRef={detailsRef}
 						   timeout={300}
 						   classNames='fade-grow'
@@ -130,11 +115,11 @@ const TheBasics = () => {
 							 <div ref={detailsRef}>
 								<SelectDetailExpanded
 									imagePath=""
-									name={state.name}
+									name={name}
 									description={subtitle}
-									disabled={!state.detailsUpdated}>
+									disabled={!detailsUpdated}>
 									<div className="mt-2">
-										{state.description}
+										{description}
 									</div>
 								</SelectDetailExpanded>
 							 </div>
