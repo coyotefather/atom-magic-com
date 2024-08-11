@@ -32,18 +32,6 @@ const Scores = () => {
 		});
 	}
 
-	// if(gear.weapon && gear.armor) {
-	// 	gear.weapon.modifiers.forEach((m) =>  {
-	// 		gearModifiersMap.set(m.key, m.value);
-	// 	});
-	// 	gear.armor.modifiers.forEach((m) =>  {
-	// 		let check = gearModifiersMap.get(m.key);
-	// 		if(check) {
-	// 			gearModifiersMap.set(m.key, (check + m.value));
-	// 		}
-	// 	});
-	// }
-
 	return (
 		<div className="grid grid-cols-2 divide-x-2 bg-white container">
 			<div className="pt-16 pb-16">
