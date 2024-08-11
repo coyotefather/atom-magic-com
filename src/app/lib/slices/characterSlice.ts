@@ -10,6 +10,22 @@ export interface CharacterState {
 	culture: string,
 	path: string,
 	patronage: string,
+	gear: {
+		name: string,
+		key: string,
+		latin: string,
+		description: string,
+		type: string,
+		damageBonus: number,
+		shieldBonus: number,
+		modifiers: {
+			key: string,
+			parent: string,
+			child: string,
+			value: number,
+		}[],
+		value: number
+	}[],
 }
 
 // Define the initial state using that type
@@ -21,6 +37,7 @@ const initialState: CharacterState = {
 	culture: "",
 	path: "",
 	patronage: "",
+	gear: [],
 }
 
 export const characterSlice = createSlice({
@@ -49,6 +66,11 @@ export const characterSlice = createSlice({
 	setPatronage: (state, action: PayloadAction<string>) => {
 		state.patronage = action.payload;
 	},
+	setGear: (state, action: PayloadAction<string>) => {
+		action.payload.forEach(w => {
+			state.gear.push(w);
+		});
+	},
   }
 })
 
@@ -59,7 +81,8 @@ export const {
 	setCharacterDescription,
 	setCulture,
 	setPath,
-	setPatronage, } = characterSlice.actions
+	setPatronage,
+	setGear, } = characterSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const characterName = (state: RootState) => state.character.name

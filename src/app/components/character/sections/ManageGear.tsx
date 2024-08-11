@@ -1,5 +1,7 @@
 'use client';
 import { useState, useRef } from 'react';
+import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
+import { setGear } from "@/app/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import GearTable from '@/app/components/character/sections/gear/GearTable'
 import ExternalLink from '@/app/components/common/ExternalLink';
@@ -20,6 +22,8 @@ const ManageGear = () => {
 	}
 
 	const detailsRef = useRef(null);
+	const gear = useAppSelector(state => state.character.gear);
+	const dispatch = useAppDispatch();
 
 	const [details, setDetails] = useState(
 		<SelectDetailExpanded
@@ -42,7 +46,7 @@ const ManageGear = () => {
 
 		const weapon = weaponsList[ getRandomInt(0, (weaponsList.length) )];
 		const armor = armorList[ getRandomInt(0, (armorList.length) )];
-		const gear = [
+		const allGear = [
 			weapon,
 			armor,
 			...otherList
@@ -50,8 +54,9 @@ const ManageGear = () => {
 		let content = (<></>);
 
 		if(weapon && armor && otherList) {
+			dispatch(setGear(allGear));
 			content = (
-				<GearTable gear={gear} />
+				<GearTable gear={allGear} />
 			);
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
 			setDetails(
