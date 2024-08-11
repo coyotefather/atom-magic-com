@@ -1,5 +1,5 @@
 'use client';
-import { useState, useReducer, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useAppSelector, useAppDispatch, useAppStore } from '@/app/lib/hooks'
 import { setCharacterName, setCharacterAge, setCharacterPronouns, setCharacterDescription } from "@/app/lib/slices/characterSlice";
 import { Input, Textarea } from "@nextui-org/input";
@@ -20,7 +20,10 @@ const TheBasics = () => {
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 	const dispatch = useAppDispatch()
 
-	const handleChange  = (event: React.ChangeEvent<HTMLInputElement>, updateType: string): void => {
+	const handleChange  = (
+		event: React.ChangeEvent<HTMLInputElement>,
+		updateType: string): void => {
+
 		const inputTarget = event.target as HTMLInputElement;
 		switch(updateType) {
 			case "update_name":
@@ -28,7 +31,7 @@ const TheBasics = () => {
 				setDetailsUpdated(true);
 				break;
 			case "update_age":
-				dispatch(setCharacterAge(inputTarget.value));
+				dispatch(setCharacterAge(Number(inputTarget.value)));
 				setDetailsUpdated(true);
 				break;
 			case "update_pronouns":
@@ -67,7 +70,6 @@ const TheBasics = () => {
 					<div className="mb-2 flex justify-between">
 						<Input
 							isRequired
-							value={name}
 							onChange={(e) => handleChange(e, 'update_name')}
 							type="text"
 							label="Name"
@@ -76,7 +78,6 @@ const TheBasics = () => {
 							className="w-72"
 							placeholder="Enter Character Name" />
 						<Input
-							value={age}
 							onChange={(e) => handleChange(e, 'update_age')}
 							type="number"
 							label="Age"
@@ -85,7 +86,6 @@ const TheBasics = () => {
 							className="w-20"
 							placeholder="Enter Age" />
 						<Input
-							value={pronouns}
 							onChange={(e) => handleChange(e, 'update_pronouns')}
 							type="text"
 							label="Pronouns"
