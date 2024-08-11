@@ -2,6 +2,8 @@
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
 import { CULTURES } from '@/app/lib/global-data';
+import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
+import { setCulture } from "@/app/lib/slices/characterSlice";
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
 import { useState, useRef } from 'react';
@@ -10,6 +12,8 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const ChooseCulture = () => {
 	const detailsRef = useRef(null);
+	const culture = useAppSelector(state => state.character.culture);
+	const dispatch = useAppDispatch();
 
 	const [details, setDetails] = useState(
 		<SelectDetailExpanded
@@ -26,14 +30,15 @@ const ChooseCulture = () => {
 		let val = (event.target as HTMLInputElement).value;
 		let aspects = (<></>);
 		if(val !== "") {
+			dispatch(setCulture(val));
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
-			let culture = CULTURES.find((culture) => culture.value === val);
-			if(culture != undefined) {
+			let chosenCulture = CULTURES.find((c) => c.value === val);
+			if(chosenCulture != undefined) {
 				aspects = (
 					<Table
 						isCompact
 						removeWrapper
-						aria-label={`${culture.name}`}
+						aria-label={`${chosenCulture.name}`}
 						className="mt-8">
 						<TableHeader>
 							{["Aspect","Description"].map((tc) => (
@@ -45,7 +50,7 @@ const ChooseCulture = () => {
 							))}
 						</TableHeader>
 						<TableBody>
-							{culture.aspects.map((aspect) => (
+							{chosenCulture.aspects.map((aspect) => (
 								<TableRow key={aspect.value}>
 									<TableCell className="align-top min-w-44 pl-0">
 										<ExternalLink
@@ -62,8 +67,8 @@ const ChooseCulture = () => {
 				setDetails(
 					<SelectDetailExpanded
 						imagePath="/atom-magic-circle-black.png"
-						name={culture.name}
-						description={culture.description}
+						name={chosenCulture.name}
+						description={chosenCulture.description}
 						disabled={false}>
 						{aspects}
 					</SelectDetailExpanded>
