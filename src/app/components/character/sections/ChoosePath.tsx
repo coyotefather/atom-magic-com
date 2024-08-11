@@ -2,6 +2,8 @@
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
 import { PATHS } from '@/app/lib/global-data';
+import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
+import { setPath } from "@/app/lib/slices/characterSlice";
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
 import { useState, useRef } from 'react';
@@ -10,6 +12,8 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const ChoosePath = () => {
 	const detailsRef = useRef(null);
+	const path = useAppSelector(state => state.character.path);
+	const dispatch = useAppDispatch();
 
 	const [details, setDetails] = useState(
 		<SelectDetailExpanded
@@ -27,8 +31,9 @@ const ChoosePath = () => {
 		let modifiers = (<></>);
 		let nameWithUnderscores = "";
 		if(val !== "") {
+			dispatch(setPath(val));
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
-			let path = PATHS.find((path) => path.value === val);
+			let chosenPath = PATHS.find((p) => p.value === val);
 			let allModifiers: {
 				parentName: string,
 				page: string,
@@ -37,8 +42,8 @@ const ChoosePath = () => {
 				parentId: string,
 				value: number
 			}[] = [];
-			if(path != undefined) {
-				path.modifiers.map((subscore) => {
+			if(chosenPath != undefined) {
+				chosenPath.modifiers.map((subscore) => {
 					subscore.modifier.map((m) => {
 						if(m.value != 0) {
 							nameWithUnderscores = m.name.replace(/ /g,"_");
@@ -52,7 +57,7 @@ const ChoosePath = () => {
 				});
 
 				modifiers = (
-					<Table isCompact removeWrapper aria-label={`${path.name} Modifiers`} className="mt-8">
+					<Table isCompact removeWrapper aria-label={`${chosenPath.name} Modifiers`} className="mt-8">
 						<TableHeader>
 							{["Score","Subscore","Modifier"].map((tc) => (
 								<TableColumn
@@ -92,8 +97,8 @@ const ChoosePath = () => {
 				setDetails(
 					<SelectDetailExpanded
 						imagePath="/atom-magic-circle-black.png"
-						name={path.name}
-						description={path.description}
+						name={chosenPath.name}
+						description={chosenPath.description}
 						disabled={false}>
 						{modifiers}
 					</SelectDetailExpanded>
