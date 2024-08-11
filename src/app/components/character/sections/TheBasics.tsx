@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
-import { useAppSelector, useAppDispatch, useAppStore } from '@/app/lib/hooks'
+import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
 import { setCharacterName, setCharacterAge, setCharacterPronouns, setCharacterDescription } from "@/app/lib/slices/characterSlice";
 import { Input, Textarea } from "@nextui-org/input";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
@@ -10,9 +10,6 @@ import ExternalLink from '@/app/components/common/ExternalLink';
 
 const TheBasics = () => {
 	const detailsRef = useRef(null);
-	// Initialize the store with the product information
-	const store = useAppStore()
-
 	const name = useAppSelector(state => state.character.name);
 	const age = useAppSelector(state => state.character.age);
 	const pronouns = useAppSelector(state => state.character.pronouns);
