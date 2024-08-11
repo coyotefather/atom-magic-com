@@ -40,10 +40,26 @@ export const characterSlice = createSlice({
 	setCharacterDescription: (state, action: PayloadAction<string>) => {
 		state.description = action.payload;
 	},
+	setCulture: (state, action: PayloadAction<string>) => {
+		state.culture = action.payload;
+	},
+	setPath: (state, action: PayloadAction<string>) => {
+		state.path = action.payload;
+	},
+	setPatronage: (state, action: PayloadAction<string>) => {
+		state.patronage = action.payload;
+	},
   }
 })
 
-export const { setCharacterName, setCharacterAge, setCharacterPronouns, setCharacterDescription } = characterSlice.actions
+export const {
+	setCharacterName,
+	setCharacterAge,
+	setCharacterPronouns,
+	setCharacterDescription,
+	setCulture,
+	setPath,
+	setPatronage, } = characterSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const characterName = (state: RootState) => state.character.name
