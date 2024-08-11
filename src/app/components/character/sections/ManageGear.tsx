@@ -23,6 +23,7 @@ const ManageGear = () => {
 
 	const detailsRef = useRef(null);
 	const gear = useAppSelector(state => state.character.gear);
+	const path = useAppSelector(state => state.character.path);
 	const dispatch = useAppDispatch();
 
 	const [details, setDetails] = useState(
@@ -37,11 +38,9 @@ const ManageGear = () => {
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 
 	let rollGear = () => {
-		// hardcode path for now
-		const pathId = "theurgist";
 		// all three are arrays of objects
-		const weaponsList = GEAR.weapons[pathId];
-		const armorList = GEAR.armor[pathId];
+		const weaponsList = GEAR.weapons[path];
+		const armorList = GEAR.armor[path];
 		const otherList = GEAR.other;
 
 		const weapon = weaponsList[ getRandomInt(0, (weaponsList.length) )];
