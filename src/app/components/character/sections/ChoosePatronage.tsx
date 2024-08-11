@@ -2,6 +2,8 @@
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
 import { CARDINALS } from '@/app/lib/global-data';
+import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
+import { setPatronage } from "@/app/lib/slices/characterSlice";
 import {Select, SelectSection, SelectItem} from "@nextui-org/select";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
 import { useState, useRef } from 'react';
@@ -10,6 +12,8 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const ChoosePatronage = () => {
 	const detailsRef = useRef(null);
+	const patronage = useAppSelector(state => state.character.patronage);
+	const dispatch = useAppDispatch();
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 	const [details, setDetails] = useState(
 		<SelectDetailExpanded
@@ -25,6 +29,7 @@ const ChoosePatronage = () => {
 		let val = (event.target as HTMLInputElement).value;
 		let patronageEffects = (<></>);
 		if(val !== "") {
+			dispatch(setPatronage(val));
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
 			let cardinal = CARDINALS.find((cardinal) => cardinal.value === val);
 			if(cardinal != undefined) {
