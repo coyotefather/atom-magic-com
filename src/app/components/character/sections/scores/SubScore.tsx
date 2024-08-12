@@ -3,6 +3,9 @@ import clsx from 'clsx';
 import {Accordion, AccordionItem} from "@nextui-org/accordion";
 import Icon from '@mdi/react';
 import { mdiPlus, mdiMinus, mdiChevronLeftCircle } from '@mdi/js';
+import { useState, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
+import { setGear } from "@/app/lib/slices/characterSlice";
 
 const SubScore = ({
 		subscore,
@@ -13,13 +16,46 @@ const SubScore = ({
 		pathModifier: number,
 		gearModifier: number
 	}) => {
+
+
+	const [baseSubscoreValue, setBaseSubscoreValue] = useState(50);
+	const [calcSubscoreValue, setCalcSubscoreValue] = useState(50);
+	useEffect(() => {
+		let curSubscoreValue = baseSubscoreValue + pathModifier + gearModifier;
+		setCalcSubscoreValue(curSubscoreValue);
+	},[pathModifier, gearModifier, baseSubscoreValue]);
+
+	const handlePlusClick = () => {
+		if(calcSubscoreValue < 100) {
+			let curBase = baseSubscoreValue;
+			curBase++;
+			setBaseSubscoreValue(curBase);
+		}
+	};
+
+	const handleMinusClick = () => {
+		if(calcSubscoreValue > 0) {
+			let curBase = baseSubscoreValue;
+			curBase--;
+			setBaseSubscoreValue(curBase);
+		}
+	};
+
 	return (
 		<div className="mb-2">
 			<span className="font-semibold">{subscore}</span>
 			<div className="w-20 float-right flex justify-between">
-				<Icon className="my-auto" path={mdiMinus} size={0.75} />
-				50
-				<Icon className="my-auto" path={mdiPlus} size={0.75} />
+				<Icon
+					onClick={handleMinusClick}
+					className="my-auto cursor-pointer"
+					path={mdiMinus}
+					size={0.75} />
+				{calcSubscoreValue}
+				<Icon
+					onClick={handlePlusClick}
+					className="my-auto cursor-pointer"
+					path={mdiPlus}
+					size={0.75} />
 			</div>
 			<div className="pb-2 w-full text-sm">
 				<Accordion
@@ -40,7 +76,7 @@ const SubScore = ({
 						title="Modifiers">
 						<div className="border-b text-sm">
 							Base Score
-							<span className="float-right">50</span>
+							<span className="float-right">{baseSubscoreValue}</span>
 						</div>
 						<div className="border-b text-sm">
 							Elective Modifier
