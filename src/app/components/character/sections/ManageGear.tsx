@@ -39,10 +39,9 @@ const ManageGear = () => {
 
 	let rollGear = () => {
 		// all three are arrays of objects
-		const weaponsList = GEAR.weapons[path];
-		const armorList = GEAR.armor[path];
+		const weaponsList = GEAR.weapons[path as keyof typeof GEAR.weapons];
+		const armorList = GEAR.armor[path as keyof typeof GEAR.armor];
 		const otherList = GEAR.other;
-
 		const weapon = weaponsList[ getRandomInt(0, (weaponsList.length) )];
 		const armor = armorList[ getRandomInt(0, (armorList.length) )];
 		const allGear = [
