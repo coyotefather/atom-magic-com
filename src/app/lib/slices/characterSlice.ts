@@ -66,7 +66,7 @@ export const characterSlice = createSlice({
 	setPatronage: (state, action: PayloadAction<string>) => {
 		state.patronage = action.payload;
 	},
-	setGear: (state, action: PayloadAction<string>) => {
+	setGear: (state, action: PayloadAction<Array<any>>) => {
 		action.payload.forEach(w => {
 			state.gear.push(w);
 		});
