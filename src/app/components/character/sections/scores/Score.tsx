@@ -6,6 +6,7 @@ import SubScore from '@/app/components/character/sections/scores/SubScore';
 
 const Score = ({
 		score,
+		scoreValue,
 		pathModifiers,
 		gearModifiers,
 		availablePoints = 0
@@ -23,6 +24,7 @@ const Score = ({
 				value: number
 			}
 		},
+		scoreValue: number,
 		pathModifiers: Map<string, number>,
 		gearModifiers: Map<string, number>,
 		availablePoints: number
@@ -31,7 +33,7 @@ const Score = ({
 		<div className="mb-8">
 			<h3 className="marcellus text-2xl border-b-2 border-solid mb-2">
 				{score.name}
-				<span className="float-right font-bold">50</span>
+				<span className="float-right font-bold">{scoreValue}</span>
 			</h3>
 			{score.children.map((subscore) => (
 				<SubScore
@@ -53,10 +55,10 @@ const Score = ({
 			</div>
 			<div className="text-sm text-right">
 				<div>
-					{score.name} points available: {availablePoints}/200
+					Score points available: {availablePoints}/800
 				</div>
 				<div>
-				Elective points available: 0/20
+					Elective points available: 0/20
 				</div>
 			</div>
 		</div>

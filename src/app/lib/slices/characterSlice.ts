@@ -17,7 +17,7 @@ export interface CharacterState {
 	patronage: string,
 	scores: {
 		physical: {
-			value: 0,
+			value: number,
 			subscores: {
 				agility: number,
 				speed: number,
@@ -26,7 +26,7 @@ export interface CharacterState {
 			}
 		},
 		interpersonal: {
-			value: 0,
+			value: number,
 			subscores: {
 				percievedAttractiveness: number,
 				charm: number,
@@ -35,7 +35,7 @@ export interface CharacterState {
 			}
 		},
 		intellect: {
-			value: 0,
+			value: number,
 			subscores: {
 				knowledge: number,
 				criticalThinking: number,
@@ -44,7 +44,7 @@ export interface CharacterState {
 			}
 		},
 		psyche: {
-			value: 0,
+			value: number,
 			subscores: {
 				mentalStability: number,
 				emotionalStability: number,
@@ -82,7 +82,7 @@ const initialState: CharacterState = {
 	patronage: "",
 	scores: {
 		physical: {
-			value: 0,
+			value: 50,
 			subscores: {
 				agility: 50,
 				speed: 50,
@@ -91,7 +91,7 @@ const initialState: CharacterState = {
 			}
 		},
 		interpersonal: {
-			value: 0,
+			value: 50,
 			subscores: {
 				percievedAttractiveness: 50,
 				charm: 50,
@@ -100,7 +100,7 @@ const initialState: CharacterState = {
 			}
 		},
 		intellect: {
-			value: 0,
+			value: 50,
 			subscores: {
 				knowledge: 50,
 				criticalThinking: 50,
@@ -109,7 +109,7 @@ const initialState: CharacterState = {
 			}
 		},
 		psyche: {
-			value: 0,
+			value: 50,
 			subscores: {
 				mentalStability: 50,
 				emotionalStability: 50,
@@ -155,18 +155,22 @@ export const characterSlice = createSlice({
 	setPhysicalSubscore: (state, action: PayloadAction<Subscore>) => {
 		// expects child, value
 		state.scores.physical.subscores[action.payload.child as keyof typeof state.scores.physical.subscores] = action.payload.value;
+		state.scores.physical.value = Math.round((state.scores.physical.subscores.agility + state.scores.physical.subscores.speed + state.scores.physical.subscores.reflex + state.scores.physical.subscores.endurance)/4);
 	},
 	setInterpersonalSubscore: (state, action: PayloadAction<Subscore>) => {
 		// expects child, value
 		state.scores.interpersonal.subscores[action.payload.child as keyof typeof state.scores.interpersonal.subscores] = action.payload.value;
+		state.scores.interpersonal.value = Math.round((state.scores.interpersonal.subscores.percievedAttractiveness + state.scores.interpersonal.subscores.charm + state.scores.interpersonal.subscores.speech + state.scores.interpersonal.subscores.empathy)/4);
 	},
 	setIntellectSubscore: (state, action: PayloadAction<Subscore>) => {
 		// expects child, value
 		state.scores.intellect.subscores[action.payload.child as keyof typeof state.scores.intellect.subscores] = action.payload.value;
+		state.scores.intellect.value = Math.round((state.scores.intellect.subscores.knowledge + state.scores.intellect.subscores.criticalThinking + state.scores.intellect.subscores.analysis + state.scores.intellect.subscores.judgement)/4);
 	},
 	setPsycheSubscore: (state, action: PayloadAction<Subscore>) => {
 		// expects child, value
 		state.scores.psyche.subscores[action.payload.child as keyof typeof state.scores.psyche.subscores] = action.payload.value;
+		state.scores.psyche.value = Math.round((state.scores.psyche.subscores.mentalStability + state.scores.psyche.subscores.emotionalStability + state.scores.psyche.subscores.focusAndConcentration + state.scores.psyche.subscores.courageAndConviction)/4);
 	},
   }
 })
