@@ -37,6 +37,15 @@ const ManageGear = () => {
 	);
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 
+	const handleClick = () => {
+		if(path) {
+			rollGear();
+		} else {
+			// show error
+			console.log("select path above");
+		}
+	};
+
 	let rollGear = () => {
 		// all three are arrays of objects
 		const weaponsList = GEAR.weapons[path as keyof typeof GEAR.weapons];
@@ -79,7 +88,7 @@ const ManageGear = () => {
 					<div className="m-auto mt-4">
 						<FunctionButton
 							isDisabled={detailsUpdated}
-							buttonFunction={rollGear}
+							buttonFunction={handleClick}
 							buttonIcon={mdiDiceMultiple}
 							iconOnly={false}
 							variant="bordered">Roll Gear</FunctionButton>
