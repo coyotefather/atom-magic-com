@@ -1,8 +1,6 @@
 import Score from '@/app/components/character/sections/scores/Score';
 import { SCORES, PATHS, GEAR } from '@/app/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
-import { setGear } from "@/app/lib/slices/characterSlice";
-
 
 const Scores = () => {
 	const path = useAppSelector(state => state.character.path);
