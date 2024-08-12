@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 
+interface Subscore {
+	child: string,
+	value: number
+};
+
 // Define a type for the slice state
 export interface CharacterState {
 	name: string,
@@ -10,6 +15,44 @@ export interface CharacterState {
 	culture: string,
 	path: string,
 	patronage: string,
+	scores: {
+		physical: {
+			value: 0,
+			subscores: {
+				agility: number,
+				speed: number,
+				reflex: number,
+				endurance: number,
+			}
+		},
+		interpersonal: {
+			value: 0,
+			subscores: {
+				percievedAttractiveness: number,
+				charm: number,
+				speech: number,
+				empathy: number,
+			}
+		},
+		intellect: {
+			value: 0,
+			subscores: {
+				knowledge: number,
+				criticalThinking: number,
+				analysis: number,
+				judgement: number,
+			}
+		},
+		psyche: {
+			value: 0,
+			subscores: {
+				mentalStability: number,
+				emotionalStability: number,
+				focusAndConcentration: number,
+				courageAndConviction: number,
+			}
+		}
+	},
 	gear: {
 		name: string,
 		key: string,
@@ -37,6 +80,44 @@ const initialState: CharacterState = {
 	culture: "",
 	path: "",
 	patronage: "",
+	scores: {
+		physical: {
+			value: 0,
+			subscores: {
+				agility: 50,
+				speed: 50,
+				reflex: 50,
+				endurance: 50,
+			}
+		},
+		interpersonal: {
+			value: 0,
+			subscores: {
+				percievedAttractiveness: 50,
+				charm: 50,
+				speech: 50,
+				empathy: 50,
+			}
+		},
+		intellect: {
+			value: 0,
+			subscores: {
+				knowledge: 50,
+				criticalThinking: 50,
+				analysis: 50,
+				judgement: 50,
+			}
+		},
+		psyche: {
+			value: 0,
+			subscores: {
+				mentalStability: 50,
+				emotionalStability: 50,
+				focusAndConcentration: 50,
+				courageAndConviction: 50,
+			}
+		}
+	},
 	gear: [],
 }
 
@@ -71,6 +152,22 @@ export const characterSlice = createSlice({
 			state.gear.push(w);
 		});
 	},
+	setPhysicalSubscore: (state, action: PayloadAction<Subscore>) => {
+		// expects child, value
+		state.scores.physical.subscores[action.payload.child as keyof typeof state.scores.physical.subscores] = action.payload.value;
+	},
+	setInterpersonalSubscore: (state, action: PayloadAction<Subscore>) => {
+		// expects child, value
+		state.scores.interpersonal.subscores[action.payload.child as keyof typeof state.scores.interpersonal.subscores] = action.payload.value;
+	},
+	setIntellectSubscore: (state, action: PayloadAction<Subscore>) => {
+		// expects child, value
+		state.scores.intellect.subscores[action.payload.child as keyof typeof state.scores.intellect.subscores] = action.payload.value;
+	},
+	setPsycheSubscore: (state, action: PayloadAction<Subscore>) => {
+		// expects child, value
+		state.scores.psyche.subscores[action.payload.child as keyof typeof state.scores.psyche.subscores] = action.payload.value;
+	},
   }
 })
 
@@ -82,7 +179,11 @@ export const {
 	setCulture,
 	setPath,
 	setPatronage,
-	setGear, } = characterSlice.actions
+	setGear,
+	setPhysicalSubscore,
+	setInterpersonalSubscore,
+	setIntellectSubscore,
+	setPsycheSubscore } = characterSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const characterName = (state: RootState) => state.character.name

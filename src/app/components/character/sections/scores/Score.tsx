@@ -7,7 +7,8 @@ import SubScore from '@/app/components/character/sections/scores/SubScore';
 const Score = ({
 		score,
 		pathModifiers,
-		gearModifiers
+		gearModifiers,
+		availablePoints = 0
 	}: {
 		score: {
 			name: string,
@@ -23,7 +24,8 @@ const Score = ({
 			}
 		},
 		pathModifiers: Map<string, number>,
-		gearModifiers: Map<string, number>
+		gearModifiers: Map<string, number>,
+		availablePoints: number
 	}) => {
 	return (
 		<div className="mb-8">
@@ -34,8 +36,11 @@ const Score = ({
 			{score.children.map((subscore) => (
 				<SubScore
 					subscore={subscore.name}
+					subscoreId={subscore.id}
+					parent={score.name}
 					pathModifier={pathModifiers.get(subscore.id)!}
 					gearModifier={gearModifiers.get(subscore.id)!}
+					availablePoints={availablePoints}
 					key={subscore.id} />
 			))}
 			<div className="text-xl mt-2 mb-8">
@@ -48,7 +53,7 @@ const Score = ({
 			</div>
 			<div className="text-sm text-right">
 				<div>
-					{score.name} points available: 0/200
+					{score.name} points available: {availablePoints}/200
 				</div>
 				<div>
 				Elective points available: 0/20
