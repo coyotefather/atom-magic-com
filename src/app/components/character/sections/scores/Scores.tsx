@@ -1,3 +1,4 @@
+'use client';
 import Score from '@/app/components/character/sections/scores/Score';
 import { SCORES, PATHS, GEAR } from '@/app/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
