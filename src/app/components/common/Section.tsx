@@ -4,12 +4,14 @@ import clsx from 'clsx';
 import NextImage from "next/image";
 import { mdiArrowDownBoldCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import { Button, Link, Image } from "@nextui-org/react";
+import { Button, Link, Image, useDisclosure } from "@nextui-org/react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import ErrorDialog from '@/app/components/common/ErrorDialog';
 
 const Section = ({
 		expanded,
 		nextExpanded,
+		incomplete,
 		variant,
 		showExpandButton,
 		expandFunction,
@@ -17,21 +19,28 @@ const Section = ({
 	}: {
 		expanded: boolean,
 		nextExpanded: boolean,
+		incomplete: string[],
 		variant: string,
 		showExpandButton: boolean,
 		expandFunction: Function,
 		children: React.ReactNode
 	}) => {
 
+	const {isOpen, onOpen, onOpenChange} = useDisclosure();
 	const sectionRef = useRef(null);
 	const buttonRef = useRef(null);
 	const bottomRef = useRef<null | HTMLDivElement>(null);
 	const handleClick = () => {
-		expandFunction();
-		if (bottomRef) {
-			setTimeout( () => {
-				bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
-			}, 500 );
+		if(incomplete.length !== 0) {
+			onOpen();
+		} else {
+			expandFunction();
+			if (bottomRef) {
+				setTimeout( () => {
+					bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
+				}, 500 );
+			}
+
 		}
 	};
 
@@ -124,6 +133,13 @@ const Section = ({
 								</div>
 							</CSSTransition>
 						</SwitchTransition>
+						<ErrorDialog
+							title="Please complete the missing fields."
+							message="It looks like you didn't enter all the required information. Please complete the following required field(s):"
+							buttonText="Close"
+							incomplete={incomplete}
+							isOpen={isOpen}
+							onOpenChange={onOpenChange} />
 					</div>
 					<div ref={bottomRef}></div>
 				</div>

@@ -1,7 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Section from '@/app/components/common/Section';
-import ButtonSection from '@/app/components/common/ButtonSection';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import CharacterOptions from '@/app/components/character/sections/CharacterOptions';
 import AdjustScores from '@/app/components/character/sections/scores/AdjustScores';
@@ -10,16 +9,57 @@ import ChooseCulture from '@/app/components/character/sections/ChooseCulture';
 import ChoosePath from '@/app/components/character/sections/ChoosePath';
 import ChoosePatronage from '@/app/components/character/sections/ChoosePatronage';
 import ManageGear from '@/app/components/character/sections/ManageGear';
-import { mdiDiceMultiple } from '@mdi/js';
+import { useAppSelector } from '@/app/lib/hooks';
 
 const Sections = () => {
 
-	const [showTheBasics, setShowTheBasics] = useState(true);
+	const character = useAppSelector(state => state.character);
+	const [basicsIncomplete, setBasicsIncomplete] = useState(["Name"]);
 	const [showChooseCulture, setShowChooseCulture] = useState(false);
+	const [cultureIncomplete, setCultureIncomplete] = useState(["Culture"]);
 	const [showChoosePath, setShowChoosePath] = useState(false);
+	const [pathIncomplete, setPathIncomplete] = useState(["Path"]);
 	const [showChoosePatronage, setShowChoosePatronage] = useState(false);
+	const [patronageIncomplete, setPatronageIncomplete] = useState(["Patronage"]);
 	const [showAdjustScoresAndScores, setShowAdjustScoresAndScores] = useState(false);
 	const [showManageGear, setShowManageGear] = useState(false);
+	const [gearIncomplete, setGearIncomplete] = useState(["Gear"]);
+
+	useEffect( () => {
+		if(character.name !== "") {
+			setBasicsIncomplete([]);
+		} else {
+			setBasicsIncomplete(["Name"]);
+		}
+	},[character.name]);
+	useEffect( () => {
+		if(character.culture !== "") {
+			setCultureIncomplete([]);
+		} else {
+			setCultureIncomplete(["Culture"]);
+		}
+	},[character.culture]);
+	useEffect( () => {
+		if(character.path !== "") {
+			setPathIncomplete([]);
+		} else {
+			setPathIncomplete(["Path"]);
+		}
+	},[character.path]);
+	useEffect( () => {
+		if(character.patronage !== "") {
+			setPatronageIncomplete([]);
+		} else {
+			setPatronageIncomplete(["Patronage"]);
+		}
+	},[character.patronage]);
+	useEffect( () => {
+		if(character.gear.length === 0) {
+			setGearIncomplete([]);
+		} else {
+			setGearIncomplete(["Gear"]);
+		}
+	},[character.gear]);
 
 	const rollCharacter = () => {
 		setShowChooseCulture(true);
@@ -38,6 +78,7 @@ const Sections = () => {
 			<Section
 				expanded={true}
 				nextExpanded={true}
+				incomplete={[]}
 				showExpandButton={false}
 				variant="dual"
 				expandFunction={() => { return; }}>
@@ -45,8 +86,9 @@ const Sections = () => {
 					buttonFunction={() => rollCharacter()} />
 			</Section>
 			<Section
-				expanded={showTheBasics}
+				expanded={true}
 				nextExpanded={showChooseCulture}
+				incomplete={basicsIncomplete}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowChooseCulture(true)}>
@@ -55,6 +97,7 @@ const Sections = () => {
 			<Section
 				expanded={showChooseCulture}
 				nextExpanded={showChoosePath}
+				incomplete={cultureIncomplete}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowChoosePath(true)}>
@@ -63,6 +106,7 @@ const Sections = () => {
 			<Section
 				expanded={showChoosePath}
 				nextExpanded={showChoosePatronage}
+				incomplete={pathIncomplete}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowChoosePatronage(true)}>
@@ -71,6 +115,7 @@ const Sections = () => {
 			<Section
 				expanded={showChoosePatronage}
 				nextExpanded={showAdjustScoresAndScores}
+				incomplete={patronageIncomplete}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowAdjustScoresAndScores(true)}>
@@ -79,6 +124,7 @@ const Sections = () => {
 			<Section
 				expanded={showAdjustScoresAndScores}
 				nextExpanded={false}
+				incomplete={[]}
 				showExpandButton={false}
 				variant="dark"
 				expandFunction={() => { return; }}>
@@ -87,6 +133,7 @@ const Sections = () => {
 			<Section
 				expanded={showAdjustScoresAndScores}
 				nextExpanded={showManageGear}
+				incomplete={[]}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => setShowManageGear(true)}>
@@ -95,6 +142,7 @@ const Sections = () => {
 			<Section
 				expanded={showManageGear}
 				nextExpanded={false}
+				incomplete={gearIncomplete}
 				showExpandButton={true}
 				variant="dual"
 				expandFunction={() => { return; }}>
