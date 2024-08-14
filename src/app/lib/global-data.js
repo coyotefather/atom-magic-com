@@ -162,6 +162,26 @@ export const SCORES = {
 			value: 0
 		},
 	},
+	additional: [
+		{
+			name: "Shield",
+			id: "shield",
+			description: "",
+			value: 0
+		},
+		{
+			name: "Reputation",
+			id: "reputation",
+			description: "",
+			value: 0
+		},
+		{
+			name: "Resurrection Duration",
+			id: "resurrectionDuration",
+			description: "",
+			value: 0
+		},
+	]
 };
 
 export const PATHS = [
