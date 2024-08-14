@@ -51,7 +51,12 @@ export interface CharacterState {
 				focusAndConcentration: number,
 				courageAndConviction: number,
 			}
-		}
+		},
+		additionalScores: {
+			shield: number,
+			reputation: number,
+			resurrectionDuration: number,
+		},
 	},
 	gear: {
 		name: string,
@@ -116,7 +121,12 @@ const initialState: CharacterState = {
 				focusAndConcentration: 50,
 				courageAndConviction: 50,
 			}
-		}
+		},
+		additionalScores: {
+			shield: 50,
+			reputation: 0,
+			resurrectionDuration: 10,
+		},
 	},
 	gear: [],
 }
