@@ -13,14 +13,16 @@ const Section = ({
 		nextExpanded,
 		incomplete,
 		variant,
+		clickCheck,
 		showExpandButton,
 		expandFunction,
 		children
 	}: {
 		expanded: boolean,
 		nextExpanded: boolean,
-		incomplete: string[],
+		incomplete: string,
 		variant: string,
+		clickCheck: Function,
 		showExpandButton: boolean,
 		expandFunction: Function,
 		children: React.ReactNode
@@ -31,9 +33,11 @@ const Section = ({
 	const buttonRef = useRef(null);
 	const bottomRef = useRef<null | HTMLDivElement>(null);
 	const handleClick = () => {
-		if(incomplete.length !== 0) {
+		if(incomplete) {
 			onOpen();
+			clickCheck(true);
 		} else {
+			clickCheck(false);
 			expandFunction();
 			if (bottomRef) {
 				setTimeout( () => {

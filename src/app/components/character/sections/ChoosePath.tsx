@@ -4,15 +4,18 @@ import ExternalLink from '@/app/components/common/ExternalLink';
 import { PATHS } from '@/app/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
 import { setPath } from "@/app/lib/slices/characterSlice";
-import {Select, SelectSection, SelectItem} from "@nextui-org/select";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
+import {Select, SelectItem} from "@nextui-org/select";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 import { useState, useRef } from 'react';
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
-const ChoosePath = () => {
+const ChoosePath = ({
+		incompleteFields
+	}: {
+		incompleteFields: string
+	}) => {
 	const detailsRef = useRef(null);
-	const path = useAppSelector(state => state.character.path);
 	const dispatch = useAppDispatch();
 
 	const [details, setDetails] = useState(
@@ -121,6 +124,8 @@ const ChoosePath = () => {
 					<div className="m-auto">
 						<Select
 							isRequired
+							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
+							errorMessage="Please select a path."
 							variant="bordered"
 							radius="sm"
 							label="Path"

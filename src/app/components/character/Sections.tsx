@@ -14,52 +14,67 @@ import { useAppSelector } from '@/app/lib/hooks';
 const Sections = () => {
 
 	const character = useAppSelector(state => state.character);
-	const [basicsIncomplete, setBasicsIncomplete] = useState(["Name"]);
+	const [basicsIncomplete, setBasicsIncomplete] = useState("init");
 	const [showChooseCulture, setShowChooseCulture] = useState(false);
-	const [cultureIncomplete, setCultureIncomplete] = useState(["Culture"]);
+	const [cultureIncomplete, setCultureIncomplete] = useState("init");
 	const [showChoosePath, setShowChoosePath] = useState(false);
-	const [pathIncomplete, setPathIncomplete] = useState(["Path"]);
+	const [pathIncomplete, setPathIncomplete] = useState("init");
 	const [showChoosePatronage, setShowChoosePatronage] = useState(false);
-	const [patronageIncomplete, setPatronageIncomplete] = useState(["Patronage"]);
+	const [patronageIncomplete, setPatronageIncomplete] = useState("init");
 	const [showAdjustScoresAndScores, setShowAdjustScoresAndScores] = useState(false);
 	const [showManageGear, setShowManageGear] = useState(false);
-	const [gearIncomplete, setGearIncomplete] = useState(["Gear"]);
+	const [gearIncomplete, setGearIncomplete] = useState("init");
+	const [clickCheck, setClickCheck] = useState(false);
 
 	useEffect( () => {
-		if(character.name !== "") {
-			setBasicsIncomplete([]);
+		if(character.name === "" && clickCheck) {
+			setBasicsIncomplete("Name");
+		} else if(character.name === "" && !clickCheck) {
+			setBasicsIncomplete("init");
 		} else {
-			setBasicsIncomplete(["Name"]);
+			setBasicsIncomplete("");
 		}
-	},[character.name]);
+	},[character.name, clickCheck]);
+
 	useEffect( () => {
-		if(character.culture !== "") {
-			setCultureIncomplete([]);
+		if(character.culture === "" && clickCheck) {
+			setCultureIncomplete("Culture");
+		} else if(character.culture === "" && !clickCheck) {
+			setCultureIncomplete("init");
 		} else {
-			setCultureIncomplete(["Culture"]);
+			setCultureIncomplete("");
 		}
-	},[character.culture]);
+	},[character.culture, clickCheck]);
+
 	useEffect( () => {
-		if(character.path !== "") {
-			setPathIncomplete([]);
+		if(character.path === "" && clickCheck) {
+			setPathIncomplete("Path");
+		} else if(character.path === "" && !clickCheck) {
+			setPathIncomplete("init");
 		} else {
-			setPathIncomplete(["Path"]);
+			setPathIncomplete("");
 		}
-	},[character.path]);
+	},[character.path, clickCheck]);
+
 	useEffect( () => {
-		if(character.patronage !== "") {
-			setPatronageIncomplete([]);
+		if(character.patronage === "" && clickCheck) {
+			setPatronageIncomplete("Patronage");
+		} else if(character.patronage === "" && !clickCheck) {
+			setPatronageIncomplete("init");
 		} else {
-			setPatronageIncomplete(["Patronage"]);
+			setPatronageIncomplete("");
 		}
-	},[character.patronage]);
+	},[character.patronage, clickCheck]);
+
 	useEffect( () => {
-		if(character.gear.length === 0) {
-			setGearIncomplete([]);
+		if(character.gear.length === 0 && clickCheck) {
+			setGearIncomplete("Gear");
+		} else if(character.gear.length === 0 && !clickCheck) {
+			setGearIncomplete("init");
 		} else {
-			setGearIncomplete(["Gear"]);
+			setGearIncomplete("");
 		}
-	},[character.gear]);
+	},[character.gear, clickCheck]);
 
 	const rollCharacter = () => {
 		setShowChooseCulture(true);
@@ -70,17 +85,15 @@ const Sections = () => {
 		console.log("roll character");
 	};
 
-	const rollGear = () => {
-		console.log("roll gear");
-	};
 	return (
 		<div className="mt-8">
 			<Section
 				expanded={true}
 				nextExpanded={true}
-				incomplete={[]}
+				incomplete={""}
 				showExpandButton={false}
 				variant="dual"
+				clickCheck={setClickCheck}
 				expandFunction={() => { return; }}>
 				<CharacterOptions
 					buttonFunction={() => rollCharacter()} />
@@ -91,8 +104,9 @@ const Sections = () => {
 				incomplete={basicsIncomplete}
 				showExpandButton={true}
 				variant="dual"
+				clickCheck={setClickCheck}
 				expandFunction={() => setShowChooseCulture(true)}>
-				<TheBasics />
+				<TheBasics incompleteFields={basicsIncomplete} />
 			</Section>
 			<Section
 				expanded={showChooseCulture}
@@ -100,8 +114,9 @@ const Sections = () => {
 				incomplete={cultureIncomplete}
 				showExpandButton={true}
 				variant="dual"
+				clickCheck={setClickCheck}
 				expandFunction={() => setShowChoosePath(true)}>
-				<ChooseCulture />
+				<ChooseCulture incompleteFields={cultureIncomplete} />
 			</Section>
 			<Section
 				expanded={showChoosePath}
@@ -109,8 +124,9 @@ const Sections = () => {
 				incomplete={pathIncomplete}
 				showExpandButton={true}
 				variant="dual"
+				clickCheck={setClickCheck}
 				expandFunction={() => setShowChoosePatronage(true)}>
-				<ChoosePath />
+				<ChoosePath incompleteFields={pathIncomplete} />
 			</Section>
 			<Section
 				expanded={showChoosePatronage}
@@ -118,24 +134,27 @@ const Sections = () => {
 				incomplete={patronageIncomplete}
 				showExpandButton={true}
 				variant="dual"
+				clickCheck={setClickCheck}
 				expandFunction={() => setShowAdjustScoresAndScores(true)}>
-				<ChoosePatronage />
+				<ChoosePatronage incompleteFields={patronageIncomplete} />
 			</Section>
 			<Section
 				expanded={showAdjustScoresAndScores}
 				nextExpanded={false}
-				incomplete={[]}
+				incomplete={""}
 				showExpandButton={false}
 				variant="dark"
+				clickCheck={setClickCheck}
 				expandFunction={() => { return; }}>
 				<AdjustScores />
 			</Section>
 			<Section
 				expanded={showAdjustScoresAndScores}
 				nextExpanded={showManageGear}
-				incomplete={[]}
+				incomplete={""}
 				showExpandButton={true}
 				variant="dual"
+				clickCheck={setClickCheck}
 				expandFunction={() => setShowManageGear(true)}>
 				<Scores />
 			</Section>
@@ -145,8 +164,9 @@ const Sections = () => {
 				incomplete={gearIncomplete}
 				showExpandButton={true}
 				variant="dual"
+				clickCheck={setClickCheck}
 				expandFunction={() => { return; }}>
-				<ManageGear />
+				<ManageGear incompleteFields={gearIncomplete} />
 			</Section>
 
 

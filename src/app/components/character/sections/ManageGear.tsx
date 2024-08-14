@@ -12,7 +12,11 @@ import clsx from 'clsx';
 import { mdiDiceMultiple } from '@mdi/js';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
-const ManageGear = () => {
+const ManageGear = ({
+		incompleteFields
+	}: {
+		incompleteFields: string
+	}) => {
 
 	// function via Mozilla docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 	function getRandomInt(min: number, max: number) {
@@ -86,12 +90,22 @@ const ManageGear = () => {
 						Every character starts with a basic gear kit and rolls additional unique items based on the chosen path. Some gear will also grant modifiers to scores, giving you further benefits or even penalties.
 					</p>
 					<div className="m-auto mt-4">
-						<FunctionButton
-							isDisabled={detailsUpdated}
-							buttonFunction={handleClick}
-							buttonIcon={mdiDiceMultiple}
-							iconOnly={false}
-							variant="bordered">Roll Gear</FunctionButton>
+						<div className={clsx(
+							"inline-block",
+							{"border-2 rounded-full border-danger": incompleteFields && incompleteFields !== "init"},
+						)}>
+							<FunctionButton
+								isDisabled={detailsUpdated}
+								buttonFunction={handleClick}
+								buttonIcon={mdiDiceMultiple}
+								iconOnly={false}
+								variant="secondary">Roll Gear</FunctionButton>
+						</div>
+						<div className={clsx(
+							"text-tiny text-danger mt-2",
+							{"hidden": !incompleteFields || incompleteFields === "init"},
+							{"display-block": incompleteFields && incompleteFields !== "init"},
+						)}>Please roll gear for your character.</div>
 					</div>
 				</div>
 			</div>

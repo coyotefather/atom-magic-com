@@ -8,7 +8,11 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import ExternalLink from '@/app/components/common/ExternalLink';
 
 
-const TheBasics = () => {
+const TheBasics = ({
+		incompleteFields
+	}: {
+		incompleteFields: string
+	}) => {
 	const detailsRef = useRef(null);
 	const name = useAppSelector(state => state.character.name);
 	const age = useAppSelector(state => state.character.age);
@@ -67,6 +71,8 @@ const TheBasics = () => {
 					<div className="mb-2 flex justify-between">
 						<Input
 							isRequired
+							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
+							errorMessage="Please enter a name."
 							onChange={(e) => handleChange(e, 'update_name')}
 							type="text"
 							label="Name"

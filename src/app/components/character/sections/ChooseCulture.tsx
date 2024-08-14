@@ -2,17 +2,19 @@
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
 import { CULTURES } from '@/app/lib/global-data';
-import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
+import { useAppDispatch } from '@/app/lib/hooks'
 import { setCulture } from "@/app/lib/slices/characterSlice";
-import {Select, SelectSection, SelectItem} from "@nextui-org/select";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
+import {Select, SelectItem} from "@nextui-org/select";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import { useState, useRef } from 'react';
-import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
-const ChooseCulture = () => {
+const ChooseCulture = ({
+		incompleteFields
+	}: {
+		incompleteFields: string
+	}) => {
 	const detailsRef = useRef(null);
-	const culture = useAppSelector(state => state.character.culture);
 	const dispatch = useAppDispatch();
 
 	const [details, setDetails] = useState(
@@ -83,7 +85,7 @@ const ChooseCulture = () => {
 				<div className="max-w-[673px] pr-4">
 					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose a Culture</h2>
 					<p className="pb-2">
-						There are many cultures across Solum, though most beings are a member of one of the five main cultures. Choosing a culture will give you two unique aspects.
+						There are many cultures across Solum, though most beings are a member of one of the five main cultures. Choosing a culture will give you two unique aspects. {incompleteFields}
 					</p>
 					<p>
 						For more information, see <ExternalLink href="https://atom-magic.com/codex/Cultures" name="Cultures" />
@@ -91,6 +93,8 @@ const ChooseCulture = () => {
 					<div className="m-auto">
 						<Select
 							isRequired
+							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
+							errorMessage="Please select a culture."
 							variant="bordered"
 							radius="sm"
 							label="Culture"

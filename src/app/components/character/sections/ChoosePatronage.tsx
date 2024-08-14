@@ -4,15 +4,18 @@ import ExternalLink from '@/app/components/common/ExternalLink';
 import { CARDINALS } from '@/app/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
 import { setPatronage } from "@/app/lib/slices/characterSlice";
-import {Select, SelectSection, SelectItem} from "@nextui-org/select";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
+import {Select, SelectItem} from "@nextui-org/select";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 
-const ChoosePatronage = () => {
+const ChoosePatronage = ({
+		incompleteFields
+	}: {
+		incompleteFields: string
+	}) => {
 	const detailsRef = useRef(null);
-	const patronage = useAppSelector(state => state.character.patronage);
 	const dispatch = useAppDispatch();
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 	const [details, setDetails] = useState(
@@ -93,6 +96,8 @@ const ChoosePatronage = () => {
 					<div className="m-auto w-full">
 						<Select
 							isRequired
+							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
+							errorMessage="Please select a patronage."
 							variant="bordered"
 							radius="sm"
 							label="Path"
