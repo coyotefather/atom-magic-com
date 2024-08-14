@@ -182,6 +182,9 @@ export const characterSlice = createSlice({
 		state.scores.psyche.subscores[action.payload.child as keyof typeof state.scores.psyche.subscores] = action.payload.value;
 		state.scores.psyche.value = Math.round((state.scores.psyche.subscores.mentalStability + state.scores.psyche.subscores.emotionalStability + state.scores.psyche.subscores.focusAndConcentration + state.scores.psyche.subscores.courageAndConviction)/4);
 	},
+	setShield: (state) => {
+		state.scores.additionalScores.shield = (state.scores.physical.subscores.endurance + state.scores.psyche.subscores.mentalStability)/2;
+	},
   }
 })
 
