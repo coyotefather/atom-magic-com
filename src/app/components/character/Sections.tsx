@@ -4,6 +4,7 @@ import Section from '@/app/components/common/Section';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import CharacterOptions from '@/app/components/character/sections/CharacterOptions';
 import AdjustScores from '@/app/components/character/sections/scores/AdjustScores';
+import AdditionalScores from '@/app/components/character/sections/scores/AdditionalScores';
 import Scores from '@/app/components/character/sections/scores/Scores';
 import ChooseCulture from '@/app/components/character/sections/ChooseCulture';
 import ChoosePath from '@/app/components/character/sections/ChoosePath';
@@ -150,13 +151,23 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showAdjustScoresAndScores}
+				nextExpanded={false}
+				incomplete={""}
+				showExpandButton={false}
+				variant="dual"
+				clickCheck={setClickCheck}
+				expandFunction={() => { return; }}>
+				<Scores />
+			</Section>
+			<Section
+				expanded={showAdjustScoresAndScores}
 				nextExpanded={showManageGear}
 				incomplete={""}
 				showExpandButton={true}
 				variant="dual"
 				clickCheck={setClickCheck}
 				expandFunction={() => setShowManageGear(true)}>
-				<Scores />
+				<AdditionalScores />
 			</Section>
 			<Section
 				expanded={showManageGear}
