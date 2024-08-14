@@ -183,7 +183,13 @@ export const characterSlice = createSlice({
 		state.scores.psyche.value = Math.round((state.scores.psyche.subscores.mentalStability + state.scores.psyche.subscores.emotionalStability + state.scores.psyche.subscores.focusAndConcentration + state.scores.psyche.subscores.courageAndConviction)/4);
 	},
 	setShield: (state) => {
-		state.scores.additionalScores.shield = (state.scores.physical.subscores.endurance + state.scores.psyche.subscores.mentalStability)/2;
+		state.scores.additionalScores.shield = Math.round((state.scores.physical.subscores.endurance + state.scores.psyche.subscores.mentalStability)/2);
+	},
+	setReputation: (state) => {
+		state.scores.additionalScores.reputation = Math.round((state.scores.interpersonal.subscores.speech + state.scores.interpersonal.subscores.charm + state.scores.intellect.subscores.criticalThinking + state.scores.intellect.subscores.judgement)/10);
+	},
+	setResurrectionDuration: (state) => {
+		state.scores.additionalScores.resurrectionDuration = Math.round(((state.scores.physical.subscores.endurance + state.scores.physical.subscores.speed + state.scores.psyche.subscores.mentalStability + state.scores.psyche.subscores.emotionalStability)/10)/10);
 	},
   }
 })
@@ -200,7 +206,10 @@ export const {
 	setPhysicalSubscore,
 	setInterpersonalSubscore,
 	setIntellectSubscore,
-	setPsycheSubscore } = characterSlice.actions
+	setPsycheSubscore,
+    setShield,
+	setReputation,
+	setResurrectionDuration } = characterSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const characterName = (state: RootState) => state.character.name
