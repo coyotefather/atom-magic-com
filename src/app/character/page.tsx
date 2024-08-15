@@ -8,9 +8,7 @@ const Page = () => {
 			<Header name="Character Manager">
 				<Breadcrumbs
 					page="Character Manager"
-					parents={[
-						  { href: "/tools", name: "Tools" }
-					]}
+					parents={[]}
 				/>
   				Create your player character and start your journey across the world of Solum.
 			</Header>

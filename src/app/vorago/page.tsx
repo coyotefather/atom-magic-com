@@ -8,9 +8,7 @@ const Page = () => {
 			<Header name="Vorago">
 				<Breadcrumbs
 					page="Vorago"
-					parents={[
-						{ href: "/tools", name: "Tools" }
-					]}
+					parents={[]}
 				/>
 				Coming soon!
 			</Header>
