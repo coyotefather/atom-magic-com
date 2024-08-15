@@ -1045,31 +1045,31 @@ export const GEAR = {
 
 export const WEALTH = [
 	{
-		name: "Gold",
-		id: "gold",
-		description: "",
-		type: "currency",
-		VIG: 1,
-	},
-	{
 		name: "Silver",
 		id: "silver",
-		description: "",
+		description: "Individual coins, and the most common form of coinage in Solum.",
 		type: "currency",
 		VIG: 0.001,
 	},
 	{
+		name: "Gold",
+		id: "gold",
+		description: "Individual coins, and the standard used for monetary value.",
+		type: "currency",
+		VIG: 1,
+	},
+	{
 		name: "Lead",
 		id: "lead",
-		description: "",
+		description: "25lbs lead bar. Useful in crafting and in trading currency.",
 		type: "resource",
-		VIG: 0.005,
+		VIG: 2,
 	},
 	{
 		name: "Uranium",
 		id: "uranium",
-		description: "",
+		description: "1lb uranium bar. Useful in crafting and in trading for currency.",
 		type: "resource",
-		VIG: 0.05,
+		VIG: 5,
 	},
 ];
