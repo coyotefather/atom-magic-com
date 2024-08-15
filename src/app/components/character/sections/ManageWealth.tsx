@@ -72,14 +72,14 @@ const ManageGear = ({
 					<Table isCompact removeWrapper aria-label="Wealth">
 						<TableHeader>
 							{["Name","Description","Type","Quantity"].map((tc) => (
-								<TableColumn className="bg-transparent border-b-2 pl-0">
+								<TableColumn key={tc} className="bg-transparent border-b-2 pl-0">
 									{tc}
 								</TableColumn>
 							))}
 						</TableHeader>
 						<TableBody>
 							{WEALTH.map( (w) => (
-								<TableRow>
+								<TableRow key={w.id}>
 									<TableCell className="align-top pl-0 font-bold">
 										{w.name}
 									</TableCell>
@@ -117,7 +117,7 @@ const ManageGear = ({
 				<div className="max-w-[673px] pr-4">
 					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Roll Wealth</h2>
 					<p className="pb-2">
-						Your character will have two types of wealth: currency and resources. The former is used as you'd expect, whereas the latter can be used to make items or be traded for currency.
+						Your character will have two types of wealth: currency and resources. The former is used as you&apos;d expect, whereas the latter can be used to make items or be traded for currency.
 					</p>
 					<div className="m-auto mt-4">
 						<div className={clsx(
