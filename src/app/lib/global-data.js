@@ -1047,21 +1047,29 @@ export const WEALTH = [
 	{
 		name: "Gold",
 		id: "gold",
+		description: "",
+		type: "currency",
 		VIG: 1,
 	},
 	{
 		name: "Silver",
 		id: "silver",
-		VIG: 10,
+		description: "",
+		type: "currency",
+		VIG: 0.001,
 	},
 	{
 		name: "Lead",
 		id: "lead",
-		VIG: 15,
+		description: "",
+		type: "resource",
+		VIG: 0.005,
 	},
 	{
 		name: "Uranium",
 		id: "uranium",
-		VIG: 0.2,
+		description: "",
+		type: "resource",
+		VIG: 0.05,
 	},
 ];
