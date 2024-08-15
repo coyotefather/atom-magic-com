@@ -10,6 +10,7 @@ import ChooseCulture from '@/app/components/character/sections/ChooseCulture';
 import ChoosePath from '@/app/components/character/sections/ChoosePath';
 import ChoosePatronage from '@/app/components/character/sections/ChoosePatronage';
 import ManageGear from '@/app/components/character/sections/ManageGear';
+import ManageWealth from '@/app/components/character/sections/ManageWealth';
 import { useAppSelector } from '@/app/lib/hooks';
 
 const Sections = () => {
@@ -25,6 +26,8 @@ const Sections = () => {
 	const [showAdjustScoresAndScores, setShowAdjustScoresAndScores] = useState(false);
 	const [showManageGear, setShowManageGear] = useState(false);
 	const [gearIncomplete, setGearIncomplete] = useState("init");
+	const [showManageWealth, setShowManageWealth] = useState(false);
+	const [wealthIncomplete, setWealthIncomplete] = useState("init");
 	const [clickCheck, setClickCheck] = useState(false);
 
 	useEffect( () => {
@@ -77,12 +80,23 @@ const Sections = () => {
 		}
 	},[character.gear, clickCheck]);
 
+	useEffect( () => {
+		if(character.wealth.silver === 0 && clickCheck) {
+			setWealthIncomplete("Wealth");
+		} else if(character.wealth.silver === 0 && !clickCheck) {
+			setWealthIncomplete("init");
+		} else {
+			setWealthIncomplete("");
+		}
+	},[character.wealth, clickCheck]);
+
 	const rollCharacter = () => {
 		setShowChooseCulture(true);
 		setShowChoosePath(true);
 		setShowChoosePatronage(true);
 		setShowAdjustScoresAndScores(true);
 		setShowManageGear(true);
+		setShowManageWealth(true);
 		console.log("roll character");
 	};
 
@@ -171,15 +185,24 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showManageGear}
-				nextExpanded={false}
+				nextExpanded={showManageWealth}
 				incomplete={gearIncomplete}
 				showExpandButton={true}
 				variant="dual"
 				clickCheck={setClickCheck}
-				expandFunction={() => { return; }}>
+				expandFunction={() => setShowManageWealth(true)}>
 				<ManageGear incompleteFields={gearIncomplete} />
 			</Section>
-
+			<Section
+				expanded={showManageWealth}
+				nextExpanded={false}
+				incomplete={wealthIncomplete}
+				showExpandButton={true}
+				variant="dual"
+				clickCheck={setClickCheck}
+				expandFunction={() => { return; }}>
+				<ManageWealth incompleteFields={wealthIncomplete} />
+			</Section>
 
 		</div>
 	);

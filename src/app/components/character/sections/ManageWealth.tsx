@@ -5,7 +5,7 @@ import { setWealth } from "@/app/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import FunctionButton from '@/app/components/common/FunctionButton';
 import { WEALTH } from '@/app/lib/global-data';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 import clsx from 'clsx';
 import { mdiDiceMultiple } from '@mdi/js';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
@@ -51,16 +51,16 @@ const ManageGear = ({
 		// all three are arrays of objects
 		let content = (<></>);
 		let rolledWealth = {
-			gold: 0,
 			silver: 0,
+			gold: 0,
 			lead: 0,
 			uranium: 0
 		};
 		//roll wealth
-		rolledWealth.gold = getRandomInt(1, 5);
-		rolledWealth.silver = getRandomInt(1, 20);
-		rolledWealth.lead = getRandomInt(1, 10);
-		rolledWealth.uranium = getRandomInt(1, 5);
+		rolledWealth.silver = getRandomInt(1, 100);
+		rolledWealth.gold = getRandomInt(1, 10);
+		rolledWealth.lead = getRandomInt(1, 20);
+		rolledWealth.uranium = getRandomInt(1, 10);
 
 		if(rolledWealth) {
 			dispatch(setWealth(rolledWealth));
@@ -71,32 +71,25 @@ const ManageGear = ({
 				<div>
 					<Table isCompact removeWrapper aria-label="Wealth">
 						<TableHeader>
-							<TableColumn>
-								Name
-							</TableColumn>
-							<TableColumn>
-								Description
-							</TableColumn>
-							<TableColumn>
-								Value in Gold
-							</TableColumn>
-							<TableColumn>
-								Quantity
-							</TableColumn>
+							{["Name","Description","Type","Quantity"].map((tc) => (
+								<TableColumn className="bg-transparent border-b-2 pl-0">
+									{tc}
+								</TableColumn>
+							))}
 						</TableHeader>
 						<TableBody>
 							{WEALTH.map( (w) => (
 								<TableRow>
-									<TableCell>
+									<TableCell className="align-top pl-0 font-bold">
 										{w.name}
 									</TableCell>
-									<TableCell>
+									<TableCell className="align-top pl-0 max-w-36">
 										{w.description}
 									</TableCell>
-									<TableCell>
-										{w.VIG}
+									<TableCell className="align-top pl-0 capitalize">
+										{w.type}
 									</TableCell>
-									<TableCell>
+									<TableCell className="align-top pl-0 font-bold">
 										{rolledWealth[w.id as keyof typeof rolledWealth]}
 									</TableCell>
 								</TableRow>
@@ -124,7 +117,7 @@ const ManageGear = ({
 				<div className="max-w-[673px] pr-4">
 					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Roll Wealth</h2>
 					<p className="pb-2">
-						Every character starts with a basic gear kit and rolls additional unique items based on the chosen path. Some gear will also grant modifiers to scores, giving you further benefits or even penalties.
+						Your character will have two types of wealth: currency and resources. The former is used as you'd expect, whereas the latter can be used to make items or be traded for currency.
 					</p>
 					<div className="m-auto mt-4">
 						<div className={clsx(
@@ -136,7 +129,7 @@ const ManageGear = ({
 								buttonFunction={handleClick}
 								buttonIcon={mdiDiceMultiple}
 								iconOnly={false}
-								variant="secondary">Roll Gear</FunctionButton>
+								variant="secondary">Roll Wealth</FunctionButton>
 						</div>
 						<div className={clsx(
 							"text-tiny text-danger mt-2",
