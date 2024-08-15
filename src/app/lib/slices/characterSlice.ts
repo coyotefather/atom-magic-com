@@ -6,6 +6,13 @@ interface Subscore {
 	value: number
 };
 
+interface Wealth {
+	gold: number,
+	silver: number,
+	lead: number,
+	uranium: number
+};
+
 // Define a type for the slice state
 export interface CharacterState {
 	name: string,
@@ -74,6 +81,12 @@ export interface CharacterState {
 		}[],
 		value: number
 	}[],
+	wealth: {
+		gold: number,
+		silver: number,
+		lead: number,
+		uranium: number
+	},
 }
 
 // Define the initial state using that type
@@ -129,6 +142,12 @@ const initialState: CharacterState = {
 		},
 	},
 	gear: [],
+	wealth: {
+		gold: 0,
+		silver: 0,
+		lead: 0,
+		uranium: 0
+	},
 }
 
 export const characterSlice = createSlice({
@@ -191,6 +210,12 @@ export const characterSlice = createSlice({
 	setResurrectionDuration: (state) => {
 		state.scores.additionalScores.resurrectionDuration = Math.round(((state.scores.physical.subscores.endurance + state.scores.physical.subscores.speed + state.scores.psyche.subscores.mentalStability + state.scores.psyche.subscores.emotionalStability)/10)/10);
 	},
+	setWealth: (state, action: PayloadAction<Wealth>) => {
+		state.wealth.gold = action.payload.gold;
+		state.wealth.silver = action.payload.silver;
+		state.wealth.lead = action.payload.lead;
+		state.wealth.uranium = action.payload.uranium;
+	},
   }
 })
 
@@ -209,7 +234,8 @@ export const {
 	setPsycheSubscore,
     setShield,
 	setReputation,
-	setResurrectionDuration } = characterSlice.actions
+	setResurrectionDuration,
+	setWealth } = characterSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const characterName = (state: RootState) => state.character.name
