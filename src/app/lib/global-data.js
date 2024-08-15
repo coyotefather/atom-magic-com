@@ -1042,3 +1042,26 @@ export const GEAR = {
 		},
 	]
 };
+
+export const WEALTH = [
+	{
+		name: "Gold",
+		id: "gold",
+		VIG: 1,
+	},
+	{
+		name: "Silver",
+		id: "silver",
+		VIG: 10,
+	},
+	{
+		name: "Lead",
+		id: "lead",
+		VIG: 15,
+	},
+	{
+		name: "Uranium",
+		id: "uranium",
+		VIG: 0.2,
+	},
+];
