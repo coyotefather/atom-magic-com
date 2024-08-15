@@ -4,10 +4,8 @@ import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
 import { setGear } from "@/app/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import GearTable from '@/app/components/character/sections/gear/GearTable'
-import ExternalLink from '@/app/components/common/ExternalLink';
 import FunctionButton from '@/app/components/common/FunctionButton';
 import { GEAR } from '@/app/lib/global-data';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/react";
 import clsx from 'clsx';
 import { mdiDiceMultiple } from '@mdi/js';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
