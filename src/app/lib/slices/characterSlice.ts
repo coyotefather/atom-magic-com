@@ -7,8 +7,8 @@ interface Subscore {
 };
 
 interface Wealth {
-	gold: number,
 	silver: number,
+	gold: number,
 	lead: number,
 	uranium: number
 };
@@ -82,8 +82,8 @@ export interface CharacterState {
 		value: number
 	}[],
 	wealth: {
-		gold: number,
 		silver: number,
+		gold: number,
 		lead: number,
 		uranium: number
 	},
@@ -143,8 +143,8 @@ const initialState: CharacterState = {
 	},
 	gear: [],
 	wealth: {
-		gold: 0,
 		silver: 0,
+		gold: 0,
 		lead: 0,
 		uranium: 0
 	},
@@ -211,8 +211,8 @@ export const characterSlice = createSlice({
 		state.scores.additionalScores.resurrectionDuration = Math.round(((state.scores.physical.subscores.endurance + state.scores.physical.subscores.speed + state.scores.psyche.subscores.mentalStability + state.scores.psyche.subscores.emotionalStability)/10)/10);
 	},
 	setWealth: (state, action: PayloadAction<Wealth>) => {
-		state.wealth.gold = action.payload.gold;
 		state.wealth.silver = action.payload.silver;
+		state.wealth.gold = action.payload.gold;
 		state.wealth.lead = action.payload.lead;
 		state.wealth.uranium = action.payload.uranium;
 	},
