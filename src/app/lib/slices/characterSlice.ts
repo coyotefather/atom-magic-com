@@ -6,6 +6,12 @@ interface Subscore {
 	value: number
 };
 
+interface AnimalCompanion {
+	id: string,
+	name: string,
+	details: string
+};
+
 interface Wealth {
 	silver: number,
 	gold: number,
@@ -87,6 +93,11 @@ export interface CharacterState {
 		lead: number,
 		uranium: number
 	},
+	animalCompanion: {
+		id: string,
+		name: string,
+		details: string
+	},
 }
 
 // Define the initial state using that type
@@ -147,6 +158,11 @@ const initialState: CharacterState = {
 		gold: 0,
 		lead: 0,
 		uranium: 0
+	},
+	animalCompanion: {
+		id: "",
+		name: "",
+		details: ""
 	},
 }
 
@@ -216,6 +232,11 @@ export const characterSlice = createSlice({
 		state.wealth.lead = action.payload.lead;
 		state.wealth.uranium = action.payload.uranium;
 	},
+	setAnimalCompanion: (state, action: PayloadAction<AnimalCompanion>) => {
+		state.animalCompanion.name = action.payload.name;
+		state.animalCompanion.id = action.payload.id;
+		state.animalCompanion.details = action.payload.details;
+	},
   }
 })
 
@@ -235,7 +256,8 @@ export const {
     setShield,
 	setReputation,
 	setResurrectionDuration,
-	setWealth } = characterSlice.actions
+	setWealth,
+	setAnimalCompanion } = characterSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const characterName = (state: RootState) => state.character.name
