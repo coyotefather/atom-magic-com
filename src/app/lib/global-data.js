@@ -1073,3 +1073,84 @@ export const WEALTH = [
 		VIG: 5,
 	},
 ];
+
+export const ANIMAL_COMPANIONS = {
+	canidae: {
+		name: "Canidae",
+		id: "canidae",
+		children: [
+			{ name: "Domestic Dog", id: "domesticDog", description: "" },
+			{ name: "Wolf", id: "wolf", description: "" },
+			{ name: "Coyote", id: "coyote", description: "" },
+			{ name: "Fox", id: "Fox", description: "" },
+			{ name: "Jackal", id: "jackal", description: "" },
+			{ name: "Other", id: "otherCanidae", description: "" },
+		]
+	},
+	felidae: {
+		name: "Felidae",
+		id: "felidae",
+		children: [
+			{ name: "Domestic Cat", id: "domesticCat", description: "" },
+			{ name: "Lion", id: "lion", description: "" },
+			{ name: "Tiger", id: "tiger", description: "" },
+			{ name: "Cougar", id: "cougar", description: "" },
+			{ name: "Bobcat", id: "bobcat", description: "" },
+			{ name: "Other", id: "otherFelidae", description: "" },
+		]
+	},
+	rodentia: {
+		name: "Rodentia",
+		id: "rodentia",
+		children: [
+			{ name: "Mouse", id: "mouse", description: "" },
+			{ name: "Rat", id: "rat", description: "" },
+			{ name: "Squirrel", id: "squirrel", description: "" },
+			{ name: "rabbit", id: "rabbit", description: "" },
+			{ name: "Other", id: "otherRodentia", description: "" },
+		]
+	},
+	primates: {
+		name: "Primates",
+		id: "primates",
+		children: [
+			{ name: "Chimpanzee", id: "chimpanzee", description: "" },
+			{ name: "Lemur", id: "lemur", description: "" },
+			{ name: "Monkey", id: "monkey", description: "" },
+			{ name: "Babboon", id: "Babboon", description: "" },
+			{ name: "Other", id: "otherPrimates", description: "" },
+		]
+	},
+	aves: {
+		name: "Aves",
+		id: "aves",
+		children: [
+			{ name: "Hawk", id: "hawk", description: "" },
+			{ name: "Eagle", id: "eagle", description: "" },
+			{ name: "Owl", id: "owl", description: "" },
+			{ name: "Dove", id: "dove", description: "" },
+			{ name: "Sparrow", id: "sparrow", description: "" },
+			{ name: "Crow", id: "crow", description: "" },
+			{ name: "Parrot", id: "parrot", description: "" },
+			{ name: "Other", id: "otherAves", description: "" },
+		]
+	},
+	reptilia: {
+		name: "Reptilia",
+		id: "reptilia",
+		children: [
+			{ name: "Snake", id: "snake", description: "" },
+			{ name: "Lizard", id: "lizard", description: "" },
+			{ name: "Crocodile", id: "crocodile", description: "" },
+			{ name: "Tortoise", id: "tortoise", description: "" },
+			{ name: "Other", id: "otherReptilia", description: "" },
+		]
+	},
+	other: {
+		name: "Other",
+		id: "other",
+		children: [
+			{ name: "Other", id: "otherOther", description: "" },
+		]
+	},
+};
