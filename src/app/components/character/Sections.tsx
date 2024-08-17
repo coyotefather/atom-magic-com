@@ -11,6 +11,7 @@ import ChoosePath from '@/app/components/character/sections/ChoosePath';
 import ChoosePatronage from '@/app/components/character/sections/ChoosePatronage';
 import ManageGear from '@/app/components/character/sections/ManageGear';
 import ManageWealth from '@/app/components/character/sections/ManageWealth';
+import ChooseAnimalCompanion from '@/app/components/character/sections/ChooseAnimalCompanion';
 import { useAppSelector } from '@/app/lib/hooks';
 
 const Sections = () => {
@@ -28,6 +29,8 @@ const Sections = () => {
 	const [gearIncomplete, setGearIncomplete] = useState("init");
 	const [showManageWealth, setShowManageWealth] = useState(false);
 	const [wealthIncomplete, setWealthIncomplete] = useState("init");
+	const [showChooseAnimalCompanion, setShowChooseAnimalCompanion] = useState(false);
+	const [chooseAnimalCompanionIncomplete, setChooseAnimalCompanionIncomplete] = useState("init");
 	const [clickCheck, setClickCheck] = useState(false);
 
 	useEffect( () => {
@@ -90,6 +93,16 @@ const Sections = () => {
 		}
 	},[character.wealth, clickCheck]);
 
+	useEffect( () => {
+		if(character.animalCompanion.id === "" && clickCheck) {
+			setChooseAnimalCompanionIncomplete("Animal Companion");
+		} else if(character.wealth.silver === 0 && !clickCheck) {
+			setChooseAnimalCompanionIncomplete("init");
+		} else {
+			setChooseAnimalCompanionIncomplete("");
+		}
+	},[character.animalCompanion, clickCheck]);
+
 	const rollCharacter = () => {
 		setShowChooseCulture(true);
 		setShowChoosePath(true);
@@ -97,6 +110,7 @@ const Sections = () => {
 		setShowAdjustScoresAndScores(true);
 		setShowManageGear(true);
 		setShowManageWealth(true);
+		setShowChooseAnimalCompanion(true);
 		console.log("roll character");
 	};
 
@@ -195,15 +209,24 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showManageWealth}
-				nextExpanded={false}
+				nextExpanded={showChooseAnimalCompanion}
 				incomplete={wealthIncomplete}
 				showExpandButton={true}
 				variant="dual"
 				clickCheck={setClickCheck}
-				expandFunction={() => { return; }}>
+				expandFunction={() => setShowChooseAnimalCompanion(true)}>
 				<ManageWealth incompleteFields={wealthIncomplete} />
 			</Section>
-
+			<Section
+				expanded={showChooseAnimalCompanion}
+				nextExpanded={false}
+				incomplete={""}
+				showExpandButton={true}
+				variant="dual"
+				clickCheck={setClickCheck}
+				expandFunction={() => { return; }}>
+				<ChooseAnimalCompanion incompleteFields={chooseAnimalCompanionIncomplete} />
+			</Section>
 		</div>
 	);
 };
