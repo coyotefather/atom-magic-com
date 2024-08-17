@@ -36,7 +36,7 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 	};
 
 	return (
-		<div className="bg-sunset-gradient border-t-2">
+		<div className="bg-white">
 			<div className="container grid grid-cols-3 pt-8 pb-8">
 				<div className="text-center">
 					<div className="text-xl pb-4">Make a New Character</div>
