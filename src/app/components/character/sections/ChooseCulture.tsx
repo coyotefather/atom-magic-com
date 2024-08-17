@@ -85,7 +85,7 @@ const ChooseCulture = ({
 				<div className="max-w-[673px] pr-4">
 					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose a Culture</h2>
 					<p className="pb-2">
-						There are many cultures across Solum, though most beings are a member of one of the five main cultures. Choosing a culture will give you two unique aspects. {incompleteFields}
+						There are many cultures across Solum, though most beings are a member of one of the five main cultures. Choosing a culture will give you two unique aspects.
 					</p>
 					<p>
 						For more information, see <ExternalLink href="https://atom-magic.com/codex/Cultures" name="Cultures" />
