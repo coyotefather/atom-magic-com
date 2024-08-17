@@ -37,7 +37,7 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 						iconOnly={false}
 						buttonFunction={handlePrintClick}
 						buttonIcon={mdiPrinterOutline}
-						variant="secondary">Generate</FunctionButton>
+						variant="secondary">Print</FunctionButton>
 				</div>
 			</div>
 			<div ref={bottomRef}></div>
