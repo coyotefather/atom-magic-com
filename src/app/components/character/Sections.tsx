@@ -118,7 +118,7 @@ const Sections = () => {
 	};
 
 	return (
-		<div className="mt-8">
+		<div>
 			<Section
 				expanded={true}
 				nextExpanded={true}
