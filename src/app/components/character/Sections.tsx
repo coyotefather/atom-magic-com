@@ -12,6 +12,7 @@ import ChoosePatronage from '@/app/components/character/sections/ChoosePatronage
 import ManageGear from '@/app/components/character/sections/ManageGear';
 import ManageWealth from '@/app/components/character/sections/ManageWealth';
 import ChooseAnimalCompanion from '@/app/components/character/sections/ChooseAnimalCompanion';
+import WrapUp from '@/app/components/character/sections/WrapUp';
 import { useAppSelector } from '@/app/lib/hooks';
 
 const Sections = () => {
@@ -31,6 +32,7 @@ const Sections = () => {
 	const [wealthIncomplete, setWealthIncomplete] = useState("init");
 	const [showChooseAnimalCompanion, setShowChooseAnimalCompanion] = useState(false);
 	const [chooseAnimalCompanionIncomplete, setChooseAnimalCompanionIncomplete] = useState("init");
+	const [showWrapUp, setShowWrapUp] = useState(false);
 	const [clickCheck, setClickCheck] = useState(false);
 
 	useEffect( () => {
@@ -111,6 +113,7 @@ const Sections = () => {
 		setShowManageGear(true);
 		setShowManageWealth(true);
 		setShowChooseAnimalCompanion(true);
+		setShowWrapUp(true);
 		console.log("roll character");
 	};
 
@@ -219,13 +222,24 @@ const Sections = () => {
 			</Section>
 			<Section
 				expanded={showChooseAnimalCompanion}
-				nextExpanded={false}
+				nextExpanded={showWrapUp}
 				incomplete={""}
 				showExpandButton={true}
 				variant="dual"
 				clickCheck={setClickCheck}
-				expandFunction={() => { return; }}>
+				expandFunction={() => setShowWrapUp(true)}>
 				<ChooseAnimalCompanion incompleteFields={chooseAnimalCompanionIncomplete} />
+			</Section>
+			<Section
+				expanded={showWrapUp}
+				nextExpanded={false}
+				incomplete={""}
+				showExpandButton={false}
+				variant="dual"
+				clickCheck={setClickCheck}
+				expandFunction={() => { return; }}>
+				<WrapUp
+					buttonFunction={() => { return; }} />
 			</Section>
 		</div>
 	);
