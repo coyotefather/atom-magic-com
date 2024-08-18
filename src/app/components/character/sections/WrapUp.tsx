@@ -19,25 +19,27 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 
 	return (
 		<div className="bg-sunset-gradient border-t-2">
-			<div className="container grid grid-cols-3 pt-8 pb-8">
-				<div>
-					<h2 className="text-2xl mb-4">Download or Print Your Character</h2>
-				</div>
-				<div className="text-center">
-					<FunctionButton
-						isDisabled={false}
-						iconOnly={false}
-						buttonFunction={handleDownloadClick}
-						buttonIcon={mdiFileDownloadOutline}
-						variant="secondary">Download</FunctionButton>
-				</div>
-				<div className="text-center">
-					<FunctionButton
-						isDisabled={false}
-						iconOnly={false}
-						buttonFunction={handlePrintClick}
-						buttonIcon={mdiPrinterOutline}
-						variant="secondary">Print</FunctionButton>
+			<div className="container pt-8 pb-8">
+				<div className="grid grid-cols-2 pt-8 pb-8">
+					<div className="text-center text-xl">
+						Print or download your completed character.
+					</div>
+					<div>
+						<div className="flex justify-center gap-8">
+							<FunctionButton
+								isDisabled={false}
+								iconOnly={false}
+								buttonFunction={handlePrintClick}
+								buttonIcon={mdiPrinterOutline}
+								variant="secondary">Print</FunctionButton>
+							<FunctionButton
+								isDisabled={false}
+								iconOnly={false}
+								buttonFunction={handleDownloadClick}
+								buttonIcon={mdiFileDownloadOutline}
+								variant="secondary">Download</FunctionButton>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div ref={bottomRef}></div>
