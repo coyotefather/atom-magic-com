@@ -4,7 +4,7 @@ import { POSTS_QUERYResult } from "../../../../sanity.types";
 
 const Posts = ({ posts }: { posts: POSTS_QUERYResult }) => {
   return (
-	<ul className="container mx-auto grid grid-cols-1 divide-y divide-blue-100">
+	<ul className="mx-auto grid grid-cols-1 divide-y divide-blue-100">
 	  {posts.map((post) => (
 		<li key={post._id}>
 		  <a

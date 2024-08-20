@@ -32,5 +32,9 @@ export default async function Page({ params }: { params: QueryParams }) {
   if (!post) {
 	return notFound();
   }
-  return <Post post={post} />;
+  return (
+    <main>
+      <Post post={post} />
+    </main>
+  );
 }
