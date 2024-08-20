@@ -9,7 +9,7 @@ import { client, sanityFetch } from "@/sanity/lib/client";
 import {
   POST_QUERYResult,
   POSTS_QUERYResult,
-} from "../../../../../sanity.types";
+} from "../../../../../../sanity.types";
 import { Post } from "@/app/components/codex/Post";
 
 export async function generateStaticParams() {
