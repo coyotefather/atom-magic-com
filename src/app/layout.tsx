@@ -4,8 +4,6 @@ import "./globals.css";
 import StoreProvider from "@/app/StoreProvider";
 import NavBar from '@/app/components/global/NavBar';
 import Footer from '@/app/components/global/Footer';
-import { VisualEditing } from "next-sanity";
-import { draftMode } from "next/headers";
 
 const roboto = Roboto({
   weight: ['400', '700'],
