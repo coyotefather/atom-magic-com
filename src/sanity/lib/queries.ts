@@ -7,5 +7,5 @@ export const POSTS_QUERY = groq`*[_type == "post" && defined(slug.current)][0...
 }`;
 
 export const POST_QUERY = groq`*[_type == "post" && slug.current == $slug][0]{
-  title, body, mainImage
+  title, body, mainImage, categories[]->{title}
 }`;
