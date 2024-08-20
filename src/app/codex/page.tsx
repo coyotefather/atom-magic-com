@@ -1,7 +1,7 @@
 import Posts from "@/app/components/codex/Posts";
 import { sanityFetch } from "@/sanity/lib/client";
 import { POSTS_QUERY } from "@/sanity/lib/queries";
-import { POSTS_QUERYResult } from "../../../../sanity.types";
+import { POSTS_QUERYResult } from "../../../sanity.types";
 
 const posts = await sanityFetch<POSTS_QUERYResult>({
 	query: POSTS_QUERY,
