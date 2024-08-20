@@ -22,7 +22,9 @@ export function Post({ post }: { post: POST_QUERYResult }) {
 						base: "bg-sunset-gradient border-2 border-black",
 						content: "text-black font-semibold",
 					  }}
-					>{c?.title}</Chip>
+					>
+						<Link href={`/codex/categories/${c?.slug?.current}`}>{c?.title}</Link>
+					</Chip>
 				))}
 			</div>
 			{mainImage?.asset?._ref ? (
