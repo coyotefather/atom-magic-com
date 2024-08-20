@@ -1,8 +1,6 @@
 // ./src/components/Post.tsx
-
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
-
 import { urlFor } from "@/sanity/lib/image";
 import { POST_QUERYResult } from "../../../../sanity.types";
 import Link from "next/link";
@@ -13,16 +11,18 @@ export function Post({ post }: { post: POST_QUERYResult }) {
 
   return (
 	<article className="inconsolata mx-auto prose prose-md max-w-none bg-white m-0">
-		<div className="bg-sunset-gradient mb-4">
-			<div className="container py-4">
-				Breadcrumbs
-			</div>
+		<div className="bg-sunset-gradient mb-4">&nbsp;
 		</div>
 		<header className="container pt-4">
 			{title ? <h1 className="marcellus">{title}</h1> : null}
 			<div className="flex gap-2 pb-4">
 				{categories?.map( (c) => (
-					<Chip key={c?.title}>{c?.title}</Chip>
+					<Chip key={c?.title}
+					classNames={{
+						base: "bg-sunset-gradient border-2 border-black",
+						content: "text-black font-semibold",
+					  }}
+					>{c?.title}</Chip>
 				))}
 			</div>
 			{mainImage?.asset?._ref ? (
