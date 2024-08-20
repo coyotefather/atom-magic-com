@@ -58,6 +58,7 @@ const config: Config = {
   darkMode: "class",
   plugins: [
     nextui(),
+    require('@tailwindcss/typography')
   ],
 };
 export default config;
