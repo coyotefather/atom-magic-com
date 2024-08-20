@@ -8,7 +8,7 @@ const Page = async () => {
 
 	const posts = await sanityFetch<POSTS_QUERYResult>({
 		query: POSTS_QUERY,
-	  });
+	});
 
 	return (
 		<main className="inconsolata">
