@@ -15,5 +15,5 @@ export const CATEGORIES_QUERY = groq`*[_type == "category" && defined(slug.curre
 }`;
 
 export const CATEGORY_QUERY = groq`*[_type == "category" && slug.current == $slug][0]{
-  title, slug, description
+  _id, title, slug, description, parent->{title, slug}, "posts": *[_type == "post" && references(^._id)]{_id, title, slug},
 }`;

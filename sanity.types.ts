@@ -348,11 +348,18 @@ export type CATEGORIES_QUERYResult = Array<{
   description: string | null;
 }>;
 // Variable: CATEGORY_QUERY
-// Query: *[_type == "category" && slug.current == $slug][0]{  title, slug, description}
+// Query: *[_type == "category" && slug.current == $slug][0]{  _id, title, slug, description, parent->{title, slug}, "posts": *[_type == "post" && references(^._id)]{_id, title, slug},}
 export type CATEGORY_QUERYResult = {
+  _id: string;
   title: string | null;
   slug: Slug | null;
   description: string | null;
+  parent: null;
+  posts: Array<{
+    _id: string;
+    title: string | null;
+    slug: Slug | null;
+  }>;
 } | null;
 
 // Query TypeMap
@@ -362,6 +369,6 @@ declare module "@sanity/client" {
     "*[_type == \"post\" && defined(slug.current)][0...12]{\n  _id, title, slug\n}": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}": POST_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
-    "*[_type == \"category\" && slug.current == $slug][0]{\n  title, slug, description\n}": CATEGORY_QUERYResult;
+    "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"posts\": *[_type == \"post\" && references(^._id)]{_id, title, slug},\n}": CATEGORY_QUERYResult;
   }
 }
