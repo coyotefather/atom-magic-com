@@ -22,5 +22,14 @@ export const categoryType = defineType({
       name: 'description',
       type: 'text',
     }),
+    defineField({
+      name: 'parent',
+      type: 'reference',
+      to: [{type: 'category'}],
+      // This ensures we cannot select other "children"
+      options: {
+        filter: '!defined(parent)',
+      },
+    }),
   ],
 })
