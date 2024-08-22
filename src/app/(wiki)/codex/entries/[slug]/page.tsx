@@ -3,38 +3,38 @@
 import { QueryParams } from "next-sanity";
 import { notFound } from "next/navigation";
 
-import { POSTS_QUERY, POST_QUERY } from "@/sanity/lib/queries";
+import { ENTRIES_QUERY, ENTRY_QUERY } from "@/sanity/lib/queries";
 
 import { client, sanityFetch } from "@/sanity/lib/client";
 import {
-  POST_QUERYResult,
-  POSTS_QUERYResult,
+  ENTRY_QUERYResult,
+  ENTRIES_QUERYResult,
 } from "../../../../../../sanity.types";
-import { Post } from "@/app/components/codex/Post";
+import { Entry } from "@/app/components/codex/Entry";
 
 export async function generateStaticParams() {
-  const posts = await client.fetch<POSTS_QUERYResult>(
-	POSTS_QUERY,
+  const entries = await client.fetch<ENTRIES_QUERYResult>(
+	ENTRIES_QUERY,
 	{},
 	{ perspective: "published" }
   );
 
-  return posts.map((post) => ({
-	slug: post?.slug?.current,
+  return entries.map((entry) => ({
+	slug: entry?.slug?.current,
   }));
 }
 
 export default async function Page({ params }: { params: QueryParams }) {
-  const post = await sanityFetch<POST_QUERYResult>({
-	query: POST_QUERY,
+  const entry = await sanityFetch<ENTRY_QUERYResult>({
+	query: ENTRY_QUERY,
 	params,
   });
-  if (!post) {
+  if (!entry) {
 	return notFound();
   }
   return (
     <main>
-      <Post post={post} />
+      <Entry entry={entry} />
     </main>
   );
 }

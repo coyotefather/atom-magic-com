@@ -1,5 +1,8 @@
 // ./src/components/Post.tsx
 import { CATEGORY_QUERYResult } from "../../../../sanity.types";
+import Header from '@/app/components/common/Header';
+import Entries from '@/app/components/codex/Entries';
+import Categories from '@/app/components/codex/Categories';
 import Link from "next/link";
 
 export function Category({
@@ -8,72 +11,28 @@ export function Category({
 		category: CATEGORY_QUERYResult
 	}) {
 
-	const { title, description, posts, children } = category || {};
-	let allPosts = (<></>);
+	const { title, description, entries, children } = category || {};
+	let allEntries = (<></>);
 	let allChildren = (<></>);
 
-	if(children) {
+	if(children && children.length > 0) {
 		allChildren = (
-			<>
-				{children.map((c) => (
-					<li key={c._id}>
-						<div>
-							<a
-								className="block p-4 hover:bg-blue-50"
-								href={`/codex/categories/${c?.slug?.current}`}
-								>
-								{c?.title}
-							</a>
-						</div>
-						<div>
-							{c?.description}
-						</div>
-					</li>
-				))}
-			</>
+			<Categories categories={children} />
 		);
 	}
 
-	if(posts) {
-		allPosts = (
-			<>
-				{posts.map((p) => (
-					<li key={p._id}>
-						<a
-							className="block p-4 hover:bg-blue-50"
-							href={`/codex/posts/${p?.slug?.current}`}
-							>
-							{p?.title}
-						</a>
-					</li>
-				))}
-			</>
-		);
+	if(entries) {
+		allEntries = <Entries entries={entries} />;
 	}
 
   return (
 	<article className="inconsolata mx-auto prose prose-md max-w-none bg-white m-0">
-		<div className="bg-sunset-gradient mb-4">&nbsp;
-		</div>
-		<header className="container pt-4">
-			{title ? <h1 className="marcellus">{title}</h1> : null}
-		</header>
-		<section className="container">
-	  		{description ? description : null}
-		</section>
-		<section className="container">
-			<h3 className="marcellus text-lg font-bold">Sub-categories</h3>
-			<ul>
-				{allChildren}
-			</ul>
-		</section>
-		<section className="container">
-			<h3 className="marcellus text-lg font-bold">All articles</h3>
-			<ul>
-				{allPosts}
-			</ul>
-		</section>
-		<section className="bg-sunset-gradient">
+		<Header name={title ? title : "Category"}>
+			{description ? description : null}
+		</Header>
+		{allChildren}
+		{allEntries}
+		<section className="bg-sunset-gradient mt-16">
 			<div className="container py-4">
 				<Link href="/codex">&larr; Return to Codex</Link>
 			</div>

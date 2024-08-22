@@ -1,13 +1,13 @@
-import Posts from "@/app/components/codex/Posts";
+import Entries from "@/app/components/codex/Entries";
 import Header from '@/app/components/common/Header';
 import { sanityFetch } from "@/sanity/lib/client";
-import { POSTS_QUERY } from "@/sanity/lib/queries";
-import { POSTS_QUERYResult } from "../../../../sanity.types";
+import { ENTRIES_QUERY } from "@/sanity/lib/queries";
+import { ENTRIES_QUERYResult } from "../../../../sanity.types";
 
 const Page = async () => {
 
-	const posts = await sanityFetch<POSTS_QUERYResult>({
-		query: POSTS_QUERY,
+	const entries = await sanityFetch<ENTRIES_QUERYResult>({
+		query: ENTRIES_QUERY,
 	});
 
 	return (
@@ -15,7 +15,7 @@ const Page = async () => {
 			<Header name="Codex">
 				  Create your player character and start your journey across the world of Solum.
 			</Header>
-			<Posts posts={posts} />
+			<Entries entries={entries} />
 		</main>
 	);
 };
