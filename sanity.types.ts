@@ -485,7 +485,7 @@ export type ENTRIES_QUERYResult = Array<{
   }> | null;
 }>;
 // Variable: ENTRY_QUERY
-// Query: *[_type == "entry" && slug.current == $slug][0]{  title, body, mainImage, author->{name, slug}, categories[]->{title, slug}}
+// Query: *[_type == "entry" && slug.current == $slug][0]{  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug}}
 export type ENTRY_QUERYResult = {
   title: string | null;
   body: Array<{
@@ -530,6 +530,7 @@ export type ENTRY_QUERYResult = {
     alt?: string;
     _type: "image";
   } | null;
+  publishedAt: string | null;
   author: {
     name: string | null;
     slug: Slug | null;
@@ -617,7 +618,7 @@ declare module "@sanity/client" {
     "*[_type == \"post\" && defined(slug.current)][0...12]{\n  _id, title, slug\n}": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}": POST_QUERYResult;
     "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, mainImage, blurb\n}": ENTRIES_QUERYResult;
-    "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, body, mainImage, author->{name, slug}, categories[]->{title, slug}\n}": ENTRY_QUERYResult;
+    "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug}\n}": ENTRY_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
     "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]{_id, title, mainImage, slug, blurb}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
   }

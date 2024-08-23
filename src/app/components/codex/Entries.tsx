@@ -5,6 +5,8 @@ import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import {Card, CardHeader, CardBody} from "@nextui-org/card";
+import Icon from '@mdi/react';
+import { mdiFileDocument } from '@mdi/js';
 
 const Entries = ({ entries }: { entries: ENTRIES_QUERYResult }) => {
   return (
@@ -13,10 +15,14 @@ const Entries = ({ entries }: { entries: ENTRIES_QUERYResult }) => {
 		<div className="flex flex-row gap-4">
 			{entries.map((e) => (
 					<Card shadow="sm" className="bg-sunset-gradient max-w-xs w-[300px] h-[300px]" key={e._id}>
-						<CardHeader className="bg-black absolute z-10 top-0 flex-col !items-start">
+						<CardHeader className="bg-black absolute z-10 top-0">
+							<Icon
+								className="text-gold align-center mr-2"
+								path={mdiFileDocument}
+								size={2} />
 							<a
 								href={`/codex/entries/${e?.slug?.current}`}
-								className="text-white hover:text-white hover:font-bold"
+								className="text-gold hover:text-brightgold hover:font-bold"
 								>
 								{e?.title}
 							</a>

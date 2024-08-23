@@ -15,7 +15,9 @@ const Page = async () => {
 			<Header name="Codex">
 				  Create your player character and start your journey across the world of Solum.
 			</Header>
-			<Entries entries={entries} />
+			<div className="my-16">
+				<Entries entries={entries} />
+			</div>
 		</main>
 	);
 };
