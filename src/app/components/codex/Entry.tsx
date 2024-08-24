@@ -5,7 +5,9 @@ import { urlFor } from "@/sanity/lib/image";
 import { ENTRY_QUERYResult } from "../../../../sanity.types";
 import Link from "next/link";
 import { Chip } from "@nextui-org/chip";
-import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/card";
+import {Card, CardHeader, CardFooter} from "@nextui-org/card";
+import CategoryChip from '@/app/components/common/CategoryChip';
+
 
 export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 
@@ -37,14 +39,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 					<div className="flex gap-2 pb-4">
 						Categories:
 						{categories?.map( (c) => (
-							<Chip key={c?.title}
-							classNames={{
-								base: "bg-sunset-gradient border-2 border-black",
-								content: "text-black font-semibold",
-					  		}}
-							>
-								<Link href={`/codex/categories/${c?.slug?.current}`}>{c?.title}</Link>
-							</Chip>
+							<CategoryChip key={c?.title} category={c} />
 						))}
 					</div>
 				</CardFooter>
