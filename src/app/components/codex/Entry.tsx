@@ -5,7 +5,9 @@ import { urlFor } from "@/sanity/lib/image";
 import { ENTRY_QUERYResult } from "../../../../sanity.types";
 import Link from "next/link";
 import { Chip } from "@nextui-org/chip";
-import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/card";
+import {Card, CardHeader, CardFooter} from "@nextui-org/card";
+import CategoryChip from '@/app/components/common/CategoryChip';
+
 
 export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 
@@ -28,25 +30,24 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 					/>
 				) : null}
 				<CardFooter className="bg-black text-white absolute z-10 bottom-0 flex-col !items-start">
-					<div>
-						Author: {author?.name ? author?.name : "An unknown scribe"}
-					</div>
-					<div>
-						Last update: {publishedAt ? new Date(publishedAt).toDateString() : "Date unknown"}
-					</div>
-					<div className="flex gap-2 pb-4">
-						Categories:
-						{categories?.map( (c) => (
-							<Chip key={c?.title}
-							classNames={{
-								base: "bg-sunset-gradient border-2 border-black",
-								content: "text-black font-semibold",
-					  		}}
-							>
-								<Link href={`/codex/categories/${c?.slug?.current}`}>{c?.title}</Link>
-							</Chip>
-						))}
-					</div>
+					<dl className="divide-y w-full my-0">
+						<div className="flex flex-row py-1">
+							<dt className="w-24 text-white mt-1">Author</dt>
+							<dd className="mt-1">{author?.name ? author?.name : "An unknown scribe"}</dd>
+						</div>
+						<div className="flex flex-row py-1">
+							<dt className="w-24 text-white mt-1">Last update</dt>
+							<dd className="mt-1">{publishedAt ? new Date(publishedAt).toDateString() : "Date unknown"}</dd>
+						</div>
+						<div className="flex flex-row py-1">
+							<dt className="w-24 text-white mt-1">Categories</dt>
+							<dd className="mt-1 flex gap-2">
+								{categories?.map( (c) => (
+									<CategoryChip key={c?.title} category={c} />
+								))}
+							</dd>
+						</div>
+					</dl>
 				</CardFooter>
 			</Card>
 		</header>

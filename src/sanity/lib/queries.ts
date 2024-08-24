@@ -15,7 +15,7 @@ export const ENTRIES_QUERY = groq`*[_type == "entry" && defined(slug.current)][0
 }`;
 
 export const ENTRY_QUERY = groq`*[_type == "entry" && slug.current == $slug][0]{
-  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug}
+  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug, chipColor}
 }`;
 
 export const CATEGORIES_QUERY = groq`*[_type == "category" && defined(slug.current)][0...12]{
