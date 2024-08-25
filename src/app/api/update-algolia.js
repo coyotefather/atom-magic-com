@@ -1,6 +1,6 @@
+import indexer from "sanity-algolia";
 import algoliasearch from 'algoliasearch';
-import { createClient } from '@sanity/client';
-import indexer, { flattenBlocks } from 'sanity-algolia';
+import { NextResponse } from "next/server";
 
 const algolia = algoliasearch(
   '578IHPAJAF',
@@ -17,48 +17,57 @@ const sanity = createClient({
   useCdn: false,
 })
 
-export default function handler(req, res) {
-  const sanityAlgolia = indexer(
-	{
+export async function POST(req) {
+  try {
+	const sanityAlgolia = indexer(
+	  {
 		entry: {
-			index: algolia.initIndex('entries'),
+		  index: algolia.initIndex("entries"),
 		},
 		post: {
-			index: algolia.initIndex('posts'),
+		  index: algolia.initIndex("posts"),
 		},
 		category: {
-			index: algolia.initIndex('categories'),
+		  index: algolia.initIndex("categories"),
 		},
-	},
-	document => {
-	  switch (document._type) {
-		case 'entry':
-		  return {
-			title: document.title,
-			path: document.slug.current,
-			publishedAt: document.publishedAt,
-			excerpt: flattenBlocks(document.body),
-		  };
-		case 'post':
-		  return {
-			title: document.title,
-			path: document.slug.current,
-			publishedAt: document.publishedAt,
-			excerpt: flattenBlocks(document.body),
-		  };
-		case 'category':
-		  return {
-			title: document.title,
-			path: document.slug.current,
-			excerpt: flattenBlocks(document.description),
-		  };
-		default:
-		  throw new Error(`Unknown type: ${document.type}`);
+	  },
+	  (document) => {
+		console.log(document);
+		switch (document._type) {
+		  case "entry":
+			return {
+			  name: document.name,
+			  path: document.slug["current"],
+			  body: document.body,
+			};
+		case "pointer-events-auto":
+			return {
+		  	name: document.name,
+		  	path: document.slug["current"],
+		  	body: document.body,
+			};
+		case "category":
+			return {
+		  	name: document.name,
+		  	path: document.slug["current"],
+		  	description: document.description,
+			};
+		  default:
+			return document;
+		}
 	  }
-	}
-  );
+	);
 
-  return sanityAlgolia
-	.webhookSync(sanity, req.body)
-	.then(() => res.status(200).send('ok'));
+	const body = await req.json();
+
+	const webhook = await sanityAlgolia.webhookSync(sanity, body);
+
+	return webhook && NextResponse.json({ msg: "lessgoo" });
+  } catch (err) {
+	let error_response = {
+	  status: "error",
+	  msg: err,
+	};
+	return new NextResponse(JSON.stringify(error_response));
+  }
 }
