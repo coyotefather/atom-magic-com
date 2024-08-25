@@ -5,7 +5,7 @@ import indexer from 'sanity-algolia';
 
 const algolia = algoliasearch(
   '578IHPAJAF',
-  'e8316789d6af4c3c08808de3bcb02ba8'
+  process.env.ALGOLIA_ADMIN_API_KEY || ""
 )
 
 const sanity = createClient({
