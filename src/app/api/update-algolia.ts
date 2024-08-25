@@ -1,6 +1,6 @@
 import algoliasearch from 'algoliasearch';
 import {createClient, type SanityDocumentStub } from '@sanity/client';
-import { NowRequest, NowResponse } from '@vercel/node';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import indexer from 'sanity-algolia';
 
 const algolia = algoliasearch(
@@ -22,7 +22,7 @@ const sanity = createClient({
  *  This function receives webhook POSTs from Sanity and updates, creates or
  *  deletes records in the corresponding Algolia indices.
  */
-const vercelHandler = (req: NowRequest, res: NowResponse) => {
+const vercelHandler = (req: VercelRequest, res: VercelResponse) => {
   // Tip: Add webhook secrets to verify that the request is coming from Sanity.
   // See more at: https://www.sanity.io/docs/webhooks#bfa1758643b3
   if (req.headers['content-type'] !== 'application/json') {
