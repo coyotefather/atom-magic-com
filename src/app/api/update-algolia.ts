@@ -32,7 +32,7 @@ const vercelHandler = (req: NowRequest, res: NowResponse) => {
   }
 
   // Configure this to match an existing Algolia index name
-  const algoliaIndex = algolia.initIndex('my-index')
+  const algoliaIndex = algolia.initIndex('atom-magic-com')
 
   const sanityAlgolia = indexer(
 	// The first parameter maps a Sanity document type to its respective Algolia
@@ -53,9 +53,6 @@ const vercelHandler = (req: NowRequest, res: NowResponse) => {
 		  "body": pt::text(body)
 		}`,
 	  },
-	  // For the article document in this example we want to resolve a list of
-	  // references to authors and get their names as an array. We can do this
-	  // directly in the GROQ query in the custom projection.
 	  entry: {
 		index: algoliaIndex,
 		projection: `{
@@ -109,12 +106,12 @@ const vercelHandler = (req: NowRequest, res: NowResponse) => {
 	// decides if it should be indexed or not. This would also be the place to
 	// implement any `publishedAt` datetime visibility rules or other custom
 	// visibility scheme you may be using.
-	(document: SanityDocumentStub) => {
-	  if (document.hasOwnProperty('isHidden')) {
-		return !document.isHidden
-	  }
-	  return true
-	}
+	// (document: SanityDocumentStub) => {
+	//   if (document.hasOwnProperty('isHidden')) {
+	// 	return !document.isHidden
+	//   }
+	//   return true
+	// }
   )
 
   // Finally connect the Sanity webhook payload to Algolia indices via the
