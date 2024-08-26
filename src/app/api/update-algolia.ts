@@ -28,9 +28,6 @@ const vercelHandler = (req: VercelRequest, res: VercelResponse) => {
 	return
   }
 
-  // Configure this to match an existing Algolia index name
-  const algoliaIndex = algolia.initIndex('atom-magic-com')
-
   const sanityAlgolia = indexer(
 	// The first parameter maps a Sanity document type to its respective Algolia
 	// search index. In this example both `post` and `article` Sanity types live
@@ -43,7 +40,7 @@ const vercelHandler = (req: VercelRequest, res: VercelResponse) => {
 	// _id and other system fields are handled automatically.
 	{
 	  post: {
-		index: algoliaIndex,
+		index: algolia.initIndex('posts'),
 		projection: `{
 		  title,
 		  "path": slug.current,
@@ -51,7 +48,7 @@ const vercelHandler = (req: VercelRequest, res: VercelResponse) => {
 		}`,
 	  },
 	  entry: {
-		index: algoliaIndex,
+		index: algolia.initIndex('entries'),
 		projection: `{
 		  title,
 		  "path": slug.current,
@@ -59,7 +56,7 @@ const vercelHandler = (req: VercelRequest, res: VercelResponse) => {
 		}`,
 	  },
 	  category: {
-		  index: algoliaIndex,
+		  index: algolia.initIndex('categories'),
 		  projection: `{
 			title,
 			"path": slug.current,
@@ -115,6 +112,7 @@ const vercelHandler = (req: VercelRequest, res: VercelResponse) => {
   // configured serializers and optional visibility function. `webhookSync` will
   // inspect the webhook payload, make queries back to Sanity with the `sanity`
   // client and make sure the algolia indices are synced to match.
+
   return sanityAlgolia
 	.webhookSync(sanity, req.body)
 	.then(() => res.status(200).send('ok'))
