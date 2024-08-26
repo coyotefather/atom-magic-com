@@ -60,6 +60,8 @@ export async function POST(req: NextRequest) {
 
 	const webhook = await sanityAlgolia.webhookSync(client, body).then( () => NextResponse.json({ msg: "lessgoo" }) );
 
+	return webhook;
+
   } catch (err) {
 	let error_response = {
 	  status: "error",
