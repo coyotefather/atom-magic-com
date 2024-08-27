@@ -4,7 +4,8 @@ export const NAVIGATION_LINKS = [
 	{ href: "/codex", name: "CODEX", icon: "", extended: false },
 	{ href: "/character", name: "CHARACTER MANAGER", icon: "", extended: false },
 	{ href: "/vorago", name: "VORAGO", icon: "", extended: false },
-	{ href: "/contact", name: "CONTACT", icon: "", extended: true }
+	{ href: "/contact", name: "CONTACT", icon: "", extended: true },
+	{ href: "/search", name: "SEARCH", icon: "mdiMagnify", extended: false}
 ];
 
 export const CULTURES = [

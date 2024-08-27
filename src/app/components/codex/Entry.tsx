@@ -4,7 +4,6 @@ import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
 import { ENTRY_QUERYResult } from "../../../../sanity.types";
 import Link from "next/link";
-import { Chip } from "@nextui-org/chip";
 import {Card, CardHeader, CardFooter} from "@nextui-org/card";
 import CategoryChip from '@/app/components/common/CategoryChip';
 
