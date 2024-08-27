@@ -36,12 +36,14 @@ export async function POST(req: NextRequest) {
 			return {
 			  title: document.title,
 			  path: document.slug["current"],
+			  categories: document.categories,
 			  body: flattenBlocks(document.body)
 			};
 		case "entry":
 		return {
 		  title: document.title,
 		  path: document.slug["current"],
+		  categories: document.categories,
 		  body: flattenBlocks(document.body),
 		};
 		case "category":
