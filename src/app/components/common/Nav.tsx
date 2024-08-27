@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Icon from '@mdi/react';
+import { mdiMagnify } from '@mdi/js';
 
 const Nav = ({
 		items, extended, navClasses
@@ -24,7 +26,7 @@ const Nav = ({
 						return <Link
 									className="p-5 text-lg tracking-widest text-gold hover:text-brightgold"
 									href={item.href}
-									key={item.name} >{item.name}</Link>;
+									key={item.name} >{item.name === "SEARCH" ? <Icon className="inline" path={mdiMagnify} size={1} /> : item.name}</Link>;
 					} else {
 						return;
 					}
