@@ -30,9 +30,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} ${inconsolata.variable} ${marcellus.variable}`}>
+      <body className={`${roboto.variable} ${inconsolata.variable} ${marcellus.variable} flex flex-col h-screen`}>
         <NavBar />
-        <StoreProvider>{children}</StoreProvider>
+        <div className="grow">
+          <StoreProvider>{children}</StoreProvider>
+        </div>
         <Footer />
       </body>
     </html>
