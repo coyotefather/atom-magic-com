@@ -22,7 +22,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 				{mainImage?.asset?._ref ? (
 					<Image
 						className="z-0 w-full h-full object-cover"
-						src={urlFor(mainImage?.asset?._ref).quality(90).format('png').url()}
+						src={urlFor(mainImage?.asset?._ref).quality(75).format('jpg').url()}
 						width={300}
 						height={300}
 						alt={title || ""}
