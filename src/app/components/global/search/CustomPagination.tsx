@@ -21,7 +21,7 @@ export default function CustomPagination(props: UsePaginationProps) {
 	const lastPageIndex = nbPages - 1;
 
 	return (
-		<ButtonGroup variant="light" className="bg-sunset-gradient border-2 border-black divide-x-2 rounded-lg">
+		<ButtonGroup variant="light" className="bg-sunset-gradient border-2 border-black divide-x-2 rounded-full">
 			<PaginationItem
 				isDisabled={isFirstPage}
 				href={createURL(firstPageIndex)}
