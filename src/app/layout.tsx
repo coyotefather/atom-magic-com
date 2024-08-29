@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto, Inconsolata, Marcellus_SC } from "next/font/google";
+import localFont from 'next/font/local'
 import "./globals.css";
 import StoreProvider from "@/app/StoreProvider";
 import NavBar from '@/app/components/global/NavBar';
@@ -18,6 +19,8 @@ const inconsolata = Inconsolata({
   variable: '--font-inconsolata',
   subsets: ["latin"] });
 
+const lapideum = localFont({ src: '../fonts/lapideum-2022-v1.woff', variable: '--font-lapideum' })
+
 export const metadata: Metadata = {
   title: "Atom Magic Tools",
   description: "Create and Manage characters, play Vorago, and more.",
@@ -30,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} ${inconsolata.variable} ${marcellus.variable} flex flex-col h-screen`}>
+      <body className={`${roboto.variable} ${inconsolata.variable} ${marcellus.variable} ${lapideum.variable} flex flex-col h-screen`}>
         <NavBar />
         <div className="grow">
           <StoreProvider>{children}</StoreProvider>

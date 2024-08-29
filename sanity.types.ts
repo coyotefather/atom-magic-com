@@ -436,23 +436,11 @@ export type POST_QUERYResult = {
   }> | null;
 } | null;
 // Variable: ENTRIES_QUERY
-// Query: *[_type == "entry" && defined(slug.current)][0...12]{  _id, title, slug, mainImage, blurb}
+// Query: *[_type == "entry" && defined(slug.current)][0...12]{  _id, title, slug, blurb}
 export type ENTRIES_QUERYResult = Array<{
   _id: string;
   title: string | null;
   slug: Slug | null;
-  mainImage: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  } | null;
   blurb: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -550,7 +538,7 @@ export type CATEGORIES_QUERYResult = Array<{
   description: string | null;
 }>;
 // Variable: CATEGORY_QUERY
-// Query: *[_type == "category" && slug.current == $slug][0]{  _id, title, slug, description, parent->{title, slug}, "entries": *[_type == "entry" && references(^._id)]{_id, title, mainImage, slug, blurb}, "children": *[_type == "category" && references(^._id)]{_id, title, slug, description},}
+// Query: *[_type == "category" && slug.current == $slug][0]{  _id, title, slug, description, parent->{title, slug}, "entries": *[_type == "entry" && references(^._id)]{_id, title, slug, blurb}, "children": *[_type == "category" && references(^._id)]{_id, title, slug, description},}
 export type CATEGORY_QUERYResult = {
   _id: string;
   title: string | null;
@@ -560,18 +548,6 @@ export type CATEGORY_QUERYResult = {
   entries: Array<{
     _id: string;
     title: string | null;
-    mainImage: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
-    } | null;
     slug: Slug | null;
     blurb: Array<{
       children?: Array<{
@@ -618,9 +594,9 @@ declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"post\" && defined(slug.current)][0...12]{\n  _id, title, slug\n}": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}": POST_QUERYResult;
-    "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, mainImage, blurb\n}": ENTRIES_QUERYResult;
+    "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, blurb\n}": ENTRIES_QUERYResult;
     "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug, chipColor}\n}": ENTRY_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
-    "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]{_id, title, mainImage, slug, blurb}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
+    "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]{_id, title, slug, blurb}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
   }
 }
