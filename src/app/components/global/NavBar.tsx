@@ -4,11 +4,11 @@ import { NAVIGATION_LINKS } from '@/app/lib/global-data';
 
 const NavBar = () => {
 	return (
-		<header className="sticky z-50 top-0 p-2 bg-black flex flex-row items-center">
+		<header className="sticky z-50 top-0 p-2 bg-black flex flex-row items-center justify-between">
 			<Image
 				src="/AtomMagicLogoLight.svg"
 				alt="Atom Magic Logo"
-				className="inline-block mt-2 mb-2"
+				className="inline-block my-2 ml-4"
 				width={215}
 				height={24}
 				priority
