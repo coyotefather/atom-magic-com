@@ -43,10 +43,6 @@ export const categoryType = defineType({
       name: 'parent',
       type: 'reference',
       to: [{type: 'category'}],
-      // This ensures we cannot select other "children"
-      options: {
-        filter: '!defined(parent)',
-      },
     }),
   ],
 })
