@@ -436,29 +436,12 @@ export type POST_QUERYResult = {
   }> | null;
 } | null;
 // Variable: ENTRIES_QUERY
-// Query: *[_type == "entry" && defined(slug.current)][0...12]{  _id, title, slug, blurb}
+// Query: *[_type == "entry" && defined(slug.current)][0...12]{  _id, title, slug, mainImage, description}
 export type ENTRIES_QUERYResult = Array<{
   _id: string;
   title: string | null;
   slug: Slug | null;
-  blurb: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
+  mainImage: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -469,8 +452,8 @@ export type ENTRIES_QUERYResult = Array<{
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
-    _key: string;
-  }> | null;
+  } | null;
+  description: null;
 }>;
 // Variable: ENTRY_QUERY
 // Query: *[_type == "entry" && slug.current == $slug][0]{  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug, chipColor}}
@@ -538,7 +521,7 @@ export type CATEGORIES_QUERYResult = Array<{
   description: string | null;
 }>;
 // Variable: CATEGORY_QUERY
-// Query: *[_type == "category" && slug.current == $slug][0]{  _id, title, slug, description, parent->{title, slug}, "entries": *[_type == "entry" && references(^._id)]{_id, title, slug, blurb}, "children": *[_type == "category" && references(^._id)]{_id, title, slug, description},}
+// Query: *[_type == "category" && slug.current == $slug][0]{  _id, title, slug, description, parent->{title, slug}, "entries": *[_type == "entry" && references(^._id)]{_id, title, slug, mainImage, description}, "children": *[_type == "category" && references(^._id)]{_id, title, slug, description},}
 export type CATEGORY_QUERYResult = {
   _id: string;
   title: string | null;
@@ -549,24 +532,7 @@ export type CATEGORY_QUERYResult = {
     _id: string;
     title: string | null;
     slug: Slug | null;
-    blurb: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
-      listItem?: "bullet";
-      markDefs?: Array<{
-        href?: string;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    } | {
+    mainImage: {
       asset?: {
         _ref: string;
         _type: "reference";
@@ -577,8 +543,8 @@ export type CATEGORY_QUERYResult = {
       crop?: SanityImageCrop;
       alt?: string;
       _type: "image";
-      _key: string;
-    }> | null;
+    } | null;
+    description: null;
   }>;
   children: Array<{
     _id: string;
@@ -594,9 +560,9 @@ declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"post\" && defined(slug.current)][0...12]{\n  _id, title, slug\n}": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}": POST_QUERYResult;
-    "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, blurb\n}": ENTRIES_QUERYResult;
+    "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, mainImage, description\n}": ENTRIES_QUERYResult;
     "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug, chipColor}\n}": ENTRY_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
-    "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]{_id, title, slug, blurb}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
+    "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]{_id, title, slug, mainImage, description}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
   }
 }

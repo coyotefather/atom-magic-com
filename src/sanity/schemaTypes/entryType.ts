@@ -47,8 +47,8 @@ export const entryType = defineType({
       type: 'datetime',
     }),
     defineField({
-      name: 'blurb',
-      type: 'blockContent',
+      name: 'description',
+      type: 'text',
     }),
     defineField({
       name: 'body',

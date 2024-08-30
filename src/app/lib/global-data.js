@@ -1,11 +1,12 @@
 import { mdiBookshelf, mdiScriptText, mdiHeadCog, mdiAtom } from '@mdi/js';
 
 export const NAVIGATION_LINKS = [
+	{ href: "/codex/entries/getting-started", name: "GETTING STARTED", icon: "", extended: false },
 	{ href: "/codex", name: "CODEX", icon: "", extended: false },
 	{ href: "/character", name: "CHARACTER MANAGER", icon: "", extended: false },
 	{ href: "/vorago", name: "VORAGO", icon: "", extended: false },
 	{ href: "/contact", name: "CONTACT", icon: "", extended: true },
-	{ href: "/search", name: "SEARCH", icon: "mdiMagnify", extended: false}
+	{ href: "https://store.atom-magic.com", name: "STORE", icon: "", extended: true}
 ];
 
 export const CULTURES = [
