@@ -1,7 +1,6 @@
 // ./src/components/Entries.tsx
 
 import { ENTRIES_QUERYResult } from "../../../../sanity.types";
-import { urlFor } from "@/sanity/lib/image";
 import CustomCard from '@/app/components/common/CustomCard';
 
 const Entries = ({ entries }: { entries: ENTRIES_QUERYResult }) => {
@@ -16,7 +15,7 @@ const Entries = ({ entries }: { entries: ENTRIES_QUERYResult }) => {
 					title={e?.title ? e?.title : "Title"}
 					description={e?.description ? e?.description : "Description"}
 					url={`/codex/entries/${e?.slug?.current}`}
-					imagePath={e?.mainImage?.asset?._ref ? urlFor(e?.mainImage?.asset?._ref).width(300).height(300).quality(75).format('jpg').url() : ''}
+					imagePath=""
 					showImage={true} />
 			))}
 		</div>
