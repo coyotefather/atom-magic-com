@@ -15,17 +15,15 @@ const Hit = ({
 	}) => {
 
 	return (
-		<div className="mb-8 flex flex-row">
-				<Icon className="mr-2 my-auto align-center" path={ hit.type === "category" ? mdiFolderText : mdiFileDocument} size={2} />
-			<div>
-				<div className="text-xl">
-					<Link href={`/codex/entries/${hit.path}`}>
-						{hit.title}
-					</Link>
-				</div>
-				<p className="text-sm">
-					{hit.body.slice(0, 200) + '...'}
-				</p>
+		<div className="mb-8 flex flex-col">
+			<div className="text-xl">
+				<Link className="transition duration-150 ease-in flex flex-row items-center" href={`/codex/entries/${hit.path}`}>
+					<Icon className="mr-2 my-auto align-center" path={ hit.type === "category" ? mdiFolderText : mdiFileDocument} size={1} />
+					{hit.title}
+				</Link>
+			</div>
+			<div className="text-sm ml-8">
+				{hit.body.length > 200 ? hit.body.slice(0, 250) + '...' : hit.body}
 			</div>
 		</div>
 	);
