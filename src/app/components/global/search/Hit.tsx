@@ -23,7 +23,7 @@ const Hit = ({
 				</Link>
 			</div>
 			<div className="text-sm ml-8">
-				{hit.body.slice(0, 200) + '...'}
+				{hit.body.length > 200 ? hit.body.slice(0, 250) + '...' : hit.body}
 			</div>
 		</div>
 	);
