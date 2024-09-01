@@ -7,7 +7,7 @@ const Entries = ({ entries }: { entries: ENTRIES_QUERYResult }) => {
   return (
 	<section className="container">
 		<h3 className="marcellus text-2xl font-bold">Entries</h3>
-		<div className="grid grid-cols-2 gap-4">
+		<div className="grid grid-cols-3 gap-4">
 			{entries.map((e, index) => (
 				<Hit key={`entry_${index}`} hit={
 					{
