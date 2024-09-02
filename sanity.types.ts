@@ -444,7 +444,7 @@ export type ENTRIES_QUERYResult = Array<{
   description: null;
 }>;
 // Variable: ENTRIES_BY_TIMELINE_YEAR_QUERY
-// Query: *[_type == "entry" && showOnTimeline == true]| order(year) {  _id, title, slug, description, year}
+// Query: *[_type == "entry" && showOnTimeline == true]| order(year) {  _id, title, slug, year, yearDescription}
 export type ENTRIES_BY_TIMELINE_YEAR_QUERYResult = Array<never>;
 // Variable: ENTRY_QUERY
 // Query: *[_type == "entry" && slug.current == $slug][0]{  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug, chipColor}}
@@ -540,7 +540,7 @@ declare module "@sanity/client" {
     "*[_type == \"post\" && defined(slug.current)][0...12]{\n  _id, title, slug\n}": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}": POST_QUERYResult;
     "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": ENTRIES_QUERYResult;
-    "*[_type == \"entry\" && showOnTimeline == true]| order(year) {\n  _id, title, slug, description, year\n}": ENTRIES_BY_TIMELINE_YEAR_QUERYResult;
+    "*[_type == \"entry\" && showOnTimeline == true]| order(year) {\n  _id, title, slug, year, yearDescription\n}": ENTRIES_BY_TIMELINE_YEAR_QUERYResult;
     "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug, chipColor}\n}": ENTRY_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
     "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]| order(_id) [0...96]{_id, title, slug, description}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
