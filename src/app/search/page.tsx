@@ -6,7 +6,9 @@ export default function Page() {
   return (
 	  <main className="inconsolata">
 		  <div className="container">
-	  		<Search />
+			  <div className="mt-16 mb-16">
+	  			<Search />
+			  </div>
 		  </div>
 	  </main>
 	  );
