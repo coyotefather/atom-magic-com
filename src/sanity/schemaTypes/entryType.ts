@@ -51,6 +51,17 @@ export const entryType = defineType({
       type: 'text',
     }),
     defineField({
+      name: 'showOnTimeline',
+      type: 'boolean',
+      title: 'Show Entry on Timeline',
+    }),
+    defineField({
+      name: 'year',
+      type: 'number',
+      title: 'Year',
+      description: 'A positive or negative number indicating the year before or after the conflagratum magnum.',
+    }),
+    defineField({
       name: 'body',
       type: 'blockContent',
     }),
