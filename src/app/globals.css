@@ -61,7 +61,7 @@ body {
 }
 
 a {
-  color: rgb(var(--gold-rgb));
+  color: rgb(var(--adobe));
 }
 
 a:hover, a:active {

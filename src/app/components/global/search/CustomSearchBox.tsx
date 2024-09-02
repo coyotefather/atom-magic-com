@@ -14,7 +14,7 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 	const isSearchStalled = status === 'stalled';
 
 	function setQuery(newQuery: string) {
-		//setInputValue(newQuery);
+		setInputValue(newQuery);
 
 		refine(newQuery);
 	}
@@ -59,8 +59,9 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 					type="search"
 					value={inputValue}
 					onChange={(event) => {
-						setInputValue(event.currentTarget.value);
+						setQuery(event.currentTarget.value);
 					}}
+					onClear={() => setInputValue("")}
 					autoFocus/>
 				<Button
 					onClick={(event) => {
