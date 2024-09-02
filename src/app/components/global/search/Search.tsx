@@ -11,20 +11,20 @@ const searchClient = algoliasearch('578IHPAJAF', '59762a6202a01eaa2723bf1033011e
 
 export function Search() {
 	return (
-		<div className="mt-16 mb-16">
+		<div>
 			<InstantSearchNext
 				indexName="entries"
-				future={{ preserveSharedStateOnUnmount: true, }}
+				future={{ preserveSharedStateOnUnmount: false, }}
 				searchClient={searchClient}
 				routing={{
 				router: {
-				cleanUrlOnDispose: false,
-				windowTitle(routeState) {
-				const indexState = routeState.indexName || {};
-				return indexState.query
-				? `Atom Magic Codex - Results for: ${indexState.query}`
-				: 'Atom Magic Codex - Results page';
-				},
+					cleanUrlOnDispose: false,
+					windowTitle(routeState) {
+						const indexState = routeState.indexName || {};
+						return indexState.query
+						? `Atom Magic Codex - Results for: ${indexState.query}`
+						: 'Atom Magic Codex - Results page';
+					},
 				}
 				}}>
 				<div className="flex gap-16 items-center w-full">
