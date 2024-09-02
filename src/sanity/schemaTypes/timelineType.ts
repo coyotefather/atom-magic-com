@@ -18,6 +18,28 @@ export const timelineType = defineType({
       description: 'A full link to an entry in the Codex.',
     }),
     defineField({
+      title: 'Icon',
+      name: 'icon',
+      type: 'string',
+      description: 'Choose an icon for the timeline event. This icon is only shown for major events.',
+      options: {
+        list: [
+          {title: 'Person Icon', value: 'person'},
+          {title: 'People Icon', value: 'people'},
+          {title: 'Map Icon', value: 'map'},
+          {title: 'Swords Icon', value: 'swords'},
+          {title: 'Shield Icon', value: 'shield'},
+          {title: 'Tree Icon', value: 'tree'},
+          {title: 'Bird Icon', value: 'bird'},
+          {title: 'Wolf Icon', value: 'wolf'},
+          {title: 'Fire Icon', value: 'fire'},
+          {title: 'Poison Icon', value: 'poison'},
+          {title: 'Hammer Icon', value: 'hammer'},
+          {title: 'Atom Icon', value: 'atom'},
+        ],
+      }
+    }),
+    defineField({
       name: 'description',
       type: 'text',
     }),
