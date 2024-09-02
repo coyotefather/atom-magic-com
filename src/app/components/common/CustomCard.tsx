@@ -28,7 +28,7 @@ const CustomCard = ({
 	return (
 		<a
 		href={url}
-		className="transition duration-150 ease-in hover:brightness-125 hover:drop-shadow-lg block w-full no-underline hover:no-underline"
+		className="transition duration-200 ease-in hover:brightness-125 hover:drop-shadow-lg block w-full no-underline hover:no-underline"
 		>
 			<Card shadow="sm" className={clsx(
 				"w-full",
