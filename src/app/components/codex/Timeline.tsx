@@ -55,7 +55,7 @@ export default function Timeline({ timeline }: { timeline: TIMELINE_QUERYResult 
 			  className={clsx(
 				"transition duration-200 ease-in underline",
 				{'hidden': !t.URL}
-			  )} href={t.URL} target="_new">{t.title}</a>
+			  )} href={t.URL ? t.URL : "" } target="_new">{t.title}</a>
 			  <span className={clsx(
 				"font-bold",
 				{'hidden': t.URL}
