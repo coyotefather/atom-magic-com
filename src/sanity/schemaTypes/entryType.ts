@@ -62,6 +62,12 @@ export const entryType = defineType({
       description: 'A positive or negative number indicating the year before or after the conflagratum magnum.',
     }),
     defineField({
+      name: 'yearDescription',
+      type: 'text',
+      title: 'Year Details',
+      description: 'Describe the event that happened during the year listed.',
+    }),
+    defineField({
       name: 'body',
       type: 'blockContent',
     }),

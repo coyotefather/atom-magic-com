@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import {Input} from "@nextui-org/input";
-import {Button, ButtonGroup} from "@nextui-org/react";
+import {Button} from "@nextui-org/react";
 import Icon from '@mdi/react';
 import { mdiMagnify } from '@mdi/js';
 import { useInstantSearch, useSearchBox, UseSearchBoxProps } from 'react-instantsearch';
