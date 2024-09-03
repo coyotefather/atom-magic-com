@@ -68,70 +68,18 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type Post = {
+export type Timeline = {
   _id: string;
-  _type: "post";
+  _type: "timeline";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   title?: string;
-  slug?: Slug;
-  author?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "author";
-  };
-  mainImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  categories?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "category";
-  }>;
-  publishedAt?: string;
-  body?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-    _key: string;
-  }>;
+  URL?: string;
+  icon?: "person" | "people" | "map" | "waves" | "mountain" | "swords" | "shield" | "tree" | "bird" | "wolf" | "snake" | "fire" | "poison" | "hammer" | "atom" | "nuke";
+  description?: string;
+  major?: boolean;
+  year?: number;
 };
 
 export type Entry = {
@@ -168,7 +116,11 @@ export type Entry = {
     [internalGroqTypeReferenceTo]?: "category";
   }>;
   publishedAt?: string;
-  blurb?: Array<{
+  description?: string;
+  showOnTimeline?: boolean;
+  year?: number;
+  yearDescription?: string;
+  body?: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
@@ -198,6 +150,42 @@ export type Entry = {
     _type: "image";
     _key: string;
   }>;
+};
+
+export type Post = {
+  _id: string;
+  _type: "post";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  author?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "author";
+  };
+  mainImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  categories?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "category";
+  }>;
+  publishedAt?: string;
   body?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -277,7 +265,14 @@ export type Category = {
   _rev: string;
   title?: string;
   slug?: Slug;
+  chipColor?: Color;
   description?: string;
+  parent?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "category";
+  };
 };
 
 export type Slug = {
@@ -374,7 +369,40 @@ export type SanityImageMetadata = {
   isOpaque?: boolean;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Post | Entry | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata;
+export type Color = {
+  _type: "color";
+  hex?: string;
+  alpha?: number;
+  hsl?: HslaColor;
+  hsv?: HsvaColor;
+  rgb?: RgbaColor;
+};
+
+export type RgbaColor = {
+  _type: "rgbaColor";
+  r?: number;
+  g?: number;
+  b?: number;
+  a?: number;
+};
+
+export type HsvaColor = {
+  _type: "hsvaColor";
+  h?: number;
+  s?: number;
+  v?: number;
+  a?: number;
+};
+
+export type HslaColor = {
+  _type: "hslaColor";
+  h?: number;
+  s?: number;
+  l?: number;
+  a?: number;
+};
+
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Timeline | Entry | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Color | RgbaColor | HsvaColor | HslaColor;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
@@ -441,11 +469,19 @@ export type ENTRIES_QUERYResult = Array<{
   _id: string;
   title: string | null;
   slug: Slug | null;
-  description: null;
+  description: string | null;
 }>;
 // Variable: TIMELINE_QUERY
-// Query: *[_type == "timeline"]| order(year) {  _id, title, URL, year, major, icon, description}
-export type TIMELINE_QUERYResult = Array<never>;
+// Query: *[_type == "timeline"]| order(year desc) {  _id, title, URL, year, major, icon, description}
+export type TIMELINE_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  URL: string | null;
+  year: number | null;
+  major: boolean | null;
+  icon: "atom" | "bird" | "fire" | "hammer" | "map" | "mountain" | "nuke" | "people" | "person" | "poison" | "shield" | "snake" | "swords" | "tree" | "waves" | "wolf" | null;
+  description: string | null;
+}>;
 // Variable: ENTRY_QUERY
 // Query: *[_type == "entry" && slug.current == $slug][0]{  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug, chipColor}}
 export type ENTRY_QUERYResult = {
@@ -500,7 +536,7 @@ export type ENTRY_QUERYResult = {
   categories: Array<{
     title: string | null;
     slug: Slug | null;
-    chipColor: null;
+    chipColor: Color | null;
   }> | null;
 } | null;
 // Variable: CATEGORIES_QUERY
@@ -518,12 +554,15 @@ export type CATEGORY_QUERYResult = {
   title: string | null;
   slug: Slug | null;
   description: string | null;
-  parent: null;
+  parent: {
+    title: string | null;
+    slug: Slug | null;
+  } | null;
   entries: Array<{
     _id: string;
     title: string | null;
     slug: Slug | null;
-    description: null;
+    description: string | null;
   }>;
   children: Array<{
     _id: string;
@@ -540,7 +579,7 @@ declare module "@sanity/client" {
     "*[_type == \"post\" && defined(slug.current)][0...12]{\n  _id, title, slug\n}": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}": POST_QUERYResult;
     "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": ENTRIES_QUERYResult;
-    "*[_type == \"timeline\"]| order(year) {\n  _id, title, URL, year, major, icon, description\n}": TIMELINE_QUERYResult;
+    "*[_type == \"timeline\"]| order(year desc) {\n  _id, title, URL, year, major, icon, description\n}": TIMELINE_QUERYResult;
     "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug, chipColor}\n}": ENTRY_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
     "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]| order(_id) [0...96]{_id, title, slug, description}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;

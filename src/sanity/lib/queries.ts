@@ -14,7 +14,7 @@ export const ENTRIES_QUERY = groq`*[_type == "entry" && defined(slug.current)][0
   _id, title, slug, description
 }`;
 
-export const TIMELINE_QUERY = groq`*[_type == "timeline"]| order(year) {
+export const TIMELINE_QUERY = groq`*[_type == "timeline"]| order(year desc) {
   _id, title, URL, year, major, icon, description
 }`;
 
