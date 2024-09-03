@@ -17,6 +17,14 @@
   --olive-green: #BAB86C;
   --dark-olive-green: #8A8841;
   --goldenrod: #daa520;
+  --sunset-blue: rgb(0, 179, 164);
+  --sunset-red: rgb(238, 100, 58);
+}
+
+@layer base {
+  a {
+    @apply font-bold underline text-adobe hover:text-sunset-red;
+  }
 }
 
 @media (prefers-color-scheme: light) {
@@ -58,14 +66,6 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-}
-
-a {
-  color: rgb(var(--adobe));
-}
-
-a:hover, a:active {
-  color: rgb(var(--brightgold-rgb));
 }
 
 button.gradient {
