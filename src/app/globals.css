@@ -23,7 +23,7 @@
 
 @layer base {
   a {
-    @apply font-bold underline text-adobe hover:text-sunset-red;
+    @apply font-semibold underline hover:text-goldenrod;
   }
 }
 
