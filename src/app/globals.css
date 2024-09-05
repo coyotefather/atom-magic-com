@@ -23,7 +23,7 @@
 
 @layer base {
   a {
-    @apply font-semibold underline hover:text-goldenrod;
+    @apply font-semibold underline transition duration-200 ease-in hover:text-goldenrod;
   }
 }
 
