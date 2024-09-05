@@ -27,17 +27,20 @@ export default function Timeline({
 	iconPaths.set('nuke', mdiNuke);
 
   return (
-	<div className="container my-16">
-			<div className="relative w-[700px] mx-auto">
-	  <div className="absolute h-full w-[14px] bg-sunset-gradient border-2 mx-auto left-0 right-0 z-1"></div>
-				{timeline.map( (t, index) => (
-					<TimelineItem
-						key={index}
-						t={t}
-						index={index}
-						iconPaths={iconPaths} />
-				))}
+	<div className="container inconsolata my-16">
+		<div className="relative mx-auto">
+			<div className="absolute h-full w-[14px] mx-auto left-0 right-0 z-1">
+				<div className="w-[14px] mt-6 h-full bg-sunset-gradient border-2"></div>
 			</div>
+			{timeline.map( (t, index) => (
+				<TimelineItem
+					key={index}
+					t={t}
+					index={index}
+					iconPaths={iconPaths}
+					count={timeline.length} />
+			))}
 		</div>
+	</div>
   );
 }

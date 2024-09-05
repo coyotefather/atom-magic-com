@@ -1,11 +1,12 @@
 import clsx from 'clsx';
 import Icon from '@mdi/react';
-import { mdiCircle, mdiRayEndArrow, mdiRayStartArrow } from '@mdi/js';
+import { mdiCircleMedium } from '@mdi/js';
 
 const TimelineItem = ({
 		t,
 		index,
 		iconPaths,
+		count,
 	}: {
 		t: {
 			_id: string,
@@ -18,71 +19,92 @@ const TimelineItem = ({
 		},
 		index: number,
 		iconPaths: Map<string, string>,
+		count: number
 	}) => {
 
-	let iconPath = t.icon && iconPaths.get(t.icon) && t.major ? iconPaths.get(t.icon) : mdiCircle;
+	let iconPath = t.icon && iconPaths.get(t.icon) && t.major ? iconPaths.get(t.icon) : mdiCircleMedium;
 	if(iconPath === undefined) {
-		iconPath =mdiCircle;
+		iconPath = mdiCircleMedium;
 	}
 
 	let year = "";
 	if(t.year && t.year < 0) {
-		year = `${t.year * -1} A.R.`;
+		year = `${t.year * -1}`;
 	} else if(t.year && t.year > 0) {
-		year = `${t.year} P.R.`;
+		year = `${t.year}`;
 	} else {
-		year = "Anno Nulla";
+		year = "ANNO NULLA";
 	}
 
+	let size = t.year === 0 ? 2 : 1.25;
+	if(t.year !== 0 && !t.major) {
+		size = 1;
+	}
 	return (
 		<div
 			className={clsx(
-				'flex relative items-center justify-between',
-				{'flex-row l-[350px]': index % 2 != 0},
-				{'flex-row-reverse ': index % 2 == 0}
+				'flex flex-row-reverse relative items-start justify-center',
+				{'gap-24': t.major === true},
+				{'gap-24': t.major !== true},
 			)}>
-			<div className="hidden absolute h-[2px] w-28 bg-black m-auto left-0 right-0 top-0 bottom-0 z-1"></div>
-			<Icon
-				className={clsx(
-					'absolute z-2 m-auto left-0 right-0 top-0 bottom-0 p-1 rounded-full',
-					{'bg-black text-white': t.major === true},
-					{'bg-white border-black border-2': t.major !== true},
-				)}
-				path={iconPath}
-				size={t.major === true ? 1.25 : 1} />
 			<div className={clsx(
-				'my-4 mx-0 p-4 relative min-h-12 border-2 rounded-lg',
-				{'w-[300px]': index % 2 != 0},
-				{'w-[300px]': index % 2 == 0}
+				'p-4 w-96 relative min-h-12',
+				{'my-4': t.major === true},
+				{'my-2': t.major !== true}
 			)}>
 				<div className={clsx(
-						'flex gap-4 w-full',
+						'flex gap-4 w-full marcellus',
+						{'text-xl': t.major === true},
+						{'text-sm': t.major !== true},
 					)}>
+					{t.title}
+				</div>
+				<div className={clsx(
+					"w-full",
+					{'text-md': t.major === true},
+					{'text-sm': t.major !== true},
+				)}>
+					<p>
+					{t.description ? t.description : ""}
+					</p>
+					<div>
 					<a
 						className={clsx(
 						"transition duration-200 ease-in underline",
-						{'hidden': !t.URL}
+						{'hidden': !t.URL},
+						{'font-medium': t.major !== true},
 						)} href={t.URL ? t.URL : "" } target="_new">
-						{t.title}
+						More...
 					</a>
-					<span
-						className={clsx(
-						"font-bold",
-						{'hidden': t.URL}
-						)}>
-						{t.title}
-					</span>
-				</div>
-				<div className="text-sm w-full">
-					{t.description}
+					</div>
 				</div>
 			</div>
+			<Icon
+				className={clsx(
+					'absolute mx-auto left-0 right-0 rounded-full z-3',
+					{'bg-black text-white p-1 mt-8': t.major === true && t.year !== 0},
+					{'bg-white border-black border-2 mt-6': t.major !== true},
+					{'bg-brightgold text-black border-2 p-1 border-black mt-6': t.year === 0}
+				)}
+				path={iconPath}
+				size={size} />
 			<div className={clsx(
-				'h-full w-[300px] flex',
-				{'justify-end': index % 2 == 0}
+				'h-full w-96 flex justify-end',
 				)}>
-				<div className="inline-block font-bold text-md bg-black text-white border-2 rounded-full py-2 px-4">
+				<div className={clsx(
+					"p-4 inline-block marcellus font-bold",
+					{'text-xl my-4': t.major === true},
+					{'text-sm my-2': t.major !== true},
+				)}>
 					{year}
+					<span className={clsx(
+						"m-1",
+						{'text-sm': t.major === true},
+						{'text-xs': t.major !== true},
+					)}>
+						{t.year && t.year < 0 ? "A.R." : ""}
+						{t.year && t.year > 0 ? "P.R." : ""}
+					</span>
 				</div>
 			</div>
 		</div>
