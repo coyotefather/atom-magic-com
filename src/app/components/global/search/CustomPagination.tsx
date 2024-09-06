@@ -1,5 +1,4 @@
 import React from 'react';
-import {Button, ButtonGroup} from "@nextui-org/react";
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiChevronDoubleLeft, mdiChevronRight, mdiChevronDoubleRight } from '@mdi/js';
 import { usePagination, UsePaginationProps, } from 'react-instantsearch';
@@ -21,19 +20,23 @@ export default function CustomPagination(props: UsePaginationProps) {
 	const lastPageIndex = nbPages - 1;
 
 	return (
-		<ButtonGroup variant="light" className="bg-sunset-gradient border-2 border-black divide-x-2 rounded-full">
+		<div className="flex flex-row gap-2">
 			<PaginationItem
 				isDisabled={isFirstPage}
 				href={createURL(firstPageIndex)}
 				onClick={() => refine(firstPageIndex)}
-				iconOnly={true}>
+				iconOnly={true}
+				currentPage={null}
+				thisPage={null}>
 				<Icon path={mdiChevronDoubleLeft} size={1} />
 			</PaginationItem>
 			<PaginationItem
 				isDisabled={isFirstPage}
 				href={createURL(previousPageIndex)}
 				onClick={() => refine(previousPageIndex)}
-				iconOnly={true}>
+				iconOnly={true}
+				currentPage={null}
+				thisPage={null}>
 				<Icon path={mdiChevronLeft} size={1} />
 			</PaginationItem>
 			{pages.map((page) => {
@@ -46,7 +49,9 @@ export default function CustomPagination(props: UsePaginationProps) {
 					aria-label={`Page ${label}`}
 					href={createURL(page)}
 					onClick={() => refine(page)}
-					iconOnly={false}>
+					iconOnly={false}
+					currentPage={currentRefinement}
+					thisPage={page}>
 					<div className="text-black text-md text-lg">{label}</div>
 				</PaginationItem>
 				);
@@ -55,17 +60,21 @@ export default function CustomPagination(props: UsePaginationProps) {
 				isDisabled={isLastPage}
 				href={createURL(nextPageIndex)}
 				onClick={() => refine(nextPageIndex)}
-				iconOnly={true}>
+				iconOnly={true}
+				currentPage={null}
+				thisPage={null}>
 				<Icon path={mdiChevronRight} size={1} />
 			</PaginationItem>
 			<PaginationItem
 				isDisabled={isLastPage}
 				href={createURL(lastPageIndex)}
 				onClick={() => refine(lastPageIndex)}
-				iconOnly={true}>
+				iconOnly={true}
+				currentPage={null}
+				thisPage={null}>
 				<Icon path={mdiChevronDoubleRight} size={1} />
 			</PaginationItem>
-		</ButtonGroup>
+		</div>
 	);
 }
 
@@ -73,6 +82,8 @@ type PaginationItemProps = Omit<React.ComponentProps<'a'>, 'onClick'> & {
 	onClick: NonNullable<React.ComponentProps<'a'>['onClick']>;
 	isDisabled: boolean;
 	iconOnly: boolean;
+	currentPage: number | null;
+	thisPage: number | null;
 };
 
 function PaginationItem({
@@ -80,26 +91,29 @@ function PaginationItem({
 	href,
 	onClick,
 	iconOnly,
+	currentPage,
+	thisPage,
 	...props
 	}: PaginationItemProps) {
 	if (isDisabled) {
 		return (
-			<Button isIconOnly={iconOnly} isDisabled={true}>
-			<span {...props} />
-			</Button>
+			<button className="rounded-full opacity-25 border-0" disabled={true}>
+				<span {...props} />
+			</button>
 		);
 	}
 
 	return (
-		<Button className={clsx(
-			'',
-			{ 'p-0': !iconOnly},
-			)} isIconOnly={iconOnly}>
+		<button className={clsx(
+			'rounded-full w-10 h-10',
+			{ 'm-2': !iconOnly},
+			)}>
 			<a
 				className={clsx(
-					'',
-					{ 'w-full h-full flex items-center justify-center': !iconOnly }
-					)}
+					'rounded-full inline-block no-underline',
+					{ 'w-full h-full flex items-center justify-center': !iconOnly },
+					{ 'bg-sunset-gradient': thisPage === currentPage },
+				)}
 				href={href}
 				onClick={(event) => {
 					if (isModifierClick(event)) {
@@ -112,7 +126,7 @@ function PaginationItem({
 				}}
 				{...props}
 			/>
-		</Button>
+		</button>
 	);
 }
 
