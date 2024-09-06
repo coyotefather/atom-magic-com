@@ -25,6 +25,9 @@
   a {
     @apply font-semibold underline transition duration-200 ease-in hover:text-goldenrod;
   }
+  button {
+    @apply transition duration-200 ease-in border-2 border-black hover:brightness-110 hover:saturate-150;
+  }
 }
 
 @media (prefers-color-scheme: light) {
