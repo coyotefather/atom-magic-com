@@ -33,6 +33,13 @@ const Page = async () => {
 							url="/codex/categories/lore"
 							imagePath="/Wheel_of_Cardinals.svg"
 							showImage={true} />
+						<CustomCard
+							type="category"
+							title="Timeline"
+							description="Explore a timeline of events in the world of Solum."
+							url="/codex/timeline"
+							imagePath=""
+							showImage={false} />
 					</div>
 					<div className="col-span-3">
 						<Search />
