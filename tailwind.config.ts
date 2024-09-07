@@ -57,7 +57,11 @@ const config: Config = {
   },
   darkMode: "class",
   plugins: [
-    nextui(),
+    nextui({
+      layout: {
+        hoverOpacity: 0
+      }
+    }),
     require('@tailwindcss/typography')
   ],
 };

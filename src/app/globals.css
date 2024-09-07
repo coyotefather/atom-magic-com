@@ -23,10 +23,16 @@
 
 @layer base {
   a {
-    @apply font-semibold underline transition duration-200 ease-in hover:text-goldenrod;
+    @apply font-semibold underline transition duration-200 ease-in hover:text-brightgold hover:contrast-100 hover:saturate-150 hover:brightness-75;
   }
   button {
-    @apply transition duration-200 ease-in border-2 border-black hover:brightness-110 hover:saturate-150;
+    @apply transition duration-200 ease-in border-2 border-black hover:contrast-150 hover:saturate-150 hover:brightness-90;
+  }
+  a > button {
+    @apply hover:contrast-125 hover:saturate-150 hover:brightness-100;
+  }
+  button > a {
+    @apply hover:contrast-100 hover:saturate-100 hover:brightness-100;
   }
 }
 

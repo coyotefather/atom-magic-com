@@ -19,7 +19,7 @@ export const TIMELINE_QUERY = groq`*[_type == "timeline"]| order(year desc) {
 }`;
 
 export const ENTRY_QUERY = groq`*[_type == "entry" && slug.current == $slug][0]{
-  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug, chipColor}
+  title, body, mainImage, publishedAt, author->{name, slug}, category->{title, slug, chipColor}
 }`;
 
 export const CATEGORIES_QUERY = groq`*[_type == "category" && defined(slug.current)][0...12]{
