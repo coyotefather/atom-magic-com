@@ -11,7 +11,7 @@ import CategoryChip from '@/app/components/common/CategoryChip';
 
 export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 
-  const { title, mainImage, body, author, publishedAt, categories } = entry || {};
+  const { title, mainImage, body, author, publishedAt, category } = entry || {};
 
   return (
 	<article className="inconsolata mx-auto prose prose-md max-w-none bg-white m-0">
@@ -46,12 +46,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 							<dd className="mt-1">{publishedAt ? new Date(publishedAt).toDateString() : "Date unknown"}</dd>
 						</div>
 						<div className="flex flex-row py-1">
-							<dt className="w-24 text-white mt-1">Categories</dt>
-							<dd className="mt-1 flex gap-2">
-								{categories?.map( (c) => (
-									<CategoryChip key={c?.title} category={c} />
-								))}
-							</dd>
+
 						</div>
 					</dl>
 				</CardFooter>
