@@ -19,12 +19,12 @@ const Nav = ({
 			{items.map((item) => {
 					if(extended) {
 						return <Link
-									className="p-1 text-lg tracking-widest no-underline text-gold hover:text-brightgold"
+									className="p-1 text-lg tracking-widest no-underline text-gold hover:text-brightgold hover:brightness-110"
 									href={item.href}
 									key={item.name} >{item.name}</Link>;
 					} else if(extended === false && item.extended !== true ) {
 						return <Link
-									className="p-5 text-lg tracking-widest no-underline text-gold hover:text-brightgold"
+									className="p-5 text-lg tracking-widest no-underline text-gold hover:text-brightgold hover:brightness-110"
 									href={item.href}
 									key={item.name} >{item.name === "SEARCH" ? <Icon className="inline" path={mdiMagnify} size={1} /> : item.name}</Link>;
 					} else {
