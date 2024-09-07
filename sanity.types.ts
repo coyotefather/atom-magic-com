@@ -108,13 +108,12 @@ export type Entry = {
     alt?: string;
     _type: "image";
   };
-  categories?: Array<{
+  category?: {
     _ref: string;
     _type: "reference";
     _weak?: boolean;
-    _key: string;
     [internalGroqTypeReferenceTo]?: "category";
-  }>;
+  };
   publishedAt?: string;
   description?: string;
   showOnTimeline?: boolean;
@@ -483,7 +482,7 @@ export type TIMELINE_QUERYResult = Array<{
   description: string | null;
 }>;
 // Variable: ENTRY_QUERY
-// Query: *[_type == "entry" && slug.current == $slug][0]{  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug, chipColor}}
+// Query: *[_type == "entry" && slug.current == $slug][0]{  title, body, mainImage, publishedAt, author->{name, slug}, categories->{title, slug, chipColor}}
 export type ENTRY_QUERYResult = {
   title: string | null;
   body: Array<{
@@ -533,11 +532,7 @@ export type ENTRY_QUERYResult = {
     name: string | null;
     slug: Slug | null;
   } | null;
-  categories: Array<{
-    title: string | null;
-    slug: Slug | null;
-    chipColor: Color | null;
-  }> | null;
+  categories: null;
 } | null;
 // Variable: CATEGORIES_QUERY
 // Query: *[_type == "category" && defined(slug.current)][0...12]{  _id, title, slug, description}
@@ -580,7 +575,7 @@ declare module "@sanity/client" {
     "*[_type == \"post\" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}": POST_QUERYResult;
     "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": ENTRIES_QUERYResult;
     "*[_type == \"timeline\"]| order(year desc) {\n  _id, title, URL, year, major, icon, description\n}": TIMELINE_QUERYResult;
-    "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, body, mainImage, publishedAt, author->{name, slug}, categories[]->{title, slug, chipColor}\n}": ENTRY_QUERYResult;
+    "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, body, mainImage, publishedAt, author->{name, slug}, categories->{title, slug, chipColor}\n}": ENTRY_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
     "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]| order(_id) [0...96]{_id, title, slug, description}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
   }
