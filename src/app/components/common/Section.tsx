@@ -110,7 +110,7 @@ const Section = ({
 								timeout={100}
 								classNames='fade'>
 								<div className={clsx(
-									"rounded-full z-10 absolute bottom-[10px] bg-sunset-gradient border-black transition-all duration-300 ease-out",
+									"rounded-full z-10 absolute bottom-[10px] border-black transition duration-300 ease-in bg-white",
 									{ '-left-[74px]': !nextExpanded },
 									{ '-left-[23px]': nextExpanded },
 								)}>
@@ -119,17 +119,16 @@ const Section = ({
 										onClick={handleClick}
 										radius="full"
 										size="lg"
-										variant="bordered"
 										isIconOnly={nextExpanded}
 										endContent={buttonGraphic}
 										isDisabled={nextExpanded}
 										disableRipple={true}
-										className={clsx("text-black inconsolata font-bold border-black bg-transparent transition-all duration-300 ease-out",
+										className={clsx("text-black inconsolata font-bold",
 											{
-												'hover:bg-sunset-red uppercase tracking-widest p-2 pl-4 pr-4': nextExpanded === false
+												'uppercase tracking-widest p-2 pl-4 pr-4 bg-sunset-gradient': nextExpanded === false
 											},
 											{
-												'cursor-default bg-white opacity-100': nextExpanded === true
+												'cursor-default bg-white': nextExpanded === true
 											},
 										)}>
 										{ nextExpanded ? "" : "CONTINUE"}
