@@ -116,9 +116,6 @@ export type Entry = {
   };
   publishedAt?: string;
   description?: string;
-  showOnTimeline?: boolean;
-  year?: number;
-  yearDescription?: string;
   body?: Array<{
     children?: Array<{
       marks?: Array<string>;
