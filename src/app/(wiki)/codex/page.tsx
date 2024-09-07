@@ -5,6 +5,8 @@ import { Search } from '@/app/components/global/search/Search';
 // import { ENTRIES_QUERY } from "@/sanity/lib/queries";
 // import { ENTRIES_QUERYResult } from "../../../../sanity.types";
 
+export const dynamic = 'force-dynamic';
+
 const Page = async () => {
 
 	// const entries = await sanityFetch<ENTRIES_QUERYResult>({
