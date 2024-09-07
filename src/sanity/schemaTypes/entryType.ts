@@ -1,5 +1,5 @@
 import {DocumentTextIcon} from '@sanity/icons'
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export const entryType = defineType({
   name: 'entry',
@@ -50,23 +50,6 @@ export const entryType = defineType({
     defineField({
       name: 'description',
       type: 'text',
-    }),
-    defineField({
-      name: 'showOnTimeline',
-      type: 'boolean',
-      title: 'Show Entry on Timeline',
-    }),
-    defineField({
-      name: 'year',
-      type: 'number',
-      title: 'Year',
-      description: 'A positive or negative number indicating the year before or after the conflagratum magnum.',
-    }),
-    defineField({
-      name: 'yearDescription',
-      type: 'text',
-      title: 'Year Details',
-      description: 'Describe the event that happened during the year listed.',
     }),
     defineField({
       name: 'body',
