@@ -14,7 +14,7 @@ const Entries = ({ entries }: { entries: ENTRIES_QUERYResult }) => {
 						type: "entry",
 						rev: "",
 						title: e?.title ? e?.title : "Title",
-						path: `/codex/entries/${e?.slug?.current}`,
+						path: `${e?.slug?.current}`,
 						body: e?.description ? e?.description : "Description"
 					}
 				} />
