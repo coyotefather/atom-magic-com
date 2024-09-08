@@ -1,6 +1,6 @@
 // ./src/components/Entry.tsx
 import Image from "next/image";
-import { PortableText } from "@portabletext/react";
+import Markdown from 'react-markdown'
 import { urlFor } from "@/sanity/lib/image";
 import { ENTRY_QUERYResult } from "../../../../sanity.types";
 import Link from "next/link";
@@ -10,7 +10,7 @@ import clsx from 'clsx';
 
 export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 
-	const { title, mainImage, body, author, publishedAt, category } = entry || {};
+	const { title, mainImage, entryBody, author, publishedAt, category } = entry || {};
 
 	let parents = [
 		{ title: "Home", url: "/" }
@@ -74,7 +74,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 				</Card>
 			</header>
 			<section className="container">
-  				{body ? <PortableText value={body} /> : null}
+				<Markdown>{entryBody}</Markdown>
 			</section>
 			<section className="bg-sunset-gradient mt-16">
 				<div className="container py-4">

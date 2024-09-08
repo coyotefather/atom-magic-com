@@ -1,5 +1,5 @@
 import {DocumentTextIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export const entryType = defineType({
   name: 'entry',
@@ -48,13 +48,27 @@ export const entryType = defineType({
       type: 'datetime',
     }),
     defineField({
+      name: 'cardDetails',
+      title: 'Additional Card Details',
+      description: 'Add name and description pairs for additional information displayed on entry cards.',
+      type: 'array',
+      of: [
+        {name: 'detailName', title: 'Name',  type: 'text'},
+        {name: 'detailDescription', title: 'Description', type: 'text'}
+      ],
+    }),
+    defineField({
       name: 'description',
       type: 'text',
     }),
     defineField({
-      name: 'body',
-      type: 'blockContent',
-    }),
+      type: 'markdown',
+      name: 'entryBody',
+      title: 'Entry Body',
+      options: {
+        imageUrl: imageAsset => `${imageAsset.url}?w=400&h=400`
+      }
+    })
   ],
   preview: {
     select: {
