@@ -53,8 +53,10 @@ export const entryType = defineType({
       description: 'Add name and description pairs for additional information displayed on entry cards.',
       type: 'array',
       of: [
-        {name: 'detailName', title: 'Name',  type: 'text'},
-        {name: 'detailDescription', title: 'Description', type: 'text'}
+        {name: 'cardDetail', title: 'Detail', type: 'object', fields: [
+          {name: 'detailName', title: 'Name',  type: 'text'},
+          {name: 'detailDescription', title: 'Description', type: 'text'}
+        ]},
       ],
     }),
     defineField({
