@@ -115,7 +115,12 @@ export type Entry = {
     [internalGroqTypeReferenceTo]?: "category";
   };
   publishedAt?: string;
-  cardDetails?: Array<string | string>;
+  cardDetails?: Array<{
+    detailName?: string;
+    detailDescription?: string;
+    _type: "cardDetail";
+    _key: string;
+  }>;
   description?: string;
   entryBody?: string;
 };
@@ -456,7 +461,12 @@ export type TIMELINE_QUERYResult = Array<{
 // Query: *[_type == "entry" && slug.current == $slug][0]{  title, cardDetails, entryBody, mainImage, publishedAt, author->{name, slug}, category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}}
 export type ENTRY_QUERYResult = {
   title: string | null;
-  cardDetails: Array<string> | null;
+  cardDetails: Array<{
+    detailName?: string;
+    detailDescription?: string;
+    _type: "cardDetail";
+    _key: string;
+  }> | null;
   entryBody: string | null;
   mainImage: {
     asset?: {
