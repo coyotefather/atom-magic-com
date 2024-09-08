@@ -10,7 +10,7 @@ import clsx from 'clsx';
 
 export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 
-	const { title, mainImage, entryBody, author, publishedAt, category } = entry || {};
+	const { title, mainImage, cardDetails, entryBody, author, publishedAt, category } = entry || {};
 
 	let parents = [
 		{ title: "Home", url: "/" }
@@ -66,9 +66,12 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 								<dt className="w-24 text-white mt-1">Last update</dt>
 								<dd className="mt-1">{publishedAt ? new Date(publishedAt).toDateString() : "Date unknown"}</dd>
 							</div>
-							<div className="flex flex-row py-1">
-
-							</div>
+							{cardDetails?.map((d) => (
+								<div className="flex flex-row py-1">
+									<dt className="w-24 text-white mt-1">{d.detailName}</dt>
+									<dd className="mt-1">{d.detailDescription}</dd>
+								</div>
+							))}
 						</dl>
 					</CardFooter>
 				</Card>
