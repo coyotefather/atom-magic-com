@@ -66,8 +66,8 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 								<dt className="w-24 text-white mt-1">Last update</dt>
 								<dd className="mt-1">{publishedAt ? new Date(publishedAt).toDateString() : "Date unknown"}</dd>
 							</div>
-							{cardDetails?.map((d) => (
-								<div className="flex flex-row py-1">
+							{cardDetails?.map((d, index) => (
+								<div key={`${d.detailName}-${index}`} className="flex flex-row py-1">
 									<dt className="w-24 text-white mt-1">{d.detailName}</dt>
 									<dd className="mt-1">{d.detailDescription}</dd>
 								</div>
