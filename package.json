@@ -38,7 +38,7 @@
     "remark-heading-id": "^1.0.1",
     "sanity": "^3.57.0",
     "sanity-algolia": "^1.1.0",
-    "sanity-plugin-markdown": "^4.1.2",
+    "sanity-plugin-markdown": "^5.0.0",
     "styled-components": "^6.1.12"
   },
   "devDependencies": {
