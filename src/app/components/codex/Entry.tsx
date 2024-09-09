@@ -1,6 +1,9 @@
 // ./src/components/Entry.tsx
 import Image from "next/image";
 import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import { remarkExtendedTable } from 'remark-extended-table';
+import remarkHeadingId from 'remark-heading-id';
 import { urlFor } from "@/sanity/lib/image";
 import { ENTRY_QUERYResult } from "../../../../sanity.types";
 import Link from "next/link";
@@ -77,7 +80,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 				</Card>
 			</header>
 			<section className="container">
-				<Markdown>{entryBody}</Markdown>
+				<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>{entryBody}</Markdown>
 			</section>
 			<section className="bg-sunset-gradient mt-16">
 				<div className="container py-4">
