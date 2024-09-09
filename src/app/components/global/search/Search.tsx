@@ -1,5 +1,6 @@
 'use client';
-import algoliasearch from 'algoliasearch';
+//import  algoliasearch from 'algoliasearch';
+import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { Hits, Stats } from 'react-instantsearch';
 import { InstantSearchNext } from 'react-instantsearch-nextjs';
 import Hit from '@/app/components/global/search/Hit';
