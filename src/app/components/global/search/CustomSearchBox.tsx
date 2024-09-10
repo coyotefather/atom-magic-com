@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
 import Icon from '@mdi/react';
@@ -14,10 +15,19 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 	const isSearchStalled = status === 'stalled';
 
 	function setQuery(newQuery: string) {
-		setInputValue(newQuery);
-
+		//setInputValue(newQuery);
 		refine(newQuery);
 	}
+
+	const debounced = useDebouncedCallback(
+		// function
+		(value: string) => {
+		  setInputValue(value);
+		  refine(value);
+		},
+		// delay in ms
+		1500
+	  );
 
 	return (
 		<div className="w-full">
@@ -59,12 +69,13 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 					type="search"
 					value={inputValue}
 					onChange={(event) => {
-						setQuery(event.currentTarget.value);
+						setInputValue(event.currentTarget.value);
+						debounced(event.currentTarget.value);
 					}}
 					onClear={() => setInputValue("")}
 					autoFocus/>
 				<Button
-					onClick={(event) => {
+					onClick={() => {
 						setQuery(inputValue);
 					}}
 					endContent={<Icon path={mdiMagnify} size={2} />}
