@@ -15,7 +15,7 @@ const Entries = ({ entries }: { entries: ENTRIES_QUERYResult }) => {
 						rev: "",
 						title: e?.title ? e?.title : "Title",
 						path: `${e?.slug?.current}`,
-						body: e?.description ? e?.description : "Description"
+						description: e?.description ? e?.description : "Description"
 					}
 				} />
 			))}
