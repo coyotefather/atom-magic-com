@@ -44,8 +44,8 @@ export async function POST(req: NextRequest) {
 		  title: document.title,
 		  path: document.slug["current"],
 		  categories: document.categories,
-		  body: flattenBlocks(document.body),
-		  blurb: flattenBlocks(document.blurb),
+		  entryBody: flattenBlocks(document.entryBody),
+		  description: flattenBlocks(document.blurb),
 		};
 		case "category":
 		return {
