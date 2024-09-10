@@ -15,19 +15,20 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 	const isSearchStalled = status === 'stalled';
 
 	function setQuery(newQuery: string) {
-		//setInputValue(newQuery);
-		refine(newQuery);
+		debounced(newQuery);
+		setInputValue(newQuery);
+		//refine(newQuery);
 	}
 
 	const debounced = useDebouncedCallback(
 		// function
 		(value: string) => {
-		  setInputValue(value);
+		  //setInputValue(value);
 		  refine(value);
 		},
 		// delay in ms
 		1500
-	  );
+	);
 
 	return (
 		<div className="w-full">
@@ -69,8 +70,7 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 					type="search"
 					value={inputValue}
 					onChange={(event) => {
-						setInputValue(event.currentTarget.value);
-						debounced(event.currentTarget.value);
+						setQuery(event.currentTarget.value);
 					}}
 					onClear={() => setInputValue("")}
 					autoFocus/>
