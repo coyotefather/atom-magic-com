@@ -10,7 +10,7 @@ const Hit = ({
 			rev: string,
 			title: string,
 			path: string,
-			body: string
+			description: string
 		}
 	}) => {
 
@@ -23,7 +23,7 @@ const Hit = ({
 				</Link>
 			</div>
 			<div className="text-sm ml-8">
-				{hit.body.length > 200 ? hit.body.slice(0, 250) + '...' : hit.body}
+				{hit.description.length > 200 ? hit.description.slice(0, 250) + '...' : hit.description}
 			</div>
 		</div>
 	);
