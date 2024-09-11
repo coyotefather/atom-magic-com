@@ -44,12 +44,8 @@
   }
 }
 
-.roboto {
-  font-family: var(--font-roboto);
-}
-
-.inconsolata {
-  font-family: var(--font-inconsolata);
+.notoserif {
+  font-family: var(--font-notoserif);
 }
 
 .marcellus {

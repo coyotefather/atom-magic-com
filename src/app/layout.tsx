@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
-import { Roboto, Inconsolata, Marcellus_SC } from "next/font/google";
+import { Marcellus_SC, Noto_Serif } from "next/font/google";
 import localFont from 'next/font/local'
 import "./globals.css";
 import StoreProvider from "@/app/StoreProvider";
 import NavBar from '@/app/components/global/NavBar';
 import Footer from '@/app/components/global/Footer';
 
-const roboto = Roboto({
-  weight: ['400', '700'],
-  variable: '--font-roboto',
-  subsets: ["latin"] });
 const marcellus = Marcellus_SC({
   weight: ['400'],
   variable: '--font-marcellus',
   subsets: ["latin"] });
-const inconsolata = Inconsolata({
-  weight: ['200', '300', '400', '500', '600', '700', '800'],
-  variable: '--font-inconsolata',
+// const inconsolata = Inconsolata({
+//   weight: ['200', '300', '400', '500', '600', '700', '800'],
+//   variable: '--font-inconsolata',
+//   subsets: ["latin"] });
+
+const noto_serif = Noto_Serif({
+  variable: '--font-notoserif',
   subsets: ["latin"] });
 
 const lapideum = localFont({ src: '../fonts/lapideum-2022-v1.woff', variable: '--font-lapideum' })
@@ -33,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} ${inconsolata.variable} ${marcellus.variable} ${lapideum.variable} flex flex-col h-screen`}>
+      <body className={`${marcellus.variable} ${lapideum.variable} ${noto_serif.variable} flex flex-col h-screen`}>
         <NavBar />
         <div className="grow">
           <StoreProvider>{children}</StoreProvider>

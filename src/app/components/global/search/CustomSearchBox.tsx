@@ -79,7 +79,7 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 						setQuery(inputValue);
 					}}
 					endContent={<Icon path={mdiMagnify} size={2} />}
-					className="bg-sunset-gradient font-bold inconsolata uppercase tracking-widest p-2 pl-4 pr-4 border-black border-2 rounded-full"
+					className="bg-sunset-gradient font-bold notoserif uppercase tracking-widest p-2 pl-4 pr-4 border-black border-2 rounded-full"
  					size="lg"
 					type="submit">
 					SEARCH

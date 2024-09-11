@@ -33,7 +33,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 	}
 
 	return (
-		<article className="inconsolata mx-auto prose prose-md max-w-none bg-white m-0">
+		<article className="notoserif mx-auto prose prose-md max-w-none bg-white m-0">
 			<div className="bg-sunset-gradient">
 				<div className="container py-4">
 					<Breadcrumbs currentPage={title ? title : ""} parents={parents} />
@@ -58,7 +58,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 							/>
 						) : null }
 						<CardFooter className={clsx(
-							"bg-black text-white flex-col !items-start",
+							"bg-black text-white not-prose flex-col !items-start",
 							{ 'absolute z-10 bottom-0': mainImage?.asset?._ref }
 						)}>
 							<dl className="divide-y w-full my-0">

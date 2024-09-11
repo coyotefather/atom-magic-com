@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 export default function Page() {
   return (
-	  <main className="inconsolata">
+	  <main className="notoserif">
 		  <div className="container">
 			  <div className="mt-16 mb-16">
 	  			<Search />

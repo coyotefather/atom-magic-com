@@ -31,7 +31,7 @@ const CustomCard = ({
 		className="transition duration-200 ease-in hover:brightness-125 hover:drop-shadow-lg block w-full no-underline hover:no-underline"
 		>
 			<Card shadow="sm" className={clsx(
-				"w-full",
+				"w-full notoserif",
 				{'bg-sunset-gradient': background === 0 && type !== 'category'},
 				{'bg-pale-blue': background === 1 && type !== 'category'},
 				{'bg-adobe': background === 2 && type !== 'category'},
@@ -71,7 +71,7 @@ const CustomCard = ({
 						alt=""
 					/>
 				<CardFooter
-					className="bg-black text-white text-md flex-col !items-start absolute z-10 bottom-0 min-h-28">
+					className="bg-black not-prose font-normal text-white text-md flex-col !items-start absolute z-10 bottom-0 min-h-28">
 					{description}
 				</CardFooter>
 			</Card>

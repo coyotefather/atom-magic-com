@@ -15,7 +15,7 @@ const Hit = ({
 	}) => {
 
 	return (
-		<div className="mb-8 flex flex-col">
+		<div className="mb-8 flex flex-col notoserif">
 			<div className="text-xl">
 				<Link className="transition duration-150 ease-in flex flex-row items-center" href={`/codex/entries/${hit.path}`}>
 					<Icon className="mr-2 my-auto align-center" path={ hit.type === "category" ? mdiFolderText : mdiFileDocument} size={1} />

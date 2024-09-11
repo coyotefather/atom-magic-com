@@ -47,7 +47,7 @@ const Breadcrumbs = ({
 		}[]
 	}) => {
 	return (
-		<nav aria-label="Breadcrumbs" className="inline-block py-0 px-4 text-md bg-black rounded-full text-white">
+		<nav aria-label="Breadcrumbs" className="inline-block pb-2 pt-1 px-4 text-md bg-black rounded-full text-white text-sm not-prose">
 			<ol className="flex flex-wrap list-none p-0 m-0">
 				{parents.map( (p, index) => (
 					<BreadcrumbItem

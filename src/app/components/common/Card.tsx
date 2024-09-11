@@ -32,7 +32,7 @@ const Card = ({
 		  </div>
 		  <div>
 			<h2 className="text-xl pb-2">{title}</h2>
-			<p className="pb-2">{description}</p>
+			<p className="pb-2 notoserif">{description}</p>
 			<LinkButton
 			  href={button.href}
 			  variant={button.variant}>{button.text}</LinkButton>
