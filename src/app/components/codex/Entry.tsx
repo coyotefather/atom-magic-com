@@ -33,7 +33,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 	}
 
 	return (
-		<article className="inconsolata mx-auto prose prose-md max-w-none bg-white m-0">
+		<article className="notoserif mx-auto prose prose-md max-w-none bg-white m-0">
 			<div className="bg-sunset-gradient">
 				<div className="container py-4">
 					<Breadcrumbs currentPage={title ? title : ""} parents={parents} />
