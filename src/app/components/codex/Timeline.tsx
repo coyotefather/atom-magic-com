@@ -27,7 +27,7 @@ export default function Timeline({
 	iconPaths.set('nuke', mdiNuke);
 
   return (
-	<div className="container inconsolata my-16">
+	<div className="container notoserif my-16">
 		<div className="relative mx-auto">
 			<div className="absolute h-full w-[14px] mx-auto left-0 right-0 z-1">
 				<div className="w-[14px] mt-6 h-full bg-sunset-gradient border-2"></div>

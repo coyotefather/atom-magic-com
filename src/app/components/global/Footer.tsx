@@ -4,7 +4,7 @@ import { NAVIGATION_LINKS } from '@/app/lib/global-data';
 
 const Footer = () => {
 	return (
-		<footer className="inconsolata bg-black pt-8">
+		<footer className="notoserif bg-black pt-8">
 			<div className="container flex flex-row items-top justify-between pt-2">
 				<div>
 					<Image

@@ -26,7 +26,7 @@ export function Category({
 	}
 
   return (
-	<article className="inconsolata mx-auto prose prose-md max-w-none bg-white m-0">
+	<article className="notoserif mx-auto prose prose-md max-w-none bg-white m-0">
 		<Header name={title ? title : "Category"}>
 			{description ? description : null}
 		</Header>

@@ -14,7 +14,7 @@ const Page = async () => {
 	// });
 
 	return (
-		<main className="inconsolata">
+		<main className="notoserif">
 			<Header name="Codex">
 				Lore, rules and more about Atom Magic.
 			</Header>

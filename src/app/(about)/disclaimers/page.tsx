@@ -2,7 +2,7 @@ import Header from '@/app/components/common/Header';
 
 const Page = () => {
 	return (
-		<main className="inconsolata">
+		<main className="notoserif">
 			<Header name="Disclaimers">
   				...
 			</Header>
