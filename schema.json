@@ -707,6 +707,13 @@
         },
         "optional": true
       },
+      "toc": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "entryBody": {
         "type": "objectAttribute",
         "value": {

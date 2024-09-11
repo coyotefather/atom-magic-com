@@ -1,5 +1,5 @@
 import {DocumentTextIcon} from '@sanity/icons'
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export const entryType = defineType({
   name: 'entry',
@@ -62,6 +62,12 @@ export const entryType = defineType({
     defineField({
       name: 'description',
       type: 'text',
+    }),
+    defineField({
+      type: 'markdown',
+      name: 'toc',
+      title: 'Table of Contents',
+      description: 'Optionally enter a table of contents for the entry.'
     }),
     defineField({
       type: 'markdown',
