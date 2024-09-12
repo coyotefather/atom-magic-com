@@ -66,16 +66,16 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 							<dl className="divide-y w-full my-0 not-prose">
 								{cardDetails?.map((d, index) => (
 									<div key={`${d.detailName}-${index}`} className="flex flex-row py-1">
-										<dt className="w-24 text-white mt-1">{d.detailName}</dt>
+										<dt className="w-36 text-white mt-1">{d.detailName}:</dt>
 										<dd className="mt-1">{d.detailDescription}</dd>
 									</div>
 								))}
 								<div className="flex flex-row py-1">
-									<dt className="w-24 text-white mt-1">Author</dt>
+									<dt className="w-36 text-white mt-1">Author:</dt>
 									<dd className="mt-1">{author?.name ? author?.name : "An unknown scribe"}</dd>
 								</div>
 								<div className="flex flex-row py-1">
-									<dt className="w-24 text-white mt-1">Last update</dt>
+									<dt className="w-36 text-white mt-1">Last update:</dt>
 									<dd className="mt-1">{publishedAt ? new Date(publishedAt).toDateString() : "Date unknown"}</dd>
 								</div>
 							</dl>
