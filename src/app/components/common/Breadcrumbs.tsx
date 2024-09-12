@@ -20,17 +20,24 @@ export const BreadcrumbItem = ({
 				className="{text-foreground/50 px-2">/</span>
 		);
 	}
-	return (
-		<li className="flex items-center p-0 m-0">
+	let item = (<></>);
+	if(url) {
+		item = (
 			<a
-				href={url ? url : "" }
-				className={clsx(
-					"flex items-center text-gold whitespace-nowrap line-clamp-1  outline-none hover:contrast-100 hover:saturate-150 hover:brightness-100",
-					{'cursor-pointer hover:text-brightgold': url},
-					{'cursor-default no-underline text-white hover:text-white': !url}
-				)}>
+				href={url}
+				className=
+					"flex items-center text-gold whitespace-nowrap line-clamp-1  outline-none hover:contrast-100 hover:saturate-150 hover:brightness-100 cursor-pointer hover:text-brightgold">
 				{title}
 			</a>
+		);
+	} else {
+		item = (
+			<span className="flex items-center whitespace-nowrap line-clamp-1  outline-none">{title}</span>
+		);
+	}
+	return (
+		<li className="flex items-center p-0 m-0">
+			{item}
 			{separator}
 		</li>
 	);

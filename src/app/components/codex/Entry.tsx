@@ -9,11 +9,12 @@ import { ENTRY_QUERYResult } from "../../../../sanity.types";
 import Link from "next/link";
 import {Card, CardHeader, CardFooter} from "@nextui-org/card";
 import Breadcrumbs from '@/app/components/common/Breadcrumbs';
+import TableOfContents from '@/app/components/codex/TableOfContents';
 import clsx from 'clsx';
 
 export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 
-	const { title, mainImage, cardDetails, entryBody, author, publishedAt, category } = entry || {};
+	const { title, mainImage, cardDetails, entryBody, toc, author, publishedAt, category } = entry || {};
 
 	let parents = [
 		{ title: "Home", url: "/" }
@@ -44,13 +45,13 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 					<Card className="w-full bg-sunset-gradient">
 						<CardHeader className={clsx(
 							"bg-black flex-col !items-start",
-							{ 'absolute z-10 top-0': mainImage?.asset?._ref }
+							{ 'z-10 top-0': mainImage?.asset?._ref }
 						)}>
 							{title ? <h1 className="marcellus text-white mb-0 w-full text-center">{title}</h1> : null}
 						</CardHeader>
 						{mainImage?.asset?._ref ? (
 							<Image
-								className="z-0 w-full h-full object-cover"
+								className="z-0 w-full max-h-48 h-full not-prose object-cover"
 								src={urlFor(mainImage?.asset?._ref).quality(75).url()}
 								width={300}
 								height={300}
@@ -58,10 +59,11 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 							/>
 						) : null }
 						<CardFooter className={clsx(
-							"bg-black text-white not-prose flex-col !items-start",
-							{ 'absolute z-10 bottom-0': mainImage?.asset?._ref }
+							"bg-black text-white flex-col !items-start",
+							{ 'z-10 bottom-0': mainImage?.asset?._ref }
 						)}>
-							<dl className="divide-y w-full my-0">
+							{ toc ? <TableOfContents toc={toc} /> : ""}
+							<dl className="divide-y w-full my-0 not-prose">
 								{cardDetails?.map((d, index) => (
 									<div key={`${d.detailName}-${index}`} className="flex flex-row py-1">
 										<dt className="w-24 text-white mt-1">{d.detailName}</dt>

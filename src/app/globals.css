@@ -23,7 +23,7 @@
 
 @layer base {
   a {
-    @apply font-semibold underline transition duration-200 ease-in hover:text-brightgold hover:contrast-100 hover:saturate-150 hover:brightness-75;
+    @apply font-semibold underline transition duration-200 ease-in-out hover:text-brightgold hover:contrast-100 hover:saturate-150 hover:brightness-75;
   }
   button {
     @apply transition duration-200 ease-in border-2 border-black hover:contrast-150 hover:saturate-150 hover:brightness-90;
@@ -34,6 +34,10 @@
   button > a {
     @apply hover:contrast-100 hover:saturate-100 hover:brightness-100;
   }
+  .bg-black a {
+    @apply font-semibold underline transition duration-200 ease-in-out text-gold hover:text-brightgold hover:brightness-100;
+  }
+
 }
 
 @media (prefers-color-scheme: light) {
