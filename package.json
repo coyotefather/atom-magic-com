@@ -20,7 +20,7 @@
     "@sanity/image-url": "^1.0.2",
     "@sanity/vision": "^3.54.0",
     "@types/react-transition-group": "^4.4.10",
-    "algoliasearch": "^4.24.0",
+    "algoliasearch": "^5.4.1",
     "clsx": "^2.0.0",
     "easymde": "^2.18.0",
     "framer-motion": "^11.3.8",
