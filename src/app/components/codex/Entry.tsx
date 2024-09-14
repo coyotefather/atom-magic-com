@@ -84,7 +84,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 					</Card>
 				</header>
 				<section className="col-span-2">
-					<Markdown className="first-line:uppercase first-letter:text-3xl" remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>{entryBody}</Markdown>
+					<Markdown className="first-line:uppercase first-line:marcellus first-letter:text-3xl" remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>{entryBody}</Markdown>
 				</section>
 			</div>
 			<section className="bg-sunset-gradient mt-16">
