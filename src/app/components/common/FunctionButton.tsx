@@ -40,7 +40,7 @@ const FunctionButton = ({
 			className={clsx(
 				`${buttonColor} font-bold`,
 				{
-					'notoserif uppercase tracking-widest p-2 pl-4 pr-4' : iconOnly === false
+					'uppercase tracking-widest p-2 pl-4 pr-4' : iconOnly === false
 				},
 				{ 'border-2 border-white': variant === 'secondary' }
 			)}>

@@ -33,7 +33,7 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 	return (
 		<div className="w-full">
 			<form
-				className="flex items-center gap-2"
+				className="flex items-center gap-2 not-prose"
 				action=""
 				role="search"
 				noValidate
@@ -78,9 +78,12 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 					onClick={() => {
 						setQuery(inputValue);
 					}}
-					endContent={<Icon path={mdiMagnify} size={2} />}
-					className="bg-sunset-gradient font-bold notoserif uppercase tracking-widest p-2 pl-4 pr-4 border-black border-2 rounded-full"
+					endContent={<Icon path={mdiMagnify} size={3} />}
+					className="bg-sunset-gradient font-extrabold uppercase tracking-widest p-2 pl-4 pr-4 border-black border-2"
  					size="lg"
+					radius="full"
+					variant="bordered"
+					isIconOnly={false}
 					type="submit">
 					SEARCH
 				</Button>

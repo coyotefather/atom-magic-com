@@ -123,7 +123,7 @@ const Section = ({
 										endContent={buttonGraphic}
 										isDisabled={nextExpanded}
 										disableRipple={true}
-										className={clsx("text-black notoserif font-bold",
+										className={clsx("text-black font-extrabold",
 											{
 												'uppercase tracking-widest p-2 pl-4 pr-4 bg-sunset-gradient': nextExpanded === false
 											},
