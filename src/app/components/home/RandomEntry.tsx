@@ -19,7 +19,7 @@ const RandomEntry = ({
 
 	return (
 		<div className="mt-8">
-			<h2 className="marcellus text-3xl mb-4">Today's Codex Entry: {title ? title : "not found"}</h2>
+			<h2 className="marcellus text-3xl mb-4">Today&apos;s Codex Entry: {title ? title : "not found"}</h2>
 			<div className="not-prose">
 				<Markdown>
 					{text}
