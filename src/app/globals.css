@@ -23,7 +23,7 @@
 
 @layer base {
   a {
-    @apply underline font-semibold transition duration-200 ease-in-out text-gold brightness-75 hover:text-brightgold hover:contrast-100 hover:saturate-150;
+    @apply underline font-semibold transition duration-200 ease-in-out text-gold  hover:text-brightgold hover:contrast-100 hover:saturate-150;
   }
   button {
     @apply marcellus transition duration-200 ease-in border-2 border-black hover:contrast-150 hover:saturate-150 hover:brightness-90;
