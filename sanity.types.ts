@@ -447,17 +447,9 @@ export type ENTRIES_QUERYResult = Array<{
   slug: Slug | null;
   description: string | null;
 }>;
-// Variable: TIMELINE_QUERY
-// Query: *[_type == "timeline"]| order(year desc) {  _id, title, URL, year, major, icon, description}
-export type TIMELINE_QUERYResult = Array<{
-  _id: string;
-  title: string | null;
-  URL: string | null;
-  year: number | null;
-  major: boolean | null;
-  icon: "atom" | "bird" | "fire" | "hammer" | "map" | "mountain" | "nuke" | "people" | "person" | "poison" | "shield" | "snake" | "swords" | "tree" | "waves" | "wolf" | null;
-  description: string | null;
-}>;
+// Variable: ENTRIES_COUNT_QUERY
+// Query: count(*[_type == 'entry'])
+export type ENTRIES_COUNT_QUERYResult = number;
 // Variable: ENTRY_QUERY
 // Query: *[_type == "entry" && slug.current == $slug][0]{  title, cardDetails, entryBody, toc, mainImage, publishedAt, author->{name, slug}, category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}}
 export type ENTRY_QUERYResult = {
@@ -505,6 +497,14 @@ export type ENTRY_QUERYResult = {
     } | null;
   } | null;
 } | null;
+// Variable: ENTRY_BY_ID_QUERY
+// Query: *[_type == "entry" && id == entryId][0]{  _id, title, entryBody, slug}
+export type ENTRY_BY_ID_QUERYResult = {
+  _id: string;
+  title: string | null;
+  entryBody: string | null;
+  slug: Slug | null;
+} | null;
 // Variable: CATEGORIES_QUERY
 // Query: *[_type == "category" && defined(slug.current)][0...12]{  _id, title, slug, description}
 export type CATEGORIES_QUERYResult = Array<{
@@ -537,6 +537,17 @@ export type CATEGORY_QUERYResult = {
     description: string | null;
   }>;
 } | null;
+// Variable: TIMELINE_QUERY
+// Query: *[_type == "timeline"]| order(year desc) {  _id, title, URL, year, major, icon, description}
+export type TIMELINE_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  URL: string | null;
+  year: number | null;
+  major: boolean | null;
+  icon: "atom" | "bird" | "fire" | "hammer" | "map" | "mountain" | "nuke" | "people" | "person" | "poison" | "shield" | "snake" | "swords" | "tree" | "waves" | "wolf" | null;
+  description: string | null;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -545,9 +556,11 @@ declare module "@sanity/client" {
     "*[_type == \"post\" && defined(slug.current)][0...12]{\n  _id, title, slug\n}": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}": POST_QUERYResult;
     "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": ENTRIES_QUERYResult;
-    "*[_type == \"timeline\"]| order(year desc) {\n  _id, title, URL, year, major, icon, description\n}": TIMELINE_QUERYResult;
+    "count(*[_type == 'entry'])": ENTRIES_COUNT_QUERYResult;
     "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, cardDetails, entryBody, toc, mainImage, publishedAt, author->{name, slug}, category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}\n}": ENTRY_QUERYResult;
+    "*[_type == \"entry\" && id == entryId][0]{\n  _id, title, entryBody, slug\n}": ENTRY_BY_ID_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
     "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]| order(_id) [0...96]{_id, title, slug, description}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
+    "*[_type == \"timeline\"]| order(year desc) {\n  _id, title, URL, year, major, icon, description\n}": TIMELINE_QUERYResult;
   }
 }
