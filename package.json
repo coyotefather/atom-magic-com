@@ -13,7 +13,7 @@
     "@mdi/react": "^1.6.1",
     "@nextui-org/react": "^2.4.7",
     "@nextui-org/system": "^2.2.6",
-    "@nextui-org/theme": "^2.2.10",
+    "@nextui-org/theme": "^2.2.11",
     "@reduxjs/toolkit": "^2.2.7",
     "@sanity/color-input": "^4.0.1",
     "@sanity/icons": "^3.4.0",
