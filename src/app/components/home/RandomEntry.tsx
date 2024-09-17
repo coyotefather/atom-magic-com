@@ -18,7 +18,7 @@ const RandomEntry = ({
 	}
 
 	return (
-		<div className="mt-8">
+		<div className="p-8 pr-48">
 			<h2 className="marcellus text-3xl mb-4">Today&apos;s Codex Entry: {title ? title : "not found"}</h2>
 			<div className="not-prose">
 				<Markdown>
