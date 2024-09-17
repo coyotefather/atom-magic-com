@@ -20,7 +20,7 @@ export const ENTRY_QUERY = groq`*[_type == "entry" && slug.current == $slug][0]{
   title, cardDetails, entryBody, toc, mainImage, publishedAt, author->{name, slug}, category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}
 }`;
 
-export const ENTRY_BY_ID_QUERY = groq`*[_type == "entry" && id == entryId][0]{
+export const ENTRY_BY_ID_QUERY = groq`*[_type == "entry"][$entryId]{
   _id, title, entryBody, slug
 }`;
 
