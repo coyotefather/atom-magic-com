@@ -21,7 +21,7 @@ export const ENTRY_QUERY = groq`*[_type == "entry" && slug.current == $slug][0]{
 }`;
 
 export const ENTRY_BY_ID_QUERY = groq`*[_type == "entry"][$entryId]{
-  _id, title, entryBody, slug
+  title, entryBody, slug
 }`;
 
 export const CULTURES_QUERY = groq`*[_type == "culture"]{

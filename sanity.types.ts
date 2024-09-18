@@ -89,7 +89,7 @@ export type Culture = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  id?: Slug;
+  id?: string;
   mainImage?: {
     asset?: {
       _ref: string;
@@ -529,9 +529,8 @@ export type ENTRY_QUERYResult = {
   } | null;
 } | null;
 // Variable: ENTRY_BY_ID_QUERY
-// Query: *[_type == "entry"][$entryId]{  _id, title, entryBody, slug}
+// Query: *[_type == "entry"][$entryId]{  title, entryBody, slug}
 export type ENTRY_BY_ID_QUERYResult = Array<{
-  _id: string;
   title: string | null;
   entryBody: string | null;
   slug: Slug | null;
@@ -541,7 +540,7 @@ export type ENTRY_BY_ID_QUERYResult = Array<{
 export type CULTURES_QUERYResult = Array<{
   _id: string;
   title: string | null;
-  id: Slug | null;
+  id: string | null;
   aspects: Array<{
     aspectName?: string;
     aspectId?: string;
@@ -617,7 +616,7 @@ declare module "@sanity/client" {
     "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": ENTRIES_QUERYResult;
     "count(*[_type == 'entry'])": ENTRIES_COUNT_QUERYResult;
     "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, cardDetails, entryBody, toc, mainImage, publishedAt, author->{name, slug}, category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}\n}": ENTRY_QUERYResult;
-    "*[_type == \"entry\"][$entryId]{\n  _id, title, entryBody, slug\n}": ENTRY_BY_ID_QUERYResult;
+    "*[_type == \"entry\"][$entryId]{\n  title, entryBody, slug\n}": ENTRY_BY_ID_QUERYResult;
     "*[_type == \"culture\"]{\n  _id, title, id, aspects, mainImage, description\n}": CULTURES_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
     "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]| order(_id) [0...96]{_id, title, slug, description}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
