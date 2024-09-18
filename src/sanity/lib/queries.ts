@@ -24,6 +24,10 @@ export const ENTRY_BY_ID_QUERY = groq`*[_type == "entry"][$entryId]{
   _id, title, entryBody, slug
 }`;
 
+export const CULTURES_QUERY = groq`*[_type == "culture"]{
+  _id, title, id, aspects, mainImage, description
+}`;
+
 export const CATEGORIES_QUERY = groq`*[_type == "category" && defined(slug.current)][0...12]{
   _id, title, slug, description
 }`;

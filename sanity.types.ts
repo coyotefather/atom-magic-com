@@ -82,6 +82,37 @@ export type Timeline = {
   year?: number;
 };
 
+export type Culture = {
+  _id: string;
+  _type: "culture";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  id?: Slug;
+  mainImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  aspects?: Array<{
+    aspectName?: string;
+    aspectId?: string;
+    aspectContentSlug?: string;
+    aspectDescription?: string;
+    _type: "aspect";
+    _key: string;
+  }>;
+  description?: string;
+};
+
 export type Entry = {
   _id: string;
   _type: "entry";
@@ -378,7 +409,7 @@ export type HslaColor = {
 
 export type Markdown = string;
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Timeline | Entry | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Color | RgbaColor | HsvaColor | HslaColor | Markdown;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Timeline | Culture | Entry | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Color | RgbaColor | HsvaColor | HslaColor | Markdown;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
@@ -498,13 +529,41 @@ export type ENTRY_QUERYResult = {
   } | null;
 } | null;
 // Variable: ENTRY_BY_ID_QUERY
-// Query: *[_type == "entry" && id == entryId][0]{  _id, title, entryBody, slug}
-export type ENTRY_BY_ID_QUERYResult = {
+// Query: *[_type == "entry"][$entryId]{  _id, title, entryBody, slug}
+export type ENTRY_BY_ID_QUERYResult = Array<{
   _id: string;
   title: string | null;
   entryBody: string | null;
   slug: Slug | null;
-} | null;
+}>;
+// Variable: CULTURES_QUERY
+// Query: *[_type == "culture"]{  _id, title, id, aspects, mainImage, description}
+export type CULTURES_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  id: Slug | null;
+  aspects: Array<{
+    aspectName?: string;
+    aspectId?: string;
+    aspectContentSlug?: string;
+    aspectDescription?: string;
+    _type: "aspect";
+    _key: string;
+  }> | null;
+  mainImage: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  description: string | null;
+}>;
 // Variable: CATEGORIES_QUERY
 // Query: *[_type == "category" && defined(slug.current)][0...12]{  _id, title, slug, description}
 export type CATEGORIES_QUERYResult = Array<{
@@ -558,7 +617,8 @@ declare module "@sanity/client" {
     "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": ENTRIES_QUERYResult;
     "count(*[_type == 'entry'])": ENTRIES_COUNT_QUERYResult;
     "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, cardDetails, entryBody, toc, mainImage, publishedAt, author->{name, slug}, category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}\n}": ENTRY_QUERYResult;
-    "*[_type == \"entry\" && id == entryId][0]{\n  _id, title, entryBody, slug\n}": ENTRY_BY_ID_QUERYResult;
+    "*[_type == \"entry\"][$entryId]{\n  _id, title, entryBody, slug\n}": ENTRY_BY_ID_QUERYResult;
+    "*[_type == \"culture\"]{\n  _id, title, id, aspects, mainImage, description\n}": CULTURES_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
     "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]| order(_id) [0...96]{_id, title, slug, description}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
     "*[_type == \"timeline\"]| order(year desc) {\n  _id, title, URL, year, major, icon, description\n}": TIMELINE_QUERYResult;
