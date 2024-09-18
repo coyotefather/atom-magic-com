@@ -37,12 +37,12 @@ export default async function Home() {
 		return notFound();
 	}
 
-	const { _id, title, entryBody, slug } = entry || {};
+	const { title, entryBody, slug } = entry || {};
 
 	return (
 		<main className="notoserif">
 			<Header name="Home">
-				Some text {random} - {_id}
+				Some text {random}
 			</Header>
 			<div className="border-b-2 relative">
 				<div className="grid grid-cols-2 divide-x-2">
