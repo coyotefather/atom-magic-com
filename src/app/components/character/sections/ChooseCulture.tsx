@@ -1,19 +1,31 @@
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
-import { CULTURES } from '@/app/lib/global-data';
 import { useAppDispatch } from '@/app/lib/hooks'
 import { setCulture } from "@/app/lib/slices/characterSlice";
 import {Select, SelectItem} from "@nextui-org/select";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import {
+	CULTURES_QUERYResult,
+} from "../../../../../sanity.types";
 
 const ChooseCulture = ({
+		cultures,
 		incompleteFields
 	}: {
+		cultures: CULTURES_QUERYResult,
 		incompleteFields: string
 	}) => {
+
+	// const cultures = await sanityFetch<CULTURES_QUERYResult>({
+	// 	query: CULTURES_QUERY,
+	// });
+	// if (!cultures) {
+	// 	return notFound();
+	// }
+
 	const detailsRef = useRef(null);
 	const dispatch = useAppDispatch();
 
@@ -21,7 +33,7 @@ const ChooseCulture = ({
 		<SelectDetailExpanded
 			imagePath=""
 			name="Choose a Culture"
-			description="Select a path from the dropdown."
+			description="Select a culture from the dropdown."
 			disabled={true}>
 			<div></div>
 		</SelectDetailExpanded>
@@ -34,13 +46,13 @@ const ChooseCulture = ({
 		if(val !== "") {
 			dispatch(setCulture(val));
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
-			let chosenCulture = CULTURES.find((c) => c.value === val);
-			if(chosenCulture != undefined) {
+			let chosenCulture = cultures.find((c) => c.id === val);
+			if(chosenCulture != undefined && chosenCulture.aspects !== null) {
 				aspects = (
 					<Table
 						isCompact
 						removeWrapper
-						aria-label={`${chosenCulture.name}`}
+						aria-label={`${chosenCulture.title}`}
 						className="mt-8">
 						<TableHeader>
 							{["Aspect","Description"].map((tc) => (
@@ -53,13 +65,13 @@ const ChooseCulture = ({
 						</TableHeader>
 						<TableBody>
 							{chosenCulture.aspects.map((aspect) => (
-								<TableRow key={aspect.value}>
+								<TableRow key={aspect.aspectId}>
 									<TableCell className="align-top min-w-44 pl-0">
 										<ExternalLink
-										href={`https://atom-magic.com/codex/${aspect.page}`} name={aspect.name} />
+										href={`https://atom-magic.com/codex/${aspect.aspectContentSlug}`} name={aspect.aspectName ? aspect.aspectName : ""} />
 									</TableCell>
 									<TableCell className="pl-0">
-										{aspect.description}
+										{aspect.aspectDescription}
 									</TableCell>
 								</TableRow>
 							))}
@@ -69,8 +81,8 @@ const ChooseCulture = ({
 				setDetails(
 					<SelectDetailExpanded
 						imagePath="/atom-magic-circle-black.png"
-						name={chosenCulture.name}
-						description={chosenCulture.description}
+						name={chosenCulture.title ? chosenCulture.title : ""}
+						description={chosenCulture.description ? chosenCulture.description : ""}
 						disabled={false}>
 						{aspects}
 					</SelectDetailExpanded>
@@ -102,9 +114,9 @@ const ChooseCulture = ({
 							className="w-96 mt-8"
 							onChange={(event) => handleSelectChange(event)}
 					  	>
-							{CULTURES.map((culture) => (
-						  	<SelectItem key={culture.value}>
-								{culture.name}
+							{cultures.map((culture, index) => (
+						  	<SelectItem key={culture.id ? culture.id : index }>
+								{culture.title}
 						  	</SelectItem>
 							))}
 						</Select>

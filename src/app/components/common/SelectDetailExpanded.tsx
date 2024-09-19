@@ -1,6 +1,11 @@
 'use client';
 import Icon from '@mdi/react';
 import { mdiAtom } from '@mdi/js';
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import { remarkExtendedTable } from 'remark-extended-table';
+import { remarkDefinitionList } from 'remark-definition-list';
+import remarkHeadingId from 'remark-heading-id';
 import {Image} from "@nextui-org/image";
 import NextImage from "next/image";
 import clsx from 'clsx';
@@ -70,7 +75,9 @@ const SelectDetail = ({
 					className="opacity-5 mx-auto"
 					alt="Atom Magic Circle" />
 				<div className="text-center m-8 text-sm opacity-75">
-					{description}
+					<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>
+						{description}
+					</Markdown>
 				</div>
 			</div>
 		</>
