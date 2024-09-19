@@ -14,8 +14,15 @@ import ManageWealth from '@/app/components/character/sections/ManageWealth';
 import ChooseAnimalCompanion from '@/app/components/character/sections/ChooseAnimalCompanion';
 import WrapUp from '@/app/components/character/sections/WrapUp';
 import { useAppSelector } from '@/app/lib/hooks';
+import {
+	CULTURES_QUERYResult,
+} from "../../../../sanity.types";
 
-const Sections = () => {
+const Sections = ({
+		cultures,
+	}:{
+		cultures: CULTURES_QUERYResult
+	}) => {
 
 	const character = useAppSelector(state => state.character);
 	const [basicsIncomplete, setBasicsIncomplete] = useState("init");
@@ -148,7 +155,9 @@ const Sections = () => {
 				variant="dual"
 				clickCheck={setClickCheck}
 				expandFunction={() => setShowChoosePath(true)}>
-				<ChooseCulture incompleteFields={cultureIncomplete} />
+				<ChooseCulture
+					cultures={cultures}
+					incompleteFields={cultureIncomplete} />
 			</Section>
 			<Section
 				expanded={showChoosePath}
