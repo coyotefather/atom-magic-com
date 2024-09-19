@@ -3,7 +3,7 @@ import Cards from '@/app/components/home/Cards';
 import RandomEntry from '@/app/components/home/RandomEntry';
 import NextImage from "next/image";
 import { notFound } from "next/navigation";
-import { ENTRIES_COUNT_QUERY, ENTRY_BY_ID_QUERY } from "@/sanity/lib/queries";
+import { ENTRIES_COUNT_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/client";
 import { groq } from "next-sanity";
 import {
