@@ -1,16 +1,21 @@
+'use client';
 import { Slug } from "../../../../sanity.types";
 import {Button} from "@nextui-org/react";
 import Markdown from 'react-markdown'
 
+export type EntryById = {
+  title: string | null;
+  entryBody: string | null;
+  slug: Slug | null;
+} | null;
+
 const RandomEntry = ({
-		title,
-		entryBody,
-		slug
+		entry
 	}:{
-		title: string | null,
-		entryBody: string | null,
-		slug: Slug | null
+		entry: EntryById
 	}) => {
+
+	const { title, entryBody, slug } = entry || {};
 
 	let text = entryBody ? entryBody.substring(0, 300) : "not found";
 	if(entryBody && entryBody.length > 300) {
