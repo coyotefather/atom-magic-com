@@ -1,10 +1,22 @@
 'use client';
 import Score from '@/app/components/character/sections/scores/Score';
 import { SCORES, PATHS, GEAR } from '@/app/lib/global-data';
+import {
+	SCORES_QUERYResult,
+	SUBSCORES_QUERYResult,
+} from "../../../../../../sanity.types";
 import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
 import { useState, useEffect } from 'react';
 
-const Scores = () => {
+const Scores = ({
+		scores,
+		subscores,
+	}: {
+		scores: SCORES_QUERYResult,
+		subscores: SUBSCORES_QUERYResult,
+	}) => {
+
+
 	const path = useAppSelector(state => state.character.path);
 	const curPath = PATHS.find((p) => p.value === path);
 	const gear = useAppSelector(state => state.character.gear);
