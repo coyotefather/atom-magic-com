@@ -49,7 +49,6 @@ export const cultureType = defineType({
       type: 'markdown',
       name: 'description',
       title: 'Description',
-      description: 'Optionally enter a table of contents for the entry.'
     }),
   ],
 })

@@ -24,6 +24,14 @@ export const CULTURES_QUERY = groq`*[_type == "culture"]{
   _id, title, id, aspects, mainImage, description
 }`;
 
+export const SCORES_QUERY = groq`*[_type == "score"]{
+  _id, title, id, subscores->{_id, title, id, defaultValue, description}, description
+}`;
+
+export const SUBSCORES_QUERY = groq`*[_type == "subscore"]{
+  _id, title, id, score->{_id, title, id}, defaultValue, description
+}`;
+
 export const CATEGORIES_QUERY = groq`*[_type == "category" && defined(slug.current)][0...12]{
   _id, title, slug, description
 }`;

@@ -82,6 +82,42 @@ export type Timeline = {
   year?: number;
 };
 
+export type Subscore = {
+  _id: string;
+  _type: "subscore";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  id?: string;
+  score?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "score";
+  };
+  defaultValue?: number;
+  description?: string;
+};
+
+export type Score = {
+  _id: string;
+  _type: "score";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  id?: string;
+  subccores?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "subscore";
+  }>;
+  description?: string;
+};
+
 export type Culture = {
   _id: string;
   _type: "culture";
@@ -409,7 +445,7 @@ export type HslaColor = {
 
 export type Markdown = string;
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Timeline | Culture | Entry | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Color | RgbaColor | HsvaColor | HslaColor | Markdown;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Timeline | Subscore | Score | Culture | Entry | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Color | RgbaColor | HsvaColor | HslaColor | Markdown;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
@@ -556,6 +592,29 @@ export type CULTURES_QUERYResult = Array<{
   } | null;
   description: string | null;
 }>;
+// Variable: SCORES_QUERY
+// Query: *[_type == "score"]{  _id, title, id, subscores->{_id, title, id, defaultValue, description}, description}
+export type SCORES_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  id: string | null;
+  subscores: null;
+  description: string | null;
+}>;
+// Variable: SUBSCORES_QUERY
+// Query: *[_type == "subscore"]{  _id, title, id, score->{_id, title, id}, defaultValue, description}
+export type SUBSCORES_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  id: string | null;
+  score: {
+    _id: string;
+    title: string | null;
+    id: string | null;
+  } | null;
+  defaultValue: number | null;
+  description: string | null;
+}>;
 // Variable: CATEGORIES_QUERY
 // Query: *[_type == "category" && defined(slug.current)][0...12]{  _id, title, slug, description}
 export type CATEGORIES_QUERYResult = Array<{
@@ -610,6 +669,8 @@ declare module "@sanity/client" {
     "count(*[_type == 'entry'])": ENTRIES_COUNT_QUERYResult;
     "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, cardDetails, entryBody, toc, mainImage, publishedAt, author->{name, slug}, category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}\n}": ENTRY_QUERYResult;
     "*[_type == \"culture\"]{\n  _id, title, id, aspects, mainImage, description\n}": CULTURES_QUERYResult;
+    "*[_type == \"score\"]{\n  _id, title, id, subscores->{_id, title, id, defaultValue, description}, description\n}": SCORES_QUERYResult;
+    "*[_type == \"subscore\"]{\n  _id, title, id, score->{_id, title, id}, defaultValue, description\n}": SUBSCORES_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
     "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]| order(_id) [0...96]{_id, title, slug, description}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
     "*[_type == \"timeline\"]| order(year desc) {\n  _id, title, URL, year, major, icon, description\n}": TIMELINE_QUERYResult;
