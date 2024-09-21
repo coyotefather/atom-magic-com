@@ -5,7 +5,7 @@ interface Score {
 	_id: string,
 	title: string | null,
 	id: string | null,
-	subscores: any[],
+	subscores: null,
 	description: string | null[]
 };
 
