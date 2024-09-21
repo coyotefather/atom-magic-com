@@ -6,7 +6,7 @@ interface Score {
 	title: string | null,
 	id: string | null,
 	subscores: null,
-	description: string | null[]
+	description: string | null
 };
 
 interface Subscore {
