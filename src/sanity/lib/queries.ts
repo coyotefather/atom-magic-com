@@ -25,7 +25,7 @@ export const CULTURES_QUERY = groq`*[_type == "culture"]{
 }`;
 
 export const SCORES_QUERY = groq`*[_type == "score"]{
-  _id, title, id, subscores->{_id, title, id, defaultValue, description}, description
+  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description
 }`;
 
 export const SUBSCORES_QUERY = groq`*[_type == "subscore"]{

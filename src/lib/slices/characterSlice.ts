@@ -1,6 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 
+interface Score {
+	_id: string,
+	title: string | null,
+	id: string | null,
+	subscores: null,
+	description: string | null
+};
+
 interface Subscore {
 	child: string,
 	value: number
@@ -28,6 +36,7 @@ export interface CharacterState {
 	culture: string,
 	path: string,
 	patronage: string,
+	score: Array<Score>,
 	scores: {
 		physical: {
 			value: number,
@@ -109,6 +118,7 @@ const initialState: CharacterState = {
 	culture: "",
 	path: "",
 	patronage: "",
+	score: [],
 	scores: {
 		physical: {
 			value: 50,
@@ -171,6 +181,14 @@ export const characterSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+	initScore: (state, action: PayloadAction<Score[]>) => {
+		if(state.score.length === 0) {
+			action.payload.forEach( (score: Score) => {
+				state.score.push(score);
+			} );
+		}
+		//state.score.push(action.payload);
+	},
 	setCharacterName: (state, action: PayloadAction<string>) => {
 		state.name = action.payload;
 	},
@@ -241,6 +259,7 @@ export const characterSlice = createSlice({
 })
 
 export const {
+	initScore,
 	setCharacterName,
 	setCharacterAge,
 	setCharacterPronouns,

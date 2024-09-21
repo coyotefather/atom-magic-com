@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Nav from '@/app/components/common/Nav';
-import { NAVIGATION_LINKS } from '@/app/lib/global-data';
+import { NAVIGATION_LINKS } from '@/lib/global-data';
 
 const Footer = () => {
 	return (

@@ -1,7 +1,7 @@
 'use client';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiMinus } from '@mdi/js';
-import { PATHS } from '@/app/lib/global-data';
+import { PATHS } from '@/lib/global-data';
 import SubScore from '@/app/components/character/sections/scores/SubScore';
 
 const Score = ({

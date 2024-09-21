@@ -6,9 +6,7 @@ import { notFound } from "next/navigation";
 import {
 	CULTURES_QUERYResult,
 	SCORES_QUERYResult,
-	SUBSCORES_QUERYResult,
 } from "../../../sanity.types";
-
 
 const Page = async () => {
 	const cultures = await sanityFetch<CULTURES_QUERYResult>({
@@ -20,14 +18,10 @@ const Page = async () => {
 	const scores = await sanityFetch<SCORES_QUERYResult>({
 		query: SCORES_QUERY,
 	});
-	if (!cultures) {
+	if (!scores) {
 		return notFound();
-	}
-	const subscores = await sanityFetch<SUBSCORES_QUERYResult>({
-		query: SUBSCORES_QUERY,
-	});
-	if (!cultures) {
-		return notFound();
+	} else {
+
 	}
 
 	return (
@@ -37,8 +31,7 @@ const Page = async () => {
 			</Header>
 			<Sections
 				cultures={cultures}
-				scores={scores}
-				subscores={subscores} />
+				scores={scores} />
 		</main>
 	);
 };

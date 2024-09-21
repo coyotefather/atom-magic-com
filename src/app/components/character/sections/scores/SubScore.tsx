@@ -4,8 +4,8 @@ import {Accordion, AccordionItem} from "@nextui-org/accordion";
 import Icon from '@mdi/react';
 import { mdiPlus, mdiMinus, mdiChevronLeftCircle } from '@mdi/js';
 import { useState, useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
-import { setPhysicalSubscore, setInterpersonalSubscore, setIntellectSubscore, setPsycheSubscore } from "@/app/lib/slices/characterSlice";
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'
+import { setPhysicalSubscore, setInterpersonalSubscore, setIntellectSubscore, setPsycheSubscore } from "@/lib/slices/characterSlice";
 
 const SubScore = ({
 		subscore,

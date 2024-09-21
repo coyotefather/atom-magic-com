@@ -1,9 +1,9 @@
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
-import { ANIMAL_COMPANIONS } from '@/app/lib/global-data';
-import { useAppDispatch } from '@/app/lib/hooks'
-import { setAnimalCompanion } from "@/app/lib/slices/characterSlice";
+import { ANIMAL_COMPANIONS } from '@/lib/global-data';
+import { useAppDispatch } from '@/lib/hooks'
+import { setAnimalCompanion } from "@/lib/slices/characterSlice";
 import {Select, SelectItem} from "@nextui-org/select";
 import { Input, Textarea } from "@nextui-org/input";
 import { useState, useRef, useEffect } from 'react';

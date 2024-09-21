@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Nav from '@/app/components/common/Nav';
-import { NAVIGATION_LINKS } from '@/app/lib/global-data';
+import { NAVIGATION_LINKS } from '@/lib/global-data';
 
 const NavBar = () => {
 	return (

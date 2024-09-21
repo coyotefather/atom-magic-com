@@ -614,7 +614,7 @@
         },
         "optional": true
       },
-      "subccores": {
+      "subscores": {
         "type": "objectAttribute",
         "value": {
           "type": "array",

@@ -1,8 +1,8 @@
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
-import { useAppDispatch } from '@/app/lib/hooks'
-import { setCulture } from "@/app/lib/slices/characterSlice";
+import { useAppDispatch } from '@/lib/hooks'
+import { setCulture } from "@/lib/slices/characterSlice";
 import {Select, SelectItem} from "@nextui-org/select";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import { useState, useRef } from 'react';

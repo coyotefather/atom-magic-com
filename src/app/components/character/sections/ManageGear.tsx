@@ -1,11 +1,11 @@
 'use client';
 import { useState, useRef } from 'react';
-import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
-import { setGear } from "@/app/lib/slices/characterSlice";
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'
+import { setGear } from "@/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import GearTable from '@/app/components/character/sections/gear/GearTable'
 import FunctionButton from '@/app/components/common/FunctionButton';
-import { GEAR } from '@/app/lib/global-data';
+import { GEAR } from '@/lib/global-data';
 import clsx from 'clsx';
 import { mdiDiceMultiple } from '@mdi/js';
 import { CSSTransition, SwitchTransition } from "react-transition-group";

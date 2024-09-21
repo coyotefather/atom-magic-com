@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef } from 'react';
-import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
-import { setCharacterName, setCharacterAge, setCharacterPronouns, setCharacterDescription } from "@/app/lib/slices/characterSlice";
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'
+import { setCharacterName, setCharacterAge, setCharacterPronouns, setCharacterDescription } from "@/lib/slices/characterSlice";
 import { Input, Textarea } from "@nextui-org/input";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import { CSSTransition, SwitchTransition } from "react-transition-group";

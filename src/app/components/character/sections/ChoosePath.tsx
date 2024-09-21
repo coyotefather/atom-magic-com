@@ -1,9 +1,9 @@
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
-import { PATHS } from '@/app/lib/global-data';
-import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
-import { setPath } from "@/app/lib/slices/characterSlice";
+import { PATHS } from '@/lib/global-data';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'
+import { setPath } from "@/lib/slices/characterSlice";
 import {Select, SelectItem} from "@nextui-org/select";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 import { useState, useRef } from 'react';
