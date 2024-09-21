@@ -1,8 +1,8 @@
 'use client';
 import { useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
-import { setShield, setReputation, setResurrectionDuration } from "@/app/lib/slices/characterSlice";
-import { SCORES } from '@/app/lib/global-data';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'
+import { setShield, setReputation, setResurrectionDuration } from "@/lib/slices/characterSlice";
+import { SCORES } from '@/lib/global-data';
 import ExternalLink from '@/app/components/common/ExternalLink';
 
 const AdditionalScores = () => {

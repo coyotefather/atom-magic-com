@@ -1,10 +1,10 @@
 'use client';
 import { useState, useRef } from 'react';
-import { useAppSelector, useAppDispatch } from '@/app/lib/hooks'
-import { setWealth } from "@/app/lib/slices/characterSlice";
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'
+import { setWealth } from "@/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import FunctionButton from '@/app/components/common/FunctionButton';
-import { WEALTH } from '@/app/lib/global-data';
+import { WEALTH } from '@/lib/global-data';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 import clsx from 'clsx';
 import { mdiDiceMultiple } from '@mdi/js';
