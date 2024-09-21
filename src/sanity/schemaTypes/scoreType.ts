@@ -18,7 +18,7 @@ export const scoreType = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'subccores',
+      name: 'subscores',
       title: 'Subscores',
       description: '',
       type: 'array',
