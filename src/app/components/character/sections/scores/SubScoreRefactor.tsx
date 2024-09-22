@@ -4,20 +4,20 @@ import {Accordion, AccordionItem} from "@nextui-org/accordion";
 import Icon from '@mdi/react';
 import { mdiPlus, mdiMinus, mdiChevronLeftCircle } from '@mdi/js';
 import { useState, useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from '@/lib/hooks'
-import { setPhysicalSubscore, setInterpersonalSubscore, setIntellectSubscore, setPsycheSubscore } from "@/lib/slices/characterSlice";
+import { useAppDispatch } from '@/lib/hooks'
+import { setSubscore, setScorePoints } from "@/lib/slices/characterSlice";
 
 const SubScore = ({
 		subscore,
-		subscoreId,
-		parent,
+		subscore_id,
+		parent_id,
 		pathModifier = 0,
 		gearModifier = 0,
 		availablePoints = 0
 	}: {
-		subscore: string,
-		subscoreId: string,
-		parent: string,
+		subscore: string | null,
+		subscore_id: string,
+		parent_id: string,
 		pathModifier: number,
 		gearModifier: number,
 		availablePoints: number
@@ -38,22 +38,9 @@ const SubScore = ({
 			curBase++;
 			setBaseSubscoreValue(curBase);
 			// update in store
-			switch(parent) {
-				case "Physical":
-					dispatch(setPhysicalSubscore({child: subscoreId, value: curBase}));
-					break;
-				case "Interpersonal":
-					dispatch(setInterpersonalSubscore({child: subscoreId, value: curBase}));
-					break;
-				case "Intellect":
-					dispatch(setIntellectSubscore({child: subscoreId, value: curBase}));
-					break;
-				case "Psyche":
-					dispatch(setPsycheSubscore({child: subscoreId, value: curBase}));
-					break;
-				default:
-					break;
-			}
+			dispatch(setSubscore( { _id: subscore_id, parent_id: parent_id, value: curBase } ));
+			let subscorePoints = availablePoints - 1;
+			dispatch(setScorePoints(subscorePoints));
 		}
 	};
 
@@ -64,22 +51,9 @@ const SubScore = ({
 			curBase--;
 			setBaseSubscoreValue(curBase);
 			// update in store
-			switch(parent) {
-				case "Physical":
-					dispatch(setPhysicalSubscore({child: subscoreId, value: curBase}));
-					break;
-				case "Interpersonal":
-					dispatch(setInterpersonalSubscore({child: subscoreId, value: curBase}));
-					break;
-				case "Intellect":
-					dispatch(setIntellectSubscore({child: subscoreId, value: curBase}));
-					break;
-				case "Psyche":
-					dispatch(setPsycheSubscore({child: subscoreId, value: curBase}));
-					break;
-				default:
-					break;
-			}
+			dispatch(setSubscore( { _id: subscore_id, parent_id: parent_id, value: curBase } ));
+			let subscorePoints = availablePoints + 1;
+			dispatch(setScorePoints(subscorePoints));
 		}
 	};
 

@@ -1,12 +1,12 @@
 'use client';
-import Score from '@/app/components/character/sections/scores/Score';
-import { SCORES, PATHS, GEAR } from '@/lib/global-data';
+import ScoreRefactor from '@/app/components/character/sections/scores/ScoreRefactor';
+import { PATHS } from '@/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { initScore } from "@/lib/slices/characterSlice";
 import {
 	SCORES_QUERYResult,
 } from "../../../../../../sanity.types";
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 const Scores = ({
 		scores
@@ -16,30 +16,16 @@ const Scores = ({
 
 	const dispatch = useAppDispatch();
 	const score = useAppSelector(state => state.character.score);
+	const scorePoints = useAppSelector(state => state.character.scorePoints);
 	useEffect(()=>{
 		dispatch( initScore(scores) );
-		//dispatch( initScore(scores) );
 	}, [])
-	console.log(score);
 	const path = useAppSelector(state => state.character.path);
 	const curPath = PATHS.find((p) => p.value === path);
 	const gear = useAppSelector(state => state.character.gear);
-	const physicalScore = useAppSelector(state => state.character.scores.physical.value);
-	const interpersonalScore = useAppSelector(state => state.character.scores.interpersonal.value);
-	const intellectScore = useAppSelector(state => state.character.scores.intellect.value);
-	const psycheScore = useAppSelector(state => state.character.scores.psyche.value);
-	const physicalSubscores = useAppSelector(state => state.character.scores.physical.subscores);
-	const interpersonalSubscores = useAppSelector(state => state.character.scores.interpersonal.subscores);
-	const intellectSubscores = useAppSelector(state => state.character.scores.intellect.subscores);
-	const psycheSubscores = useAppSelector(state => state.character.scores.psyche.subscores);
-	const [subscorePoints, setSubscorePoints] = useState(0);
+
 	let pathModifiersMap = new Map<string, number>([]);
 	let gearModifiersMap = new Map<string, number>([]);
-
-	useEffect(() => {
-		let totalPoints = 800 - physicalSubscores.agility - physicalSubscores.speed - physicalSubscores.reflex - physicalSubscores.endurance - interpersonalSubscores.percievedAttractiveness - interpersonalSubscores.charm - interpersonalSubscores.speech - interpersonalSubscores.empathy - intellectSubscores.knowledge - intellectSubscores.criticalThinking - intellectSubscores.analysis - intellectSubscores.judgement - psycheSubscores.mentalStability - psycheSubscores.emotionalStability - psycheSubscores.focusAndConcentration - psycheSubscores.courageAndConviction;
-		setSubscorePoints(totalPoints);
-	},[physicalSubscores, interpersonalSubscores, intellectSubscores, psycheSubscores]); // pass to children via prop
 
 	if(curPath){
 		curPath.modifiers.forEach((score) =>  {
@@ -63,38 +49,17 @@ const Scores = ({
 	}
 
 	return (
-		<div className="grid grid-cols-2 divide-x-2 bg-white container">
-			<div className="pt-16 pb-16">
-				<div className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-8 pr-4">
-					<Score
-						score={SCORES.physical}
-						scoreValue={physicalScore}
+		<div className="container pt-16 pb-16">
+			<div className="grid grid-cols-2 gap-8 bg-white">
+				{score.map((s) => (
+					<ScoreRefactor
+						key={s._id}
+						score={s}
+						scoreValue={s.value}
 						pathModifiers={pathModifiersMap}
 						gearModifiers={gearModifiersMap}
-						availablePoints={subscorePoints} />
-					<Score
-						score={SCORES.interpersonal}
-						scoreValue={interpersonalScore}
-						pathModifiers={pathModifiersMap}
-						gearModifiers={gearModifiersMap}
-						availablePoints={subscorePoints} />
-				</div>
-			</div>
-			<div className="pt-16 pb-16">
-				<div className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-8 pl-4">
-					<Score
-						score={SCORES.intellect}
-						scoreValue={intellectScore}
-						pathModifiers={pathModifiersMap}
-						gearModifiers={gearModifiersMap}
-						availablePoints={subscorePoints} />
-					<Score
-						score={SCORES.psyche}
-						scoreValue={psycheScore}
-						pathModifiers={pathModifiersMap}
-						gearModifiers={gearModifiersMap}
-						availablePoints={subscorePoints} />
-				</div>
+						availablePoints={scorePoints} />
+				))};
 			</div>
 		</div>
 	);
