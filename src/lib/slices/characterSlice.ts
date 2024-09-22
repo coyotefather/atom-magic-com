@@ -1,12 +1,54 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 
+interface SanityScore {
+	_id: string,
+	title: string | null,
+	id: string | null,
+	subscores: SanitySubscore[] | null,
+	description: string | null
+};
+
+interface SanitySubscore {
+	_id: string,
+	id: string | null,
+	title: string | null,
+	description: string | null,
+	defaultValue: number | null
+};
+
+interface LocalSubscore {
+	_id: string,
+	id: string | null,
+	title: string | null,
+	description: string | null,
+	value: number | null
+};
+
 interface Score {
 	_id: string,
 	title: string | null,
 	id: string | null,
-	subscores: null,
-	description: string | null
+	subscores: {
+		_id: string,
+		id: string | null,
+		title: string | null,
+		description: string | null,
+		value: number | null
+	}[],
+	description: string | null,
+	value: number | null
+};
+
+// interface ScoreUpdate {
+// 	_id: string,
+// 	value: number,
+// };
+
+interface SubscoreUpdate {
+	_id: string,
+	parent_id: string,
+	value: number,
 };
 
 interface Subscore {
@@ -36,6 +78,7 @@ export interface CharacterState {
 	culture: string,
 	path: string,
 	patronage: string,
+	scorePoints: number,
 	score: Array<Score>,
 	scores: {
 		physical: {
@@ -118,6 +161,7 @@ const initialState: CharacterState = {
 	culture: "",
 	path: "",
 	patronage: "",
+	scorePoints: 0,
 	score: [],
 	scores: {
 		physical: {
@@ -181,13 +225,74 @@ export const characterSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-	initScore: (state, action: PayloadAction<Score[]>) => {
+	initScore: (state, action: PayloadAction<SanityScore[]>) => {
 		if(state.score.length === 0) {
-			action.payload.forEach( (score: Score) => {
-				state.score.push(score);
+			let subs: LocalSubscore[];
+			let scoreAverage: number;
+			let subscoreCount: number;
+			action.payload.forEach( (score: SanityScore) => {
+				subs = [];
+				scoreAverage = 0;
+				subscoreCount = 0;
+				if(score.subscores) {
+					score.subscores.map((s) => {
+						s.defaultValue ? scoreAverage += s.defaultValue : scoreAverage;
+						subscoreCount++;
+						subs.push(
+							{
+								_id: s._id,
+								id: s.id,
+								title: s.title,
+								description: s.description,
+								value: s.defaultValue
+							}
+						);
+					});
+				}
+				scoreAverage = Math.round(scoreAverage / subscoreCount);
+				state.score.push({
+					_id: score._id,
+					title: score.title,
+					id: score.id,
+					subscores: subs,
+					description: score.description,
+					value: scoreAverage
+				});
 			} );
 		}
-		//state.score.push(action.payload);
+	},
+// 	setScore: (state, action: PayloadAction<ScoreUpdate>) => {
+// 		// need to know score id and score value
+//
+// 		const updatedScores = state.score.map( (score: Score)  => {
+// 			if (score._id === action.payload._id) {
+// 				return { ...score, value: action.payload.value };
+// 			}
+// 			return score;
+// 		});
+// 		state.score = updatedScores;
+// 	},
+	setScorePoints: (state, action: PayloadAction<number>) => {
+		state.scorePoints = action.payload;
+	},
+	setSubscore: (state, action: PayloadAction<SubscoreUpdate>) => {
+		const updatedScores = state.score.map( (score: Score)  => {
+			if (score._id === action.payload.parent_id) {
+				let total = 0;
+				score.subscores.map( (sub) => {
+					if (sub._id === action.payload._id) {
+						sub.value !== null ? total += action.payload.value : undefined;
+						return { ...sub, value: action.payload.value };
+					} else {
+						sub.value !== null ? total += sub.value : undefined;
+					}
+				});
+				score.subscores.length > 0 ? total = total/score.subscores.length : total;
+				score.value = Math.round(total);
+			}
+			return score;
+		});
+		state.score = updatedScores;
 	},
 	setCharacterName: (state, action: PayloadAction<string>) => {
 		state.name = action.payload;
@@ -215,26 +320,26 @@ export const characterSlice = createSlice({
 			state.gear.push(w);
 		});
 	},
-	setPhysicalSubscore: (state, action: PayloadAction<Subscore>) => {
-		// expects child, value
-		state.scores.physical.subscores[action.payload.child as keyof typeof state.scores.physical.subscores] = action.payload.value;
-		state.scores.physical.value = Math.round((state.scores.physical.subscores.agility + state.scores.physical.subscores.speed + state.scores.physical.subscores.reflex + state.scores.physical.subscores.endurance)/4);
-	},
-	setInterpersonalSubscore: (state, action: PayloadAction<Subscore>) => {
-		// expects child, value
-		state.scores.interpersonal.subscores[action.payload.child as keyof typeof state.scores.interpersonal.subscores] = action.payload.value;
-		state.scores.interpersonal.value = Math.round((state.scores.interpersonal.subscores.percievedAttractiveness + state.scores.interpersonal.subscores.charm + state.scores.interpersonal.subscores.speech + state.scores.interpersonal.subscores.empathy)/4);
-	},
-	setIntellectSubscore: (state, action: PayloadAction<Subscore>) => {
-		// expects child, value
-		state.scores.intellect.subscores[action.payload.child as keyof typeof state.scores.intellect.subscores] = action.payload.value;
-		state.scores.intellect.value = Math.round((state.scores.intellect.subscores.knowledge + state.scores.intellect.subscores.criticalThinking + state.scores.intellect.subscores.analysis + state.scores.intellect.subscores.judgement)/4);
-	},
-	setPsycheSubscore: (state, action: PayloadAction<Subscore>) => {
-		// expects child, value
-		state.scores.psyche.subscores[action.payload.child as keyof typeof state.scores.psyche.subscores] = action.payload.value;
-		state.scores.psyche.value = Math.round((state.scores.psyche.subscores.mentalStability + state.scores.psyche.subscores.emotionalStability + state.scores.psyche.subscores.focusAndConcentration + state.scores.psyche.subscores.courageAndConviction)/4);
-	},
+	// setPhysicalSubscore: (state, action: PayloadAction<Subscore>) => {
+	// 	// expects child, value
+	// 	state.scores.physical.subscores[action.payload.child as keyof typeof state.scores.physical.subscores] = action.payload.value;
+	// 	state.scores.physical.value = Math.round((state.scores.physical.subscores.agility + state.scores.physical.subscores.speed + state.scores.physical.subscores.reflex + state.scores.physical.subscores.endurance)/4);
+	// },
+	// setInterpersonalSubscore: (state, action: PayloadAction<Subscore>) => {
+	// 	// expects child, value
+	// 	state.scores.interpersonal.subscores[action.payload.child as keyof typeof state.scores.interpersonal.subscores] = action.payload.value;
+	// 	state.scores.interpersonal.value = Math.round((state.scores.interpersonal.subscores.percievedAttractiveness + state.scores.interpersonal.subscores.charm + state.scores.interpersonal.subscores.speech + state.scores.interpersonal.subscores.empathy)/4);
+	// },
+	// setIntellectSubscore: (state, action: PayloadAction<Subscore>) => {
+	// 	// expects child, value
+	// 	state.scores.intellect.subscores[action.payload.child as keyof typeof state.scores.intellect.subscores] = action.payload.value;
+	// 	state.scores.intellect.value = Math.round((state.scores.intellect.subscores.knowledge + state.scores.intellect.subscores.criticalThinking + state.scores.intellect.subscores.analysis + state.scores.intellect.subscores.judgement)/4);
+	// },
+	// setPsycheSubscore: (state, action: PayloadAction<Subscore>) => {
+	// 	// expects child, value
+	// 	state.scores.psyche.subscores[action.payload.child as keyof typeof state.scores.psyche.subscores] = action.payload.value;
+	// 	state.scores.psyche.value = Math.round((state.scores.psyche.subscores.mentalStability + state.scores.psyche.subscores.emotionalStability + state.scores.psyche.subscores.focusAndConcentration + state.scores.psyche.subscores.courageAndConviction)/4);
+	// },
 	setShield: (state) => {
 		state.scores.additionalScores.shield = Math.round((state.scores.physical.subscores.endurance + state.scores.psyche.subscores.mentalStability)/2);
 	},
@@ -260,6 +365,9 @@ export const characterSlice = createSlice({
 
 export const {
 	initScore,
+	//setScore,
+	setScorePoints,
+	setSubscore,
 	setCharacterName,
 	setCharacterAge,
 	setCharacterPronouns,
@@ -268,10 +376,10 @@ export const {
 	setPath,
 	setPatronage,
 	setGear,
-	setPhysicalSubscore,
-	setInterpersonalSubscore,
-	setIntellectSubscore,
-	setPsycheSubscore,
+	// setPhysicalSubscore,
+	// setInterpersonalSubscore,
+	// setIntellectSubscore,
+	// setPsycheSubscore,
     setShield,
 	setReputation,
 	setResurrectionDuration,
