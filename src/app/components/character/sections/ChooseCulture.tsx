@@ -46,7 +46,7 @@ const ChooseCulture = ({
 		if(val !== "") {
 			dispatch(setCulture(val));
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
-			let chosenCulture = cultures.find((c) => c.id === val);
+			let chosenCulture = cultures.find((c) => c._id === val);
 			if(chosenCulture != undefined && chosenCulture.aspects !== null) {
 				aspects = (
 					<Table
@@ -114,8 +114,8 @@ const ChooseCulture = ({
 							className="w-96 mt-8"
 							onChange={(event) => handleSelectChange(event)}
 					  	>
-							{cultures.map((culture, index) => (
-						  	<SelectItem key={culture.id ? culture.id : index }>
+							{cultures.map((culture) => (
+						  	<SelectItem key={culture._id }>
 								{culture.title}
 						  	</SelectItem>
 							))}

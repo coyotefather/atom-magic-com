@@ -12,10 +12,10 @@ export const cultureType = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'id',
-      title: 'ID',
-      description: 'Note: changing this ID could break existing saved characters. Please avoid spaces.',
-      type: 'string',
+      name: 'entry',
+      type: 'reference',
+      description: 'Optional reference to a codex entry.',
+      to: {type: 'entry'},
     }),
     defineField({
       name: 'mainImage',
