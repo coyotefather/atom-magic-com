@@ -31,7 +31,7 @@ const Score = ({
 		availablePoints: number
 	}) => {
 	return (
-		<div className="mb-8">
+		<div className="mb-4">
 			<h3 className="marcellus text-2xl border-b-2 border-solid mb-2">
 				{score.title}
 				<span className="float-right font-bold">{scoreValue}</span>
@@ -39,6 +39,7 @@ const Score = ({
 			{score.subscores.map((subscore) => (
 				<SubScoreRefactor
 					subscore={subscore.title}
+					value={subscore.value}
 					subscore_id={subscore._id}
 					parent_id={score._id}
 					pathModifier={pathModifiers.get(subscore.id)!}
