@@ -13,13 +13,11 @@ const Score = ({
 	}: {
 		score: {
 			_id: string,
-			id: string | null,
 			title: string | null,
 			description: string | null,
 			value: number | null,
 			subscores: {
 				_id: string,
-				id: string | null,
 				title: string | null,
 				description: string | null,
 				value: number | null
@@ -42,10 +40,10 @@ const Score = ({
 					value={subscore.value}
 					subscore_id={subscore._id}
 					parent_id={score._id}
-					pathModifier={pathModifiers.get(subscore.id)!}
-					gearModifier={gearModifiers.get(subscore.id)!}
+					pathModifier={pathModifiers.get(subscore._id)!}
+					gearModifier={gearModifiers.get(subscore._id)!}
 					availablePoints={availablePoints}
-					key={subscore.id} />
+					key={subscore._id} />
 			))}
 			{/* <div className="text-xl mt-2 mb-8">
 				{score.elective.name}

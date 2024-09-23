@@ -7,6 +7,7 @@ import {entryType} from './entryType'
 import {cultureType} from './cultureType'
 import {scoreType} from './scoreType'
 import {subscoreType} from './subscoreType'
+import {pathType} from './pathType'
 import {timelineType} from './timelineType'
 import {authorType} from './authorType'
 
@@ -19,6 +20,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     cultureType,
     scoreType,
     subscoreType,
+    pathType,
     timelineType,
     authorType
   ],

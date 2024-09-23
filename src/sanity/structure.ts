@@ -11,10 +11,11 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('culture').title('Cultures'),
       S.documentTypeListItem('score').title('Scores'),
       S.documentTypeListItem('subscore').title('Subscores'),
+      S.documentTypeListItem('path').title('Paths'),
       S.documentTypeListItem('timeline').title('Timeline'),
       S.documentTypeListItem('author').title('Authors'),
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['post', 'entry', 'category', 'culture', 'score', 'subscore', 'timeline', 'author'].includes(item.getId()!),
+        (item) => item.getId() && !['post', 'entry', 'category', 'culture', 'score', 'subscore', 'timeline', 'path', 'author'].includes(item.getId()!),
       ),
     ])

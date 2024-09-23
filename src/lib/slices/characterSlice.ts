@@ -4,14 +4,12 @@ import type { RootState } from '../store'
 interface SanityScore {
 	_id: string,
 	title: string | null,
-	id: string | null,
 	subscores: SanitySubscore[] | null,
 	description: string | null
 };
 
 interface SanitySubscore {
 	_id: string,
-	id: string | null,
 	title: string | null,
 	description: string | null,
 	defaultValue: number | null
@@ -19,7 +17,6 @@ interface SanitySubscore {
 
 interface LocalSubscore {
 	_id: string,
-	id: string | null,
 	title: string | null,
 	description: string | null,
 	value: number | null
@@ -28,10 +25,8 @@ interface LocalSubscore {
 interface Score {
 	_id: string,
 	title: string | null,
-	id: string | null,
 	subscores: {
 		_id: string,
-		id: string | null,
 		title: string | null,
 		description: string | null,
 		value: number | null
@@ -241,7 +236,6 @@ export const characterSlice = createSlice({
 						subs.push(
 							{
 								_id: s._id,
-								id: s.id,
 								title: s.title,
 								description: s.description,
 								value: s.defaultValue
@@ -253,7 +247,6 @@ export const characterSlice = createSlice({
 				state.score.push({
 					_id: score._id,
 					title: score.title,
-					id: score.id,
 					subscores: subs,
 					description: score.description,
 					value: scoreAverage
