@@ -84,7 +84,8 @@ const SubScore = ({
 					itemClasses={
 						{
 							base: 'pl-0 pr-0',
-							title: `text-right text-sm`,
+							title: `text-right text-sm notoserif`,
+							trigger: 'border-0',
 							indicator: "",
 						}
 					}
