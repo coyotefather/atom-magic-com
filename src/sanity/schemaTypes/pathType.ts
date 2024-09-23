@@ -48,7 +48,8 @@ export const pathType = defineType({
           {name: 'modifierName', title: 'Name',  type: 'string'},
           {name: 'modifierId', title: 'ID', description: 'Note: changing this ID will break existing saved characters. Please avoid spaces.',  type: 'string'},
           {
-            name: 'subscore',
+            name: 'modifierSubscore',
+            title: 'Subscore',
             type: 'reference',
             description: 'Reference to the modified subscore.',
             validation: rule => rule.required(),
