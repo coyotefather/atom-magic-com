@@ -59,7 +59,7 @@ const Scores = ({
 						pathModifiers={pathModifiersMap}
 						gearModifiers={gearModifiersMap}
 						availablePoints={scorePoints} />
-				))};
+				))}
 			</div>
 		</div>
 	);
