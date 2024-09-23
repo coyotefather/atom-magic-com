@@ -281,12 +281,14 @@ export const characterSlice = createSlice({
 				let total = 0;
 				score.subscores.map( (sub) => {
 					if (sub._id === action.payload._id) {
+						sub.value = action.payload.value;
 						sub.value !== null ? total += action.payload.value : undefined;
-						return { ...sub, value: action.payload.value };
 					} else {
 						sub.value !== null ? total += sub.value : undefined;
 					}
+					return sub;
 				});
+
 				score.subscores.length > 0 ? total = total/score.subscores.length : total;
 				score.value = Math.round(total);
 			}

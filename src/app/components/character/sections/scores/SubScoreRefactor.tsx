@@ -9,6 +9,7 @@ import { setSubscore, setScorePoints } from "@/lib/slices/characterSlice";
 
 const SubScore = ({
 		subscore,
+		value,
 		subscore_id,
 		parent_id,
 		pathModifier = 0,
@@ -16,6 +17,7 @@ const SubScore = ({
 		availablePoints = 0
 	}: {
 		subscore: string | null,
+		value: number | null,
 		subscore_id: string,
 		parent_id: string,
 		pathModifier: number,
@@ -24,8 +26,15 @@ const SubScore = ({
 	}) => {
 
 	const dispatch = useAppDispatch();
-	const [baseSubscoreValue, setBaseSubscoreValue] = useState(50);
-	const [calcSubscoreValue, setCalcSubscoreValue] = useState(50);
+	const [baseSubscoreValue, setBaseSubscoreValue] = useState(0);
+	const [calcSubscoreValue, setCalcSubscoreValue] = useState(0);
+
+	useEffect(() => {
+		if(value !== null) {
+			setBaseSubscoreValue(value);
+		}
+	},[]);
+
 	useEffect(() => {
 		let curSubscoreValue = baseSubscoreValue + pathModifier + gearModifier;
 		setCalcSubscoreValue(curSubscoreValue);
@@ -84,7 +93,8 @@ const SubScore = ({
 					itemClasses={
 						{
 							base: 'pl-0 pr-0',
-							title: `text-right text-sm`,
+							title: `text-right text-sm notoserif`,
+							trigger: 'border-0',
 							indicator: "",
 						}
 					}
