@@ -512,13 +512,6 @@
         },
         "optional": true
       },
-      "id": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
       "score": {
         "type": "objectAttribute",
         "value": {

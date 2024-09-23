@@ -29,7 +29,7 @@ export const SCORES_QUERY = groq`*[_type == "score"]{
 }`;
 
 export const SUBSCORES_QUERY = groq`*[_type == "subscore"]{
-  _id, title, id, score->{_id, title, id}, defaultValue, description
+  _id, title, score->{_id, title, id}, defaultValue, description
 }`;
 
 export const CATEGORIES_QUERY = groq`*[_type == "category" && defined(slug.current)][0...12]{

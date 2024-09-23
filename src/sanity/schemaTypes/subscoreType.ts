@@ -12,12 +12,6 @@ export const subscoreType = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'id',
-      title: 'ID',
-      description: 'Note: changing this ID could break existing saved characters. Please avoid spaces.',
-      type: 'string',
-    }),
-    defineField({
       title: "Score",
       name: "score",
       description: 'Reference to parent Score.',
