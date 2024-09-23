@@ -108,7 +108,7 @@ export type Score = {
   _rev: string;
   title?: string;
   id?: string;
-  subccores?: Array<{
+  subscores?: Array<{
     _ref: string;
     _type: "reference";
     _weak?: boolean;
@@ -125,7 +125,12 @@ export type Culture = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  id?: string;
+  entry?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "entry";
+  };
   mainImage?: {
     asset?: {
       _ref: string;
@@ -565,11 +570,13 @@ export type ENTRY_QUERYResult = {
   } | null;
 } | null;
 // Variable: CULTURES_QUERY
-// Query: *[_type == "culture"]{  _id, title, id, aspects, mainImage, description}
+// Query: *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description}
 export type CULTURES_QUERYResult = Array<{
   _id: string;
   title: string | null;
-  id: string | null;
+  entry: {
+    slug: Slug | null;
+  } | null;
   aspects: Array<{
     aspectName?: string;
     aspectId?: string;
@@ -598,7 +605,13 @@ export type SCORES_QUERYResult = Array<{
   _id: string;
   title: string | null;
   id: string | null;
-  subscores: null;
+  subscores: Array<{
+    _id: string;
+    title: string | null;
+    id: string | null;
+    defaultValue: number | null;
+    description: string | null;
+  }> | null;
   description: string | null;
 }>;
 // Variable: SUBSCORES_QUERY
@@ -668,7 +681,7 @@ declare module "@sanity/client" {
     "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": ENTRIES_QUERYResult;
     "count(*[_type == 'entry'])": ENTRIES_COUNT_QUERYResult;
     "*[_type == \"entry\" && slug.current == $slug][0]{\n  title, cardDetails, entryBody, toc, mainImage, publishedAt, author->{name, slug}, category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}\n}": ENTRY_QUERYResult;
-    "*[_type == \"culture\"]{\n  _id, title, id, aspects, mainImage, description\n}": CULTURES_QUERYResult;
+    "*[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n}": CULTURES_QUERYResult;
     "*[_type == \"score\"]{\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n}": SCORES_QUERYResult;
     "*[_type == \"subscore\"]{\n  _id, title, id, score->{_id, title, id}, defaultValue, description\n}": SUBSCORES_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;

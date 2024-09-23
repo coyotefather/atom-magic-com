@@ -21,7 +21,7 @@ export const ENTRY_QUERY = groq`*[_type == "entry" && slug.current == $slug][0]{
 }`;
 
 export const CULTURES_QUERY = groq`*[_type == "culture"]{
-  _id, title, id, aspects, mainImage, description
+  _id, title, entry->{ slug }, aspects, mainImage, description
 }`;
 
 export const SCORES_QUERY = groq`*[_type == "score"]{
