@@ -13,7 +13,6 @@ const Score = ({
 	}: {
 		score: {
 			_id: string,
-			id: string | null,
 			title: string | null,
 			description: string | null,
 			value: number | null,
