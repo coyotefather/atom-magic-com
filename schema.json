@@ -625,21 +625,7 @@
           "of": {
             "type": "object",
             "attributes": {
-              "modifierName": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                },
-                "optional": true
-              },
-              "modifierId": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                },
-                "optional": true
-              },
-              "subscore": {
+              "modifierSubscore": {
                 "type": "objectAttribute",
                 "value": {
                   "type": "object",
