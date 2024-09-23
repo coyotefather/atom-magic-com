@@ -15,7 +15,6 @@ export const pathType = defineType({
     defineField({
       name: 'latin',
       description: 'Title in Latin',
-      validation: rule => rule.required(),
       type: 'string',
     }),
     defineField({
@@ -45,8 +44,6 @@ export const pathType = defineType({
       type: 'array',
       of: [
         {name: 'modifier', title: 'Modifier', type: 'object', fields: [
-          {name: 'modifierName', title: 'Name',  type: 'string'},
-          {name: 'modifierId', title: 'ID', description: 'Note: changing this ID will break existing saved characters. Please avoid spaces.',  type: 'string'},
           {
             name: 'modifierSubscore',
             title: 'Subscore',

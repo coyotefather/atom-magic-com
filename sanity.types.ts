@@ -109,9 +109,7 @@ export type Path = {
     _type: "image";
   };
   modifiers?: Array<{
-    modifierName?: string;
-    modifierId?: string;
-    subscore?: {
+    modifierSubscore?: {
       _ref: string;
       _type: "reference";
       _weak?: boolean;
@@ -669,7 +667,7 @@ export type SUBSCORES_QUERYResult = Array<{
   description: string | null;
 }>;
 // Variable: PATHS_QUERY
-// Query: *[_type == "path"]{  _id, title, latin, entry, mainImage, modifiers[]->{ modifierName, modifierId, modifierSubscore->{ _id }, modifierValue}, description}
+// Query: *[_type == "path"]{  _id, title, latin, entry, mainImage, modifiers, description}
 export type PATHS_QUERYResult = Array<{
   _id: string;
   title: string | null;
@@ -692,7 +690,17 @@ export type PATHS_QUERYResult = Array<{
     alt?: string;
     _type: "image";
   } | null;
-  modifiers: Array<null> | null;
+  modifiers: Array<{
+    modifierSubscore?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "subscore";
+    };
+    modifierValue?: number;
+    _type: "modifier";
+    _key: string;
+  }> | null;
   description: string | null;
 }>;
 // Variable: CATEGORIES_QUERY
@@ -751,7 +759,7 @@ declare module "@sanity/client" {
     "*[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n}": CULTURES_QUERYResult;
     "*[_type == \"score\"]{\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n}": SCORES_QUERYResult;
     "*[_type == \"subscore\"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n}": SUBSCORES_QUERYResult;
-    "*[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers[]->{ modifierName, modifierId, modifierSubscore->{ _id }, modifierValue}, description\n}": PATHS_QUERYResult;
+    "*[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers, description\n}": PATHS_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
     "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]| order(_id) [0...96]{_id, title, slug, description}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
     "*[_type == \"timeline\"]| order(year desc) {\n  _id, title, URL, year, major, icon, description\n}": TIMELINE_QUERYResult;
