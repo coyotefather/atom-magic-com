@@ -21,6 +21,17 @@ import {
 	PATHS_QUERYResult,
 } from "../../../../sanity.types";
 
+interface Modifier {
+	_id: string,
+	parent_id: string,
+	value: number | null
+};
+
+interface Modifiers {
+	path: Modifier[],
+	gear: Modifier[]
+};
+
 const Sections = ({
 		cultures,
 		scores,
@@ -130,6 +141,17 @@ const Sections = ({
 		console.log("roll character");
 	};
 
+	let modifiers: Modifiers | undefined = { path: [], gear: [] };
+	paths.map( (path) => {
+		if(path.modifiers) {
+			path.modifiers.map( (m) => {
+				if(m.modifierSubscore && m.modifierSubscore._id && m.modifierSubscore.score && path._id === character.path) {
+					modifiers.path.push({ _id: m.modifierSubscore._id, parent_id: m.modifierSubscore.score._id, value: m.modifierValue });
+				}
+			});
+		}
+	});
+
 	return (
 		<div>
 			<Section
@@ -205,7 +227,9 @@ const Sections = ({
 				variant="dual"
 				clickCheck={setClickCheck}
 				expandFunction={() => { return; }}>
-				<Scores scores={scores} />
+				<Scores
+					scores={scores}
+					modifiers={modifiers} />
 			</Section>
 			<Section
 				expanded={showAdjustScoresAndScores}

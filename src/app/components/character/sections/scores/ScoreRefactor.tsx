@@ -4,6 +4,12 @@ import { mdiPlus, mdiMinus } from '@mdi/js';
 import { PATHS } from '@/lib/global-data';
 import SubScoreRefactor from '@/app/components/character/sections/scores/SubScoreRefactor';
 
+interface Modifier {
+	_id: string,
+	parent_id: string,
+	value: number | null
+};
+
 const Score = ({
 		score,
 		scoreValue,
@@ -24,8 +30,8 @@ const Score = ({
 			}[],
 		},
 		scoreValue: number | null,
-		pathModifiers: Map<string | null, number>,
-		gearModifiers: Map<string | null, number>,
+		pathModifiers: Modifier[],
+		gearModifiers: Modifier[],
 		availablePoints: number
 	}) => {
 	return (
@@ -40,8 +46,8 @@ const Score = ({
 					value={subscore.value}
 					subscore_id={subscore._id}
 					parent_id={score._id}
-					pathModifier={pathModifiers.get(subscore._id)!}
-					gearModifier={gearModifiers.get(subscore._id)!}
+					pathModifiers={pathModifiers.filter((m) => m._id === subscore._id)}
+					gearModifiers={gearModifiers.filter((m) => m._id === subscore._id)}
 					availablePoints={availablePoints}
 					key={subscore._id} />
 			))}
