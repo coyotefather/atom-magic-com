@@ -9,10 +9,15 @@ import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@
 import { useState, useRef } from 'react';
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import {
+	PATHS_QUERYResult,
+} from "../../../../../sanity.types";
 
 const ChoosePath = ({
+		paths,
 		incompleteFields
 	}: {
+		paths: PATHS_QUERYResult,
 		incompleteFields: string
 	}) => {
 	const detailsRef = useRef(null);
@@ -32,37 +37,37 @@ const ChoosePath = ({
 	const handleSelectChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
 		let modifiers = (<></>);
-		let nameWithUnderscores = "";
+		//let nameWithUnderscores = "";
 		if(val !== "") {
 			dispatch(setPath(val));
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
-			let chosenPath = PATHS.find((p) => p.value === val);
-			let allModifiers: {
-				parentName: string,
-				page: string,
-				id: string,
-				name: string,
-				parentId: string,
-				value: number
-			}[] = [];
-			if(chosenPath != undefined) {
-				chosenPath.modifiers.map((subscore) => {
-					subscore.modifier.map((m) => {
-						if(m.value != 0) {
-							nameWithUnderscores = m.name.replace(/ /g,"_");
-							allModifiers.push({
-								parentName: subscore.name,
-								page: `${subscore.name}#${nameWithUnderscores}`,
-								...m
-							});
-						}
-					});
-				});
+			let chosenPath = paths.find((p) => p._id === val);
+			// let allModifiers: {
+			// 	parentName: string,
+			// 	page: string,
+			// 	id: string,
+			// 	name: string,
+			// 	parentId: string,
+			// 	value: number
+			// }[] = [];
+			if(chosenPath && chosenPath.modifiers !== null) {
+				// chosenPath.modifiers.map((subscore) => {
+				// 	subscore.modifier.map((m) => {
+				// 		if(m.value != 0) {
+				// 			nameWithUnderscores = m.name.replace(/ /g,"_");
+				// 			allModifiers.push({
+				// 				parentName: subscore.name,
+				// 				page: `${subscore.name}#${nameWithUnderscores}`,
+				// 				...m
+				// 			});
+				// 		}
+				// 	});
+				// });
 
 				modifiers = (
-					<Table isCompact removeWrapper aria-label={`${chosenPath.name} Modifiers`} className="mt-8">
+					<Table isCompact removeWrapper aria-label={`${chosenPath.title} Modifiers`} className="mt-8">
 						<TableHeader>
-							{["Score","Subscore","Modifier"].map((tc) => (
+							{["Score", "Subscore","Modifier"].map((tc) => (
 								<TableColumn
 									key={tc}
 									className="bg-transparent border-b-2 pl-0">
@@ -71,26 +76,25 @@ const ChoosePath = ({
 							))}
 						</TableHeader>
 						<TableBody>
-							{allModifiers.map((m) => (
-								<TableRow key={m.id} >
-									<TableCell className="align-top pl-0">
-										{m.parentName}
+							{chosenPath.modifiers.map((m, index) => (
+								<TableRow key={`path-modifier-${index}`} >
+									<TableCell className="text-base pl-0">
+										{m.modifierSubscore && m.modifierSubscore.score ? m.modifierSubscore.score.title : ""}
 									</TableCell>
 									<TableCell className="text-base pl-0">
-										<ExternalLink
-										href={`https://atom-magic.com/codex/${m.page}`} name={m.name} />
+										{m.modifierSubscore && m.modifierSubscore.title ? m.modifierSubscore.title : ""}
 									</TableCell>
 									<TableCell className={clsx(
 										'pl-0 font-bold',
 										{
-											'text-adobe': m.value < 0
+											'text-adobe': m.modifierValue && m.modifierValue < 0
 										},
 										{
-											'text-dark-olive-green': m.value > 0
+											'text-dark-olive-green': m.modifierValue && m.modifierValue > 0
 										},
 									)}>
-										{m.value > 0 ? "+" : ""}
-										{m.value}
+										{m.modifierValue && m.modifierValue > 0 ? "+" : ""}
+										{m.modifierValue ? m.modifierValue : ""}
 									</TableCell>
 								</TableRow>
 							))}
@@ -100,8 +104,8 @@ const ChoosePath = ({
 				setDetails(
 					<SelectDetailExpanded
 						imagePath="/atom-magic-circle-black.png"
-						name={chosenPath.name}
-						description={chosenPath.description}
+						name={chosenPath.title ? chosenPath.title : ""}
+						description={chosenPath.description ? chosenPath.description : ""}
 						disabled={false}>
 						{modifiers}
 					</SelectDetailExpanded>
@@ -133,10 +137,10 @@ const ChoosePath = ({
 							className="w-96 mt-8"
 							onChange={(event) => handleSelectChange(event)}
 					  	>
-							{PATHS.map((path) => (
-						  	<SelectItem key={path.value}>
-								{path.name}
-						  	</SelectItem>
+							{paths.map((path) => (
+							  <SelectItem key={path._id}>
+								{path.title}
+							  </SelectItem>
 							))}
 						</Select>
 					</div>

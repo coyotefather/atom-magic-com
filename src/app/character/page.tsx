@@ -1,11 +1,12 @@
 import Header from '@/app/components/common/Header';
 import Sections from '@/app/components/character/Sections';
-import { CULTURES_QUERY, SCORES_QUERY, SUBSCORES_QUERY } from "@/sanity/lib/queries";
+import { CULTURES_QUERY, SCORES_QUERY, PATHS_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/client";
 import { notFound } from "next/navigation";
 import {
 	CULTURES_QUERYResult,
 	SCORES_QUERYResult,
+	PATHS_QUERYResult,
 } from "../../../sanity.types";
 
 const Page = async () => {
@@ -20,8 +21,12 @@ const Page = async () => {
 	});
 	if (!scores) {
 		return notFound();
-	} else {
-
+	}
+	const paths = await sanityFetch<PATHS_QUERYResult>({
+		query: PATHS_QUERY,
+	});
+	if (!paths) {
+		return notFound();
 	}
 
 	return (
@@ -31,7 +36,8 @@ const Page = async () => {
 			</Header>
 			<Sections
 				cultures={cultures}
-				scores={scores} />
+				scores={scores}
+				paths={paths} />
 		</main>
 	);
 };
