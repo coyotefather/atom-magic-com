@@ -18,14 +18,17 @@ import { useAppSelector } from '@/lib/hooks'
 import {
 	CULTURES_QUERYResult,
 	SCORES_QUERYResult,
+	PATHS_QUERYResult,
 } from "../../../../sanity.types";
 
 const Sections = ({
 		cultures,
 		scores,
+		paths,
 	}:{
 		cultures: CULTURES_QUERYResult,
 		scores: SCORES_QUERYResult,
+		paths: PATHS_QUERYResult,
 	}) => {
 	const character = useAppSelector(state => state.character);
 	const [basicsIncomplete, setBasicsIncomplete] = useState("init");
@@ -170,7 +173,9 @@ const Sections = ({
 				variant="dual"
 				clickCheck={setClickCheck}
 				expandFunction={() => setShowChoosePatronage(true)}>
-				<ChoosePath incompleteFields={pathIncomplete} />
+				<ChoosePath
+					paths={paths}
+					incompleteFields={pathIncomplete} />
 			</Section>
 			<Section
 				expanded={showChoosePatronage}

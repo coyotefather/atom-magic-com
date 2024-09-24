@@ -24,7 +24,7 @@ export const CULTURES_QUERY = groq`*[_type == "culture"]{
   _id, title, entry->{ slug }, aspects, mainImage, description
 }`;
 
-export const SCORES_QUERY = groq`*[_type == "score"]{
+export const SCORES_QUERY = groq`*[_type == "score"]| order(title asc){
   _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description
 }`;
 
@@ -33,7 +33,7 @@ export const SUBSCORES_QUERY = groq`*[_type == "subscore"]{
 }`;
 
 export const PATHS_QUERY = groq`*[_type == "path"]{
-  _id, title, latin, entry, mainImage, modifiers, description
+  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ title, score->{ title } }, modifierValue}, description
 }`;
 
 export const CATEGORIES_QUERY = groq`*[_type == "category" && defined(slug.current)][0...12]{
