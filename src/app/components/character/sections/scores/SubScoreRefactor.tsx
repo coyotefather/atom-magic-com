@@ -7,27 +7,35 @@ import { useState, useEffect } from 'react';
 import { useAppDispatch } from '@/lib/hooks'
 import { setSubscore, setScorePoints } from "@/lib/slices/characterSlice";
 
+interface Modifier {
+	_id: string,
+	parent_id: string,
+	value: number | null
+};
+
 const SubScore = ({
 		subscore,
 		value,
 		subscore_id,
 		parent_id,
-		pathModifier = 0,
-		gearModifier = 0,
+		pathModifiers,
+		gearModifiers,
 		availablePoints = 0
 	}: {
 		subscore: string | null,
 		value: number | null,
 		subscore_id: string,
 		parent_id: string,
-		pathModifier: number,
-		gearModifier: number,
+		pathModifiers: Modifier[],
+		gearModifiers: Modifier[],
 		availablePoints: number
 	}) => {
 
 	const dispatch = useAppDispatch();
 	const [baseSubscoreValue, setBaseSubscoreValue] = useState(0);
 	const [calcSubscoreValue, setCalcSubscoreValue] = useState(0);
+	const [pathModifierTotal, setPathModifierTotal] = useState(0);
+	const [gearModifierTotal, setGearModifierTotal] = useState(0);
 
 	useEffect(() => {
 		if(value !== null) {
@@ -35,10 +43,31 @@ const SubScore = ({
 		}
 	},[]);
 
+	// useEffect(() => {
+	// 	let curSubscoreValue = baseSubscoreValue + pathModifier + gearModifier;
+	// 	setCalcSubscoreValue(curSubscoreValue);
+	// },[pathModifier, gearModifier, baseSubscoreValue]);
+
 	useEffect(() => {
-		let curSubscoreValue = baseSubscoreValue + pathModifier + gearModifier;
+		let total = 0;
+		pathModifiers.forEach( (m) => {
+			m.value !== null ? total += m.value : undefined;
+		});
+		setPathModifierTotal(total);
+	},[pathModifiers]);
+
+	useEffect(() => {
+		let total = 0;
+		gearModifiers.forEach( (m) => {
+			m.value !== null ? total += m.value : undefined;
+		});
+		setGearModifierTotal(total);
+	},[gearModifiers]);
+
+	useEffect(() => {
+		let curSubscoreValue = baseSubscoreValue + pathModifierTotal;
 		setCalcSubscoreValue(curSubscoreValue);
-	},[pathModifier, gearModifier, baseSubscoreValue]);
+	},[pathModifierTotal, gearModifierTotal, baseSubscoreValue]);
 
 	const handlePlusClick = () => {
 		if(calcSubscoreValue < 100 && availablePoints > 0) {
@@ -115,31 +144,31 @@ const SubScore = ({
 						<div className={clsx(
 							"text-sm border-b",
 							{
-								"text-adobe font-semibold" : pathModifier < 0
+								"text-adobe font-semibold" : pathModifierTotal < 0
 							},
 							{
-								"text-dark-olive-green font-semibold" : pathModifier > 0
+								"text-dark-olive-green font-semibold" : pathModifierTotal > 0
 							},
 						)}>
 							Path Modifier
 							<span className="float-right">
-								{ pathModifier > 0 ? "+" : "" }
-								{pathModifier}
+								{ pathModifierTotal > 0 ? "+" : "" }
+								{pathModifierTotal}
 							</span>
 						</div>
 						<div className={clsx(
 							"text-sm",
 							{
-								"text-adobe font-semibold" : gearModifier < 0
+								"text-adobe font-semibold" : gearModifierTotal < 0
 							},
 							{
-								"text-dark-olive-green font-semibold" : gearModifier > 0
+								"text-dark-olive-green font-semibold" : gearModifierTotal > 0
 							},
 						)}>
 							Gear Modifier
 							<span className="float-right">
-								{ gearModifier > 0 ? "+" : "" }
-								{gearModifier}
+								{ gearModifierTotal > 0 ? "+" : "" }
+								{gearModifierTotal}
 							</span>
 						</div>
 					</AccordionItem>

@@ -8,10 +8,23 @@ import {
 } from "../../../../../../sanity.types";
 import { useEffect } from 'react';
 
+interface Modifier {
+	_id: string,
+	parent_id: string,
+	value: number | null
+};
+
+interface Modifiers {
+	path: Modifier[],
+	gear: Modifier[]
+};
+
 const Scores = ({
-		scores
+		scores,
+		modifiers
 	}: {
 		scores: SCORES_QUERYResult,
+		modifiers: Modifiers
 	}) => {
 
 	const dispatch = useAppDispatch();
@@ -20,20 +33,9 @@ const Scores = ({
 	useEffect(()=>{
 		dispatch( initScore(scores) );
 	}, [])
-	const path = useAppSelector(state => state.character.path);
-	const curPath = PATHS.find((p) => p.value === path);
 	const gear = useAppSelector(state => state.character.gear);
 
-	let pathModifiersMap = new Map<string, number>([]);
 	let gearModifiersMap = new Map<string, number>([]);
-
-	if(curPath){
-		curPath.modifiers.forEach((score) =>  {
-			score.modifier.forEach((m) => {
-				pathModifiersMap.set(m.id, m.value);
-			});
-		});
-	}
 
 	if(gear) {
 		gear.forEach((thisGear) => {
@@ -56,8 +58,8 @@ const Scores = ({
 						key={s._id}
 						score={s}
 						scoreValue={s.value}
-						pathModifiers={pathModifiersMap}
-						gearModifiers={gearModifiersMap}
+						pathModifiers={modifiers.path.filter((m) => m.parent_id === s._id)}
+						gearModifiers={modifiers.gear.filter((m) => m.parent_id === s._id)}
 						availablePoints={scorePoints} />
 				))}
 			</div>
