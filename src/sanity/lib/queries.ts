@@ -36,6 +36,10 @@ export const PATHS_QUERY = groq`*[_type == "path"]{
   _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description
 }`;
 
+export const PATRONAGES_QUERY = groq`*[_type == "patronages"]{
+  _id, title, titleLatin, epithet, epithetLatin, entry, mainImage, effects, description
+}`;
+
 export const CATEGORIES_QUERY = groq`*[_type == "category" && defined(slug.current)][0...12]{
   _id, title, slug, description
 }`;
