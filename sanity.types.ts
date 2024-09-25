@@ -735,6 +735,9 @@ export type PATHS_QUERYResult = Array<{
   }> | null;
   description: string | null;
 }>;
+// Variable: PATRONAGES_QUERY
+// Query: *[_type == "patronages"]{  _id, title, titleLatin, epithet, epithetLatin, entry, mainImage, effects, description}
+export type PATRONAGES_QUERYResult = Array<never>;
 // Variable: CATEGORIES_QUERY
 // Query: *[_type == "category" && defined(slug.current)][0...12]{  _id, title, slug, description}
 export type CATEGORIES_QUERYResult = Array<{
@@ -792,6 +795,7 @@ declare module "@sanity/client" {
     "*[_type == \"score\"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n}": SCORES_QUERYResult;
     "*[_type == \"subscore\"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n}": SUBSCORES_QUERYResult;
     "*[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}": PATHS_QUERYResult;
+    "*[_type == \"patronages\"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry, mainImage, effects, description\n}": PATRONAGES_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;
     "*[_type == \"category\" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, \"entries\": *[_type == \"entry\" && references(^._id)]| order(_id) [0...96]{_id, title, slug, description}, \"children\": *[_type == \"category\" && references(^._id)]{_id, title, slug, description},\n}": CATEGORY_QUERYResult;
     "*[_type == \"timeline\"]| order(year desc) {\n  _id, title, URL, year, major, icon, description\n}": TIMELINE_QUERYResult;
