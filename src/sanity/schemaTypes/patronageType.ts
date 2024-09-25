@@ -51,34 +51,36 @@ export const patronageType = defineType({
       description: '',
       type: 'array',
       of: [
-        {name: 'title', title: 'Title',  type: 'string'},
-        {name: 'titleLatin', title: 'Title in Latin', type: 'string'},
-        {
-          title: 'Polarity',
-          name: 'polarity',
-          type: 'string',
-          description: 'Is the effect positive or negative?',
-          options: {
-            list: [
-              {title: 'positive', value: 'positive'},
-              {title: 'negative', value: 'negative'}
-            ],
-          }
-        },
-        {
-          title: 'Level',
-          name: 'level',
-          type: 'string',
-          description: 'Is the effect positive or negative?',
-          options: {
-            list: [
-              {title: 'I', value: 'I'},
-              {title: 'II', value: 'II'},
-              {title: 'III', value: 'III'}
-            ],
-          }
-        },
+        { name: 'effect', type: 'object', fields: [
+          {name: 'title', title: 'Title',  type: 'string'},
+          {name: 'titleLatin', title: 'Title in Latin', type: 'string'},
+          {
+            title: 'Polarity',
+            name: 'polarity',
+            type: 'string',
+            description: 'Is the effect positive or negative?',
+            options: {
+              list: [
+                {title: 'positive', value: 'positive'},
+                {title: 'negative', value: 'negative'}
+              ],
+            }
+          },
+          {
+            title: 'Level',
+            name: 'level',
+            type: 'string',
+            description: 'Is the effect positive or negative?',
+            options: {
+              list: [
+                {title: 'I', value: 'I'},
+                {title: 'II', value: 'II'},
+                {title: 'III', value: 'III'}
+              ],
+            }
+          },
         {name: 'description', type: 'string'},
+        ]}
       ],
     }),
     defineField({
