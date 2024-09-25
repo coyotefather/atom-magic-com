@@ -1,6 +1,7 @@
 import {DocumentTextIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
+
 export const pathType = defineType({
   name: 'path',
   title: 'Path',
