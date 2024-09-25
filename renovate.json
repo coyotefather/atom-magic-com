@@ -3,5 +3,5 @@
   "extends": [
     "config:recommended"
   ],
-  "baseBranches": ["main", "development"]
+  "baseBranches": ["development"]
 }
