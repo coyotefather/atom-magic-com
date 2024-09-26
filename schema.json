@@ -670,24 +670,35 @@
                 },
                 "optional": true
               },
-              "level": {
+              "levels": {
                 "type": "objectAttribute",
                 "value": {
-                  "type": "union",
-                  "of": [
-                    {
-                      "type": "string",
-                      "value": "I"
-                    },
-                    {
-                      "type": "string",
-                      "value": "II"
-                    },
-                    {
-                      "type": "string",
-                      "value": "III"
-                    }
-                  ]
+                  "type": "array",
+                  "of": {
+                    "type": "union",
+                    "of": [
+                      {
+                        "type": "union",
+                        "of": [
+                          {
+                            "type": "string",
+                            "value": "I"
+                          },
+                          {
+                            "type": "string",
+                            "value": "II"
+                          },
+                          {
+                            "type": "string",
+                            "value": "III"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
                 },
                 "optional": true
               },
