@@ -675,29 +675,55 @@
                 "value": {
                   "type": "array",
                   "of": {
-                    "type": "union",
-                    "of": [
-                      {
-                        "type": "union",
-                        "of": [
-                          {
-                            "type": "string",
-                            "value": "I"
-                          },
-                          {
-                            "type": "string",
-                            "value": "II"
-                          },
-                          {
-                            "type": "string",
-                            "value": "III"
-                          }
-                        ]
+                    "type": "object",
+                    "attributes": {
+                      "level": {
+                        "type": "objectAttribute",
+                        "value": {
+                          "type": "union",
+                          "of": [
+                            {
+                              "type": "string",
+                              "value": "I"
+                            },
+                            {
+                              "type": "string",
+                              "value": "II"
+                            },
+                            {
+                              "type": "string",
+                              "value": "III"
+                            }
+                          ]
+                        },
+                        "optional": true
                       },
-                      {
-                        "type": "string"
+                      "description": {
+                        "type": "objectAttribute",
+                        "value": {
+                          "type": "string"
+                        },
+                        "optional": true
+                      },
+                      "_type": {
+                        "type": "objectAttribute",
+                        "value": {
+                          "type": "string",
+                          "value": "level"
+                        }
                       }
-                    ]
+                    },
+                    "rest": {
+                      "type": "object",
+                      "attributes": {
+                        "_key": {
+                          "type": "objectAttribute",
+                          "value": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
                   }
                 },
                 "optional": true
