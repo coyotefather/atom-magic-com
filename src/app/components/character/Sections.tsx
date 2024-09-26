@@ -19,6 +19,7 @@ import {
 	CULTURES_QUERYResult,
 	SCORES_QUERYResult,
 	PATHS_QUERYResult,
+	PATRONAGES_QUERYResult,
 } from "../../../../sanity.types";
 
 interface Modifier {
@@ -36,10 +37,12 @@ const Sections = ({
 		cultures,
 		scores,
 		paths,
+		patronages,
 	}:{
 		cultures: CULTURES_QUERYResult,
 		scores: SCORES_QUERYResult,
 		paths: PATHS_QUERYResult,
+		patronages: PATRONAGES_QUERYResult,
 	}) => {
 	const character = useAppSelector(state => state.character);
 	const [basicsIncomplete, setBasicsIncomplete] = useState("init");
@@ -207,7 +210,9 @@ const Sections = ({
 				variant="dual"
 				clickCheck={setClickCheck}
 				expandFunction={() => setShowAdjustScoresAndScores(true)}>
-				<ChoosePatronage incompleteFields={patronageIncomplete} />
+				<ChoosePatronage
+					patronages={patronages}
+					incompleteFields={patronageIncomplete} />
 			</Section>
 			<Section
 				expanded={showAdjustScoresAndScores}

@@ -37,7 +37,7 @@ export const PATHS_QUERY = groq`*[_type == "path"]{
 }`;
 
 export const PATRONAGES_QUERY = groq`*[_type == "patronage"]{
-  _id, title, titleLatin, epithet, epithetLatin, entry, mainImage, effects[]->{ title, titleLatin, polarity, level, description }, description
+  _id, title, titleLatin, epithet, epithetLatin, entry, mainImage, effects[]->{ title, titleLatin, polarity, levels[]->{ level, description }, description }, description
 }`;
 
 export const CATEGORIES_QUERY = groq`*[_type == "category" && defined(slug.current)][0...12]{

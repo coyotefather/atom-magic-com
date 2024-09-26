@@ -8,12 +8,16 @@ import {Select, SelectItem} from "@nextui-org/select";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-
+import {
+	PATRONAGES_QUERYResult,
+} from "../../../../../sanity.types";
 
 const ChoosePatronage = ({
-		incompleteFields
+		incompleteFields,
+		patronages,
 	}: {
-		incompleteFields: string
+		incompleteFields: string,
+		patronages: PATRONAGES_QUERYResult
 	}) => {
 	const detailsRef = useRef(null);
 	const dispatch = useAppDispatch();
