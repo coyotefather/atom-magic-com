@@ -67,20 +67,22 @@ export const patronageType = defineType({
             }
           },
           { name: 'levels', type: 'array', of: [
-            {
-              title: 'Level',
-              name: 'level',
-              type: 'string',
-              description: 'Is the effect positive or negative?',
-              options: {
-                list: [
-                  {title: 'I', value: 'I'},
-                  {title: 'II', value: 'II'},
-                  {title: 'III', value: 'III'}
-                ],
-              }
-            },
-            {name: 'description', type: 'string'},
+            { name: 'level', type: 'object', fields: [
+              {
+                title: 'Level',
+                name: 'level',
+                type: 'string',
+                description: 'Is the effect positive or negative?',
+                options: {
+                  list: [
+                    {title: 'I', value: 'I'},
+                    {title: 'II', value: 'II'},
+                    {title: 'III', value: 'III'}
+                  ],
+                }
+              },
+              {name: 'description', type: 'string'},
+            ]},
           ]},
           { name: 'description', type: 'string'},
         ]},

@@ -114,7 +114,12 @@ export type Patronage = {
     title?: string;
     titleLatin?: string;
     polarity?: "positive" | "negative";
-    levels?: Array<"I" | "II" | "III" | string>;
+    levels?: Array<{
+      level?: "I" | "II" | "III";
+      description?: string;
+      _type: "level";
+      _key: string;
+    }>;
     description?: string;
     _type: "effect";
     _key: string;
