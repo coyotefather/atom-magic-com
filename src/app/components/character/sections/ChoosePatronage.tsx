@@ -38,12 +38,12 @@ const ChoosePatronage = ({
 		if(val !== "") {
 			dispatch(setPatronage(val));
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
-			let cardinal = CARDINALS.find((cardinal) => cardinal.value === val);
-			if(cardinal != undefined) {
+			let cardinal = patronages.find((cardinal) => cardinal._id === val);
+			if(cardinal != undefined && cardinal.effects) {
 				patronageEffects = (
 					<Table
 						removeWrapper
-						aria-label={`${cardinal.name} Patronage Effects`}
+						aria-label={`${cardinal.title} Patronage Effects`}
 						className="mt-8">
 						<TableHeader>
 							{["Name","Description","Effects"].map((tc) => (
@@ -55,19 +55,19 @@ const ChoosePatronage = ({
 							))}
 						</TableHeader>
 						<TableBody>
-							{(cardinal.effects).map((effect) => (
-								<TableRow key={effect.name}>
+							{(cardinal.effects).map((effect, index) => (
+								<TableRow key={`effect-${index}`}>
 									<TableCell className="align-top pl-0">
-										<ExternalLink
-										href={`https://atom-magic.com/codex/${effect.page}`} name={effect.name} />
+										{effect.entry && effect.entry.slug ? <ExternalLink
+										href={`https://atom-magic.com/codex/entries/${effect.entry.slug.current}`} name={effect.title ? effect.title :""} />:effect.title}
 									</TableCell>
-									<TableCell className="w-1/3 pl-0">{effect.description}</TableCell>
-									<TableCell className="pl-0">{effect.levels.map((level) => (
-										<dl key={level.name} className="flex">
-											<dt className="uppercase w-12">{level.name}:</dt>
+									<TableCell className="w-1/3 pl-0">{effect && effect.description ? effect.description : ""}</TableCell>
+									<TableCell className="pl-0">{effect.levels ? effect.levels.sort((a,b) => a.level && b.level ? a.level.length - b.level.length:0).map((level, index) => (
+										<dl key={`level-${index}`} className="flex">
+											<dt className="uppercase w-12">{level.level}:</dt>
 											<dd className="">{level.description}</dd>
 										</dl>
-									))}</TableCell>
+									)):"-"}</TableCell>
 								</TableRow>
 							))}
 						</TableBody>
@@ -75,9 +75,9 @@ const ChoosePatronage = ({
 				);
 				setDetails(
 					<SelectDetailExpanded
-						imagePath={cardinal.svgSrc}
-						name={`${cardinal.name}, ${cardinal.epithet}`}
-						description={cardinal.description}
+						imagePath={""}
+						name={`${cardinal.title}, ${cardinal.epithet}`}
+						description={cardinal.description ? cardinal.description : ""}
 						disabled={false}>
 						{patronageEffects}
 					</SelectDetailExpanded>
@@ -108,10 +108,10 @@ const ChoosePatronage = ({
 							placeholder="Select a Patron"
 							className="w-96 mt-8"
 							onChange={(event) => handleSelectChange(event)}>
-							{CARDINALS.map((cardinal) => (
-						  	<SelectItem key={cardinal.value}>
-								{cardinal.name}
-						  	</SelectItem>
+							{patronages.map((patron) => (
+						  		<SelectItem key={patron._id}>
+									{patron.title}
+						  		</SelectItem>
 							))}
 						</Select>
 					</div>

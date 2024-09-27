@@ -55,6 +55,12 @@ export const patronageType = defineType({
           {name: 'title', title: 'Title',  type: 'string'},
           {name: 'titleLatin', title: 'Title in Latin', type: 'string'},
           {
+            name: 'entry',
+            type: 'reference',
+            description: 'Optional reference to a codex entry.',
+            to: {type: 'entry'},
+          },
+          {
             title: 'Polarity',
             name: 'polarity',
             type: 'string',
@@ -72,6 +78,7 @@ export const patronageType = defineType({
                 title: 'Level',
                 name: 'level',
                 type: 'string',
+                validation: rule => rule.required(),
                 description: 'Is the effect positive or negative?',
                 options: {
                   list: [
