@@ -14,6 +14,11 @@ export const additionalScoresType = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'value',
+      type: 'number',
+      hidden: true,
+    }),
+    defineField({
       name: 'entry',
       type: 'reference',
       description: 'Optional reference to a codex entry.',
@@ -83,4 +88,7 @@ export const additionalScoresType = defineType({
       title: 'Description',
     }),
   ],
+  initialValue: {
+    value: 0
+  }
 })
