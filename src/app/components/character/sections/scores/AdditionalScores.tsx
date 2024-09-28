@@ -1,35 +1,30 @@
 'use client';
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
-import { setShield, setReputation, setResurrectionDuration } from "@/lib/slices/characterSlice";
-import { SCORES } from '@/lib/global-data';
+import { initAdditionalScores, setAdditionalScores } from "@/lib/slices/characterSlice";
 import ExternalLink from '@/app/components/common/ExternalLink';
+import {
+	ADDITIONAL_SCORES_QUERYResult,
+} from "../../../../../../sanity.types";
 
-const AdditionalScores = () => {
+const AdditionalScores = ({
+		additionalScores
+	}:{
+		additionalScores: ADDITIONAL_SCORES_QUERYResult
+	}) => {
 	const dispatch = useAppDispatch();
-	const shield = useAppSelector(state => state.character.scores.additionalScores.shield);
-	const reputation = useAppSelector(state => state.character.scores.additionalScores.reputation);
-	const resurrectionDuration = useAppSelector(state => state.character.scores.additionalScores.resurrectionDuration);
-	const speed = useAppSelector(state => state.character.scores.physical.subscores.speed);
-	const endurance = useAppSelector(state => state.character.scores.physical.subscores.endurance);
-	const charm = useAppSelector(state => state.character.scores.interpersonal.subscores.charm);
-	const speech = useAppSelector(state => state.character.scores.interpersonal.subscores.speech);
-	const criticalThinking = useAppSelector(state => state.character.scores.intellect.subscores.criticalThinking);
-	const judgement = useAppSelector(state => state.character.scores.intellect.subscores.judgement);
-	const mentalStability = useAppSelector(state => state.character.scores.psyche.subscores.mentalStability);
-	const emotionalStability = useAppSelector(state => state.character.scores.psyche.subscores.emotionalStability);
+	const scores = useAppSelector(state => state.character.score);
 
 	useEffect( () => {
-		dispatch(setShield());
-	},[endurance, mentalStability]);
+		dispatch(initAdditionalScores(additionalScores));
+	},[]);
+
+	const addScores = useAppSelector(state => state.character.additionalScores);
 
 	useEffect( () => {
-		dispatch(setReputation());
-	},[speech, charm, criticalThinking, judgement]);
-
-	useEffect( () => {
-		dispatch(setResurrectionDuration());
-	},[speed, endurance, mentalStability, emotionalStability]);
+		console.log(addScores);
+		dispatch(setAdditionalScores());
+	},[scores]);
 
 	return (
 		<div className="grid grid-cols-2 divide-x-2 bg-white container">
@@ -46,42 +41,20 @@ const AdditionalScores = () => {
 			<div className="pt-16 pb-16 pl-4">
 					<div className="marcellus text-3xl border-b-2 border-solid mb-4">&nbsp;</div>
 					<div>
-						<div className="flex justify-between">
-							<div className="text-md align-top pl-0 border-b">
-								<ExternalLink href="https://atom-magic.com/codex/Shield"
-								name="Shield" />
+						{addScores.map( (s) => (
+							<div key={s._id} className="w-full flex gap-4 mb-4 justify-between">
+								<div className="w-36 text-md align-top pl-0 align-start">
+									{s.entry && s.entry.slug ? <ExternalLink href={`https://atom-magic.com/codex/entries/${s.entry.slug.current}`}
+									name={s.title ? s.title : ""} />:s.title}
+								</div>
+								<div className="w-1/2 text-md align-top pl-0 align-top">
+									{s.description}
+								</div>
+								<div className="w-16 text-md text-base pl-0 flex justify-end">
+									{s.value}
+								</div>
 							</div>
-							<div className="text-md align-top pl-0">
-								{SCORES.additionalScores.shield.description}
-							</div>
-							<div className="text-md text-base pl-0 border-b">
-								{shield}
-							</div>
-						</div>
-						<div className="flex justify-between">
-							<div className="text-md align-top pl-0 border-b">
-								<ExternalLink href="https://atom-magic.com/codex/Reputation"
-								name="Reputation" />
-							</div>
-							<div className="text-md align-top pl-0">
-								{SCORES.additionalScores.reputation.description}
-							</div>
-							<div className="text-md text-base pl-0 border-b">
-								{reputation}
-							</div>
-						</div>
-						<div className="flex justify-between">
-							<div className="text-md align-top pl-0">
-								<ExternalLink href="https://atom-magic.com/codex/Resurrection_Duration"
-								name="Resurrection Duration" />
-							</div>
-							<div className="text-md align-top pl-0">
-								{SCORES.additionalScores.resurrectionDuration.description}
-							</div>
-							<div className="text-md text-base pl-0">
-								{resurrectionDuration} hours
-							</div>
-						</div>
+						))}
 					</div>
 
 			</div>

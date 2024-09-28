@@ -18,6 +18,7 @@ import { useAppSelector } from '@/lib/hooks'
 import {
 	CULTURES_QUERYResult,
 	SCORES_QUERYResult,
+	ADDITIONAL_SCORES_QUERYResult,
 	PATHS_QUERYResult,
 	PATRONAGES_QUERYResult,
 } from "../../../../sanity.types";
@@ -36,11 +37,13 @@ interface Modifiers {
 const Sections = ({
 		cultures,
 		scores,
+		additionalScores,
 		paths,
 		patronages,
 	}:{
 		cultures: CULTURES_QUERYResult,
 		scores: SCORES_QUERYResult,
+		additionalScores: ADDITIONAL_SCORES_QUERYResult,
 		paths: PATHS_QUERYResult,
 		patronages: PATRONAGES_QUERYResult,
 	}) => {
@@ -244,7 +247,8 @@ const Sections = ({
 				variant="dual"
 				clickCheck={setClickCheck}
 				expandFunction={() => setShowManageGear(true)}>
-				<AdditionalScores />
+				<AdditionalScores
+					additionalScores={additionalScores} />
 			</Section>
 			<Section
 				expanded={showManageGear}

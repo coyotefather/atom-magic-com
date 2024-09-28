@@ -1179,7 +1179,7 @@
             },
             {
               "type": "string",
-              "value": "Multiply"
+              "value": "multiply"
             },
             {
               "type": "string",
@@ -1211,7 +1211,7 @@
                     },
                     {
                       "type": "string",
-                      "value": "Multiply"
+                      "value": "multiply"
                     },
                     {
                       "type": "string",

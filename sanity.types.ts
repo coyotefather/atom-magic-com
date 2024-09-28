@@ -198,9 +198,9 @@ export type AdditionalScores = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "subscore";
   }>;
-  calculation?: "sum" | "difference" | "Multiply" | "divide";
+  calculation?: "sum" | "difference" | "multiply" | "divide";
   additionalCalculations?: Array<{
-    calculationType?: "sum" | "difference" | "Multiply" | "divide";
+    calculationType?: "sum" | "difference" | "multiply" | "divide";
     value?: number;
     _type: "additionalCalculation";
     _key: string;
@@ -753,7 +753,7 @@ export type SUBSCORES_QUERYResult = Array<{
   description: string | null;
 }>;
 // Variable: ADDITIONAL_SCORES_QUERY
-// Query: *[_type == "additionalScores"]{  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[]->{ calculationType, value }, description}
+// Query: *[_type == "additionalScores"]{  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description}
 export type ADDITIONAL_SCORES_QUERYResult = Array<{
   _id: string;
   title: string | null;
@@ -765,8 +765,13 @@ export type ADDITIONAL_SCORES_QUERYResult = Array<{
     _id: string;
     title: string | null;
   }> | null;
-  calculation: "difference" | "divide" | "Multiply" | "sum" | null;
-  additionalCalculations: Array<null> | null;
+  calculation: "difference" | "divide" | "multiply" | "sum" | null;
+  additionalCalculations: Array<{
+    calculationType?: "difference" | "divide" | "multiply" | "sum";
+    value?: number;
+    _type: "additionalCalculation";
+    _key: string;
+  }> | null;
   description: string | null;
 }>;
 // Variable: PATHS_QUERY
@@ -900,7 +905,7 @@ declare module "@sanity/client" {
     "*[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n}": CULTURES_QUERYResult;
     "*[_type == \"score\"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n}": SCORES_QUERYResult;
     "*[_type == \"subscore\"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n}": SUBSCORES_QUERYResult;
-    "*[_type == \"additionalScores\"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[]->{ calculationType, value }, description\n}": ADDITIONAL_SCORES_QUERYResult;
+    "*[_type == \"additionalScores\"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n}": ADDITIONAL_SCORES_QUERYResult;
     "*[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}": PATHS_QUERYResult;
     "*[_type == \"patronage\"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description\n}": PATRONAGES_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;

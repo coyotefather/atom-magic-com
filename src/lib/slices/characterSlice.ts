@@ -1,5 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
+import {
+	CULTURES_QUERYResult,
+	SCORES_QUERYResult,
+	ADDITIONAL_SCORES_QUERYResult,
+	PATHS_QUERYResult,
+	PATRONAGES_QUERYResult,
+} from "../../../sanity.types";
 
 interface SanityScore {
 	_id: string,
@@ -75,6 +82,7 @@ export interface CharacterState {
 	patronage: string,
 	scorePoints: number,
 	score: Array<Score>,
+	additionalScores: ADDITIONAL_SCORES_QUERYResult,
 	scores: {
 		physical: {
 			value: number,
@@ -158,6 +166,7 @@ const initialState: CharacterState = {
 	patronage: "",
 	scorePoints: 0,
 	score: [],
+	additionalScores: [],
 	scores: {
 		physical: {
 			value: 50,
@@ -254,6 +263,81 @@ export const characterSlice = createSlice({
 			} );
 		}
 	},
+	initAdditionalScores: (state, action: PayloadAction<ADDITIONAL_SCORES_QUERYResult>) => {
+		if(state.additionalScores.length === 0) {
+			state.additionalScores = action.payload;
+		}
+	},
+	setAdditionalScores: (state) => {
+		let updatedAdditionalScores = state.additionalScores;
+		updatedAdditionalScores.forEach( (as) => {
+			let newScore = 0;
+			let subscores: number[]
+			subscores = [];
+			// get all subscores
+			// score.subscores._id
+			if(as.scores !== null) {
+				as.scores.forEach( (s) => {
+					let found: number | null;
+					found = 0;
+					state.score.find( (ts) => {
+						ts.subscores.forEach( ss => {
+							if(ss._id === s._id) {
+								found = ss.value;
+							}
+						});
+					})
+					subscores.push(found);
+				});
+			}
+			switch(as.calculation) {
+				case "sum":
+					subscores.forEach( s => {
+						newScore += s;
+					});
+					break;
+				case "difference":
+					subscores.forEach( s => {
+						newScore -= s;
+					});
+					break;
+				case "multiply":
+					subscores.forEach( s => {
+						newScore *= s;
+					});
+					break;
+				case "divide":
+					subscores.forEach( s => {
+						newScore = newScore/s;
+					});
+					break;
+				default: break;
+			}
+			if(as.additionalCalculations) {
+				as.additionalCalculations.forEach( ac => {
+					if(ac.value) {
+						switch(ac.calculationType) {
+							case "sum":
+									newScore += ac.value;
+								break;
+							case "difference":
+									newScore -= ac.value;
+								break;
+							case "multiply":
+									newScore *= ac.value;
+								break;
+							case "divide":
+									newScore = newScore/ac.value;
+								break;
+							default: break;
+						}
+					}
+				});
+			}
+			as.value = Math.round(newScore);
+		});
+		state.additionalScores = updatedAdditionalScores;
+	},
 // 	setScore: (state, action: PayloadAction<ScoreUpdate>) => {
 // 		// need to know score id and score value
 //
@@ -288,6 +372,8 @@ export const characterSlice = createSlice({
 			return score;
 		});
 		state.score = updatedScores;
+
+		// update additional scores
 	},
 	setCharacterName: (state, action: PayloadAction<string>) => {
 		state.name = action.payload;
@@ -360,9 +446,11 @@ export const characterSlice = createSlice({
 
 export const {
 	initScore,
+	initAdditionalScores,
 	//setScore,
 	setScorePoints,
 	setSubscore,
+	setAdditionalScores,
 	setCharacterName,
 	setCharacterAge,
 	setCharacterPronouns,

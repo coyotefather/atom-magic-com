@@ -47,7 +47,7 @@ export const additionalScoresType = defineType({
         list: [
           {title: 'Sum', value: 'sum'},
           {title: 'Difference', value: 'difference'},
-          {title: 'Multiple', value: 'Multiply'},
+          {title: 'Multiple', value: 'multiply'},
           {title: 'Divide', value: 'divide'},
         ]
       }
@@ -69,7 +69,7 @@ export const additionalScoresType = defineType({
                 list: [
                   {title: 'Sum', value: 'sum'},
                   {title: 'Difference', value: 'difference'},
-                  {title: 'Multiple', value: 'Multiply'},
+                  {title: 'Multiple', value: 'multiply'},
                   {title: 'Divide', value: 'divide'},
                 ]
               }
