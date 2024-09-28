@@ -32,6 +32,10 @@ export const SUBSCORES_QUERY = groq`*[_type == "subscore"]{
   _id, title, score->{_id, title, id}, defaultValue, description
 }`;
 
+export const ADDITIONAL_SCORES_QUERY = groq`*[_type == "additionalScores"]{
+  _id, title, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[]->{ calculationType, value }, description
+}`;
+
 export const PATHS_QUERY = groq`*[_type == "path"]{
   _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description
 }`;

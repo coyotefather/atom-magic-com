@@ -173,6 +173,40 @@ export type Path = {
   description?: string;
 };
 
+export type AdditionalScores = {
+  _id: string;
+  _type: "additionalScores";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  entry?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "entry";
+  };
+  scores?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "score";
+  } | {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "subscore";
+  }>;
+  calculation?: "sum" | "difference" | "Multiply" | "divide";
+  additionalCalculations?: Array<{
+    calculationType?: "sum" | "difference" | "Multiply" | "divide";
+    value?: number;
+    _type: "additionalCalculation";
+    _key: string;
+  }>;
+  description?: string;
+};
+
 export type Subscore = {
   _id: string;
   _type: "subscore";
@@ -540,7 +574,7 @@ export type HslaColor = {
 
 export type Markdown = string;
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Timeline | Patronage | Path | Subscore | Score | Culture | Entry | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Color | RgbaColor | HsvaColor | HslaColor | Markdown;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Timeline | Patronage | Path | AdditionalScores | Subscore | Score | Culture | Entry | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Color | RgbaColor | HsvaColor | HslaColor | Markdown;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
@@ -717,6 +751,22 @@ export type SUBSCORES_QUERYResult = Array<{
   defaultValue: number | null;
   description: string | null;
 }>;
+// Variable: ADDITIONAL_SCORES_QUERY
+// Query: *[_type == "additionalScores"]{  _id, title, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[]->{ calculationType, value }, description}
+export type ADDITIONAL_SCORES_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  entry: {
+    slug: Slug | null;
+  } | null;
+  scores: Array<{
+    _id: string;
+    title: string | null;
+  }> | null;
+  calculation: "difference" | "divide" | "Multiply" | "sum" | null;
+  additionalCalculations: Array<null> | null;
+  description: string | null;
+}>;
 // Variable: PATHS_QUERY
 // Query: *[_type == "path"]{  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description}
 export type PATHS_QUERYResult = Array<{
@@ -848,6 +898,7 @@ declare module "@sanity/client" {
     "*[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n}": CULTURES_QUERYResult;
     "*[_type == \"score\"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n}": SCORES_QUERYResult;
     "*[_type == \"subscore\"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n}": SUBSCORES_QUERYResult;
+    "*[_type == \"additionalScores\"]{\n  _id, title, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[]->{ calculationType, value }, description\n}": ADDITIONAL_SCORES_QUERYResult;
     "*[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}": PATHS_QUERYResult;
     "*[_type == \"patronage\"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description\n}": PATRONAGES_QUERYResult;
     "*[_type == \"category\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": CATEGORIES_QUERYResult;

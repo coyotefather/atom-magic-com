@@ -5,7 +5,7 @@ import { NAVIGATION_LINKS } from '@/lib/global-data';
 
 const NavBar = () => {
 	return (
-		<header className="sticky z-50 top-0 p-2 bg-black flex flex-row items-center justify-between">
+		<header className="z-50 top-0 p-2 bg-black flex flex-row items-center justify-between">
 			<Link href="/">
 				<Image
 					src="/AtomMagicLogoLight.svg"
