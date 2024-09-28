@@ -1063,6 +1063,13 @@
         },
         "optional": true
       },
+      "value": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
       "entry": {
         "type": "objectAttribute",
         "value": {
