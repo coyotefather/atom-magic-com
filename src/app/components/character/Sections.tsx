@@ -1,5 +1,8 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import clsx from 'clsx';
+import { CSSTransition, SwitchTransition } from "react-transition-group";
+import LoadingPage from '@/app/components/global/LoadingPage';
 import Section from '@/app/components/common/Section';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import CharacterOptions from '@/app/components/character/sections/CharacterOptions';
@@ -47,7 +50,9 @@ const Sections = ({
 		paths: PATHS_QUERYResult,
 		patronages: PATRONAGES_QUERYResult,
 	}) => {
+	const sectionsRef = useRef(null);
 	const character = useAppSelector(state => state.character);
+	const loaded = useAppSelector(state => state.character.loaded);
 	const [basicsIncomplete, setBasicsIncomplete] = useState("init");
 	const [showChooseCulture, setShowChooseCulture] = useState(false);
 	const [cultureIncomplete, setCultureIncomplete] = useState("init");
@@ -160,137 +165,148 @@ const Sections = ({
 
 	return (
 		<div>
-			<Section
-				expanded={true}
-				nextExpanded={true}
-				incomplete={""}
-				showExpandButton={false}
-				variant="dual"
-				clickCheck={setClickCheck}
-				expandFunction={() => { return; }}>
-				<CharacterOptions
-					buttonFunction={() => rollCharacter()} />
-			</Section>
-			<Section
-				expanded={true}
-				nextExpanded={showChooseCulture}
-				incomplete={basicsIncomplete}
-				showExpandButton={true}
-				variant="dual"
-				clickCheck={setClickCheck}
-				expandFunction={() => setShowChooseCulture(true)}>
-				<TheBasics incompleteFields={basicsIncomplete} />
-			</Section>
-			<Section
-				expanded={showChooseCulture}
-				nextExpanded={showChoosePath}
-				incomplete={cultureIncomplete}
-				showExpandButton={true}
-				variant="dual"
-				clickCheck={setClickCheck}
-				expandFunction={() => setShowChoosePath(true)}>
-				<ChooseCulture
-					cultures={cultures}
-					incompleteFields={cultureIncomplete} />
-			</Section>
-			<Section
-				expanded={showChoosePath}
-				nextExpanded={showChoosePatronage}
-				incomplete={pathIncomplete}
-				showExpandButton={true}
-				variant="dual"
-				clickCheck={setClickCheck}
-				expandFunction={() => setShowChoosePatronage(true)}>
-				<ChoosePath
-					paths={paths}
-					incompleteFields={pathIncomplete} />
-			</Section>
-			<Section
-				expanded={showChoosePatronage}
-				nextExpanded={showAdjustScoresAndScores}
-				incomplete={patronageIncomplete}
-				showExpandButton={true}
-				variant="dual"
-				clickCheck={setClickCheck}
-				expandFunction={() => setShowAdjustScoresAndScores(true)}>
-				<ChoosePatronage
-					patronages={patronages}
-					incompleteFields={patronageIncomplete} />
-			</Section>
-			<Section
-				expanded={showAdjustScoresAndScores}
-				nextExpanded={false}
-				incomplete={""}
-				showExpandButton={false}
-				variant="dark"
-				clickCheck={setClickCheck}
-				expandFunction={() => { return; }}>
-				<AdjustScores />
-			</Section>
-			<Section
-				expanded={showAdjustScoresAndScores}
-				nextExpanded={false}
-				incomplete={""}
-				showExpandButton={false}
-				variant="dual"
-				clickCheck={setClickCheck}
-				expandFunction={() => { return; }}>
-				<Scores
-					scores={scores}
-					modifiers={modifiers} />
-			</Section>
-			<Section
-				expanded={showAdjustScoresAndScores}
-				nextExpanded={showManageGear}
-				incomplete={""}
-				showExpandButton={true}
-				variant="dual"
-				clickCheck={setClickCheck}
-				expandFunction={() => setShowManageGear(true)}>
-				<AdditionalScores
-					additionalScores={additionalScores} />
-			</Section>
-			<Section
-				expanded={showManageGear}
-				nextExpanded={showManageWealth}
-				incomplete={gearIncomplete}
-				showExpandButton={true}
-				variant="dual"
-				clickCheck={setClickCheck}
-				expandFunction={() => setShowManageWealth(true)}>
-				<ManageGear incompleteFields={gearIncomplete} />
-			</Section>
-			<Section
-				expanded={showManageWealth}
-				nextExpanded={showChooseAnimalCompanion}
-				incomplete={wealthIncomplete}
-				showExpandButton={true}
-				variant="dual"
-				clickCheck={setClickCheck}
-				expandFunction={() => setShowChooseAnimalCompanion(true)}>
-				<ManageWealth incompleteFields={wealthIncomplete} />
-			</Section>
-			<Section
-				expanded={showChooseAnimalCompanion}
-				nextExpanded={showWrapUp}
-				incomplete={""}
-				showExpandButton={true}
-				variant="dual"
-				clickCheck={setClickCheck}
-				expandFunction={() => setShowWrapUp(true)}>
-				<ChooseAnimalCompanion incompleteFields={chooseAnimalCompanionIncomplete} />
-			</Section>
-			<Section
-				expanded={showWrapUp}
-				nextExpanded={false}
-				incomplete={""}
-				showExpandButton={false}
-				variant="dual"
-				clickCheck={setClickCheck}
-				expandFunction={() => { return; }}>
-				<WrapUp
-					buttonFunction={() => { return; }} />
-			</Section>
+			<div className={clsx(
+				'',
+				{'hidden': loaded == true}
+			)}>
+				<LoadingPage />
+			</div>
+			<div className={clsx(
+				'',
+				{'hidden': loaded == false}
+			)}>
+				<Section
+					expanded={true}
+					nextExpanded={true}
+					incomplete={""}
+					showExpandButton={false}
+					variant="dual"
+					clickCheck={setClickCheck}
+					expandFunction={() => { return; }}>
+					<CharacterOptions
+						buttonFunction={() => rollCharacter()} />
+				</Section>
+				<Section
+					expanded={true}
+					nextExpanded={showChooseCulture}
+					incomplete={basicsIncomplete}
+					showExpandButton={true}
+					variant="dual"
+					clickCheck={setClickCheck}
+					expandFunction={() => setShowChooseCulture(true)}>
+					<TheBasics incompleteFields={basicsIncomplete} />
+				</Section>
+				<Section
+					expanded={showChooseCulture}
+					nextExpanded={showChoosePath}
+					incomplete={cultureIncomplete}
+					showExpandButton={true}
+					variant="dual"
+					clickCheck={setClickCheck}
+					expandFunction={() => setShowChoosePath(true)}>
+					<ChooseCulture
+						cultures={cultures}
+						incompleteFields={cultureIncomplete} />
+				</Section>
+				<Section
+					expanded={showChoosePath}
+					nextExpanded={showChoosePatronage}
+					incomplete={pathIncomplete}
+					showExpandButton={true}
+					variant="dual"
+					clickCheck={setClickCheck}
+					expandFunction={() => setShowChoosePatronage(true)}>
+					<ChoosePath
+						paths={paths}
+						incompleteFields={pathIncomplete} />
+				</Section>
+				<Section
+					expanded={showChoosePatronage}
+					nextExpanded={showAdjustScoresAndScores}
+					incomplete={patronageIncomplete}
+					showExpandButton={true}
+					variant="dual"
+					clickCheck={setClickCheck}
+					expandFunction={() => setShowAdjustScoresAndScores(true)}>
+					<ChoosePatronage
+						patronages={patronages}
+						incompleteFields={patronageIncomplete} />
+				</Section>
+				<Section
+					expanded={showAdjustScoresAndScores}
+					nextExpanded={false}
+					incomplete={""}
+					showExpandButton={false}
+					variant="dark"
+					clickCheck={setClickCheck}
+					expandFunction={() => { return; }}>
+					<AdjustScores />
+				</Section>
+				<Section
+					expanded={showAdjustScoresAndScores}
+					nextExpanded={false}
+					incomplete={""}
+					showExpandButton={false}
+					variant="dual"
+					clickCheck={setClickCheck}
+					expandFunction={() => { return; }}>
+					<Scores
+						scores={scores}
+						modifiers={modifiers} />
+				</Section>
+				<Section
+					expanded={showAdjustScoresAndScores}
+					nextExpanded={showManageGear}
+					incomplete={""}
+					showExpandButton={true}
+					variant="dual"
+					clickCheck={setClickCheck}
+					expandFunction={() => setShowManageGear(true)}>
+					<AdditionalScores
+						additionalScores={additionalScores} />
+				</Section>
+				<Section
+					expanded={showManageGear}
+					nextExpanded={showManageWealth}
+					incomplete={gearIncomplete}
+					showExpandButton={true}
+					variant="dual"
+					clickCheck={setClickCheck}
+					expandFunction={() => setShowManageWealth(true)}>
+					<ManageGear incompleteFields={gearIncomplete} />
+				</Section>
+				<Section
+					expanded={showManageWealth}
+					nextExpanded={showChooseAnimalCompanion}
+					incomplete={wealthIncomplete}
+					showExpandButton={true}
+					variant="dual"
+					clickCheck={setClickCheck}
+					expandFunction={() => setShowChooseAnimalCompanion(true)}>
+					<ManageWealth incompleteFields={wealthIncomplete} />
+				</Section>
+				<Section
+					expanded={showChooseAnimalCompanion}
+					nextExpanded={showWrapUp}
+					incomplete={""}
+					showExpandButton={true}
+					variant="dual"
+					clickCheck={setClickCheck}
+					expandFunction={() => setShowWrapUp(true)}>
+					<ChooseAnimalCompanion incompleteFields={chooseAnimalCompanionIncomplete} />
+				</Section>
+				<Section
+					expanded={showWrapUp}
+					nextExpanded={false}
+					incomplete={""}
+					showExpandButton={false}
+					variant="dual"
+					clickCheck={setClickCheck}
+					expandFunction={() => { return; }}>
+					<WrapUp
+						buttonFunction={() => { return; }} />
+				</Section>
+			</div>
 		</div>
 	);
 };

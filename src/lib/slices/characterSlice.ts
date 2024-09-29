@@ -73,6 +73,7 @@ interface Wealth {
 
 // Define a type for the slice state
 export interface CharacterState {
+	loaded: boolean,
 	name: string,
 	age: number,
 	pronouns: string,
@@ -157,6 +158,7 @@ export interface CharacterState {
 
 // Define the initial state using that type
 const initialState: CharacterState = {
+	loaded: false,
 	name: "",
 	age: 0,
 	pronouns: "",
@@ -261,11 +263,16 @@ export const characterSlice = createSlice({
 					value: scoreAverage
 				});
 			} );
+			state.loaded = true;
 		}
 	},
+	// setLoaded: (state, action: PayloadAction<boolean>) => {
+	// 	state.loaded = action.payload;
+	// },
 	initAdditionalScores: (state, action: PayloadAction<ADDITIONAL_SCORES_QUERYResult>) => {
 		if(state.additionalScores.length === 0) {
 			state.additionalScores = action.payload;
+			//state.loaded = true;
 		}
 	},
 	setAdditionalScores: (state) => {

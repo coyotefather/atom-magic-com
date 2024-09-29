@@ -22,7 +22,6 @@ const AdditionalScores = ({
 	const addScores = useAppSelector(state => state.character.additionalScores);
 
 	useEffect( () => {
-		console.log(addScores);
 		dispatch(setAdditionalScores());
 	},[scores]);
 
