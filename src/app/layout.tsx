@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+import LoadingPage from '@/app/components/global/LoadingPage';
 import type { Metadata } from "next";
 import { Marcellus_SC, Noto_Serif } from "next/font/google";
 import localFont from 'next/font/local'
@@ -36,7 +38,9 @@ export default function RootLayout({
       <body className={`${marcellus.variable} ${lapideum.variable} ${noto_serif.variable} flex flex-col h-screen`}>
         <NavBar />
         <div className="grow">
-          <StoreProvider>{children}</StoreProvider>
+          <Suspense fallback={<LoadingPage />}>
+            <StoreProvider>{children}</StoreProvider>
+          </Suspense>
         </div>
         <Footer />
       </body>
