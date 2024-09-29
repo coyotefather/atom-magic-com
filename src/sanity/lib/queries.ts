@@ -33,6 +33,15 @@ export const ADDITIONAL_SCORES_QUERY = groq`${ADDITIONAL_PRE_QUERY}`;
 export const PATHS_QUERY = groq`${PATHS_PRE_QUERY}`;
 export const PATRONAGES_QUERY = groq`${PATRONAGES_PRE_QUERY}`;
 
+export const characterManager = `{
+  "cultures": ${CULTURES_PRE_QUERY},
+  "paths": ${CULTURES_PRE_QUERY},
+  "patronages": ${CULTURES_PRE_QUERY},
+  "scores": ${CULTURES_PRE_QUERY},
+  "subscores": ${CULTURES_PRE_QUERY},
+  "additionalScores": ${CULTURES_PRE_QUERY},
+}`;
+
 export const POSTS_QUERY = groq`*[_type == "post" && defined(slug.current)][0...12]{
   _id, title, slug
 }`;
