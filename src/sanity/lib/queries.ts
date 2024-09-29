@@ -14,13 +14,14 @@ const SUBSCORES_PRE_QUERY = `*[_type == "subscore"]{
   _id, title, score->{_id, title, id}, defaultValue, description
 }`;
 
-const ADDITIONAL_PRE_QUERY = `*[_type == "additionalScores"]{
+const ADDITIONAL_SCORES_PRE_QUERY = `*[_type == "additionalScores"]{
   _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description
 }`;
 
 const PATHS_PRE_QUERY = `*[_type == "path"]{
   _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description
 }`;
+
 
 const PATRONAGES_PRE_QUERY = `*[_type == "patronage"]{
   _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description
@@ -29,17 +30,17 @@ const PATRONAGES_PRE_QUERY = `*[_type == "patronage"]{
 export const CULTURES_QUERY = groq`${CULTURES_PRE_QUERY}`;
 export const SCORES_QUERY = groq`${SCORES_PRE_QUERY}`;
 export const SUBSCORES_QUERY = groq`${SUBSCORES_PRE_QUERY}`;
-export const ADDITIONAL_SCORES_QUERY = groq`${ADDITIONAL_PRE_QUERY}`;
+export const ADDITIONAL_SCORES_QUERY = groq`${ADDITIONAL_SCORES_PRE_QUERY}`;
 export const PATHS_QUERY = groq`${PATHS_PRE_QUERY}`;
 export const PATRONAGES_QUERY = groq`${PATRONAGES_PRE_QUERY}`;
 
 export const CHARACTER_MANAGER_QUERY = groq`{
   "cultures": ${CULTURES_PRE_QUERY},
-  "paths": ${CULTURES_PRE_QUERY},
-  "patronages": ${CULTURES_PRE_QUERY},
-  "scores": ${CULTURES_PRE_QUERY},
-  "subscores": ${CULTURES_PRE_QUERY},
-  "additionalScores": ${CULTURES_PRE_QUERY},
+  "paths": ${PATHS_PRE_QUERY},
+  "patronages": ${PATRONAGES_PRE_QUERY},
+  "scores": ${SCORES_PRE_QUERY},
+  "subscores": ${SUBSCORES_PRE_QUERY},
+  "additionalScores": ${ADDITIONAL_SCORES_PRE_QUERY},
 }`;
 
 export const POSTS_QUERY = groq`*[_type == "post" && defined(slug.current)][0...12]{
