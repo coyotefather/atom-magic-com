@@ -33,7 +33,7 @@ export const ADDITIONAL_SCORES_QUERY = groq`${ADDITIONAL_PRE_QUERY}`;
 export const PATHS_QUERY = groq`${PATHS_PRE_QUERY}`;
 export const PATRONAGES_QUERY = groq`${PATRONAGES_PRE_QUERY}`;
 
-export const characterManager = `{
+export const CHARACTER_MANAGER_QUERY = groq`{
   "cultures": ${CULTURES_PRE_QUERY},
   "paths": ${CULTURES_PRE_QUERY},
   "patronages": ${CULTURES_PRE_QUERY},

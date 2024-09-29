@@ -733,6 +733,178 @@ export type PATRONAGES_QUERYResult = Array<{
   }> | null;
   description: string | null;
 }>;
+// Variable: CHARACTER_MANAGER_QUERY
+// Query: {  "cultures": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "paths": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "patronages": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "scores": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "subscores": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "additionalScores": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},}
+export type CHARACTER_MANAGER_QUERYResult = {
+  cultures: Array<{
+    _id: string;
+    title: string | null;
+    entry: {
+      slug: Slug | null;
+    } | null;
+    aspects: Array<{
+      aspectName?: string;
+      aspectId?: string;
+      aspectContentSlug?: string;
+      aspectDescription?: string;
+      _type: "aspect";
+      _key: string;
+    }> | null;
+    mainImage: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    } | null;
+    description: string | null;
+  }>;
+  paths: Array<{
+    _id: string;
+    title: string | null;
+    entry: {
+      slug: Slug | null;
+    } | null;
+    aspects: Array<{
+      aspectName?: string;
+      aspectId?: string;
+      aspectContentSlug?: string;
+      aspectDescription?: string;
+      _type: "aspect";
+      _key: string;
+    }> | null;
+    mainImage: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    } | null;
+    description: string | null;
+  }>;
+  patronages: Array<{
+    _id: string;
+    title: string | null;
+    entry: {
+      slug: Slug | null;
+    } | null;
+    aspects: Array<{
+      aspectName?: string;
+      aspectId?: string;
+      aspectContentSlug?: string;
+      aspectDescription?: string;
+      _type: "aspect";
+      _key: string;
+    }> | null;
+    mainImage: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    } | null;
+    description: string | null;
+  }>;
+  scores: Array<{
+    _id: string;
+    title: string | null;
+    entry: {
+      slug: Slug | null;
+    } | null;
+    aspects: Array<{
+      aspectName?: string;
+      aspectId?: string;
+      aspectContentSlug?: string;
+      aspectDescription?: string;
+      _type: "aspect";
+      _key: string;
+    }> | null;
+    mainImage: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    } | null;
+    description: string | null;
+  }>;
+  subscores: Array<{
+    _id: string;
+    title: string | null;
+    entry: {
+      slug: Slug | null;
+    } | null;
+    aspects: Array<{
+      aspectName?: string;
+      aspectId?: string;
+      aspectContentSlug?: string;
+      aspectDescription?: string;
+      _type: "aspect";
+      _key: string;
+    }> | null;
+    mainImage: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    } | null;
+    description: string | null;
+  }>;
+  additionalScores: Array<{
+    _id: string;
+    title: string | null;
+    entry: {
+      slug: Slug | null;
+    } | null;
+    aspects: Array<{
+      aspectName?: string;
+      aspectId?: string;
+      aspectContentSlug?: string;
+      aspectDescription?: string;
+      _type: "aspect";
+      _key: string;
+    }> | null;
+    mainImage: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    } | null;
+    description: string | null;
+  }>;
+};
 // Variable: POSTS_QUERY
 // Query: *[_type == "post" && defined(slug.current)][0...12]{  _id, title, slug}
 export type POSTS_QUERYResult = Array<{
@@ -903,6 +1075,7 @@ declare module "@sanity/client" {
     "*[_type == \"additionalScores\"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n}": ADDITIONAL_SCORES_QUERYResult;
     "*[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}": PATHS_QUERYResult;
     "*[_type == \"patronage\"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description\n}": PATRONAGES_QUERYResult;
+    "{\n  \"cultures\": *[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  \"paths\": *[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  \"patronages\": *[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  \"scores\": *[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  \"subscores\": *[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  \"additionalScores\": *[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n}": CHARACTER_MANAGER_QUERYResult;
     "*[_type == \"post\" && defined(slug.current)][0...12]{\n  _id, title, slug\n}": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}": POST_QUERYResult;
     "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": ENTRIES_QUERYResult;
