@@ -1,5 +1,6 @@
 import Header from '@/app/components/common/Header';
 import Sections from '@/app/components/character/Sections';
+import LoadingPage from '@/app/components/global/LoadingPage';
 import {
 	CHARACTER_MANAGER_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/client";
@@ -18,6 +19,7 @@ const Page = async () => {
 
 	return (
 		<main className="notoserif">
+			<LoadingPage />
 			<Header name="Character Manager">
   				Create your player character and start your journey across the world of Solum.
 			</Header>

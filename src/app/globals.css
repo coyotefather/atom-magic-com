@@ -140,6 +140,23 @@ button.gradient:hover {
    transition: max-height 0.5s ease-in;
 }
 
+.loading-enter{
+   opacity: 0;
+}
+.loading-exit{
+   opacity: 1;
+}
+.loading-enter-active{
+   opacity: 1;
+}
+.loading-exit-active{
+   opacity: 0;
+}
+.loading-enter-active,
+.loading-exit-active{
+   transition: opacity 500ms;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
