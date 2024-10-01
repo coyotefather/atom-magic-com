@@ -6,6 +6,7 @@ import {
 	ADDITIONAL_SCORES_QUERYResult,
 	PATHS_QUERYResult,
 	PATRONAGES_QUERYResult,
+	GEAR_QUERYResult,
 } from "../../../sanity.types";
 
 interface SanityScore {
@@ -127,22 +128,7 @@ export interface CharacterState {
 			resurrectionDuration: number,
 		},
 	},
-	gear: {
-		name: string,
-		key: string,
-		latin: string,
-		description: string,
-		type: string,
-		damageBonus: number,
-		shieldBonus: number,
-		modifiers: {
-			key: string,
-			parent: string,
-			child: string,
-			value: number,
-		}[],
-		value: number
-	}[],
+	gear: GEAR_QUERYResult,
 	wealth: {
 		silver: number,
 		gold: number,
@@ -403,10 +389,8 @@ export const characterSlice = createSlice({
 	setPatronage: (state, action: PayloadAction<string>) => {
 		state.patronage = action.payload;
 	},
-	setGear: (state, action: PayloadAction<Array<any>>) => {
-		action.payload.forEach(w => {
-			state.gear.push(w);
-		});
+	setGear: (state, action: PayloadAction<GEAR_QUERYResult>) => {
+		state.gear = action.payload;
 	},
 	// setPhysicalSubscore: (state, action: PayloadAction<Subscore>) => {
 	// 	// expects child, value
