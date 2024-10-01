@@ -10,6 +10,7 @@ import {subscoreType} from './subscoreType'
 import {additionalScoresType} from './additionalScoresType'
 import {pathType} from './pathType'
 import {patronageType} from './patronageType'
+import {gearType} from './gearType'
 import {timelineType} from './timelineType'
 import {authorType} from './authorType'
 
@@ -25,6 +26,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     additionalScoresType,
     pathType,
     patronageType,
+    gearType,
     timelineType,
     authorType
   ],
