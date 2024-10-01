@@ -6,14 +6,19 @@ import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import GearTable from '@/app/components/character/sections/gear/GearTable'
 import FunctionButton from '@/app/components/common/FunctionButton';
 import { GEAR } from '@/lib/global-data';
+import {
+	GEAR_QUERYResult,
+} from "../../../../../sanity.types";
 import clsx from 'clsx';
 import { mdiDiceMultiple } from '@mdi/js';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 const ManageGear = ({
-		incompleteFields
+		incompleteFields,
+		gear,
 	}: {
 		incompleteFields: string
+		gear: GEAR_QUERYResult
 	}) => {
 
 	// function via Mozilla docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
@@ -24,7 +29,7 @@ const ManageGear = ({
 	}
 
 	const detailsRef = useRef(null);
-	const gear = useAppSelector(state => state.character.gear);
+	const characterGear = useAppSelector(state => state.character.gear);
 	const path = useAppSelector(state => state.character.path);
 	const dispatch = useAppDispatch();
 
@@ -50,9 +55,9 @@ const ManageGear = ({
 
 	let rollGear = () => {
 		// all three are arrays of objects
-		const weaponsList = GEAR.weapons[path as keyof typeof GEAR.weapons];
-		const armorList = GEAR.armor[path as keyof typeof GEAR.armor];
-		const otherList = GEAR.other;
+		const weaponsList = gear.filter( g => g.type === 'weapon' );
+		const armorList = gear.filter( g => g.type === 'armor' );
+		const otherList = gear.filter( g => g.type === 'other' );
 		const weapon = weaponsList[ getRandomInt(0, (weaponsList.length) )];
 		const armor = armorList[ getRandomInt(0, (armorList.length) )];
 		const allGear = [

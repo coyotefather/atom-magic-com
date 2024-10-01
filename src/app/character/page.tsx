@@ -28,7 +28,8 @@ const Page = async () => {
 				scores={characterManager.scores}
 				additionalScores={characterManager.additionalScores}
 				paths={characterManager.paths}
-				patronages={characterManager.patronages} />
+				patronages={characterManager.patronages}
+				gear={characterManager.gear} />
 		</main>
 	);
 };

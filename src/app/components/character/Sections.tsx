@@ -21,6 +21,7 @@ import {
 	ADDITIONAL_SCORES_QUERYResult,
 	PATHS_QUERYResult,
 	PATRONAGES_QUERYResult,
+	GEAR_QUERYResult,
 } from "../../../../sanity.types";
 
 interface Modifier {
@@ -40,12 +41,14 @@ const Sections = ({
 		additionalScores,
 		paths,
 		patronages,
+		gear,
 	}:{
 		cultures: CULTURES_QUERYResult,
 		scores: SCORES_QUERYResult,
 		additionalScores: ADDITIONAL_SCORES_QUERYResult,
 		paths: PATHS_QUERYResult,
 		patronages: PATRONAGES_QUERYResult,
+		gear: GEAR_QUERYResult,
 	}) => {
 	const character = useAppSelector(state => state.character);
 	const [basicsIncomplete, setBasicsIncomplete] = useState("init");
@@ -157,6 +160,23 @@ const Sections = ({
 			});
 		}
 	});
+	gear.map( (gear) => {
+		// form array of path IDs that this gear has and then also check if path id matches
+		let paths: string[];
+		paths = [];
+		if(gear.paths) {
+			gear.paths.forEach( p => {
+				paths.push(p._id);
+			});
+		}
+		if(gear.modifiers && gear.paths && paths.includes(character.path)) {
+			gear.modifiers.map( (m) => {
+				if(m.modifierSubscore && m.modifierSubscore._id && m.modifierSubscore.score) {
+					modifiers.gear.push({ _id: m.modifierSubscore._id, parent_id: m.modifierSubscore.score._id, value: m.modifierValue });
+				}
+			});
+		}
+	});
 
 	return (
 		<div>
@@ -258,7 +278,9 @@ const Sections = ({
 				variant="dual"
 				clickCheck={setClickCheck}
 				expandFunction={() => setShowManageWealth(true)}>
-				<ManageGear incompleteFields={gearIncomplete} />
+				<ManageGear
+					gear={gear}
+					incompleteFields={gearIncomplete} />
 			</Section>
 			<Section
 				expanded={showManageWealth}

@@ -30,6 +30,11 @@ export const gearType = defineType({
       }
     }),
     defineField({
+      name: 'value',
+      description: 'Value in Silver (rounded to nearest whole number).',
+      type: 'number',
+    }),
+    defineField({
       name: 'paths',
       type: 'array',
       description: 'Paths which can use this piece of gear.',
