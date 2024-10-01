@@ -5,6 +5,9 @@ import {Chip} from "@nextui-org/chip";
 import Icon from '@mdi/react';
 import { mdiChevronLeftCircle, mdiBankCircleOutline } from '@mdi/js';
 import clsx from 'clsx';
+import {
+	GEAR_QUERYResult,
+} from "../../../../../../sanity.types";
 
 const columns = [
 	{
@@ -28,22 +31,7 @@ const columns = [
 const GearTable = ({
 		gear
 	}: {
-		gear: {
-			name: string,
-			key: string,
-			latin: string,
-			description: string,
-			type: string,
-			damageBonus: number,
-			shieldBonus: number,
-			modifiers: {
-				key: string,
-				parent: string,
-				child: string,
-				value: number,
-			}[],
-			value: number
-		}[],
+		gear: GEAR_QUERYResult,
 	}) => {
 
 	return (
@@ -64,7 +52,7 @@ const GearTable = ({
 			</TableHeader>
 			<TableBody items={gear}>
 				{gear.map( (g) => (
-					<TableRow key={g.key} className="pb-16">
+					<TableRow key={g._id} className="pb-16">
 						<TableCell className="pl-0 max-w-44">
 							<Accordion
 								isCompact
@@ -79,10 +67,10 @@ const GearTable = ({
 								}
 								fullWidth>
 								<AccordionItem
-									key={`${g.key}_info`}
-									aria-label={`${g.name} Description`}
+									key={`${g._id}_info`}
+									aria-label={`${g.title} Description`}
 									indicator={<Icon path={mdiChevronLeftCircle} size={0.75} />}
-									title={g.name}>
+									title={g.title}>
 									<div>
 										<div className="mb-8">
 											<div className="flex gap-2 pt-1 mb-2">
@@ -115,35 +103,35 @@ const GearTable = ({
 						<TableCell
 							className={clsx(
 								"capitalize max-w-8 align-top",
-								{ "font-bold text-dark-olive-green" : g.damageBonus > 0 },
-								{ "font-bold text-adobe" : g.damageBonus < 0 },
+								{ "font-bold text-dark-olive-green" : g.damageBonus && g.damageBonus > 0 },
+								{ "font-bold text-adobe" : g.damageBonus && g.damageBonus < 0 },
 							)}>
-							{ g.damageBonus > 0 ? `+${g.damageBonus}` : "" }
-							{ g.damageBonus < 0 || g.damageBonus === 0 ? g.damageBonus : "" }
+							{g.damageBonus && g.damageBonus > 0 ? `+${g.damageBonus}` : "" }
+							{g.damageBonus && g.damageBonus < 0 || g.damageBonus === 0 ? g.damageBonus : "" }
 						</TableCell>
 						<TableCell
 							className={clsx(
 								"capitalize max-w-8 align-top",
-								{ "font-bold text-dark-olive-green" : g.shieldBonus > 0 },
-								{ "font-bold text-adobe" : g.shieldBonus < 0 },
+								{ "font-bold text-dark-olive-green" : g.shieldBonus && g.shieldBonus > 0 },
+								{ "font-bold text-adobe" : g.shieldBonus && g.shieldBonus < 0 },
 							)}>
-							{ g.shieldBonus > 0 ? `+${g.shieldBonus}` : "" }
-							{ g.shieldBonus < 0 || g.shieldBonus === 0 ? g.shieldBonus : "" }
+							{ g.shieldBonus && g.shieldBonus > 0 ? `+${g.shieldBonus}` : "" }
+							{ g.shieldBonus && g.shieldBonus < 0 || g.shieldBonus === 0 ? g.shieldBonus : "" }
 						</TableCell>
 						<TableCell className="max-w-28 align-top">
-							{g.modifiers.map( (gm, index) => (
+							{g.modifiers && g.modifiers.map( (gm, index) => (
 								<div className={clsx(
 									"grid grid-cols-2 capitalize",
-									{ "border-b-1" : index % 2 == 0 && g.modifiers.length > 1 }
-								)} key={gm.key}>
-									<div>{gm.child}</div>
+									{ "border-b-1" : index % 2 == 0 && g.modifiers && g.modifiers.length > 1 }
+								)} key={`m-${index}`}>
+									<div>{gm.modifierSubscore && gm.modifierSubscore.title ? gm.modifierSubscore.title : ""}</div>
 									<div className={clsx(
 										"",
-										{ "font-bold text-dark-olive-green" : gm.value > 0 },
-										{ "font-bold text-adobe" : gm.value < 0 },
+										{ "font-bold text-dark-olive-green" : gm.modifierValue && gm.modifierValue > 0 },
+										{ "font-bold text-adobe" : gm.modifierValue && gm.modifierValue < 0 },
 									)}>
-										{gm.value > 0 ? "+" : ""}
-										{gm.value}
+										{gm.modifierValue && gm.modifierValue > 0 ? "+" : ""}
+										{gm.modifierValue}
 									</div>
 								</div>
 							))}
