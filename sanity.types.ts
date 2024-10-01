@@ -82,6 +82,56 @@ export type Timeline = {
   year?: number;
 };
 
+export type Gear = {
+  _id: string;
+  _type: "gear";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  latin?: string;
+  type?: "weapon" | "armor" | "other";
+  paths?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "path";
+  }>;
+  entry?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "entry";
+  };
+  mainImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  damageBonus?: number;
+  shieldBonus?: number;
+  modifiers?: Array<{
+    modifierSubscore?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "subscore";
+    };
+    modifierValue?: number;
+    _type: "modifier";
+    _key: string;
+  }>;
+  description?: string;
+};
+
 export type Patronage = {
   _id: string;
   _type: "patronage";
@@ -575,7 +625,7 @@ export type HslaColor = {
 
 export type Markdown = string;
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Timeline | Patronage | Path | AdditionalScores | Subscore | Score | Culture | Entry | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Color | RgbaColor | HsvaColor | HslaColor | Markdown;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Timeline | Gear | Patronage | Path | AdditionalScores | Subscore | Score | Culture | Entry | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Color | RgbaColor | HsvaColor | HslaColor | Markdown;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: CULTURES_QUERY
@@ -733,8 +783,52 @@ export type PATRONAGES_QUERYResult = Array<{
   }> | null;
   description: string | null;
 }>;
+// Variable: GEAR_QUERY
+// Query: *[_type == "gear"]{  _id, title, latin, type, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id, title }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description}
+export type GEAR_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  latin: string | null;
+  type: "armor" | "other" | "weapon" | null;
+  damageBonus: number | null;
+  shieldBonus: number | null;
+  entry: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "entry";
+  } | null;
+  mainImage: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  paths: Array<{
+    _id: string;
+    title: string | null;
+  }> | null;
+  modifiers: Array<{
+    modifierSubscore: {
+      _id: string;
+      title: string | null;
+      score: {
+        _id: string;
+        title: string | null;
+      } | null;
+    } | null;
+    modifierValue: number | null;
+  }> | null;
+  description: string | null;
+}>;
 // Variable: CHARACTER_MANAGER_QUERY
-// Query: {  "cultures": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "paths": *[_type == "path"]{  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},  "patronages": *[_type == "patronage"]{  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description},  "scores": *[_type == "score"]| order(title asc){  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description},  "subscores": *[_type == "subscore"]{  _id, title, score->{_id, title, id}, defaultValue, description},  "additionalScores": *[_type == "additionalScores"]{  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description},}
+// Query: {  "cultures": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "paths": *[_type == "path"]{  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},  "patronages": *[_type == "patronage"]{  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description},  "scores": *[_type == "score"]| order(title asc){  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description},  "subscores": *[_type == "subscore"]{  _id, title, score->{_id, title, id}, defaultValue, description},  "additionalScores": *[_type == "additionalScores"]{  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description},  "gear": *[_type == "gear"]{  _id, title, latin, type, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id, title }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},}
 export type CHARACTER_MANAGER_QUERYResult = {
   cultures: Array<{
     _id: string;
@@ -876,6 +970,48 @@ export type CHARACTER_MANAGER_QUERYResult = {
       value?: number;
       _type: "additionalCalculation";
       _key: string;
+    }> | null;
+    description: string | null;
+  }>;
+  gear: Array<{
+    _id: string;
+    title: string | null;
+    latin: string | null;
+    type: "armor" | "other" | "weapon" | null;
+    damageBonus: number | null;
+    shieldBonus: number | null;
+    entry: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "entry";
+    } | null;
+    mainImage: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    } | null;
+    paths: Array<{
+      _id: string;
+      title: string | null;
+    }> | null;
+    modifiers: Array<{
+      modifierSubscore: {
+        _id: string;
+        title: string | null;
+        score: {
+          _id: string;
+          title: string | null;
+        } | null;
+      } | null;
+      modifierValue: number | null;
     }> | null;
     description: string | null;
   }>;
@@ -1050,7 +1186,8 @@ declare module "@sanity/client" {
     "*[_type == \"additionalScores\"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n}": ADDITIONAL_SCORES_QUERYResult;
     "*[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}": PATHS_QUERYResult;
     "*[_type == \"patronage\"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description\n}": PATRONAGES_QUERYResult;
-    "{\n  \"cultures\": *[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  \"paths\": *[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n  \"patronages\": *[_type == \"patronage\"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description\n},\n  \"scores\": *[_type == \"score\"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n},\n  \"subscores\": *[_type == \"subscore\"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n},\n  \"additionalScores\": *[_type == \"additionalScores\"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n},\n}": CHARACTER_MANAGER_QUERYResult;
+    "*[_type == \"gear\"]{\n  _id, title, latin, type, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id, title }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}": GEAR_QUERYResult;
+    "{\n  \"cultures\": *[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  \"paths\": *[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n  \"patronages\": *[_type == \"patronage\"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description\n},\n  \"scores\": *[_type == \"score\"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n},\n  \"subscores\": *[_type == \"subscore\"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n},\n  \"additionalScores\": *[_type == \"additionalScores\"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n},\n  \"gear\": *[_type == \"gear\"]{\n  _id, title, latin, type, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id, title }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n}": CHARACTER_MANAGER_QUERYResult;
     "*[_type == \"post\" && defined(slug.current)][0...12]{\n  _id, title, slug\n}": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}": POST_QUERYResult;
     "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": ENTRIES_QUERYResult;

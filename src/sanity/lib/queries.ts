@@ -22,9 +22,12 @@ const PATHS_PRE_QUERY = `*[_type == "path"]{
   _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description
 }`;
 
-
 const PATRONAGES_PRE_QUERY = `*[_type == "patronage"]{
   _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description
+}`;
+
+const GEAR_PRE_QUERY = `*[_type == "gear"]{
+  _id, title, latin, type, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id, title }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description
 }`;
 
 export const CULTURES_QUERY = groq`${CULTURES_PRE_QUERY}`;
@@ -33,6 +36,7 @@ export const SUBSCORES_QUERY = groq`${SUBSCORES_PRE_QUERY}`;
 export const ADDITIONAL_SCORES_QUERY = groq`${ADDITIONAL_SCORES_PRE_QUERY}`;
 export const PATHS_QUERY = groq`${PATHS_PRE_QUERY}`;
 export const PATRONAGES_QUERY = groq`${PATRONAGES_PRE_QUERY}`;
+export const GEAR_QUERY = groq`${GEAR_PRE_QUERY}`;
 
 export const CHARACTER_MANAGER_QUERY = groq`{
   "cultures": ${CULTURES_PRE_QUERY},
@@ -41,6 +45,7 @@ export const CHARACTER_MANAGER_QUERY = groq`{
   "scores": ${SCORES_PRE_QUERY},
   "subscores": ${SUBSCORES_PRE_QUERY},
   "additionalScores": ${ADDITIONAL_SCORES_PRE_QUERY},
+  "gear": ${GEAR_PRE_QUERY},
 }`;
 
 export const POSTS_QUERY = groq`*[_type == "post" && defined(slug.current)][0...12]{
