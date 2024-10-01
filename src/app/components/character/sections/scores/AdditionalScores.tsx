@@ -13,7 +13,7 @@ const AdditionalScores = ({
 		additionalScores: ADDITIONAL_SCORES_QUERYResult
 	}) => {
 	const dispatch = useAppDispatch();
-	const scores = useAppSelector(state => state.character.score);
+	const scores = useAppSelector(state => state.character.scores);
 
 	useEffect( () => {
 		dispatch(initAdditionalScores(additionalScores));

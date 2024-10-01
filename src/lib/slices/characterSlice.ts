@@ -83,51 +83,8 @@ export interface CharacterState {
 	path: string,
 	patronage: string,
 	scorePoints: number,
-	score: Array<Score>,
+	scores: Array<Score>,
 	additionalScores: ADDITIONAL_SCORES_QUERYResult,
-	scores: {
-		physical: {
-			value: number,
-			subscores: {
-				agility: number,
-				speed: number,
-				reflex: number,
-				endurance: number,
-			}
-		},
-		interpersonal: {
-			value: number,
-			subscores: {
-				percievedAttractiveness: number,
-				charm: number,
-				speech: number,
-				empathy: number,
-			}
-		},
-		intellect: {
-			value: number,
-			subscores: {
-				knowledge: number,
-				criticalThinking: number,
-				analysis: number,
-				judgement: number,
-			}
-		},
-		psyche: {
-			value: number,
-			subscores: {
-				mentalStability: number,
-				emotionalStability: number,
-				focusAndConcentration: number,
-				courageAndConviction: number,
-			}
-		},
-		additionalScores: {
-			shield: number,
-			reputation: number,
-			resurrectionDuration: number,
-		},
-	},
 	gear: GEAR_QUERYResult,
 	wealth: {
 		silver: number,
@@ -153,51 +110,8 @@ const initialState: CharacterState = {
 	path: "",
 	patronage: "",
 	scorePoints: 0,
-	score: [],
+	scores: [],
 	additionalScores: [],
-	scores: {
-		physical: {
-			value: 50,
-			subscores: {
-				agility: 50,
-				speed: 50,
-				reflex: 50,
-				endurance: 50,
-			}
-		},
-		interpersonal: {
-			value: 50,
-			subscores: {
-				percievedAttractiveness: 50,
-				charm: 50,
-				speech: 50,
-				empathy: 50,
-			}
-		},
-		intellect: {
-			value: 50,
-			subscores: {
-				knowledge: 50,
-				criticalThinking: 50,
-				analysis: 50,
-				judgement: 50,
-			}
-		},
-		psyche: {
-			value: 50,
-			subscores: {
-				mentalStability: 50,
-				emotionalStability: 50,
-				focusAndConcentration: 50,
-				courageAndConviction: 50,
-			}
-		},
-		additionalScores: {
-			shield: 50,
-			reputation: 0,
-			resurrectionDuration: 10,
-		},
-	},
 	gear: [],
 	wealth: {
 		silver: 0,
@@ -218,7 +132,7 @@ export const characterSlice = createSlice({
   initialState,
   reducers: {
 	initScore: (state, action: PayloadAction<SanityScore[]>) => {
-		if(state.score.length === 0) {
+		if(state.scores.length === 0) {
 			let subs: LocalSubscore[];
 			let scoreAverage: number;
 			let subscoreCount: number;
@@ -241,7 +155,7 @@ export const characterSlice = createSlice({
 					});
 				}
 				scoreAverage = Math.round(scoreAverage / subscoreCount);
-				state.score.push({
+				state.scores.push({
 					_id: score._id,
 					title: score.title,
 					subscores: subs,
@@ -273,7 +187,7 @@ export const characterSlice = createSlice({
 				as.scores.forEach( (s) => {
 					let found: number | null;
 					found = 0;
-					state.score.find( (ts) => {
+					state.scores.find( (ts) => {
 						ts.subscores.forEach( ss => {
 							if(ss._id === s._id) {
 								found = ss.value;
@@ -331,22 +245,11 @@ export const characterSlice = createSlice({
 		});
 		state.additionalScores = updatedAdditionalScores;
 	},
-// 	setScore: (state, action: PayloadAction<ScoreUpdate>) => {
-// 		// need to know score id and score value
-//
-// 		const updatedScores = state.score.map( (score: Score)  => {
-// 			if (score._id === action.payload._id) {
-// 				return { ...score, value: action.payload.value };
-// 			}
-// 			return score;
-// 		});
-// 		state.score = updatedScores;
-// 	},
 	setScorePoints: (state, action: PayloadAction<number>) => {
 		state.scorePoints = action.payload;
 	},
 	setSubscore: (state, action: PayloadAction<SubscoreUpdate>) => {
-		const updatedScores = state.score.map( (score: Score)  => {
+		const updatedScores = state.scores.map( (score: Score)  => {
 			if (score._id === action.payload.parent_id) {
 				let total = 0;
 				score.subscores.map( (sub) => {
@@ -364,7 +267,7 @@ export const characterSlice = createSlice({
 			}
 			return score;
 		});
-		state.score = updatedScores;
+		state.scores = updatedScores;
 
 		// update additional scores
 	},
@@ -392,35 +295,15 @@ export const characterSlice = createSlice({
 	setGear: (state, action: PayloadAction<GEAR_QUERYResult>) => {
 		state.gear = action.payload;
 	},
-	// setPhysicalSubscore: (state, action: PayloadAction<Subscore>) => {
-	// 	// expects child, value
-	// 	state.scores.physical.subscores[action.payload.child as keyof typeof state.scores.physical.subscores] = action.payload.value;
-	// 	state.scores.physical.value = Math.round((state.scores.physical.subscores.agility + state.scores.physical.subscores.speed + state.scores.physical.subscores.reflex + state.scores.physical.subscores.endurance)/4);
+	// setShield: (state) => {
+	// 	state.scores.additionalScores.shield = Math.round((state.scores.physical.subscores.endurance + state.scores.psyche.subscores.mentalStability)/2);
 	// },
-	// setInterpersonalSubscore: (state, action: PayloadAction<Subscore>) => {
-	// 	// expects child, value
-	// 	state.scores.interpersonal.subscores[action.payload.child as keyof typeof state.scores.interpersonal.subscores] = action.payload.value;
-	// 	state.scores.interpersonal.value = Math.round((state.scores.interpersonal.subscores.percievedAttractiveness + state.scores.interpersonal.subscores.charm + state.scores.interpersonal.subscores.speech + state.scores.interpersonal.subscores.empathy)/4);
+	// setReputation: (state) => {
+	// 	state.scores.additionalScores.reputation = Math.round((state.scores.interpersonal.subscores.speech + state.scores.interpersonal.subscores.charm + state.scores.intellect.subscores.criticalThinking + state.scores.intellect.subscores.judgement)/10);
 	// },
-	// setIntellectSubscore: (state, action: PayloadAction<Subscore>) => {
-	// 	// expects child, value
-	// 	state.scores.intellect.subscores[action.payload.child as keyof typeof state.scores.intellect.subscores] = action.payload.value;
-	// 	state.scores.intellect.value = Math.round((state.scores.intellect.subscores.knowledge + state.scores.intellect.subscores.criticalThinking + state.scores.intellect.subscores.analysis + state.scores.intellect.subscores.judgement)/4);
+	// setResurrectionDuration: (state) => {
+	// 	state.scores.additionalScores.resurrectionDuration = Math.round(((state.scores.physical.subscores.endurance + state.scores.physical.subscores.speed + state.scores.psyche.subscores.mentalStability + state.scores.psyche.subscores.emotionalStability)/10)/10);
 	// },
-	// setPsycheSubscore: (state, action: PayloadAction<Subscore>) => {
-	// 	// expects child, value
-	// 	state.scores.psyche.subscores[action.payload.child as keyof typeof state.scores.psyche.subscores] = action.payload.value;
-	// 	state.scores.psyche.value = Math.round((state.scores.psyche.subscores.mentalStability + state.scores.psyche.subscores.emotionalStability + state.scores.psyche.subscores.focusAndConcentration + state.scores.psyche.subscores.courageAndConviction)/4);
-	// },
-	setShield: (state) => {
-		state.scores.additionalScores.shield = Math.round((state.scores.physical.subscores.endurance + state.scores.psyche.subscores.mentalStability)/2);
-	},
-	setReputation: (state) => {
-		state.scores.additionalScores.reputation = Math.round((state.scores.interpersonal.subscores.speech + state.scores.interpersonal.subscores.charm + state.scores.intellect.subscores.criticalThinking + state.scores.intellect.subscores.judgement)/10);
-	},
-	setResurrectionDuration: (state) => {
-		state.scores.additionalScores.resurrectionDuration = Math.round(((state.scores.physical.subscores.endurance + state.scores.physical.subscores.speed + state.scores.psyche.subscores.mentalStability + state.scores.psyche.subscores.emotionalStability)/10)/10);
-	},
 	setWealth: (state, action: PayloadAction<Wealth>) => {
 		state.wealth.silver = action.payload.silver;
 		state.wealth.gold = action.payload.gold;
@@ -454,9 +337,9 @@ export const {
 	// setInterpersonalSubscore,
 	// setIntellectSubscore,
 	// setPsycheSubscore,
-    setShield,
-	setReputation,
-	setResurrectionDuration,
+    // setShield,
+	// setReputation,
+	// setResurrectionDuration,
 	setWealth,
 	setAnimalCompanion } = characterSlice.actions
 
