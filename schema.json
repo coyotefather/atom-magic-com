@@ -540,6 +540,13 @@
         },
         "optional": true
       },
+      "value": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
       "paths": {
         "type": "objectAttribute",
         "value": {

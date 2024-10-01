@@ -27,7 +27,7 @@ const PATRONAGES_PRE_QUERY = `*[_type == "patronage"]{
 }`;
 
 const GEAR_PRE_QUERY = `*[_type == "gear"]{
-  _id, title, latin, type, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id, title }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description
+  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->_id, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description
 }`;
 
 export const CULTURES_QUERY = groq`${CULTURES_PRE_QUERY}`;
