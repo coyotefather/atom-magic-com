@@ -160,7 +160,8 @@ const Sections = ({
 			});
 		}
 	});
-	gear.map( (gear) => {
+
+	character.gear.map( (gear) => {
 		// form array of path IDs that this gear has and then also check if path id matches
 		let paths: string[];
 		paths = [];
