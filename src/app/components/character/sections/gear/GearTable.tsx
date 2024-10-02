@@ -53,7 +53,7 @@ const GearTable = ({
 			<TableBody items={gear}>
 				{gear.map( (g) => (
 					<TableRow key={g._id} className="pb-16">
-						<TableCell className="pl-0 max-w-44">
+						<TableCell className="pl-0 w-56">
 							<Accordion
 								isCompact
 								className="border-0 focus:border-0 outline-none focus:outline-none pl-0 pr-0"
@@ -61,7 +61,7 @@ const GearTable = ({
 									{
 										base: 'p-0 text-small',
 										title: 'font-bold text-left text-small',
-										trigger: 'p-0',
+										trigger: 'p-0 border-0',
 										indicator: "text-left",
 									}
 								}
@@ -102,7 +102,7 @@ const GearTable = ({
 						</TableCell>
 						<TableCell
 							className={clsx(
-								"capitalize max-w-8 align-top",
+								"capitalize w-8 align-top",
 								{ "font-bold text-dark-olive-green" : g.damageBonus && g.damageBonus > 0 },
 								{ "font-bold text-adobe" : g.damageBonus && g.damageBonus < 0 },
 							)}>
