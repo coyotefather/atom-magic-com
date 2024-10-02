@@ -65,7 +65,7 @@ const SubScore = ({
 	},[gearModifiers]);
 
 	useEffect(() => {
-		let curSubscoreValue = baseSubscoreValue + pathModifierTotal;
+		let curSubscoreValue = baseSubscoreValue + pathModifierTotal + gearModifierTotal;
 		setCalcSubscoreValue(curSubscoreValue);
 	},[pathModifierTotal, gearModifierTotal, baseSubscoreValue]);
 

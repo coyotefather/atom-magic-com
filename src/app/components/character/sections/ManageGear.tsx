@@ -5,7 +5,6 @@ import { setGear } from "@/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import GearTable from '@/app/components/character/sections/gear/GearTable'
 import FunctionButton from '@/app/components/common/FunctionButton';
-import { GEAR } from '@/lib/global-data';
 import {
 	GEAR_QUERYResult,
 } from "../../../../../sanity.types";
