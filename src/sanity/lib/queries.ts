@@ -30,6 +30,10 @@ const GEAR_PRE_QUERY = `*[_type == "gear"]{
   _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description
 }`;
 
+const GEAR_PAGE_PRE_QUERY = `*[_type == "gear" && type == $slug]| order( title asc, path.title asc ){
+  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id, title }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description
+}`;
+
 export const CULTURES_QUERY = groq`${CULTURES_PRE_QUERY}`;
 export const SCORES_QUERY = groq`${SCORES_PRE_QUERY}`;
 export const SUBSCORES_QUERY = groq`${SUBSCORES_PRE_QUERY}`;
@@ -37,6 +41,7 @@ export const ADDITIONAL_SCORES_QUERY = groq`${ADDITIONAL_SCORES_PRE_QUERY}`;
 export const PATHS_QUERY = groq`${PATHS_PRE_QUERY}`;
 export const PATRONAGES_QUERY = groq`${PATRONAGES_PRE_QUERY}`;
 export const GEAR_QUERY = groq`${GEAR_PRE_QUERY}`;
+export const GEAR_PAGE_QUERY = groq`${GEAR_PAGE_PRE_QUERY}`;
 
 export const CHARACTER_MANAGER_QUERY = groq`{
   "cultures": ${CULTURES_PRE_QUERY},
