@@ -84,7 +84,19 @@ const config: Config = {
     nextui({
       layout: {
         hoverOpacity: 0
-      }
+      },
+      themes: {
+        light: {
+          colors: {
+            default: {
+              100: "rgba(35, 31, 32, .1)",
+              200: "rgba(35, 31, 32, .2)",
+              300: "rgba(35, 31, 32, .3)",
+              400: "rgba(35, 31, 32, .4)"
+            },
+          }
+        },
+      },
     }),
     require('@tailwindcss/typography')
   ],
