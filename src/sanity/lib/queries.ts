@@ -26,6 +26,10 @@ const PATRONAGES_PRE_QUERY = `*[_type == "patronage"]{
   _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description
 }`;
 
+const DISCIPLINES_PRE_QUERY = `*[_type == "discipline"]| order(title asc){
+  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, cooldown, description }, description
+}`;
+
 const GEAR_PRE_QUERY = `*[_type == "gear"]{
   _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description
 }`;
@@ -40,6 +44,7 @@ export const SUBSCORES_QUERY = groq`${SUBSCORES_PRE_QUERY}`;
 export const ADDITIONAL_SCORES_QUERY = groq`${ADDITIONAL_SCORES_PRE_QUERY}`;
 export const PATHS_QUERY = groq`${PATHS_PRE_QUERY}`;
 export const PATRONAGES_QUERY = groq`${PATRONAGES_PRE_QUERY}`;
+export const DISCIPLINES_QUERY = groq`${DISCIPLINES_PRE_QUERY}`;
 export const GEAR_QUERY = groq`${GEAR_PRE_QUERY}`;
 export const GEAR_PAGE_QUERY = groq`${GEAR_PAGE_PRE_QUERY}`;
 
@@ -47,6 +52,7 @@ export const CHARACTER_MANAGER_QUERY = groq`{
   "cultures": ${CULTURES_PRE_QUERY},
   "paths": ${PATHS_PRE_QUERY},
   "patronages": ${PATRONAGES_PRE_QUERY},
+  "disciplines": ${DISCIPLINES_QUERY},
   "scores": ${SCORES_PRE_QUERY},
   "subscores": ${SUBSCORES_PRE_QUERY},
   "additionalScores": ${ADDITIONAL_SCORES_PRE_QUERY},

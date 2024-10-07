@@ -14,11 +14,13 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('additionalScores').title('Additional Scores'),
       S.documentTypeListItem('path').title('Paths'),
       S.documentTypeListItem('patronage').title('Patronage'),
+      S.documentTypeListItem('discipline').title('Discipline'),
+      S.documentTypeListItem('technique').title('Technique'),
       S.documentTypeListItem('gear').title('Gear'),
       S.documentTypeListItem('timeline').title('Timeline'),
       S.documentTypeListItem('author').title('Authors'),
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['post', 'entry', 'category', 'culture', 'score', 'subscore', 'additionalScores', 'timeline', 'path', 'patronage', 'gear', 'author'].includes(item.getId()!),
+        (item) => item.getId() && !['post', 'entry', 'category', 'culture', 'score', 'subscore', 'additionalScores', 'timeline', 'path', 'patronage', 'discipline', 'technique', 'gear', 'author'].includes(item.getId()!),
       ),
     ])
