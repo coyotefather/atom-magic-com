@@ -186,7 +186,7 @@ export default function Gear({
 			className="mt-8"
 			classNames={
 				{
-					wrapper: 'bg-transparent shadow-none',
+					wrapper: 'bg-transparent shadow-none p-0',
 					th: "",
 				}
 			}>
@@ -200,7 +200,7 @@ export default function Gear({
 						}}
 						key={column.key}
 						className={clsx(
-							"bg-transparent border-b-2 pl-0",
+							"bg-transparent border-b-2",
 							{'hover:text-black cursor-pointer': !["description"].includes(column.key)}
 						)}>
 						<div className="flex flex-row gap-1 items-center">
@@ -214,7 +214,7 @@ export default function Gear({
 				{(item) => (
 				  <TableRow key={item._id}>
 					{(columnKey) => (
-						<TableCell className="text-base pl-0 align-top">{getKeyValue(item, columnKey)}
+						<TableCell className="text-base align-top">{getKeyValue(item, columnKey)}
 						</TableCell>
 					)}
 				  </TableRow>
