@@ -140,6 +140,7 @@ export type Technique = {
   _updatedAt: string;
   _rev: string;
   title?: string;
+  latin?: string;
   entry?: {
     _ref: string;
     _type: "reference";
@@ -832,7 +833,7 @@ export type PATRONAGES_QUERYResult = Array<{
   description: string | null;
 }>;
 // Variable: DISCIPLINES_QUERY
-// Query: *[_type == "discipline"]| order(title asc){  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, cooldown, description }, description}
+// Query: *[_type == "discipline"]| order(title asc){  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description}
 export type DISCIPLINES_QUERYResult = Array<{
   _id: string;
   title: string | null;
@@ -843,6 +844,7 @@ export type DISCIPLINES_QUERYResult = Array<{
   techniques: Array<{
     _id: string;
     title: string | null;
+    latin: string | null;
     cooldown: number | null;
     description: string | null;
   }> | null;
@@ -938,7 +940,7 @@ export type GEAR_PAGE_QUERYResult = Array<{
   description: string | null;
 }>;
 // Variable: CHARACTER_MANAGER_QUERY
-// Query: {  "cultures": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "paths": *[_type == "path"]{  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},  "patronages": *[_type == "patronage"]{  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description},  "disciplines": *[_type == "discipline"]| order(title asc){  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, cooldown, description }, description},  "scores": *[_type == "score"]| order(title asc){  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description},  "subscores": *[_type == "subscore"]{  _id, title, score->{_id, title, id}, defaultValue, description},  "additionalScores": *[_type == "additionalScores"]{  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description},  "gear": *[_type == "gear"]{  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},}
+// Query: {  "cultures": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "paths": *[_type == "path"]{  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},  "patronages": *[_type == "patronage"]{  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description},  "disciplines": *[_type == "discipline"]| order(title asc){  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description},  "scores": *[_type == "score"]| order(title asc){  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description},  "subscores": *[_type == "subscore"]{  _id, title, score->{_id, title, id}, defaultValue, description},  "additionalScores": *[_type == "additionalScores"]{  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description},  "gear": *[_type == "gear"]{  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},}
 export type CHARACTER_MANAGER_QUERYResult = {
   cultures: Array<{
     _id: string;
@@ -1049,6 +1051,7 @@ export type CHARACTER_MANAGER_QUERYResult = {
     techniques: Array<{
       _id: string;
       title: string | null;
+      latin: string | null;
       cooldown: number | null;
       description: string | null;
     }> | null;
@@ -1311,10 +1314,10 @@ declare module "@sanity/client" {
     "*[_type == \"additionalScores\"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n}": ADDITIONAL_SCORES_QUERYResult;
     "*[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}": PATHS_QUERYResult;
     "*[_type == \"patronage\"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description\n}": PATRONAGES_QUERYResult;
-    "*[_type == \"discipline\"]| order(title asc){\n  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, cooldown, description }, description\n}": DISCIPLINES_QUERYResult;
+    "*[_type == \"discipline\"]| order(title asc){\n  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description\n}": DISCIPLINES_QUERYResult;
     "*[_type == \"gear\"]{\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}": GEAR_QUERYResult;
     "*[_type == \"gear\" && type == $slug]| order( title asc, path.title asc ){\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id, title }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}": GEAR_PAGE_QUERYResult;
-    "{\n  \"cultures\": *[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  \"paths\": *[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n  \"patronages\": *[_type == \"patronage\"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description\n},\n  \"disciplines\": *[_type == \"discipline\"]| order(title asc){\n  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, cooldown, description }, description\n},\n  \"scores\": *[_type == \"score\"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n},\n  \"subscores\": *[_type == \"subscore\"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n},\n  \"additionalScores\": *[_type == \"additionalScores\"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n},\n  \"gear\": *[_type == \"gear\"]{\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n}": CHARACTER_MANAGER_QUERYResult;
+    "{\n  \"cultures\": *[_type == \"culture\"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  \"paths\": *[_type == \"path\"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n  \"patronages\": *[_type == \"patronage\"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description\n},\n  \"disciplines\": *[_type == \"discipline\"]| order(title asc){\n  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description\n},\n  \"scores\": *[_type == \"score\"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n},\n  \"subscores\": *[_type == \"subscore\"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n},\n  \"additionalScores\": *[_type == \"additionalScores\"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n},\n  \"gear\": *[_type == \"gear\"]{\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n}": CHARACTER_MANAGER_QUERYResult;
     "*[_type == \"post\" && defined(slug.current)][0...12]{\n  _id, title, slug\n}": POSTS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}": POST_QUERYResult;
     "*[_type == \"entry\" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}": ENTRIES_QUERYResult;
