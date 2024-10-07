@@ -27,7 +27,7 @@ const PATRONAGES_PRE_QUERY = `*[_type == "patronage"]{
 }`;
 
 const DISCIPLINES_PRE_QUERY = `*[_type == "discipline"]| order(title asc){
-  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, cooldown, description }, description
+  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description
 }`;
 
 const GEAR_PRE_QUERY = `*[_type == "gear"]{

@@ -12,6 +12,10 @@ export const techniqueType = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'latin',
+      type: 'string',
+    }),
+    defineField({
       name: 'entry',
       type: 'reference',
       description: 'Optional reference to a codex entry.',
