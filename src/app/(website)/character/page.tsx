@@ -7,7 +7,7 @@ import { sanityFetch } from "@/sanity/lib/client";
 import { notFound } from "next/navigation";
 import {
 	CHARACTER_MANAGER_QUERYResult
-} from "../../../sanity.types";
+} from "../../../../sanity.types";
 
 const Page = async () => {
 	const characterManager = await sanityFetch<CHARACTER_MANAGER_QUERYResult>({
