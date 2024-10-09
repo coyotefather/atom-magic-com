@@ -39,7 +39,7 @@
     "remark-heading-id": "^1.0.1",
     "sanity": "^3.60.0",
     "sanity-algolia": "^1.1.0",
-    "sanity-plugin-markdown": "^4.1.2",
+    "sanity-plugin-markdown": "^5.0.0",
     "seeded-rand": "^2.0.1",
     "styled-components": "^6.1.12",
     "use-debounce": "^10.0.3"
