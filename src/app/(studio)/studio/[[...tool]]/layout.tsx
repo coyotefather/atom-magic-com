@@ -1,3 +1,8 @@
+import "../globals.css";
+import 'easymde/dist/easymde.min.css'
+
+export { metadata, viewport } from "next-sanity/studio";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -5,10 +10,8 @@ export default function RootLayout({
 }>) {
   return (
 	<html lang="en">
-	  <body>
-		<div className="grow">
+	  <body className="min-h-screen">
 		  {children}
-		</div>
 	  </body>
 	</html>
   );
