@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Marcellus_SC, Noto_Serif } from "next/font/google";
 import localFont from 'next/font/local'
-import "./globals.css";
+import "../globals.css";
 import StoreProvider from "@/app/StoreProvider";
 import NavBar from '@/app/components/global/NavBar';
 import Footer from '@/app/components/global/Footer';
@@ -19,7 +19,7 @@ const noto_serif = Noto_Serif({
   variable: '--font-notoserif',
   subsets: ["latin"] });
 
-const lapideum = localFont({ src: '../fonts/lapideum-2022-v1.woff', variable: '--font-lapideum' })
+const lapideum = localFont({ src: '../../fonts/lapideum-2022-v1.woff', variable: '--font-lapideum' })
 
 export const metadata: Metadata = {
   title: "Atom Magic Tools",

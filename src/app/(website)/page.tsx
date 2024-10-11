@@ -9,7 +9,7 @@ import { groq } from "next-sanity";
 import {
 	ENTRIES_COUNT_QUERYResult,
 	Slug
-} from "../../sanity.types";
+} from "../../../sanity.types";
 //import Alea from 'alea';
 import {
   createHash,
