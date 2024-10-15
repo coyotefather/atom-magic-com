@@ -9,6 +9,7 @@ import Scores from '@/app/components/character/sections/scores/Scores';
 import ChooseCulture from '@/app/components/character/sections/ChooseCulture';
 import ChoosePath from '@/app/components/character/sections/ChoosePath';
 import ChoosePatronage from '@/app/components/character/sections/ChoosePatronage';
+import ChooseDisciplineAndTechniques from '@/app/components/character/sections/ChooseDisciplinesAndTechniques';
 import ManageGear from '@/app/components/character/sections/ManageGear';
 import ManageWealth from '@/app/components/character/sections/ManageWealth';
 import ChooseAnimalCompanion from '@/app/components/character/sections/ChooseAnimalCompanion';
@@ -21,6 +22,7 @@ import {
 	ADDITIONAL_SCORES_QUERYResult,
 	PATHS_QUERYResult,
 	PATRONAGES_QUERYResult,
+	DISCIPLINES_QUERYResult,
 	GEAR_QUERYResult,
 } from "../../../../sanity.types";
 
@@ -41,6 +43,7 @@ const Sections = ({
 		additionalScores,
 		paths,
 		patronages,
+		disciplines,
 		gear,
 	}:{
 		cultures: CULTURES_QUERYResult,
@@ -48,6 +51,7 @@ const Sections = ({
 		additionalScores: ADDITIONAL_SCORES_QUERYResult,
 		paths: PATHS_QUERYResult,
 		patronages: PATRONAGES_QUERYResult,
+		disciplines: DISCIPLINES_QUERYResult,
 		gear: GEAR_QUERYResult,
 	}) => {
 	const character = useAppSelector(state => state.character);
@@ -58,6 +62,8 @@ const Sections = ({
 	const [pathIncomplete, setPathIncomplete] = useState("init");
 	const [showChoosePatronage, setShowChoosePatronage] = useState(false);
 	const [patronageIncomplete, setPatronageIncomplete] = useState("init");
+	const [showChooseDisciplinesAndTechniques, setShowDisciplinesAndTechniques] = useState(false);
+	const [disciplinesAndTechniquesIncomplete, setDisciplinesAndTechniquesIncomplete] = useState("init");
 	const [showAdjustScoresAndScores, setShowAdjustScoresAndScores] = useState(false);
 	const [showManageGear, setShowManageGear] = useState(false);
 	const [gearIncomplete, setGearIncomplete] = useState("init");
@@ -109,6 +115,16 @@ const Sections = ({
 	},[character.patronage, clickCheck]);
 
 	useEffect( () => {
+		if(character.disciplines.length === 0 && clickCheck) {
+			setDisciplinesAndTechniquesIncomplete("Disciplines and Techniques");
+		} else if(character.disciplines.length === 0 && !clickCheck) {
+			setDisciplinesAndTechniquesIncomplete("init");
+		} else {
+			setDisciplinesAndTechniquesIncomplete("");
+		}
+	},[character.disciplines, clickCheck]);
+
+	useEffect( () => {
 		if(character.gear.length === 0 && clickCheck) {
 			setGearIncomplete("Gear");
 		} else if(character.gear.length === 0 && !clickCheck) {
@@ -143,6 +159,7 @@ const Sections = ({
 		setShowChoosePath(true);
 		setShowChoosePatronage(true);
 		setShowAdjustScoresAndScores(true);
+		setShowDisciplinesAndTechniques(true);
 		setShowManageGear(true);
 		setShowManageWealth(true);
 		setShowChooseAnimalCompanion(true);
@@ -262,14 +279,26 @@ const Sections = ({
 			</Section>
 			<Section
 				expanded={showAdjustScoresAndScores}
-				nextExpanded={showManageGear}
+				nextExpanded={showChooseDisciplinesAndTechniques}
 				incomplete={""}
 				showExpandButton={true}
 				variant="dual"
 				clickCheck={setClickCheck}
-				expandFunction={() => setShowManageGear(true)}>
+				expandFunction={() => setShowChooseDisciplinesAndTechniques(true)}>
 				<AdditionalScores
 					additionalScores={additionalScores} />
+			</Section>
+			<Section
+				expanded={showChooseDisciplinesAndTechniques}
+				nextExpanded={showManageGear}
+				incomplete={disciplinesAndTechniquesIncomplete}
+				showExpandButton={true}
+				variant="dual"
+				clickCheck={setClickCheck}
+				expandFunction={() => setShowManageGear(true)}>
+				<ChooseDisciplineAndTechniques
+					disciplines={disciplines}
+					incompleteFields={disciplinesAndTechniquesIncomplete} />
 			</Section>
 			<Section
 				expanded={showManageGear}
