@@ -6,6 +6,7 @@ import {
 	ADDITIONAL_SCORES_QUERYResult,
 	PATHS_QUERYResult,
 	PATRONAGES_QUERYResult,
+	DISCIPLINES_QUERYResult,
 	GEAR_QUERYResult,
 } from "../../../sanity.types";
 
@@ -85,6 +86,8 @@ export interface CharacterState {
 	scorePoints: number,
 	scores: Array<Score>,
 	additionalScores: ADDITIONAL_SCORES_QUERYResult,
+	disciplines: Array<string>,
+	techniques: Array<string>,
 	gear: GEAR_QUERYResult,
 	wealth: {
 		silver: number,
@@ -112,6 +115,8 @@ const initialState: CharacterState = {
 	scorePoints: 0,
 	scores: [],
 	additionalScores: [],
+	disciplines: [],
+	techniques: [],
 	gear: [],
 	wealth: {
 		silver: 0,
@@ -271,6 +276,12 @@ export const characterSlice = createSlice({
 
 		// update additional scores
 	},
+	setDisciplines: (state, action: PayloadAction<string[]>) => {
+		state.disciplines = action.payload;
+	},
+	setTechniques: (state, action: PayloadAction<string[]>) => {
+		state.techniques = action.payload;
+	},
 	setCharacterName: (state, action: PayloadAction<string>) => {
 		state.name = action.payload;
 	},
@@ -332,6 +343,8 @@ export const {
 	setCulture,
 	setPath,
 	setPatronage,
+	setDisciplines,
+	setTechniques,
 	setGear,
 	// setPhysicalSubscore,
 	// setInterpersonalSubscore,
