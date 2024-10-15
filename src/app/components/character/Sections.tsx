@@ -284,7 +284,7 @@ const Sections = ({
 				showExpandButton={true}
 				variant="dual"
 				clickCheck={setClickCheck}
-				expandFunction={() => setShowChooseDisciplinesAndTechniques(true)}>
+				expandFunction={() => setShowDisciplinesAndTechniques(true)}>
 				<AdditionalScores
 					additionalScores={additionalScores} />
 			</Section>
