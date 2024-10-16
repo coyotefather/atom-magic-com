@@ -98,32 +98,6 @@ const ManageGear = ({
 		setDisciplinesAndTechniques(element);
 	};
 
-	// const constructDisciplines = () => {
-	// 	let found:DISCIPLINES_QUERYResult = [];
-	// 	selectedDisciplines.forEach( needle => {
-	// 		let discFound = disciplines.find( (d) => d._id === needle );
-	// 		let disc;
-	// 		if(discFound) {
-	// 			disc = Object.assign({}, discFound);
-	// 		} else {
-	// 			disc = undefined;
-	// 		}
-	// 		if(disc) {
-	// 			let discTechs = disc.techniques;
-	// 			disc.techniques = [];
-	// 			if(discTechs) {
-	// 				discTechs.forEach( t => {
-	// 					if(selectedTechniques.includes(t._id) && disc.techniques != null) {
-	// 						disc.techniques.push(t);
-	// 					}
-	// 				})
-	// 			}
-	// 			found.push(disc);
-	// 		}
-	// 	});
-	// 	dispatch(setDisciplines(found));
-	// };
-
 	useEffect(() => {
 		// set list of techniques on component render
 		setCheckboxes();
@@ -206,7 +180,6 @@ const ManageGear = ({
 						})
 					}
 					chosen.push(disc);
-					//console.log(chosen);
 				}
 			});
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
