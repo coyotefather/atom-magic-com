@@ -242,8 +242,8 @@ const ManageGear = ({
 				<SelectDetailExpanded
 					imagePath=""
 					name="Disciplines and Techniques"
-					description=""
-					disabled={false}>
+					description={characterDisciplines.length === 0 ? "Select dsciplines and techniques with the checkboxes to the left." : ""}
+					disabled={characterDisciplines.length === 0 ? true : false}>
 					{content}
 				</SelectDetailExpanded>);
 		}
