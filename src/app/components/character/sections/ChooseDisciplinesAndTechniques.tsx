@@ -44,9 +44,31 @@ const ManageGear = ({
 	);
 
 	const setCheckboxes = () => {
-		let element = (
+		let element = (<></>);
+		if (!path) {
+			element = (
+				<div>
+					Please first choose a path above before selecting disciplines and techniques.
+				</div>
+			);
+		} else {
+			// construct array of disciplines filtered by path, and uncheck any disciplines or techniques that were checked
+			let localDisciplines:DISCIPLINES_QUERYResult = disciplines.filter( d => {
+				let check = false;
+				d.paths?.forEach( p => {
+					if(p._id === path){
+						check = true;
+					}
+				});
+				return check;
+			});
+
+			dispatch(setTechniques([]));
+			dispatch(setDisciplines([]));
+
+			element = (
 			<div>
-				{disciplines.map(d => (
+				{localDisciplines.map(d => (
 					<div
 						key={d._id}
 						className="mb-2">
@@ -58,7 +80,7 @@ const ManageGear = ({
 								{
 									value: d._id,
 									eventState: event.target.checked,
-						 		}
+								 }
 							)}>
 							{d.title}
 						</Checkbox>
@@ -95,13 +117,15 @@ const ManageGear = ({
 					</div>
 				))}
 			</div>);
+		}
+
 		setDisciplinesAndTechniques(element);
 	};
 
 	useEffect(() => {
-		// set list of techniques on component render
+		// Update checkboxes when discipline is checked or unchecked
 		setCheckboxes();
-	},[characterDisciplines, characterTechniques]);
+	},[characterDisciplines, characterTechniques, path]);
 
 	const handleDisciplineCheck = ({
 			value,
