@@ -53,7 +53,10 @@ const SubScore = ({
 		pathModifiers.forEach( (m) => {
 			m.value !== null ? total += m.value : undefined;
 		});
-		setPathModifierTotal(total);
+		if(pathModifierTotal != total) {
+			setPathModifierTotal(total);
+		}
+		//setPathModifierTotal(total);
 	},[pathModifiers]);
 
 	useEffect(() => {
@@ -61,7 +64,10 @@ const SubScore = ({
 		gearModifiers.forEach( (m) => {
 			m.value !== null ? total += m.value : undefined;
 		});
-		setGearModifierTotal(total);
+		if(gearModifierTotal != total) {
+			setGearModifierTotal(total);
+		}
+		//setGearModifierTotal(total);
 	},[gearModifiers]);
 
 	useEffect(() => {
