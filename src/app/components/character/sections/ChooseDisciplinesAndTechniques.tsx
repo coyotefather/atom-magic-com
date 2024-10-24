@@ -63,8 +63,8 @@ const ManageGear = ({
 				return check;
 			});
 
-			dispatch(setTechniques([]));
-			dispatch(setDisciplines([]));
+			//dispatch(setTechniques([]));
+			//dispatch(setDisciplines([]));
 
 			element = (
 			<div>
@@ -126,6 +126,14 @@ const ManageGear = ({
 		// Update checkboxes when discipline is checked or unchecked
 		setCheckboxes();
 	},[characterDisciplines, characterTechniques, path]);
+
+	useEffect(() => {
+		// Update checkboxes when discipline is checked or unchecked
+		if(path) {
+			dispatch(setTechniques([]));
+			dispatch(setDisciplines([]));
+		}
+	},[path]);
 
 	const handleDisciplineCheck = ({
 			value,
