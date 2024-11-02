@@ -30,6 +30,7 @@ const ManageGear = ({
 	const characterDisciplines = useAppSelector(state => state.character.disciplines);
 	const characterTechniques = useAppSelector(state => state.character.techniques);
 	const path = useAppSelector(state => state.character.path);
+	const [pathLocal, setPathLocal] = useState("");
 	const dispatch = useAppDispatch();
 	const [disciplinesAndTechniques, setDisciplinesAndTechniques] = useState(<></>);
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
@@ -63,9 +64,6 @@ const ManageGear = ({
 				return check;
 			});
 
-			//dispatch(setTechniques([]));
-			//dispatch(setDisciplines([]));
-
 			element = (
 			<div>
 				{localDisciplines.map(d => (
@@ -75,6 +73,7 @@ const ManageGear = ({
 						<Checkbox
 							color="default"
 							className="mb-1"
+							isSelected={characterDisciplines.includes(d._id)}
 							isDisabled={characterDisciplines.length >= 2 && !characterDisciplines.includes(d._id)}
 							onChange={(event) => handleDisciplineCheck(
 								{
@@ -125,13 +124,14 @@ const ManageGear = ({
 	useEffect(() => {
 		// Update checkboxes when discipline is checked or unchecked
 		setCheckboxes();
-	},[characterDisciplines, characterTechniques, path]);
+	},[characterDisciplines, characterTechniques]);
 
 	useEffect(() => {
 		// Update checkboxes when discipline is checked or unchecked
-		if(path) {
+		if(pathLocal != path) {
 			dispatch(setTechniques([]));
 			dispatch(setDisciplines([]));
+			setPathLocal(path);
 		}
 	},[path]);
 
@@ -165,7 +165,7 @@ const ManageGear = ({
 			checkedDisciplines.push(value);
 		}
 		dispatch(setDisciplines(checkedDisciplines));
-		setCheckboxes();
+		//setCheckboxes();
 	};
 
 	const handleTechniqueCheck = ({
