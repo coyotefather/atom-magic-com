@@ -8,7 +8,7 @@ import {
 } from "../../../../../sanity.types";
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import {Checkbox} from "@nextui-org/checkbox";
+import {Checkbox} from "@heroui/checkbox";
 
 interface Technique {
 	_id: string;

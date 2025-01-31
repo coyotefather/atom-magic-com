@@ -4,8 +4,8 @@ import ExternalLink from '@/app/components/common/ExternalLink';
 import { ANIMAL_COMPANIONS } from '@/lib/global-data';
 import { useAppDispatch } from '@/lib/hooks'
 import { setAnimalCompanion } from "@/lib/slices/characterSlice";
-import {Select, SelectItem} from "@nextui-org/select";
-import { Input, Textarea } from "@nextui-org/input";
+import {Select, SelectItem} from "@heroui/select";
+import { Input, Textarea } from "@heroui/input";
 import { useState, useRef, useEffect } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
