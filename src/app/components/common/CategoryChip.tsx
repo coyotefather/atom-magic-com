@@ -1,6 +1,6 @@
 import { Slug } from "../../../../sanity.types";
 import Link from "next/link";
-import { Chip } from "@nextui-org/chip";
+import { Chip } from "@heroui/chip";
 
 const CategoryChip = ({
 		category

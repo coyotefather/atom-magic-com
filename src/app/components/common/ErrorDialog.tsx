@@ -1,4 +1,4 @@
-import {  Modal,   ModalContent,   ModalHeader,   ModalBody,   ModalFooter} from "@nextui-org/modal";
+import {  Modal,   ModalContent,   ModalHeader,   ModalBody,   ModalFooter} from "@heroui/modal";
 import FunctionButton from '@/app/components/common/FunctionButton';
 import { mdiCloseCircleOutline } from '@mdi/js';
 

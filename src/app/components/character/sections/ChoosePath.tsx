@@ -4,8 +4,8 @@ import ExternalLink from '@/app/components/common/ExternalLink';
 import { PATHS } from '@/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setPath } from "@/lib/slices/characterSlice";
-import {Select, SelectItem} from "@nextui-org/select";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
+import {Select, SelectItem} from "@heroui/select";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
 import { useState, useRef } from 'react';
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";

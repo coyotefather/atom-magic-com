@@ -6,7 +6,7 @@ import remarkGfm from 'remark-gfm'
 import { remarkExtendedTable } from 'remark-extended-table';
 import { remarkDefinitionList } from 'remark-definition-list';
 import remarkHeadingId from 'remark-heading-id';
-import {Image} from "@nextui-org/image";
+import {Image} from "@heroui/image";
 import NextImage from "next/image";
 import clsx from 'clsx';
 

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import {Input} from "@nextui-org/input";
-import {Button} from "@nextui-org/react";
+import {Input} from "@heroui/input";
+import {Button} from "@heroui/react";
 import Icon from '@mdi/react';
 import { mdiMagnify } from '@mdi/js';
 import { useInstantSearch, useSearchBox, UseSearchBoxProps } from 'react-instantsearch';

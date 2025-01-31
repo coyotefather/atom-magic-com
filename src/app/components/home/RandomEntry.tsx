@@ -1,6 +1,6 @@
 'use client';
 import { Slug } from "../../../../sanity.types";
-import {Button} from "@nextui-org/react";
+import {Button} from "@heroui/react";
 import Markdown from 'react-markdown'
 
 export type EntryById = {

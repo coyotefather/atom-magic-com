@@ -5,7 +5,7 @@ import { setWealth } from "@/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import FunctionButton from '@/app/components/common/FunctionButton';
 import { WEALTH } from '@/lib/global-data';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
 import clsx from 'clsx';
 import { mdiDiceMultiple } from '@mdi/js';
 import { CSSTransition, SwitchTransition } from "react-transition-group";

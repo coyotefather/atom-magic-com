@@ -8,7 +8,7 @@ import remarkHeadingId from 'remark-heading-id';
 import { urlFor } from "@/sanity/lib/image";
 import { ENTRY_QUERYResult } from "../../../../sanity.types";
 import Link from "next/link";
-import {Card, CardHeader, CardFooter} from "@nextui-org/card";
+import {Card, CardHeader, CardFooter} from "@heroui/card";
 import Breadcrumbs from '@/app/components/common/Breadcrumbs';
 import TableOfContents from '@/app/components/codex/TableOfContents';
 import clsx from 'clsx';
