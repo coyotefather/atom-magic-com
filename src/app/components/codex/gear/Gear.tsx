@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { GEAR_PAGE_QUERYResult } from "../../../../../sanity.types";
-import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell, getKeyValue} from "@nextui-org/react";
-import {Select, SelectItem} from "@nextui-org/select";
+import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell, getKeyValue} from "@heroui/react";
+import {Select, SelectItem} from "@heroui/select";
 import Icon from '@mdi/react';
 import { mdiSortAscending } from '@mdi/js';
 import { renderToString } from 'react-dom/server';

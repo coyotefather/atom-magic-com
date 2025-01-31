@@ -1,4 +1,4 @@
-import {Card, CardHeader, CardFooter} from "@nextui-org/card";
+import {Card, CardHeader, CardFooter} from "@heroui/card";
 import Icon from '@mdi/react';
 import { mdiFileDocument, mdiFolderText } from '@mdi/js';
 import Image from "next/image";

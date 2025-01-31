@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import NextImage from "next/image";
 import { mdiArrowDownBoldCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import { Button, Link, Image, useDisclosure } from "@nextui-org/react";
+import { Button, Link, Image, useDisclosure } from "@heroui/react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import ErrorDialog from '@/app/components/common/ErrorDialog';
 
