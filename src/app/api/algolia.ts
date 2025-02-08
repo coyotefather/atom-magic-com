@@ -28,10 +28,9 @@ async function performInitialIndexing() {
 	_id,
 	title,
 	slug,
-	"entryBody": entryBody,
+	entryBody,
 	description,
 	_type,
-	date,
 	_createdAt,
 	_updatedAt
   }`);
@@ -43,9 +42,8 @@ async function performInitialIndexing() {
 	// Truncating the body if it's too long.
 	// Another approach: defining multiple records:
 	// https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/how-to/indexing-long-documents/
-	entryBody: doc.entryBody?.slice(0, 9500),
+	entryBody: doc.entryBody,
 	description: doc.description,
-	date: doc.date,
 	_createdAt: doc._createdAt,
 	_updatedAt: doc._updatedAt,
   }));
