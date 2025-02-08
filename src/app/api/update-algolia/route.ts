@@ -1,5 +1,6 @@
 import indexer, { flattenBlocks } from "sanity-algolia";
-import algoliasearch from 'algoliasearch';
+//import algoliasearch from 'algoliasearch';
+import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import {createClient } from '@sanity/client';
 import { NextRequest, NextResponse } from "next/server";
 
