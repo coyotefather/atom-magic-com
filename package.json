@@ -38,7 +38,6 @@
     "remark-gfm": "^4.0.0",
     "remark-heading-id": "^1.0.1",
     "sanity": "^3.74.1",
-    "sanity-algolia": "^1.1.0",
     "sanity-plugin-markdown": "^5.0.0",
     "seeded-rand": "^2.0.1",
     "styled-components": "^6.1.15",
