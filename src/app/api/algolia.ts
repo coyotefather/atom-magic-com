@@ -38,7 +38,7 @@ async function performInitialIndexing() {
   const records = sanityData.map((doc: any) => ({
 	objectID: doc._id,
 	title: doc.title,
-	path: doc.slug.current,
+	slug: doc.slug.current,
 	// Truncating the body if it's too long.
 	// Another approach: defining multiple records:
 	// https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/how-to/indexing-long-documents/
