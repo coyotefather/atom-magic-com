@@ -8,7 +8,7 @@ const indexName = process.env.ALGOLIA_INDEX_NAME!;
 
 const sanityProjectId = process.env.SANITY_PROJECT_ID!;
 const sanityDataset = process.env.SANITY_DATASET!;
-const webhookSecret = process.env.SANITY_WEBHOOK_SECRET!;
+const webhookSecret = process.env.PAYLOAD_SECRET!;
 
 const algoliaClient = algoliasearch(algoliaAppId, algoliaApiKey);
 
