@@ -1,4 +1,4 @@
-import { QueryParams } from "next-sanity";
+//import { QueryParams } from "next-sanity";
 import { notFound } from "next/navigation";
 import Header from '@/app/components/common/Header';
 import { GEAR_PAGE_QUERY } from "@/sanity/lib/queries";
@@ -7,6 +7,8 @@ import {
 	GEAR_PAGE_QUERYResult,
 } from "../../../../../../sanity.types";
 import Gear from '@/app/components/codex/gear/Gear';
+
+type QueryParams = Promise<{ slug: string }>
 
 export default async function Page({ params }: { params: QueryParams }) {
 	const gear = await sanityFetch<GEAR_PAGE_QUERYResult>({
