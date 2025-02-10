@@ -30,22 +30,24 @@ export async function sanityFetch<QueryResponse>({
   revalidate?: number | false;
   tags?: string[];
 }) {
-  const isDraftMode = draftMode().isEnabled;
-  if (isDraftMode && !token) {
-    throw new Error("Missing environment variable SANITY_API_READ_TOKEN");
-  }
+//   const isDraftMode = draftMode().isEnabled;
+//   if (isDraftMode && !token) {
+//     throw new Error("Missing environment variable SANITY_API_READ_TOKEN");
+//   }
+//
+   let dynamicRevalidate = revalidate;
+//   if (isDraftMode) {
+//     // Do not cache in Draft Mode
+//     dynamicRevalidate = 0;
+//   } else
 
-  let dynamicRevalidate = revalidate;
-  if (isDraftMode) {
-    // Do not cache in Draft Mode
-    dynamicRevalidate = 0;
-  } else if (tags.length) {
+  if (tags.length) {
     // Cache indefinitely if tags supplied, purge with revalidateTag()
     dynamicRevalidate = false;
   }
 
   return client.fetch<QueryResponse>(query, params, {
-    ...(isDraftMode &&
+    ...( //isDraftMode &&
       ({
         token: token,
         perspective: "previewDrafts",

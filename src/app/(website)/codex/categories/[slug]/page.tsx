@@ -1,6 +1,6 @@
 // ./app/(blog)/posts/[slug]/page.tsx
 
-import { QueryParams } from "next-sanity";
+//import { QueryParams } from "next-sanity";
 import { notFound } from "next/navigation";
 
 import { CATEGORIES_QUERY, CATEGORY_QUERY } from "@/sanity/lib/queries";
@@ -23,6 +23,8 @@ export async function generateStaticParams() {
 	slug: category?.slug?.current,
   }));
 }
+
+type QueryParams = Promise<{ slug: string }>
 
 export default async function Page({ params }: { params: QueryParams }) {
   const category = await sanityFetch<CATEGORY_QUERYResult>({
