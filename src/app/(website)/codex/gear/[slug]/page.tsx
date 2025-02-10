@@ -11,6 +11,7 @@ import Gear from '@/app/components/codex/gear/Gear';
 type QueryParams = Promise<{ slug: string }>
 
 export default async function Page({ params }: { params: QueryParams }) {
+	const { slug } = await params;
 	const gear = await sanityFetch<GEAR_PAGE_QUERYResult>({
 		query: GEAR_PAGE_QUERY,
 		params: params
@@ -21,7 +22,7 @@ export default async function Page({ params }: { params: QueryParams }) {
 
 	return (
 		<main>
-			<Header name={params.slug == "weapon" ? `Gear: ${params.slug}s` : `Gear: ${params.slug}`}>
+			<Header name={slug == "weapon" ? `Gear: ${slug}s` : `Gear: ${slug}`}>
  			All gear of this type available to characters.
 			</Header>
 			<Gear gear={gear} />
