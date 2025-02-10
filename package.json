@@ -58,9 +58,9 @@
     "typescript": "^5"
   },
   "overrides": {
-      "react": "^19.0.0",
-      "react-dom": "^19.0.0",
-      "@types/react": "^19.0.0",
-      "@types/react-dom": "^19.0.0"
+      "react": "$react",
+      "react-dom": "$react-dom",
+      "@types/react": "$@types/react",
+      "@types/react-dom": "$@types/react-dom"
   },
 }
