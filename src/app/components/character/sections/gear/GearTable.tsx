@@ -56,7 +56,7 @@ const GearTable = ({
 						<TableCell className="pl-0 w-56">
 							<Accordion
 								isCompact
-								className="border-0 focus:border-0 outline-none focus:outline-none pl-0 pr-0"
+								className="border-0 focus:border-0 outline-hidden focus:outline-hidden pl-0 pr-0"
 								itemClasses={
 									{
 										base: 'p-0 text-small',

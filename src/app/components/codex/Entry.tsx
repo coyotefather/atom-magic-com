@@ -45,7 +45,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 				<header>
 					<Card className="w-full bg-sunset-gradient">
 						<CardHeader className={clsx(
-							"bg-black flex-col !items-start",
+							"bg-black flex-col items-start!",
 							{ 'z-10 top-0': mainImage?.asset?._ref }
 						)}>
 							{title ? <h1 className="marcellus text-white mb-0 w-full text-center">{title}</h1> : null}
@@ -60,7 +60,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 							/>
 						) : null }
 						<CardFooter className={clsx(
-							"bg-black text-white flex-col !items-start",
+							"bg-black text-white flex-col items-start!",
 							{ 'z-10 bottom-0': mainImage?.asset?._ref }
 						)}>
 							{ toc ? <TableOfContents toc={toc} /> : ""}

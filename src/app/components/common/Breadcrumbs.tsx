@@ -26,13 +26,13 @@ export const BreadcrumbItem = ({
 			<a
 				href={url}
 				className=
-					"flex items-center text-gold whitespace-nowrap line-clamp-1  outline-none hover:contrast-100 hover:saturate-150 hover:brightness-100 cursor-pointer hover:text-brightgold">
+					"flex items-center text-gold whitespace-nowrap line-clamp-1  outline-hidden hover:contrast-100 hover:saturate-150 hover:brightness-100 cursor-pointer hover:text-brightgold">
 				{title}
 			</a>
 		);
 	} else {
 		item = (
-			<span className="flex items-center whitespace-nowrap line-clamp-1  outline-none">{title}</span>
+			<span className="flex items-center whitespace-nowrap line-clamp-1  outline-hidden">{title}</span>
 		);
 	}
 	return (

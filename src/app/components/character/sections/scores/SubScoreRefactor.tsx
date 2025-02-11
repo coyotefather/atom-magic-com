@@ -124,7 +124,7 @@ const SubScore = ({
 			<div className="pb-2 w-full text-sm">
 				<Accordion
 					isCompact
-					className="border-0 focus:border-0 outline-none focus:outline-none pl-0 pr-0"
+					className="border-0 focus:border-0 outline-hidden focus:outline-hidden pl-0 pr-0"
 					itemClasses={
 						{
 							base: 'pl-0 pr-0',
