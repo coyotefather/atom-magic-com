@@ -2,6 +2,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@plugin "@tailwindcss/typography";
+@plugin "@heroui/react";
 
 :root {
   --foreground-rgb: 0, 0, 0;
