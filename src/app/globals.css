@@ -40,6 +40,14 @@
   text-wrap: balance;
 }
 
+@utility text-gold {
+  color: rgb(187, 151, 49);
+}
+
+@utility text-brightgold {
+  color: rgb(226, 185, 68);
+}
+
 @layer utilities {
   :root {
     --foreground-rgb: 0, 0, 0;
@@ -64,7 +72,7 @@
 
 @layer base {
   a {
-    @apply underline font-semibold transition duration-200 ease-in-out   hover:text-brightgold hover:contrast-100 hover:saturate-150;
+    @apply underline font-semibold transition duration-200 ease-in-out text-gold  hover:text-brightgold hover:contrast-100 hover:saturate-150;
   }
   button {
     @apply marcellus transition duration-200 ease-in border-2 border-black hover:contrast-150 hover:saturate-150 hover:brightness-90;
@@ -76,7 +84,7 @@
     @apply marcellus hover:contrast-100 hover:saturate-100 hover:brightness-100;
   }
   .bg-black a {
-    @apply brightness-100 font-semibold transition duration-200 ease-in-out  hover:text-brightgold hover:brightness-100;
+    @apply brightness-100 font-semibold transition duration-200 ease-in-out text-gold hover:text-brightgold hover:brightness-100;
   }
 
 }
