@@ -8,6 +8,24 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
+
+@theme {
+  --gold: rgb(187, 151, 49);
+  --brightgold: rgb(226, 185, 68);
+  --white: rgb(255, 255, 240);
+  --black: rgb(35, 31, 32);
+  --ivory-black: #231F20;
+  --ivory-black-lighter: #3E3A36;
+  --ivory: #fffff0;
+  --pale-blue: #ADE4E4;
+  --adobe: #bd6c48;
+  --olive-green: #BAB86C;
+  --dark-olive-green: #8A8841;
+  --goldenrod: #daa520;
+  --sunset-blue: rgb(0, 179, 164);
+  --sunset-red: rgb(238, 100, 58);
+}
+
 @layer base {
   *,
   ::after,
