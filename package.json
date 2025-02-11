@@ -21,6 +21,7 @@
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.74.1",
     "@sanity/webhook": "^4.0.4",
+    "@tailwindcss/postcss": "^4.0.6",
     "@types/react-transition-group": "^4.4.12",
     "algoliasearch": "^5.0.0",
     "clsx": "^2.0.0",
