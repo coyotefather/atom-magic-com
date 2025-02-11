@@ -1,5 +1,8 @@
 @import 'tailwindcss';
-
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/nesting";
+@plugin "postcss-nesting";
+@plugin "@heroui/react";
 @config "../../tailwind.config.ts";
 
 /*
@@ -25,10 +28,6 @@
 }
 
 @layer utilities {
-  @plugin "@tailwindcss/typography";
-  @plugin "@tailwindcss/nesting";
-  @plugin "postcss-nesting";
-  @plugin "@heroui/react";
 
   :root {
     --foreground-rgb: 0, 0, 0;
