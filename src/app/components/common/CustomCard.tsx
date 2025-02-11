@@ -71,7 +71,7 @@ const CustomCard = ({
 						alt=""
 					/>
 				<CardFooter
-					className="bg-black not-prose font-normal text-white text-md flex-col !items-start absolute z-10 bottom-0 min-h-28">
+					className="bg-black not-prose font-normal text-white text-md flex-col items-start! absolute z-10 bottom-0 min-h-28">
 					{description}
 				</CardFooter>
 			</Card>

@@ -1,14 +1,19 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 255, 240;
-  --background-end-rgb: 255, 255, 255;
-  --gold-rgb: 187, 151, 49;
-  --brightgold-rgb: 226, 185, 68;
-  --black-rgb: 35, 31, 32;
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+
+@theme {
+  --gold: rgb(187, 151, 49);
+  --brightgold: rgb(226, 185, 68);
+  --white: rgb(255, 255, 240);
+  --black: rgb(35, 31, 32);
   --ivory-black: #231F20;
   --ivory-black-lighter: #3E3A36;
   --ivory: #fffff0;
@@ -19,6 +24,54 @@
   --goldenrod: #daa520;
   --sunset-blue: rgb(0, 179, 164);
   --sunset-red: rgb(238, 100, 58);
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility text-gold {
+  color: rgb(var(--gold));
+}
+
+@utility text-brightgold {
+  color: rgb(var(--brightgold));
+}
+
+@utility marcellus {
+  fontFamily: var(--font-marcellus);
+}
+
+@layer utilities {
+  :root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 255, 255, 240;
+    --background-end-rgb: 255, 255, 255;
+    --gold-rgb: 187, 151, 49;
+    --gold: rgb(187, 151, 49);
+    --brightgold-rgb: 226, 185, 68;
+    --black-rgb: 35, 31, 32;
+    --ivory-black: #231f20;
+    --ivory-black-lighter: #3e3a36;
+    --ivory: #fffff0;
+    --pale-blue: #ade4e4;
+    --adobe: #bd6c48;
+    --olive-green: #bab86c;
+    --dark-olive-green: #8a8841;
+    --goldenrod: #daa520;
+    --sunset-blue: rgb(0, 179, 164);
+    --sunset-red: rgb(238, 100, 58);
+  }
 }
 
 @layer base {
@@ -40,125 +93,149 @@
 
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --foreground-rgb: 0, 0, 0;
-    --background-start-rgb: 255, 255, 240;
-    --background-end-rgb: 255, 255, 255;
-  }
-}
-
-.notoserif {
-  font-family: var(--font-notoserif);
-}
-
-.marcellus {
-  font-family: var(--font-marcellus);
-}
-
-.lapideum {
-  font-family: var(--font-lapideum);
-}
-
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
-  -webkit-appearance:none;
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-button.gradient {
-  color: rgb(var(--black-rgb));
-  background: linear-gradient(85deg, rgb(211, 142, 39) 0%, rgb(208, 145, 37) 11%, rgb(205, 151, 35) 23%, rgb(202, 154, 33) 34%, rgb(197, 159, 32) 46%, rgb(192, 160, 33) 57%, rgb(186, 163, 33) 68%, rgb(180, 165, 34) 79%, rgb(177, 170, 37) 90%, rgb(171, 174, 41) 100%);
-}
-
-button.gradient:hover {
-  color: rgb(var(--black-rgb));
-  background: linear-gradient(85deg, rgb(241, 172, 69) 0%, rgb(238, 175, 67) 11%, rgb(235, 181, 65) 23%, rgb(232, 184, 63) 34%, rgb(227, 189, 62) 46%, rgb(222, 190, 63) 57%, rgb(216, 193, 63) 68%, rgb(210, 195, 64) 79%, rgb(207, 200, 67) 90%, rgb(201, 204, 71) 100%);
-}
-
-.fade-enter{
-   opacity: 0;
-}
-.fade-exit{
-   opacity: 1;
-}
-.fade-enter-active{
-   opacity: 1;
-   transition: opacity 300ms ease-out;
-}
-.fade-exit-active{
-   opacity: 0;
-   transition: opacity 300ms ease-out;
-}
-
-.fade-grow-enter{
-   opacity: 0;
-   max-height: 200px;
-   overflow: hidden;
-}
-.fade-grow-exit{
-   opacity: 1;
-   max-height: 700px;
-}
-.fade-grow-enter-active{
-   opacity: 1;
-   max-height: 700px;
-   transition: max-height 0.5s ease-out, opacity 300ms ease-in;
-}
-.fade-grow-exit-active{
-   opacity: 0;
-   max-height: 200px;
-   overflow: hidden;
-   transition: max-height 0.5s ease-out, opacity 300ms ease-in;
-}
-
-.grow-enter{
-   max-height: 0px;
-   overflow: hidden;
-}
-.grow-exit{
-   max-height: 2000px;
-}
-.grow-enter-active{
-   max-height: 2000px;
-   transition: max-height 0.5s ease-in;
-}
-.grow-exit-active{
-   max-height: 0px;
-   overflow: hidden;
-   transition: max-height 0.5s ease-in;
-}
-
-.loading-enter{
-   opacity: 0;
-}
-.loading-exit{
-   opacity: 1;
-}
-.loading-enter-active{
-   opacity: 1;
-}
-.loading-exit-active{
-   opacity: 0;
-}
-.loading-enter-active,
-.loading-exit-active{
-   transition: opacity 500ms;
-}
-
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  @media (prefers-color-scheme: light) {
+    :root {
+      --foreground-rgb: 0, 0, 0;
+      --background-start-rgb: 255, 255, 240;
+      --background-end-rgb: 255, 255, 255;
+    }
+  }
+
+  .notoserif {
+    font-family: var(--font-notoserif);
+  }
+
+  .marcellus {
+    font-family: var(--font-marcellus);
+  }
+
+  .lapideum {
+    font-family: var(--font-lapideum);
+  }
+
+  input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+  }
+
+  body {
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgb(var(--background-end-rgb))
+      )
+      rgb(var(--background-start-rgb));
+  }
+
+  button.gradient {
+    color: rgb(var(--black-rgb));
+    background: linear-gradient(
+      85deg,
+      rgb(211, 142, 39) 0%,
+      rgb(208, 145, 37) 11%,
+      rgb(205, 151, 35) 23%,
+      rgb(202, 154, 33) 34%,
+      rgb(197, 159, 32) 46%,
+      rgb(192, 160, 33) 57%,
+      rgb(186, 163, 33) 68%,
+      rgb(180, 165, 34) 79%,
+      rgb(177, 170, 37) 90%,
+      rgb(171, 174, 41) 100%
+    );
+  }
+
+  button.gradient:hover {
+    color: rgb(var(--black-rgb));
+    background: linear-gradient(
+      85deg,
+      rgb(241, 172, 69) 0%,
+      rgb(238, 175, 67) 11%,
+      rgb(235, 181, 65) 23%,
+      rgb(232, 184, 63) 34%,
+      rgb(227, 189, 62) 46%,
+      rgb(222, 190, 63) 57%,
+      rgb(216, 193, 63) 68%,
+      rgb(210, 195, 64) 79%,
+      rgb(207, 200, 67) 90%,
+      rgb(201, 204, 71) 100%
+    );
+  }
+
+  .fade-enter {
+    opacity: 0;
+  }
+  .fade-exit {
+    opacity: 1;
+  }
+  .fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-out;
+  }
+  .fade-exit-active {
+    opacity: 0;
+    transition: opacity 300ms ease-out;
+  }
+
+  .fade-grow-enter {
+    opacity: 0;
+    max-height: 200px;
+    overflow: hidden;
+  }
+  .fade-grow-exit {
+    opacity: 1;
+    max-height: 700px;
+  }
+  .fade-grow-enter-active {
+    opacity: 1;
+    max-height: 700px;
+    transition:
+      max-height 0.5s ease-out,
+      opacity 300ms ease-in;
+  }
+  .fade-grow-exit-active {
+    opacity: 0;
+    max-height: 200px;
+    overflow: hidden;
+    transition:
+      max-height 0.5s ease-out,
+      opacity 300ms ease-in;
+  }
+
+  .grow-enter {
+    max-height: 0px;
+    overflow: hidden;
+  }
+  .grow-exit {
+    max-height: 2000px;
+  }
+  .grow-enter-active {
+    max-height: 2000px;
+    transition: max-height 0.5s ease-in;
+  }
+  .grow-exit-active {
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in;
+  }
+
+  .loading-enter {
+    opacity: 0;
+  }
+  .loading-exit {
+    opacity: 1;
+  }
+  .loading-enter-active {
+    opacity: 1;
+  }
+  .loading-exit-active {
+    opacity: 0;
+  }
+  .loading-enter-active,
+  .loading-exit-active {
+    transition: opacity 500ms;
   }
 }
