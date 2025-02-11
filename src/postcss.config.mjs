@@ -79,6 +79,7 @@ const config = {
   plugins: {
 	"@tailwindcss/postcss": {},
 	"@tailwindcss/typography": {},
+	"@heroui/react": {},
   },
 };
 export default config;
