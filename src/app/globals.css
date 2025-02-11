@@ -41,11 +41,11 @@
 }
 
 @utility text-gold {
-  color: rgb(187, 151, 49);
+  color: rgb(var(--gold));
 }
 
 @utility text-brightgold {
-  color: rgb(226, 185, 68);
+  color: rgb(var(--brightgold));
 }
 
 @utility marcellus {
