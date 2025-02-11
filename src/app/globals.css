@@ -46,6 +46,7 @@
     --background-start-rgb: 255, 255, 240;
     --background-end-rgb: 255, 255, 255;
     --gold-rgb: 187, 151, 49;
+    --gold: rgb(187, 151, 49);
     --brightgold-rgb: 226, 185, 68;
     --black-rgb: 35, 31, 32;
     --ivory-black: #231f20;
