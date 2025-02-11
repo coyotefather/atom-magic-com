@@ -1,9 +1,4 @@
 @import 'tailwindcss';
-@plugin "@tailwindcss/typography";
-@plugin "@tailwindcss/nesting";
-@plugin "postcss-nesting";
-@plugin "@heroui/react";
-@config "../../tailwind.config.ts";
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -28,7 +23,6 @@
 }
 
 @layer utilities {
-
   :root {
     --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 255, 255, 240;

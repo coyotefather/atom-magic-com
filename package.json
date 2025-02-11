@@ -48,7 +48,7 @@
     "use-debounce": "^10.0.4"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.0.0",
+    "@tailwindcss/postcss": "^4.0.6",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22",
     "@types/react": "^19.0.0",
@@ -56,8 +56,8 @@
     "@types/remark-heading-id": "^1.0.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.0.0",
-    "postcss": "^8",
-    "tailwindcss": "^4.0.0",
+    "postcss": "^8.5.2",
+    "tailwindcss": "^4.0.6",
     "typescript": "^5"
   },
   "overrides": {
