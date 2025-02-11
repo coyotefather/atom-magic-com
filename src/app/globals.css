@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 
 @config "../../tailwind.config.ts";
+@plugin "@tailwindcss/typography";
+@plugin "@heroui/react";
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -25,9 +27,6 @@
 }
 
 @layer utilities {
-  @plugin "@tailwindcss/typography";
-  @plugin "@heroui/react";
-
   :root {
     --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 255, 255, 240;
