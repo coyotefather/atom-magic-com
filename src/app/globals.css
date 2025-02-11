@@ -48,6 +48,10 @@
   color: rgb(226, 185, 68);
 }
 
+@utility marcellus {
+  fontFamily: var(--font-marcellus);
+}
+
 @layer utilities {
   :root {
     --foreground-rgb: 0, 0, 0;
