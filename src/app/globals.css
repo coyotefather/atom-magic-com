@@ -53,8 +53,8 @@
 }
 
 @utility container {
-  center: true,
-  padding: '6rem',
+  center: true;
+  padding: '6rem';
 }
 
 @layer utilities {
