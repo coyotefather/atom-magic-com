@@ -84,7 +84,7 @@
 
 @layer base {
   container {
-    @apply margin-left: auto; margin-right: auto; padding: '6rem';
+    margin-left: auto; margin-right: auto; padding: '6rem';
   }
   a {
     @apply underline font-semibold transition duration-200 ease-in-out text-gold  hover:text-brightgold hover:contrast-100 hover:saturate-150;
