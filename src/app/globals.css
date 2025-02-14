@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@config "../tailwind.config.ts";
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -9,21 +10,36 @@
   color utility to any element that depends on these defaults.
 */
 
+.standard-gradient {
+  background: linear-gradient(85deg, rgb(211, 142, 39) 0%, rgb(208, 145, 37) 11%, rgb(205, 151, 35) 23%, rgb(202, 154, 33) 34%, rgb(197, 159, 32) 46%, rgb(192, 160, 33) 57%, rgb(186, 163, 33) 68%, rgb(180, 165, 34) 79%, rgb(177, 170, 37) 90%, rgb(171, 174, 41) 100%);
+}
+
+.sunset-gradient {
+  background: linear-gradient(195deg, rgb(0, 179, 164) 0%, rgb(66, 184, 145) 10%, rgb(104, 187, 123) 20%, rgb(141, 189, 107) 30%, rgb(175, 187, 93) 40%, rgb(208, 184, 88) 50%, rgb(215, 169, 71) 60%, rgb(221, 154, 60) 70%, rgb(227, 137, 53) 80%, rgb(234, 119, 52) 90%, rgb(238, 100, 58) 100%);
+}
+
+.bg-atom-magic-circle-white: {
+  background-image: url('/atom-magic-circle-white.png');
+}
+.bg-atom-magic-circle-black: {
+  background-image: url('/atom-magic-circle-black.png');
+}
+
 @theme {
-  --gold: rgb(187, 151, 49);
-  --brightgold: rgb(226, 185, 68);
-  --white: rgb(255, 255, 240);
-  --black: rgb(35, 31, 32);
-  --ivory-black: #231F20;
-  --ivory-black-lighter: #3E3A36;
-  --ivory: #fffff0;
-  --pale-blue: #ADE4E4;
-  --adobe: #bd6c48;
-  --olive-green: #BAB86C;
-  --dark-olive-green: #8A8841;
-  --goldenrod: #daa520;
-  --sunset-blue: rgb(0, 179, 164);
-  --sunset-red: rgb(238, 100, 58);
+  --color-gold: rgb(187, 151, 49);
+  --color-brightgold: rgb(226, 185, 68);
+  --color-white: rgb(255, 255, 240);
+  --color-black: rgb(35, 31, 32);
+  --color-ivory-black: #231F20;
+  --color-ivory-black-lighter: #3E3A36;
+  --color-ivory: #fffff0;
+  --color-pale-blue: #ADE4E4;
+  --color-adobe: #bd6c48;
+  --color-olive-green: #BAB86C;
+  --color-dark-olive-green: #8A8841;
+  --color-goldenrod: #daa520;
+  --color-sunset-blue: rgb(0, 179, 164);
+  --color-sunset-red: rgb(238, 100, 58);
 }
 
 @layer base {
@@ -52,19 +68,11 @@
   fontFamily: var(--font-marcellus);
 }
 
-@utility bg-standard-gradient {
-  background-image: linear-gradient(85deg, rgb(211, 142, 39) 0%, rgb(208, 145, 37) 11%, rgb(205, 151, 35) 23%, rgb(202, 154, 33) 34%, rgb(197, 159, 32) 46%, rgb(192, 160, 33) 57%, rgb(186, 163, 33) 68%, rgb(180, 165, 34) 79%, rgb(177, 170, 37) 90%, rgb(171, 174, 41) 100%)";
-}
-
-@utility bg-sunset-gradient {
-  background-image: linear-gradient(195deg, rgb(0, 179, 164) 0%, rgb(66, 184, 145) 10%, rgb(104, 187, 123) 20%, rgb(141, 189, 107) 30%, rgb(175, 187, 93) 40%, rgb(208, 184, 88) 50%, rgb(215, 169, 71) 60%, rgb(221, 154, 60) 70%, rgb(227, 137, 53) 80%, rgb(234, 119, 52) 90%, rgb(238, 100, 58) 100%)";
-}
-
 @utility container {
   margin-left: auto; margin-right: auto; padding: '6rem';
 }
 
-@layer utilities {
+/* @layer utilities {
   :root {
     --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 255, 255, 240;
@@ -84,7 +92,7 @@
     --sunset-blue: rgb(0, 179, 164);
     --sunset-red: rgb(238, 100, 58);
   }
-}
+} */
 
 @layer base {
   a {
@@ -101,12 +109,6 @@
   }
   .bg-black a {
     @apply brightness-100 font-semibold transition duration-200 ease-in-out text-gold hover:text-brightgold hover:brightness-100;
-  }
-  .bg-standard-gradient {
-    background-image: linear-gradient(85deg, rgb(211, 142, 39) 0%, rgb(208, 145, 37) 11%, rgb(205, 151, 35) 23%, rgb(202, 154, 33) 34%, rgb(197, 159, 32) 46%, rgb(192, 160, 33) 57%, rgb(186, 163, 33) 68%, rgb(180, 165, 34) 79%, rgb(177, 170, 37) 90%, rgb(171, 174, 41) 100%)";
-  }
-  .bg-sunset-gradient {
-    background-image: linear-gradient(195deg, rgb(0, 179, 164) 0%, rgb(66, 184, 145) 10%, rgb(104, 187, 123) 20%, rgb(141, 189, 107) 30%, rgb(175, 187, 93) 40%, rgb(208, 184, 88) 50%, rgb(215, 169, 71) 60%, rgb(221, 154, 60) 70%, rgb(227, 137, 53) 80%, rgb(234, 119, 52) 90%, rgb(238, 100, 58) 100%)";
   }
   .text-gold {
     color: rgb(var(--gold));
