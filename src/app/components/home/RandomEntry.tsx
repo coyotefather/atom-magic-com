@@ -32,7 +32,7 @@ const RandomEntry = ({
 			</div>
 			<a className="block my-8" href={`/codex/entries/${slug?.current}`}>
 				<Button
-					className="bg-sunset-gradient font-extrabold uppercase tracking-widest p-2 pl-4 pr-4 border-black border-2"
+					className="sunset-gradient font-extrabold uppercase tracking-widest p-2 pl-4 pr-4 border-black border-2"
 				 	size="lg"
 					radius="full"
 					variant="bordered"

@@ -30,7 +30,7 @@ export default function Timeline({
 	<div className="container notoserif my-16">
 		<div className="relative mx-auto">
 			<div className="absolute h-full w-[14px] mx-auto left-0 right-0 z-1">
-				<div className="w-[14px] mt-6 h-full bg-sunset-gradient border-2"></div>
+				<div className="w-[14px] mt-6 h-full sunset-gradient border-2"></div>
 			</div>
 			{timeline.map( (t, index) => (
 				<TimelineItem

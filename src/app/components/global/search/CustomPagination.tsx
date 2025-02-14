@@ -112,7 +112,7 @@ function PaginationItem({
 				className={clsx(
 					'rounded-full inline-block no-underline',
 					{ 'w-full h-full flex items-center justify-center': !iconOnly },
-					{ 'bg-sunset-gradient': thisPage === currentPage },
+					{ 'sunset-gradient': thisPage === currentPage },
 				)}
 				href={href}
 				onClick={(event) => {
