@@ -32,7 +32,7 @@ export function Category({
 		</Header>
 		{allChildren}
 		{allEntries}
-		<section className="bg-sunset-gradient mt-16">
+		<section className="sunset-gradient mt-16">
 			<div className="container py-4">
 				<Link href="/codex">&larr; Return to Codex</Link>
 			</div>
