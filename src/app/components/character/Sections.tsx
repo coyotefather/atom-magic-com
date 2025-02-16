@@ -142,12 +142,12 @@ const Sections = ({
 		} else {
 			setWealthIncomplete("");
 		}
-	},[character.wealth.silver, clickCheck]);
+	},[character.wealth, clickCheck]);
 
 	useEffect( () => {
 		if(character.animalCompanion.id === "" && clickCheck) {
 			setChooseAnimalCompanionIncomplete("Animal Companion");
-		} else if(character.wealth.silver === 0 && !clickCheck) {
+		} else if(character.animalCompanion.id === "" && !clickCheck) {
 			setChooseAnimalCompanionIncomplete("init");
 		} else {
 			setChooseAnimalCompanionIncomplete("");
