@@ -12,7 +12,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  useCdn: false,
   stega: {
     enabled: process.env.NEXT_PUBLIC_VERCEL_ENV === "preview",
     studioUrl: "/studio",
