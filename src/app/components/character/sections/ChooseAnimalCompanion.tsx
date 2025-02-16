@@ -59,7 +59,7 @@ const ChooseAnimalCompanion = ({
 				</SelectDetailExpanded>
 			);
 		}
-	},[animalId, animalType, name, description] );
+	},[animalId, animalType, name, description, dispatch] );
 
 	const handleSelectOneChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
