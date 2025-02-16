@@ -36,14 +36,14 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 
 	return (
 		<article className="notoserif mx-auto prose prose-md max-w-none bg-white m-0">
-			<div className="bg-sunset-gradient">
+			<div className="sunset-gradient">
 				<div className="container py-4">
 					<Breadcrumbs currentPage={title ? title : ""} parents={parents} />
 				</div>
 			</div>
 			<div className="container grid grid-cols-3 gap-8 mt-8">
 				<header>
-					<Card className="w-full bg-sunset-gradient">
+					<Card className="w-full sunset-gradient">
 						<CardHeader className={clsx(
 							"bg-black flex-col items-start!",
 							{ 'z-10 top-0': mainImage?.asset?._ref }
@@ -87,7 +87,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 					<Markdown className="first-line:uppercase first-line:marcellus first-letter:text-3xl" remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>{entryBody}</Markdown>
 				</section>
 			</div>
-			<section className="bg-sunset-gradient mt-16">
+			<section className="sunset-gradient mt-16">
 				<div className="container py-4">
 					<Link href="/codex">&larr; Return to Codex</Link>
 				</div>
