@@ -50,7 +50,7 @@ export async function sanityFetch<QueryResponse>({
     ...( //isDraftMode &&
       ({
         token: token,
-        perspective: "previewDrafts",
+        perspective: "drafts",
         stega: true,
       } satisfies QueryOptions)),
     next: {
