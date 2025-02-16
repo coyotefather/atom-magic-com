@@ -12,7 +12,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  useCdn: false,
   stega: {
     enabled: process.env.NEXT_PUBLIC_VERCEL_ENV === "preview",
     studioUrl: "/studio",
@@ -50,7 +50,7 @@ export async function sanityFetch<QueryResponse>({
     ...( //isDraftMode &&
       ({
         token: token,
-        perspective: "previewDrafts",
+        perspective: "drafts",
         stega: true,
       } satisfies QueryOptions)),
     next: {
