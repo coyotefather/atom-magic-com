@@ -2,7 +2,7 @@
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
 import { ANIMAL_COMPANIONS } from '@/lib/global-data';
-import { useAppDispatch } from '@/lib/hooks'
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setAnimalCompanion } from "@/lib/slices/characterSlice";
 import {Select, SelectItem} from "@heroui/select";
 import { Input, Textarea } from "@heroui/input";
@@ -27,6 +27,7 @@ const ChooseAnimalCompanion = ({
 	const [animalId, setAnimalId] = useState("");
 	const [animalType, setAnimalType] = useState("");
 	const [name, setName] = useState("");
+	const animalCompanion = useAppSelector(state => state.character.animalCompanion);
 	const [description, setDescription] = useState("");
 	const [details, setDetails] = useState(
 		<SelectDetailExpanded
@@ -50,11 +51,11 @@ const ChooseAnimalCompanion = ({
 			setDetails(
 				<SelectDetailExpanded
 					imagePath=""
-					name={name}
+					name={animalCompanion.name}
 					description={`Type: ${animalType}`}
 					disabled={false}>
 					<div>
-						{description}
+						{animalCompanion.details}
 					</div>
 				</SelectDetailExpanded>
 			);
