@@ -31,7 +31,7 @@ const Scores = ({
 	const scorePoints = useAppSelector(state => state.character.scorePoints);
 	useEffect(()=>{
 		dispatch( initScore(scores) );
-	}, [])
+	}, [scores, dispatch])
 	//const gear = useAppSelector(state => state.character.gear);
 
 // 	let gearModifiersMap = new Map<string, number>([]);
