@@ -17,13 +17,13 @@ const AdditionalScores = ({
 
 	useEffect( () => {
 		dispatch(initAdditionalScores(additionalScores));
-	},[]);
+	},[additionalScores, dispatch]);
 
 	const addScores = useAppSelector(state => state.character.additionalScores);
 
 	useEffect( () => {
 		dispatch(setAdditionalScores());
-	},[scores]);
+	},[scores, dispatch]);
 
 	return (
 		<div className="grid grid-cols-2 divide-x-2 bg-white container">
