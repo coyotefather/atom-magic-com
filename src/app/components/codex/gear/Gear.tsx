@@ -63,7 +63,6 @@ export default function Gear({
 		},
 	];
 
-	let unsortedGear:Gear[] = [];
 	//let paths:{ _id: string, title: string | null }[] = [];
 	const [paths, setPaths] = useState<Path[]>([]);
 	const [sortedGear, setSortedGear] = useState<Gear[]>([]);
@@ -74,6 +73,7 @@ export default function Gear({
 	});
 
 	useEffect( () => {
+		let unsortedGear:Gear[] = [];
 		let updatedGear:Gear[] = [];
 		let pathList:Path[] = [{ _id: "all", title: "All Paths"}];
 
@@ -157,7 +157,7 @@ export default function Gear({
 				break;
 		}
 		setSortedGear(updatedGear);
-	},[sort, filter, gear, unsortedGear, sortedGear.length]);
+	},[sort, filter, gear, sortedGear.length]);
 
   return (
 	<div className="container notoserif my-16">
