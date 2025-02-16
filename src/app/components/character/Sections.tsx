@@ -142,7 +142,7 @@ const Sections = ({
 		} else {
 			setWealthIncomplete("");
 		}
-	},[character.wealth, clickCheck]);
+	},[character.wealth.silver, clickCheck]);
 
 	useEffect( () => {
 		if(character.animalCompanion.id === "" && clickCheck) {
