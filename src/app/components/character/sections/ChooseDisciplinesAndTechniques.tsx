@@ -123,6 +123,60 @@ const ManageGear = ({
 
 	useEffect(() => {
 		// Update checkboxes when discipline is checked or unchecked
+		const handleDisciplineCheck = ({
+				value,
+				eventState
+			}:{
+				value:string,
+				eventState: boolean
+			}) => {
+
+			let checkedDisciplines:string[] = [];
+			checkedDisciplines.push(...characterDisciplines);
+			let checkedTechniques:string[] = [];
+			checkedTechniques.push(...characterTechniques);
+			if(!eventState) {
+				const index = checkedDisciplines.indexOf(value);
+				if(index != -1) {
+					checkedDisciplines.splice(index, 1);
+				}
+				// get techniques of discipline and remove from selectedTechniques
+				let discFound = disciplines.find( (d) => d._id === value );
+				discFound && discFound.techniques && discFound.techniques.forEach( t => {
+					let tIndex = checkedTechniques.indexOf(t._id);
+					if(tIndex != -1) {
+						checkedTechniques.splice(tIndex, 1);
+					}
+				});
+				dispatch(setTechniques(checkedTechniques));
+			} else {
+				checkedDisciplines.push(value);
+			}
+			dispatch(setDisciplines(checkedDisciplines));
+			//setCheckboxes();
+		};
+
+		const handleTechniqueCheck = ({
+				value,
+				eventState
+			}:{
+				value:string,
+				eventState: boolean
+			}) => {
+
+			let checkedTechniques:string[] = [];
+			checkedTechniques.push(...characterTechniques);
+			if(!eventState) {
+				const index = checkedTechniques.indexOf(value);
+				if(index != -1) {
+					checkedTechniques.splice(index, 1);
+				}
+			} else {
+				checkedTechniques.push(value);
+			}
+			dispatch(setTechniques(checkedTechniques));
+		};
+
 		const setCheckboxes = () => {
 			let element = (<></>);
 			if (!path) {
@@ -199,8 +253,9 @@ const ManageGear = ({
 
 			setDisciplinesAndTechniques(element);
 		};
+
 		setCheckboxes();
-	},[characterDisciplines, characterTechniques, disciplines, pathLocal]);
+	},[characterDisciplines, characterTechniques, disciplines, pathLocal, path]);
 
 	useEffect(() => {
 		// Update checkboxes when discipline is checked or unchecked
@@ -211,59 +266,7 @@ const ManageGear = ({
 		}
 	},[path, pathLocal, dispatch]);
 
-	const handleDisciplineCheck = ({
-			value,
-			eventState
-		}:{
-			value:string,
-			eventState: boolean
-		}) => {
 
-		let checkedDisciplines:string[] = [];
-		checkedDisciplines.push(...characterDisciplines);
-		let checkedTechniques:string[] = [];
-		checkedTechniques.push(...characterTechniques);
-		if(!eventState) {
-			const index = checkedDisciplines.indexOf(value);
-			if(index != -1) {
-				checkedDisciplines.splice(index, 1);
-			}
-			// get techniques of discipline and remove from selectedTechniques
-			let discFound = disciplines.find( (d) => d._id === value );
-			discFound && discFound.techniques && discFound.techniques.forEach( t => {
-				let tIndex = checkedTechniques.indexOf(t._id);
-				if(tIndex != -1) {
-					checkedTechniques.splice(tIndex, 1);
-				}
-			});
-			dispatch(setTechniques(checkedTechniques));
-		} else {
-			checkedDisciplines.push(value);
-		}
-		dispatch(setDisciplines(checkedDisciplines));
-		//setCheckboxes();
-	};
-
-	const handleTechniqueCheck = ({
-			value,
-			eventState
-		}:{
-			value:string,
-			eventState: boolean
-		}) => {
-
-		let checkedTechniques:string[] = [];
-		checkedTechniques.push(...characterTechniques);
-		if(!eventState) {
-			const index = checkedTechniques.indexOf(value);
-			if(index != -1) {
-				checkedTechniques.splice(index, 1);
-			}
-		} else {
-			checkedTechniques.push(value);
-		}
-		dispatch(setTechniques(checkedTechniques));
-	};
 
 	useEffect(() => {
 		let content = (<></>);
