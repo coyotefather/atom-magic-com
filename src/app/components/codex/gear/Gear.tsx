@@ -157,7 +157,7 @@ export default function Gear({
 				break;
 		}
 		setSortedGear(updatedGear);
-	},[sort, filter]);
+	},[sort, filter, gear, unsortedGear, sortedGear.length]);
 
   return (
 	<div className="container notoserif my-16">
