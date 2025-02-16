@@ -13,7 +13,7 @@ export default function LoadingPage() {
 		if(loadedCheck !== true) {
 			setLoadedCheck(true);
 		}
-	},[loaded] );
+	},[loaded, loadedCheck] );
 
 	const helloRef = useRef(null);
 	const goodbyeRef = useRef(null);
