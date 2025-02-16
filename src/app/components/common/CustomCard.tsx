@@ -32,7 +32,7 @@ const CustomCard = ({
 		>
 			<Card shadow="sm" className={clsx(
 				"w-full notoserif",
-				{'bg-sunset-gradient': background === 0 && type !== 'category'},
+				{'sunset-gradient': background === 0 && type !== 'category'},
 				{'bg-pale-blue': background === 1 && type !== 'category'},
 				{'bg-adobe': background === 2 && type !== 'category'},
 				{'bg-olive-green': background === 3 && type !== 'category'},
@@ -42,7 +42,7 @@ const CustomCard = ({
 				{'bg-sunset-red': background === 7 && type !== 'category'},
 				{'bg-gold': background === 8 && type !== 'category'},
 				{'bg-brightgold': background === 9 && type !== 'category'},
-				{'bg-sunset-gradient': type === 'category'},
+				{'sunset-gradient': type === 'category'},
 				{'h-[300px]': showImage},
 				{'h-[200px]': !showImage},
 			)}>
