@@ -124,7 +124,7 @@ const ManageGear = ({
 	useEffect(() => {
 		// Update checkboxes when discipline is checked or unchecked
 		setCheckboxes();
-	},[characterDisciplines, characterTechniques]);
+	},[characterDisciplines, characterTechniques, setCheckboxes]);
 
 	useEffect(() => {
 		// Update checkboxes when discipline is checked or unchecked
@@ -133,7 +133,7 @@ const ManageGear = ({
 			dispatch(setDisciplines([]));
 			setPathLocal(path);
 		}
-	},[path]);
+	},[path, dispatch]);
 
 	const handleDisciplineCheck = ({
 			value,
@@ -252,7 +252,7 @@ const ManageGear = ({
 					{content}
 				</SelectDetailExpanded>);
 		}
-	},[characterDisciplines, characterTechniques]);
+	},[characterDisciplines, characterTechniques, disciplines]);
 
 
 	return (
