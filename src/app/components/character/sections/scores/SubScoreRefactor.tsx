@@ -41,7 +41,7 @@ const SubScore = ({
 		if(value !== null) {
 			setBaseSubscoreValue(value);
 		}
-	},[]);
+	},[value]);
 
 	// useEffect(() => {
 	// 	let curSubscoreValue = baseSubscoreValue + pathModifier + gearModifier;
@@ -57,7 +57,7 @@ const SubScore = ({
 			setPathModifierTotal(total);
 		}
 		//setPathModifierTotal(total);
-	},[pathModifiers]);
+	},[pathModifiers, pathModifierTotal]);
 
 	useEffect(() => {
 		let total = 0;
@@ -68,7 +68,7 @@ const SubScore = ({
 			setGearModifierTotal(total);
 		}
 		//setGearModifierTotal(total);
-	},[gearModifiers]);
+	},[gearModifiers, gearModifierTotal]);
 
 	useEffect(() => {
 		let curSubscoreValue = baseSubscoreValue + pathModifierTotal + gearModifierTotal;
