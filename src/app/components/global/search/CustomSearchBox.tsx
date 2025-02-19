@@ -65,7 +65,6 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 					autoCorrect="off"
 					autoCapitalize="off"
 					placeholder="Search Codex"
-					spellCheck={false}
 					maxLength={512}
 					type="search"
 					value={inputValue}
@@ -75,7 +74,7 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 					onClear={() => setInputValue("")}
 					autoFocus/>
 				<Button
-					onClick={() => {
+					onPress={() => {
 						setQuery(inputValue);
 					}}
 					endContent={<Icon path={mdiMagnify} size={3} />}
