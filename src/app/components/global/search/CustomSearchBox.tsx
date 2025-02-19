@@ -65,7 +65,6 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 					autoCorrect="off"
 					autoCapitalize="off"
 					placeholder="Search Codex"
-					spellCheck={false}
 					maxLength={512}
 					type="search"
 					value={inputValue}
