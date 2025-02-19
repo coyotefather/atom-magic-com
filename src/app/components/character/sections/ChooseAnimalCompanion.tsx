@@ -113,13 +113,13 @@ const ChooseAnimalCompanion = ({
 								label="Animal Family"
 								placeholder="Select a Family"
 								onChange={(event) => handleSelectOneChange(event)}>
-								<SelectItem key="canidae" value="canidae">Canidae</SelectItem>
-								<SelectItem key="felidae" value="felidae">Felidae</SelectItem>
-								<SelectItem key="rodentia" value="rodentia">Rodentia</SelectItem>
-								<SelectItem key="primates" value="primates">Primates</SelectItem>
-								<SelectItem key="aves" value="aves">Aves</SelectItem>
-								<SelectItem key="reptilia" value="reptilia">Reptilia</SelectItem>
-								<SelectItem key="other" value="other">Other</SelectItem>
+								<SelectItem key="canidae">Canidae</SelectItem>
+								<SelectItem key="felidae">Felidae</SelectItem>
+								<SelectItem key="rodentia">Rodentia</SelectItem>
+								<SelectItem key="primates">Primates</SelectItem>
+								<SelectItem key="aves">Aves</SelectItem>
+								<SelectItem key="reptilia">Reptilia</SelectItem>
+								<SelectItem key="other">Other</SelectItem>
 							</Select>
 							<Select
 								isDisabled={selectedFamily.length === 0 ? true : false}
