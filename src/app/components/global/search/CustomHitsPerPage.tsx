@@ -21,8 +21,7 @@ export default function CustomHitsPerPage(props: UseHitsPerPageProps) {
 			value={String(currentValue)}>
 			{items.map((item) => (
 				<SelectItem
-					key={item.value}
-					value={item.value}>
+					key={item.value}>
 					{item.label}
 				</SelectItem>
 			))}
