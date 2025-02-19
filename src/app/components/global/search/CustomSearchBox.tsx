@@ -75,7 +75,7 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 					onClear={() => setInputValue("")}
 					autoFocus/>
 				<Button
-					onClick={() => {
+					onPress={() => {
 						setQuery(inputValue);
 					}}
 					endContent={<Icon path={mdiMagnify} size={3} />}
