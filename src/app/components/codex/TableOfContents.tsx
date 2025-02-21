@@ -10,9 +10,11 @@ const TableOfContents = ({
 			<div className="border-b-1 border-white w-full">
 				Contents
 			</div>
-			<Markdown className="text-white">
-				{toc}
-			</Markdown>
+			<div className="text-white">
+				<Markdown>
+					{toc}
+				</Markdown>
+			</div>
 		</div>
 	);
 }
