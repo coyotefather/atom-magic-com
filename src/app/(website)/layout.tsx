@@ -4,6 +4,7 @@ import localFont from 'next/font/local'
 import "../globals.css";
 import StoreProvider from "@/app/StoreProvider";
 import {HeroUIProvider} from "@heroui/react";
+import { Analytics } from "@vercel/analytics/react"
 import NavBar from '@/app/components/global/NavBar';
 import Footer from '@/app/components/global/Footer';
 
@@ -42,6 +43,7 @@ export default function RootLayout({
           </HeroUIProvider>
         </div>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
