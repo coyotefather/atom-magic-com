@@ -5,6 +5,7 @@ import "../globals.css";
 import StoreProvider from "@/app/StoreProvider";
 import {HeroUIProvider} from "@heroui/react";
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import NavBar from '@/app/components/global/NavBar';
 import Footer from '@/app/components/global/Footer';
 
@@ -44,6 +45,7 @@ export default function RootLayout({
         </div>
         <Footer />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
