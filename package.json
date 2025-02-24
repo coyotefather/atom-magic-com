@@ -14,7 +14,7 @@
     "@heroui/theme": "^2.4.9",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
-    "@reduxjs/toolkit": "^2.4.0",
+    "@reduxjs/toolkit": "^2.6.0",
     "@sanity/client": "^6.27.2",
     "@sanity/color-input": "^4.0.3",
     "@sanity/icons": "^3.6.0",
