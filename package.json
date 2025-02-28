@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@heroui/react": "^2.7.2",
-    "@heroui/system": "^2.4.10",
-    "@heroui/theme": "^2.4.9",
+    "@heroui/react": "^2.7.4",
+    "@heroui/system": "^2.4.11",
+    "@heroui/theme": "^2.4.11",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@reduxjs/toolkit": "^2.6.0",
