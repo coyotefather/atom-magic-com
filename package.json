@@ -28,7 +28,7 @@
     "algoliasearch": "^5.20.4",
     "clsx": "^2.0.0",
     "easymde": "^2.20.0",
-    "framer-motion": "^12.4.10",
+    "framer-motion": "^12.4.11",
     "next": "^15.2.1",
     "next-sanity": "^9.8.60",
     "postcss-nesting": "^13.0.1",
