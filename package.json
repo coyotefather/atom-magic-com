@@ -34,8 +34,8 @@
     "postcss-nesting": "^13.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-instantsearch": "^7.15.4",
-    "react-instantsearch-nextjs": "^0.4.5",
+    "react-instantsearch": "^7.15.5",
+    "react-instantsearch-nextjs": "^0.4.6",
     "react-markdown": "^10.0.1",
     "react-redux": "^9.2.0",
     "react-transition-group": "^4.4.5",
@@ -50,16 +50,16 @@
     "use-debounce": "^10.0.4"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.0.11",
+    "@tailwindcss/postcss": "^4.0.15",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22",
     "@types/react": "^19.0.11",
     "@types/react-dom": "^19.0.4",
     "@types/remark-heading-id": "^1.0.0",
-    "eslint": "^9.21.0",
+    "eslint": "^9.23.0",
     "eslint-config-next": "^15.2.3",
     "postcss": "^8.5.2",
-    "tailwindcss": "^4.0.11",
+    "tailwindcss": "^4.0.15",
     "typescript": "^5"
   },
   "overrides": {
