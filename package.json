@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@heroui/react": "^2.7.4",
-    "@heroui/system": "^2.4.11",
-    "@heroui/theme": "^2.4.11",
+    "@heroui/react": "^2.7.6",
+    "@heroui/system": "^2.4.13",
+    "@heroui/theme": "^2.4.13",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@reduxjs/toolkit": "^2.6.0",
@@ -40,7 +40,7 @@
     "react-redux": "^9.2.0",
     "react-transition-group": "^4.4.5",
     "remark-definition-list": "^2.0.0",
-    "remark-extended-table": "^2.0.2",
+    "remark-extended-table": "^2.0.3",
     "remark-gfm": "^4.0.0",
     "remark-heading-id": "^1.0.1",
     "sanity": "^3.82.0",
