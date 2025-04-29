@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@heroui/react": "^2.7.6",
-    "@heroui/system": "^2.4.13",
-    "@heroui/theme": "^2.4.13",
+    "@heroui/react": "^2.7.8",
+    "@heroui/system": "^2.4.15",
+    "@heroui/theme": "^2.4.15",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@reduxjs/toolkit": "^2.6.0",
@@ -34,8 +34,8 @@
     "postcss-nesting": "^13.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-instantsearch": "^7.15.5",
-    "react-instantsearch-nextjs": "^0.4.6",
+    "react-instantsearch": "^7.15.6",
+    "react-instantsearch-nextjs": "^0.4.7",
     "react-markdown": "^10.0.1",
     "react-redux": "^9.2.0",
     "react-transition-group": "^4.4.5",
