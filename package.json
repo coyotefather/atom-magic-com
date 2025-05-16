@@ -14,7 +14,7 @@
     "@heroui/theme": "^2.4.15",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
-    "@reduxjs/toolkit": "^2.8.1",
+    "@reduxjs/toolkit": "^2.8.2",
     "@sanity/client": "^7.2.1",
     "@sanity/color-input": "^4.0.3",
     "@sanity/icons": "^3.7.0",
@@ -28,9 +28,9 @@
     "algoliasearch": "^5.25.0",
     "clsx": "^2.0.0",
     "easymde": "^2.20.0",
-    "framer-motion": "^12.11.0",
+    "framer-motion": "^12.12.1",
     "next": "^15.3.2",
-    "next-sanity": "^9.10.6",
+    "next-sanity": "^9.11.1",
     "postcss-nesting": "^13.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -50,7 +50,7 @@
     "use-debounce": "^10.0.4"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.6",
+    "@tailwindcss/postcss": "^4.1.7",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22",
     "@types/react": "^19.1.4",
@@ -59,7 +59,7 @@
     "eslint": "^9.25.1",
     "eslint-config-next": "^15.3.2",
     "postcss": "^8.5.2",
-    "tailwindcss": "^4.1.6",
+    "tailwindcss": "^4.1.7",
     "typescript": "^5"
   }
 }
