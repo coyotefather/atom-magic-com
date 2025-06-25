@@ -43,13 +43,17 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 				</div>
 			</div>
 			<div className="container grid grid-cols-3 gap-8 mt-8">
+				<section className="col-span-2">
+					<div className="first-line:uppercase first-line:marcellus">
+						<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>{entryBody}</Markdown>
+					</div>
+				</section>
 				<header>
 					<Card className="w-full sunset-gradient">
 						<CardHeader className={clsx(
 							"bg-black flex-col items-start!",
 							{ 'z-10 top-0': mainImage?.asset?._ref }
 						)}>
-							{title ? <h1 className="marcellus text-white mb-0 w-full text-center">{title}</h1> : null}
 						</CardHeader>
 						{mainImage?.asset?._ref ? (
 							<Image
@@ -84,11 +88,6 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 						</CardFooter>
 					</Card>
 				</header>
-				<section className="col-span-2">
-					<div className="first-line:uppercase first-line:marcellus">
-						<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>{entryBody}</Markdown>
-					</div>
-				</section>
 			</div>
 			<section className="sunset-gradient mt-16">
 				<div className="container py-4">
