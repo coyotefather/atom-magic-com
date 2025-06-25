@@ -85,7 +85,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 					</Card>
 				</header>
 				<section className="col-span-2">
-					<div className="first-line:uppercase first-line:marcellus first-letter:text-3xl">
+					<div className="first-line:uppercase first-line:marcellus">
 						<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>{entryBody}</Markdown>
 					</div>
 				</section>
