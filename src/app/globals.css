@@ -56,6 +56,78 @@
   button, [role="button"] {
     cursor: pointer;
   }
+  h1, h2, h3 {
+    @apply font-bold mb-3 mt-3;
+    font-family: var(--font-marcellus);
+  }
+  h4, h5, h6 {
+    @apply font-bold mb-2 mt-2;
+    font-family: var(--font-marcellus);
+  }
+  .h0 {
+    @apply text-3xl font-bold md:text-5xl;
+  }
+
+  h1,
+  .h1 {
+    @apply text-2xl font-bold md:text-4xl;
+  }
+
+  h2,
+  .h2 {
+    @apply text-xl font-bold md:text-3xl;
+  }
+
+  h3,
+  .h3 {
+    @apply text-lg font-bold md:text-2xl;
+  }
+
+  h4,
+  .h4 {
+    @apply text-base font-bold md:text-lg;
+  }
+
+  body,
+  .p {
+    @apply text-sm md:text-base;
+  }
+
+  article {
+    p {
+      @apply mb-2;
+    }
+
+    ul {
+      @apply list-disc pl-2 mb-2;
+    }
+
+    li {
+      @apply ml-2;
+    }
+  }
+
+  a {
+    @apply underline font-semibold transition duration-200 ease-in-out text-gold  hover:text-brightgold hover:contrast-100 hover:saturate-150;
+  }
+  button {
+    @apply marcellus transition duration-200 ease-in border-2 border-black hover:contrast-150 hover:saturate-150 hover:brightness-90;
+  }
+  a > button {
+    @apply hover:contrast-125 hover:saturate-150 hover:brightness-100;
+  }
+  button > a {
+    @apply marcellus hover:contrast-100 hover:saturate-100 hover:brightness-100;
+  }
+  .bg-black a {
+    @apply brightness-100 font-semibold transition duration-200 ease-in-out text-gold hover:text-brightgold hover:brightness-100;
+  }
+  .text-gold {
+    color: rgb(var(--gold));
+  }
+  .text-brightgold {
+    color: rgb(var(--brightgold));
+  }
 }
 
 @utility text-balance {
@@ -100,29 +172,6 @@
   }
 } */
 
-@layer base {
-  a {
-    @apply underline font-semibold transition duration-200 ease-in-out text-gold  hover:text-brightgold hover:contrast-100 hover:saturate-150;
-  }
-  button {
-    @apply marcellus transition duration-200 ease-in border-2 border-black hover:contrast-150 hover:saturate-150 hover:brightness-90;
-  }
-  a > button {
-    @apply hover:contrast-125 hover:saturate-150 hover:brightness-100;
-  }
-  button > a {
-    @apply marcellus hover:contrast-100 hover:saturate-100 hover:brightness-100;
-  }
-  .bg-black a {
-    @apply brightness-100 font-semibold transition duration-200 ease-in-out text-gold hover:text-brightgold hover:brightness-100;
-  }
-  .text-gold {
-    color: rgb(var(--gold));
-  }
-  .text-brightgold {
-    color: rgb(var(--brightgold));
-  }
-}
 
 @layer utilities {
   @media (prefers-color-scheme: light) {
