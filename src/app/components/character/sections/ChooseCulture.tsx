@@ -3,7 +3,7 @@ import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
 import { useAppDispatch } from '@/lib/hooks'
 import { setCulture } from "@/lib/slices/characterSlice";
-import {Select, SelectItem} from "@heroui/select";
+import {Select, SelectItem} from "@heroui/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/react";
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";

@@ -1,7 +1,7 @@
 'use client';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
-import {Accordion, AccordionItem} from "@heroui/accordion";
-import {Chip} from "@heroui/chip";
+import {Accordion, AccordionItem} from "@heroui/react";
+import {Chip} from "@heroui/react";
 import Icon from '@mdi/react';
 import { mdiChevronLeftCircle, mdiBankCircleOutline } from '@mdi/js';
 import clsx from 'clsx';
