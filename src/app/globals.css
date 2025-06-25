@@ -58,9 +58,11 @@
   }
   h1, h2, h3 {
     @apply font-bold mb-3 mt-3;
+    font-family: var(--font-marcellus);
   }
   h4, h5, h6 {
     @apply font-bold mb-2 mt-2;
+    font-family: var(--font-marcellus);
   }
   .h0 {
     @apply text-3xl font-bold md:text-5xl;
