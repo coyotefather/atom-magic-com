@@ -1,5 +1,5 @@
 import React from 'react';
-import {Select, SelectSection, SelectItem} from "@heroui/select";
+import {Select, SelectSection, SelectItem} from "@heroui/react";
 import {
 	useHitsPerPage,
 	UseHitsPerPageProps,

@@ -4,7 +4,7 @@ import ExternalLink from '@/app/components/common/ExternalLink';
 import { PATHS } from '@/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setPath } from "@/lib/slices/characterSlice";
-import {Select, SelectItem} from "@heroui/select";
+import {Select, SelectItem} from "@heroui/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
 import { useState, useRef } from 'react';
 import clsx from 'clsx';

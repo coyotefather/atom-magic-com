@@ -2,7 +2,7 @@
 import { useState, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setCharacterName, setCharacterAge, setCharacterPronouns, setCharacterDescription } from "@/lib/slices/characterSlice";
-import { Input, Textarea } from "@heroui/input";
+import { Input, Textarea } from "@heroui/react";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import ExternalLink from '@/app/components/common/ExternalLink';

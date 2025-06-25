@@ -1,6 +1,6 @@
 'use client';
 import clsx from 'clsx';
-import {Accordion, AccordionItem} from "@heroui/accordion";
+import {Accordion, AccordionItem} from "@heroui/react";
 import Icon from '@mdi/react';
 import { mdiPlus, mdiMinus, mdiChevronLeftCircle } from '@mdi/js';
 import { useState, useEffect } from 'react';

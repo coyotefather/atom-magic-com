@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import {Input} from "@heroui/input";
+import {Input} from "@heroui/react";
 import {Button} from "@heroui/react";
 import Icon from '@mdi/react';
 import { mdiMagnify } from '@mdi/js';
