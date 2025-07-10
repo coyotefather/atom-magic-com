@@ -201,6 +201,13 @@
     -webkit-appearance: none;
   }
 
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-accent-gold);
+  }
+
   body {
     color: rgb(var(--foreground-rgb));
     background: linear-gradient(
