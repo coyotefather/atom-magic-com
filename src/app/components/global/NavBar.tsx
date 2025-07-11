@@ -5,10 +5,10 @@ import { NAVIGATION_LINKS } from '@/lib/global-data';
 
 const NavBar = () => {
 	return (
-		<header className="z-50 top-0 p-2 bg-black flex flex-row items-center justify-between">
+		<header className="z-10 p-2 py-6 bg-gradient trapezoid-bar-reverse flex flex-row items-center justify-between">
 			<Link href="/">
 				<Image
-					src="/AtomMagicLogoLight.svg"
+					src="/AtomMagicLogoDark.svg"
 					alt="Atom Magic Logo"
 					className="inline-block my-2 ml-4"
 					width={215}

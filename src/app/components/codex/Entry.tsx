@@ -37,21 +37,16 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 
 	return (
 		<article className="notoserif mx-auto prose prose-md max-w-none bg-white m-0">
-			<div className="sunset-gradient">
-				<div className="container py-4">
+			<div className="trapezoid-bar z-1 py-4 bg-black">
+				<div className="container mt-4">
 					<Breadcrumbs currentPage={title ? title : ""} parents={parents} />
 				</div>
 			</div>
-			<div className="container grid grid-cols-3 gap-8 mt-8">
-				<section className="col-span-2">
-					<div className="first-line:uppercase first-line:marcellus">
-						<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>{entryBody}</Markdown>
-					</div>
-				</section>
-				<header>
-					<Card className="w-full sunset-gradient">
+			<div className="container mt-8 grid grid-cols-3 gap-4">
+				<div className="md:ml-8">
+					<Card className="w-full bg-black text-white">
 						<CardHeader className={clsx(
-							"bg-black flex-col items-start!",
+							"flex-col items-start!",
 							{ 'z-10 top-0': mainImage?.asset?._ref }
 						)}>
 						</CardHeader>
@@ -65,7 +60,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 							/>
 						) : null }
 						<CardFooter className={clsx(
-							"bg-black text-white flex-col items-start!",
+							"flex-col items-start!",
 							{ 'z-10 bottom-0': mainImage?.asset?._ref }
 						)}>
 							{ toc ? <TableOfContents toc={toc} /> : ""}
@@ -77,19 +72,24 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 									</div>
 								))}
 								<div className="flex flex-row py-1">
-									<dt className="w-36 text-white mt-1">Author:</dt>
+									<dt className="w-36 mt-1">Author:</dt>
 									<dd className="mt-1">{author?.name ? author?.name : "An unknown scribe"}</dd>
 								</div>
 								<div className="flex flex-row py-1">
-									<dt className="w-36 text-white mt-1">Last update:</dt>
+									<dt className="w-36 mt-1">Last update:</dt>
 									<dd className="mt-1">{publishedAt ? new Date(publishedAt).toDateString() : "Date unknown"}</dd>
 								</div>
 							</dl>
 						</CardFooter>
 					</Card>
-				</header>
+				</div>
+				<section className="col-span-2">
+					<div className="first-line:uppercase first-line:marcellus">
+						<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>{entryBody}</Markdown>
+					</div>
+				</section>
 			</div>
-			<section className="sunset-gradient mt-16">
+			<section className="bg-gradient trapezoid-bar-reverse mt-16">
 				<div className="container py-4">
 					<Link href="/codex">&larr; Return to Codex</Link>
 				</div>
