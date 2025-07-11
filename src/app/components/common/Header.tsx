@@ -17,7 +17,7 @@ const Header = ({
 		children: React.ReactNode
 	}) => {
 	return (
-		<div className="sunset-gradient border-b-2">
+		<div className="bg-black text-white border-b-2">
 			<div className="container pt-8 pb-8">
 				<h1 className="w-full mb-2 marcellus text-4xl">{name}</h1>
 				<div className="w-full mb-2 notoserif">{children}</div>
