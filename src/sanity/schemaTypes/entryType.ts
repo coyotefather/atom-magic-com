@@ -1,5 +1,5 @@
 import {DocumentTextIcon} from '@sanity/icons'
-import {defineField, defineType, SanityImageAssetDocument} from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export const entryType = defineType({
   name: 'entry',
