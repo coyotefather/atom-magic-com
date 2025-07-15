@@ -74,7 +74,7 @@ export const entryType = defineType({
       name: 'entryBody',
       title: 'Entry Body',
       options: {
-        imageUrl: ({imageAsset}:{imageAsset: any}) => `${imageAsset.url}?w=400&h=400`
+        imageUrl: ({imageAsset}:{imageAsset: string}) => `${imageAsset.url}?w=400&h=400`
       }
     })
   ],
