@@ -1,5 +1,5 @@
 import {DocumentTextIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
+import {defineField, defineType, SanityImageAssetDocument} from 'sanity'
 
 export const entryType = defineType({
   name: 'entry',
@@ -74,7 +74,7 @@ export const entryType = defineType({
       name: 'entryBody',
       title: 'Entry Body',
       options: {
-        imageUrl: (imageAsset: string) => `${imageAsset.url}?w=400&h=400`
+        imageUrl: (imageAsset: SanityImageAssetDocument) => `${imageAsset.url}?w=400&h=400`
       }
     })
   ],
