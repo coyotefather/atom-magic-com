@@ -73,9 +73,6 @@ export const entryType = defineType({
       type: 'markdown',
       name: 'entryBody',
       title: 'Entry Body',
-      options: {
-        imageUrl: (imageAsset) => `${imageAsset.url}?w=400&h=400`
-      }
     })
   ],
   preview: {
