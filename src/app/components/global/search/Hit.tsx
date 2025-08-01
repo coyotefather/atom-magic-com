@@ -23,7 +23,7 @@ const Hit = ({
 				</Link>
 			</div>
 			<div className="text-sm ml-8">
-				{hit.description.length > 200 ? hit.description.slice(0, 250) + '...' : hit.description}
+				{hit.description && hit.description.length > 200 ? hit.description.slice(0, 250) + '...' : hit.description}
 			</div>
 		</div>
 	);
