@@ -130,6 +130,7 @@ const SubScore = ({
 							base: 'pl-0 pr-0',
 							title: `text-right text-sm notoserif`,
 							trigger: 'border-0',
+							heading: "bg-white",
 							indicator: "",
 						}
 					}
