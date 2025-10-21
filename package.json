@@ -45,7 +45,7 @@
     "remark-heading-id": "^1.0.1",
     "sanity": "^4.10.2",
     "sanity-plugin-markdown": "^6.0.0",
-    "seeded-rand": "^2.1.0",
+    "seeded-rand": "^4.0.0",
     "styled-components": "^6.1.19",
     "use-debounce": "^10.0.5"
   },
