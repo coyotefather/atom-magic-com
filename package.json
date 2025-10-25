@@ -14,7 +14,7 @@
     "@heroui/theme": "^2.4.23",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
-    "@reduxjs/toolkit": "^2.9.1",
+    "@reduxjs/toolkit": "^2.9.2",
     "@sanity/client": "^7.11.2",
     "@sanity/color-input": "^4.0.5",
     "@sanity/icons": "^3.7.4",
@@ -25,17 +25,17 @@
     "@types/react-transition-group": "^4.4.12",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
-    "algoliasearch": "^5.40.1",
+    "algoliasearch": "^5.41.0",
     "clsx": "^2.0.0",
     "easymde": "^2.20.0",
     "motion": "^12.23.24",
     "next": "^15.5.6",
-    "next-sanity": "^11.5.5",
+    "next-sanity": "^11.6.2",
     "postcss-nesting": "^13.0.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-instantsearch": "^7.16.3",
-    "react-instantsearch-nextjs": "^1.0.2",
+    "react-instantsearch": "^7.17.0",
+    "react-instantsearch-nextjs": "^1.0.3",
     "react-markdown": "^10.0.1",
     "react-redux": "^9.2.0",
     "react-transition-group": "^4.4.5",
@@ -50,7 +50,7 @@
     "use-debounce": "^10.0.5"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.15",
+    "@tailwindcss/postcss": "^4.1.16",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^22",
     "@types/react": "^19.2.2",
@@ -59,7 +59,7 @@
     "eslint": "^9.38.0",
     "eslint-config-next": "^15.5.6",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.15",
+    "tailwindcss": "^4.1.16",
     "typescript": "^5"
   }
 }
