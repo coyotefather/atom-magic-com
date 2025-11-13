@@ -59,11 +59,11 @@ animation: drift-soft 10s ease-in-out infinite; */
   background-image: url('/atom-magic-circle-black.png');
 }
 
-.trapezoid-bar, .trapezoid-bar-reverse {
+.trapezoid-bar, .trapezoid-bar-reverse, .trapezoid-top-bar, .trapezoid-bar-top-reverse {
   position: relative;
 }
 
-.trapezoid-bar::after, .trapezoid-bar-reverse::after {
+.trapezoid-bar::after, .trapezoid-bar-reverse::after, .trapezoid-top-bar::before, .trapezoid-top-bar-reverse::before {
   content: '';
   position: absolute;
   left: 0;
@@ -81,6 +81,22 @@ animation: drift-soft 10s ease-in-out infinite; */
 
 .trapezoid-bar-reverse::after {
   bottom: -20px;
+  height: 40px; /* adjust slant */
+  transform: skewY(-0.5deg);
+  background: inherit;
+  z-index: 9;
+}
+
+.trapezoid-top-bar::before {
+  top: -20px;
+  height: 40px; /* adjust slant */
+  transform: skewY(0.5deg);
+  background-color: inherit;
+  z-index: -1;
+}
+
+.trapezoid-top-bar-reverse::before {
+  top: -10px;
   height: 40px; /* adjust slant */
   transform: skewY(-0.5deg);
   background: inherit;
