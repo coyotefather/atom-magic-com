@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 
 import { CATEGORIES_QUERY, CATEGORY_QUERY } from "@/sanity/lib/queries";
 
-import { client, sanityFetch } from "@/sanity/lib/client";
+import { client } from "@/sanity/lib/client";
 import {
   CATEGORY_QUERYResult,
   CATEGORIES_QUERYResult,
