@@ -1,4 +1,5 @@
 // ./src/components/Entry.tsx
+'use client';
 import Image from "next/image";
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -9,7 +10,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { ENTRY_QUERYResult } from "../../../../sanity.types";
 import Link from "next/link";
 //import {Card, CardHeader, CardFooter} from "@heroui/card";
-import {Card, CardHeader, CardBody, CardFooter} from "@heroui/react";
+import {Card, CardHeader, CardFooter} from "@heroui/react";
 import Breadcrumbs from '@/app/components/common/Breadcrumbs';
 import TableOfContents from '@/app/components/codex/TableOfContents';
 import clsx from 'clsx';
@@ -44,7 +45,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 			</div>
 			<div className="container mt-8 grid grid-cols-3 gap-4">
 				<div className="md:ml-8">
-					<Card className="w-full bg-black text-white">
+					<Card radius="none" shadow="none" className="w-full z-10 trapezoid-bar-reverse trapezoid-top-bar-reverse bg-black text-white overflow-visible">
 						<CardHeader className={clsx(
 							"flex-col items-start!",
 							{ 'z-10 top-0': mainImage?.asset?._ref }

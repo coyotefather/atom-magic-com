@@ -1,3 +1,4 @@
+'use client';
 import {Card, CardHeader, CardBody, CardFooter} from "@heroui/react";
 import Icon from '@mdi/react';
 import { mdiFileDocument, mdiFolderText } from '@mdi/js';

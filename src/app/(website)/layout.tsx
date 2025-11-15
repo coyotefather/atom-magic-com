@@ -3,7 +3,7 @@ import { Marcellus_SC, Noto_Serif } from "next/font/google";
 import localFont from 'next/font/local'
 import "../globals.css";
 import StoreProvider from "@/app/StoreProvider";
-import {HeroUIProvider} from "@heroui/react";
+import HeroProvider from "@/app/HeroProvider";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import NavBar from '@/app/components/global/NavBar';
@@ -39,9 +39,9 @@ export default function RootLayout({
       <body className={`${marcellus.variable} ${lapideum.variable} ${noto_serif.variable} flex flex-col h-screen`}>
         <NavBar />
         <div className="grow">
-          <HeroUIProvider>
+          <HeroProvider>
             <StoreProvider>{children}</StoreProvider>
-          </HeroUIProvider>
+          </HeroProvider>
         </div>
         <Footer />
         <Analytics />

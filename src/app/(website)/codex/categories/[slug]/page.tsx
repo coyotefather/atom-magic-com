@@ -24,13 +24,10 @@ export async function generateStaticParams() {
   }));
 }
 
-type QueryParams = Promise<{ slug: string }>
+const options = { next: { revalidate: 30 } };
 
-export default async function Page({ params }: { params: QueryParams }) {
-  const category = await sanityFetch<CATEGORY_QUERYResult>({
-	query: CATEGORY_QUERY,
-	params,
-  });
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const category = await client.fetch<CATEGORY_QUERYResult>(CATEGORY_QUERY, await params, options);
   if (!category) {
 	return notFound();
   }

@@ -8,6 +8,9 @@ const nextConfig = {
 		  },
 		],
 	  },
+	turbopack: {
+		// options
+	  },
 };
 
 export default nextConfig;

@@ -52,18 +52,18 @@ background: linear-gradient(90deg, #f3f4f6, #e5e7eb, #d1d5db, #fef3c7, #f3f4f6);
 animation: drift-soft 10s ease-in-out infinite; */
 }
 
-.bg-atom-magic-circle-white: {
+.bg-atom-magic-circle-white {
   background-image: url('/atom-magic-circle-white.png');
 }
-.bg-atom-magic-circle-black: {
+.bg-atom-magic-circle-black {
   background-image: url('/atom-magic-circle-black.png');
 }
 
-.trapezoid-bar, .trapezoid-bar-reverse {
+.trapezoid-bar, .trapezoid-bar-reverse, .trapezoid-top-bar, .trapezoid-bar-top-reverse {
   position: relative;
 }
 
-.trapezoid-bar::after, .trapezoid-bar-reverse::after {
+.trapezoid-bar::after, .trapezoid-bar-reverse::after, .trapezoid-top-bar::before, .trapezoid-top-bar-reverse::before {
   content: '';
   position: absolute;
   left: 0;
@@ -81,6 +81,22 @@ animation: drift-soft 10s ease-in-out infinite; */
 
 .trapezoid-bar-reverse::after {
   bottom: -20px;
+  height: 40px; /* adjust slant */
+  transform: skewY(-0.5deg);
+  background: inherit;
+  z-index: 9;
+}
+
+.trapezoid-top-bar::before {
+  top: -20px;
+  height: 40px; /* adjust slant */
+  transform: skewY(0.5deg);
+  background-color: inherit;
+  z-index: -1;
+}
+
+.trapezoid-top-bar-reverse::before {
+  top: -10px;
   height: 40px; /* adjust slant */
   transform: skewY(-0.5deg);
   background: inherit;
