@@ -21,7 +21,7 @@ export function Category({
 		);
 	}
 
-	if(entries) {
+	if(entries && entries.length > 0) {
 		allEntries = <Entries entries={entries} />;
 	}
 
