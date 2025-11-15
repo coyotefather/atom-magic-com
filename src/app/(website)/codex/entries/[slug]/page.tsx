@@ -2,10 +2,9 @@
 
 //import { QueryParams } from "next-sanity";
 import { notFound } from "next/navigation";
-
 import { ENTRIES_QUERY, ENTRY_QUERY } from "@/sanity/lib/queries";
 
-import { client, sanityFetch } from "@/sanity/lib/client";
+import { client } from "@/sanity/lib/client";
 import {
   ENTRY_QUERYResult,
   ENTRIES_QUERYResult,
@@ -24,13 +23,10 @@ export async function generateStaticParams() {
   }));
 }
 
-type QueryParams = Promise<{ slug: string }>
+const options = { next: { revalidate: 30 } };
 
-export default async function Page({ params }: { params: QueryParams }) {
-  const entry = await sanityFetch<ENTRY_QUERYResult>({
-	query: ENTRY_QUERY,
-	params,
-  });
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const entry = await client.fetch< ENTRY_QUERYResult>(ENTRY_QUERY, await params, options);
   if (!entry) {
 	return notFound();
   }
