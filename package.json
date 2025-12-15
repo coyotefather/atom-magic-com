@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@heroui/react": "^2.8.6",
-    "@heroui/system": "^2.4.23",
+    "@heroui/system": "^2.4.24",
     "@heroui/theme": "^2.4.24",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
