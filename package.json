@@ -30,7 +30,7 @@
     "easymde": "^2.20.0",
     "motion": "^12.23.26",
     "next": "^16.0.10",
-    "next-sanity": "^11.6.12",
+    "next-sanity": "^12.0.0",
     "postcss-nesting": "^13.0.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
