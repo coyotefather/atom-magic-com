@@ -44,7 +44,7 @@
     "remark-gfm": "^4.0.0",
     "remark-heading-id": "^1.0.1",
     "sanity": "5.0.1",
-    "sanity-plugin-markdown": "^7.0.4",
+    "sanity-plugin-markdown": "^8.0.0",
     "seeded-rand": "^4.0.0",
     "styled-components": "^6.1.19",
     "use-debounce": "^10.0.5"
