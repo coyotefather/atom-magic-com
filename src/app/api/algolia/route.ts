@@ -42,7 +42,7 @@ async function performInitialIndexing() {
 	// Truncating the body if it's too long.
 	// Another approach: defining multiple records:
 	// https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/how-to/indexing-long-documents/
-	entryBody: doc.entryBody,
+	entryBody: doc.entryBody?.slice(0, 9500),
 	description: doc.description,
 	_createdAt: doc._createdAt,
 	_updatedAt: doc._updatedAt,
