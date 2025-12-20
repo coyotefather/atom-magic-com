@@ -123,10 +123,14 @@ export async function POST(request: Request) {
 	} else {
 		// create a copy and slice off to only 9000 - this prevents sending something over the size limit allowed by Algolia
 		const updatedValue = {
-		  ...value,
-		  entryBody: [
-			...value.entryBody?.slice(0, 9000),
-		  ],
+			_id: value._id,
+			title: value.title,
+			slug: value.slug,
+			entryBody: value.entryBody?.slice(0, 9000),
+			description: value.description,
+			_type: value._type,
+			createdAt: value._createdAt,
+			updatedAt: value._updatedAt
 		}
 	  // Add or update the document in Algolia
 	  await algoliaClient.saveObject({
