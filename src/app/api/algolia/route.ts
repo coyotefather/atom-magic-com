@@ -124,7 +124,7 @@ export async function POST(request: Request) {
 		// create a copy and slice off to only 9000 - this prevents sending something over the size limit allowed by Algolia
 		const updatedValue = {
 		  ...value,
-		  items: [
+		  entryBody: [
 			...value.entryBody?.slice(0, 9000),
 		  ],
 		}
