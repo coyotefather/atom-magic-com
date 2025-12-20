@@ -20,45 +20,45 @@ const sanityClient = createClient({
 });
 
 // Function to perform initial indexing
-async function performInitialIndexing() {
-  console.log("Starting initial indexing...");
-
-  // Fetch all documents from Sanity
-  const sanityData = await sanityClient.fetch(`*[_type == "entry"]{
-	_id,
-	title,
-	slug,
-	entryBody,
-	description,
-	_type,
-	_createdAt,
-	_updatedAt
-  }`);
-
-  const records = sanityData.map((doc: any) => ({
-	objectID: doc._id,
-	title: doc.title,
-	path: doc.slug.current,
-	// Truncating the body if it's too long.
-	// Another approach: defining multiple records:
-	// https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/how-to/indexing-long-documents/
-	entryBody: doc.entryBody?.slice(0, 9500),
-	description: doc.description,
-	_createdAt: doc._createdAt,
-	_updatedAt: doc._updatedAt,
-  }));
-
-  // Save all records to Algolia
-  await algoliaClient.saveObjects({
-	indexName,
-	objects: records,
-  });
-
-  console.log("Initial indexing completed.");
-  return {
-	message: "Successfully completed initial indexing!",
-  };
-}
+// async function performInitialIndexing() {
+  // console.log("Starting initial indexing...");
+//
+  // // Fetch all documents from Sanity
+  // const sanityData = await sanityClient.fetch(`*[_type == "entry"]{
+	// _id,
+	// title,
+	// slug,
+	// entryBody,
+	// description,
+	// _type,
+	// _createdAt,
+	// _updatedAt
+  // }`);
+//
+  // const records = sanityData.map((doc: any) => ({
+	// objectID: doc._id,
+	// title: doc.title,
+	// path: doc.slug.current,
+	// // Truncating the body if it's too long.
+	// // Another approach: defining multiple records:
+	// // https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/how-to/indexing-long-documents/
+	// entryBody: doc.entryBody?.slice(0, 9500),
+	// description: doc.description,
+	// _createdAt: doc._createdAt,
+	// _updatedAt: doc._updatedAt,
+  // }));
+//
+  // // Save all records to Algolia
+  // await algoliaClient.saveObjects({
+	// indexName,
+	// objects: records,
+  // });
+//
+  // console.log("Initial indexing completed.");
+  // return {
+	// message: "Successfully completed initial indexing!",
+  // };
+// }
 
 export async function POST(request: Request) {
   try {
@@ -66,10 +66,10 @@ export async function POST(request: Request) {
 	const initialIndex = searchParams.get("initialIndex") === "true";
 
 	// Perform initial indexing
-	if (initialIndex) {
-	  const response = await performInitialIndexing();
-	  return Response.json(response);
-	}
+	// if (initialIndex) {
+	//   const response = await performInitialIndexing();
+	//   return Response.json(response);
+	// }
 
 	// Validate webhook signature
 	const signature = request.headers.get(SIGNATURE_HEADER_NAME);
