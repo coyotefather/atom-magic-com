@@ -137,9 +137,10 @@ export async function POST(request: Request) {
 	}
   } catch (error: any) {
 	console.error("Error indexing objects:", error.message);
+	// Return a 200 code so that Sanity does not try the request again
 	return Response.json(
 	  { error: "Error indexing objects", details: error.message },
-	  { status: 500 }
+	  { status: 200 }
 	);
   }
 }
