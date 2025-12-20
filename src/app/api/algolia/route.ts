@@ -121,11 +121,18 @@ export async function POST(request: Request) {
 		message: `Successfully deleted object with ID: ${_id}`,
 	  });
 	} else {
+		// create a copy and slice off to only 9000 - this prevents sending something over the size limit allowed by Algolia
+		const updatedValue = {
+		  ...value,
+		  items: [
+			...value.entryBody?.slice(0, 9000),
+		  ],
+		}
 	  // Add or update the document in Algolia
 	  await algoliaClient.saveObject({
 		indexName,
 		body: {
-		  ...value,
+		  ...updatedValue,
 		  objectID: _id,
 		},
 	  });
