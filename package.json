@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@heroui/react": "^2.8.6",
-    "@heroui/system": "^2.4.24",
-    "@heroui/theme": "^2.4.24",
+    "@heroui/react": "^2.8.7",
+    "@heroui/system": "^2.4.25",
+    "@heroui/theme": "^2.4.25",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@reduxjs/toolkit": "^2.11.2",
@@ -30,7 +30,7 @@
     "easymde": "^2.20.0",
     "motion": "^12.23.26",
     "next": "^16.1.0",
-    "next-sanity": "^12.0.2",
+    "next-sanity": "^12.0.5",
     "postcss-nesting": "^13.0.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
