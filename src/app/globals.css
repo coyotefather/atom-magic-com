@@ -3,6 +3,7 @@
 
  @plugin './hero.ts';
  @source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+ @plugin "@tailwindcss/typography";
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -131,7 +132,7 @@ animation: drift-soft 10s ease-in-out infinite; */
   button, [role="button"] {
     cursor: pointer;
   }
-  h1, h2, h3 {
+  /* h1, h2, h3 {
     @apply font-extrabold mb-3 mt-3;
     font-family: var(--font-marcellus);
   }
@@ -149,7 +150,7 @@ animation: drift-soft 10s ease-in-out infinite; */
     left: 0;
     width: 100%;
     transform-origin: top left;
-    height: 40px; /* adjust slant */
+    height: 40px;
     transform: skewY(0.5deg);
     z-index: -1;
   }
@@ -206,7 +207,7 @@ animation: drift-soft 10s ease-in-out infinite; */
     li {
       @apply ml-2;
     }
-  }
+  } */
 
   main a {
     @apply underline font-semibold transition duration-200 ease-in-out text-gold  hover:text-brightgold hover:contrast-100 hover:saturate-150;

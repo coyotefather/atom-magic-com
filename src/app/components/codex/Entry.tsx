@@ -37,7 +37,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 	}
 
 	return (
-		<article className="notoserif mx-auto prose prose-md max-w-none bg-white m-0">
+		<article className="notoserif mx-auto max-w-none bg-white m-0">
 			<div className="trapezoid-bar z-1 py-4 bg-black">
 				<div className="container mt-4">
 					<Breadcrumbs currentPage={title ? title : ""} parents={parents} />
@@ -85,7 +85,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 					</Card>
 				</div>
 				<section className="col-span-2">
-					<div className="first-line:uppercase first-line:marcellus">
+					<div className="first-line:uppercase first-line:marcellus prose prose-md">
 						<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>{entryBody}</Markdown>
 					</div>
 				</section>
