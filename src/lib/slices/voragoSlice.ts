@@ -204,9 +204,17 @@ const initialState: VoragoState = {
   degrees: [0, 0, 0, 0, 0],
   lockedRings: [false, false, false, false, false],
   stones: {
-	player1: [],
-	player2: []
-  },
+	  player1: [
+		{ player: 1, ring: -1, cell: -1 },
+		{ player: 1, ring: -1, cell: -1 },
+		{ player: 1, ring: -1, cell: -1 }
+	  ],
+	  player2: [
+		{ player: 2, ring: -1, cell: -1 },
+		{ player: 2, ring: -1, cell: -1 },
+		{ player: 2, ring: -1, cell: -1 }
+	  ]
+	},
   availableCoins: COINS,
   disabledCoins: {
 	player1: [],
