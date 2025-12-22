@@ -69,21 +69,21 @@ const Page = () => {
 
 			{/* Main area: Board and Coins */}
 			<div className="xl:col-span-4">
-			  {/* Stone Tray - Compact at top */}
-			  <div className="mb-4">
-				<StoneTray />
-			  </div>
+			  <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 items-start">
+				{/* Left: Board Area */}
+				<div className="space-y-4">
+				  {/* Stone Tray - Above board only */}
+				  <StoneTray />
 
-			  {/* Board with Coins - Side by Side */}
-			  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
-				{/* Left: Board */}
-				<div className="bg-white p-4 rounded-lg border-2 border-black">
-				  <VoragoBoard />
+				  {/* Board */}
+				  <div className="bg-white p-4 rounded-lg border-2 border-black">
+					<VoragoBoard />
+				  </div>
 				</div>
 
-				{/* Right: Coins */}
+				{/* Right: Coins - Narrow column */}
 				<div className="bg-white p-4 rounded-lg border-2 border-black">
-				  <h3 className="marcellus text-xl mb-3 text-center">Cardinal Coins</h3>
+				  <h3 className="marcellus text-lg mb-3 text-center">Cardinal Coins</h3>
 				  <CoinSelector />
 				</div>
 			  </div>
