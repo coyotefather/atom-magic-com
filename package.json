@@ -43,7 +43,7 @@
     "remark-extended-table": "^2.0.3",
     "remark-gfm": "^4.0.0",
     "remark-heading-id": "^1.0.1",
-    "sanity": "5.0.1",
+    "sanity": "5.1.0",
     "sanity-plugin-markdown": "^8.0.2",
     "seeded-rand": "^4.0.0",
     "styled-components": "^6.1.19",
