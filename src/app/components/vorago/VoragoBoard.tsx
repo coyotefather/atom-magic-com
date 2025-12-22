@@ -292,25 +292,27 @@ const VoragoBoard = () => {
 		  </motion.g>
 		))}
 
-		{/* Lock icons (non-rotating) */}
+		{/* Lock icons (non-rotating) - FIXED POSITIONING */}
 		{RING_CONFIG.map((config, idx) => (
 		  lockedRings[idx] && (
-			<AnimatePresence key={`lock-${idx}`}>
+			<g key={`lock-${idx}`}>
 			  <motion.g
 				initial={{ scale: 0 }}
 				animate={{ scale: 1 }}
 				exit={{ scale: 0 }}
-				transform={`translate(${BOARD_CENTER}, ${BOARD_CENTER - config.radius - 25})`}
 			  >
-				<circle cx="0" cy="0" r="16" fill="#ffb6c1" stroke="#000" strokeWidth="2"/>
-				<g transform="translate(-6, -6) scale(0.5)">
-				  <rect x="5" y="10" width="14" height="12" fill="#3e3a36" stroke="#000" strokeWidth="2" rx="2"/>
-				  <path d="M 8 10 L 8 6 C 8 3.8 9.8 2 12 2 C 14.2 2 16 3.8 16 6 L 16 10"
-						fill="none" stroke="#3e3a36" strokeWidth="2.5" strokeLinecap="round"/>
-				  <circle cx="12" cy="16" r="2" fill="#000"/>
+				{/* Position lock at top of ring */}
+				<g transform={`translate(${BOARD_CENTER}, ${BOARD_CENTER - config.radius - 25})`}>
+				  <circle cx="0" cy="0" r="16" fill="#ffb6c1" stroke="#000" strokeWidth="2"/>
+				  <g transform="translate(-6, -6) scale(0.5)">
+					<rect x="5" y="10" width="14" height="12" fill="#3e3a36" stroke="#000" strokeWidth="2" rx="2"/>
+					<path d="M 8 10 L 8 6 C 8 3.8 9.8 2 12 2 C 14.2 2 16 3.8 16 6 L 16 10"
+						  fill="none" stroke="#3e3a36" strokeWidth="2.5" strokeLinecap="round"/>
+					<circle cx="12" cy="16" r="2" fill="#000"/>
+				  </g>
 				</g>
 			  </motion.g>
-			</AnimatePresence>
+			</g>
 		  )
 		))}
 
