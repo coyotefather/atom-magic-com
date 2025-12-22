@@ -4,6 +4,7 @@ import Header from '@/app/components/common/Header';
 import VoragoBoard from '@/app/components/vorago/VoragoBoard';
 import CoinSelector from '@/app/components/vorago/CoinSelector';
 import GameStatus from '@/app/components/vorago/GameStatus';
+import StoneTray from '@/app/components/vorago/StoneTray';
 import GameSetup from '@/app/components/vorago/GameSetup';
 import { useAppSelector } from '@/lib/hooks';
 import { useState } from 'react';
@@ -68,6 +69,8 @@ const Page = () => {
 
 			{/* Main area: Board and Coins */}
 			<div className="xl:col-span-3 space-y-8">
+				{/* Stone Tray - NEW */}
+				<StoneTray />
 			  {/* Board */}
 			  <div className="bg-white p-6 rounded-lg border-2 border-black">
 				<VoragoBoard />
