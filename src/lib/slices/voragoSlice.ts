@@ -227,9 +227,24 @@ const voragoSlice = createSlice({
   reducers: {
 	// Game setup
 	newGame: (state) => {
+	  const cellMap = createCellMap();
+
+	  // Initialize stones as unplaced (they start off the board)
+	  const player1Stones: Stone[] = [];
+	  const player2Stones: Stone[] = [];
+
+	  for (let i = 0; i < 3; i++) {
+		player1Stones.push({ player: 1, ring: -1, cell: -1 }); // -1 means unplaced
+		player2Stones.push({ player: 2, ring: -1, cell: -1 });
+	  }
+
 	  Object.assign(state, {
 		...initialState,
-		cells: createCellMap(),
+		cells: cellMap,
+		stones: {
+		  player1: player1Stones,
+		  player2: player2Stones
+		},
 		player1Name: state.player1Name,
 		player2Name: state.player2Name,
 		isAI: state.isAI,
