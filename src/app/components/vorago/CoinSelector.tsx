@@ -152,8 +152,7 @@ const CoinSelector = () => {
 		</div>
 	  )}
 
-	  {/* Coin grid */}
-	  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+	  <div className="grid grid-cols-3 gap-4">
 		{availableCoins.map(coin => {
 		  const isDisabled = playerDisabledCoins.includes(coin.title);
 
@@ -163,26 +162,34 @@ const CoinSelector = () => {
 			  onClick={() => !isDisabled && handleCoinClick(coin.title, coin.action)}
 			  disabled={isDisabled}
 			  className={`
-				p-4 border-2 rounded-lg transition-all text-left
+				relative
+				aspect-square
+				rounded-full
+				border-4
+				transition-all
 				${isDisabled
-				  ? 'opacity-50 cursor-not-allowed bg-gray-200 border-gray-400'
-				  : 'border-black hover:bg-gold hover:scale-105 cursor-pointer'
+				  ? 'opacity-30 cursor-not-allowed border-gray-400 bg-gray-200'
+				  : 'cursor-pointer border-black hover:scale-110 shadow-lg'
 				}
-				${coin.aspect === 'um' ? 'bg-blue-50' : coin.aspect === 'os' ? 'bg-red-50' : 'bg-purple-50'}
+				${coin.aspect === 'um'
+				  ? 'bg-gradient-to-br from-blue-200 to-blue-400'
+				  : coin.aspect === 'os'
+				  ? 'bg-gradient-to-br from-red-200 to-red-400'
+				  : 'bg-gradient-to-br from-purple-200 to-purple-400'
+				}
 			  `}
 			>
-			  <div className="flex justify-between items-start mb-2">
-				<h3 className="font-bold marcellus text-lg">{coin.title}</h3>
-				<span className="text-xs px-2 py-1 rounded bg-black text-white">
-				  {coin.aspect.toUpperCase()}
+			  {/* Coin title in center */}
+			  <div className="absolute inset-0 flex flex-col items-center justify-center p-2">
+				<span className="font-bold marcellus text-sm md:text-base text-center">
+				  {coin.title}
 				</span>
 			  </div>
-			  <p className="text-xs italic text-gray-600 mb-2">{coin.subtitle}</p>
-			  <p className="text-sm">{coin.description}</p>
 
+			  {/* Disabled overlay */}
 			  {isDisabled && (
-				<div className="mt-2 text-xs text-red-600 font-semibold">
-				  Used last round
+				<div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
+				  <span className="text-white text-xs font-bold">USED</span>
 				</div>
 			  )}
 			</button>
