@@ -118,14 +118,19 @@ const VoragoBoard = () => {
 
 			  return (
 				<g key={cellKey}>
-				  {/* Cell circle */}
+				  {/* Cell circle - make it larger and more visible */}
 				  <circle
 					cx={pos.x}
 					cy={pos.y}
-					r="15"
-					fill={isSelected ? "var(--color-gold)" : isHovered ? "var(--color-pale-blue)" : "white"}
+					r="20"  // Increased from 15
+					fill={
+					  isSelected ? "var(--color-gold)" :
+					  isHovered ? "rgba(255, 255, 200, 0.8)" :  // Light yellow hover
+					  cellData.stone ? "rgba(200, 200, 200, 0.3)" :  // Gray if occupied
+					  "rgba(255, 255, 255, 0.9)"  // White by default
+					}
 					stroke="var(--color-black)"
-					strokeWidth="1.5"
+					strokeWidth="2"
 					className="cursor-pointer transition-all"
 					onMouseEnter={() => setHoveredCell(cellKey)}
 					onMouseLeave={() => setHoveredCell(null)}
