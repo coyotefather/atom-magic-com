@@ -45,6 +45,23 @@ const VoragoBoard = () => {
 	const cellKey = `${ring}-${cell}`;
 	const cellData = cells[cellKey];
 
+	// Special handling for goal (ring 4)
+	  if (ring === 4 && selectedStone) {
+		// Check if stone is on innermost ring (ring 3) - can only move to goal from there
+		if (selectedStone.ring === 3) {
+		  dispatch(moveStone({
+			stone: selectedStone,
+			toRing: 4,
+			toCell: 0 // Goal only has one "cell"
+		  }));
+		  dispatch(selectStone(null));
+		} else {
+		  // Can't move to goal unless you're on the innermost ring
+		  dispatch(setDisplayMessage('You must be on the innermost ring to reach the goal'));
+		}
+		return;
+	  }
+
 	// If a stone is selected, try to move it
 	if (selectedStone) {
 	  // Check if the cell is valid for movement
@@ -189,13 +206,15 @@ const VoragoBoard = () => {
 		  fill="var(--color-gold)"
 		  stroke="var(--color-black)"
 		  strokeWidth="3"
+		  className="cursor-pointer hover:opacity-90 transition-opacity"
+		  onClick={() => handleCellClick(4, 0)} // Ring 4 is the goal
 		/>
 		<text
 		  x={BOARD_CENTER}
 		  y={BOARD_CENTER}
 		  textAnchor="middle"
 		  dominantBaseline="central"
-		  className="font-bold"
+		  className="font-bold pointer-events-none"
 		  fill="var(--color-black)"
 		  fontSize="16"
 		>
