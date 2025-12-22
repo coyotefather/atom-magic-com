@@ -267,18 +267,25 @@ const voragoSlice = createSlice({
 	// Stone movement
 	moveStone: (state, action: PayloadAction<{ stone: Stone; toRing: number; toCell: number }>) => {
 	  const { stone, toRing, toCell } = action.payload;
-	  const fromKey = `${stone.ring}-${stone.cell}`;
 	  const toKey = `${toRing}-${toCell}`;
 
-	  // Remove from old position
-	  state.cells[fromKey].stone = null;
+	  // If stone was previously placed, remove it from old position
+	  if (stone.ring >= 0 && stone.cell >= 0) {
+		const fromKey = `${stone.ring}-${stone.cell}`;
+		state.cells[fromKey].stone = null;
+	  }
 
 	  // Add to new position
 	  state.cells[toKey].stone = { ...stone, ring: toRing, cell: toCell };
 
 	  // Update in stones array
-	  const stoneArray = state.stones[`player${stone.player}` as 'player1' | 'player2'];
-	  const stoneIndex = stoneArray.findIndex(s => s.ring === stone.ring && s.cell === stone.cell);
+	  const playerKey = `player${stone.player}` as 'player1' | 'player2';
+	  const stoneArray = state.stones[playerKey];
+	  const stoneIndex = stoneArray.findIndex(s =>
+		(s.ring === stone.ring && s.cell === stone.cell) ||
+		(s.ring === -1 && stone.ring === -1)
+	  );
+
 	  if (stoneIndex >= 0) {
 		stoneArray[stoneIndex] = { ...stone, ring: toRing, cell: toCell };
 	  }
@@ -287,10 +294,11 @@ const voragoSlice = createSlice({
 
 	  // Check if reached center
 	  if (toRing === 4) {
-		state.score[`player${stone.player}` as 'player1' | 'player2']++;
+		const playerScoreKey = playerKey;
+		state.score[playerScoreKey]++;
 
 		// Check win condition (3 stones to center)
-		if (state.score[`player${stone.player}` as 'player1' | 'player2'] === 3) {
+		if (state.score[playerScoreKey] === 3) {
 		  state.gameWin = true;
 		  state.winner = stone.player;
 		}
