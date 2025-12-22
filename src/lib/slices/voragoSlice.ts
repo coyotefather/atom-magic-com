@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 // Types
 interface Stone {
@@ -229,6 +229,128 @@ const initialState: VoragoState = {
   displayMessage: "Move a stone or use a coin"
 };
 
+// Async thunk for AI turn
+export const executeAITurn = createAsyncThunk(
+  'vorago/executeAITurn',
+  async (_, { getState, dispatch }) => {
+	const state = getState() as { vorago: VoragoState };
+	const { isAI, aiDifficulty, turn } = state.vorago;
+
+	if (!isAI || turn !== 2) {
+	  return;
+	}
+
+	// Show turn dialog
+	dispatch(voragoSlice.actions.setDisplayMessage('AI is thinking...'));
+
+	// Wait a bit for realism
+	await new Promise(resolve => setTimeout(resolve, 1500));
+
+	try {
+	  const response = await fetch('/api/vorago-ai', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+		  gameState: state.vorago,
+		  difficulty: aiDifficulty
+		})
+	  });
+
+	  if (!response.ok) {
+		throw new Error('AI request failed');
+	  }
+
+	  const aiMove = await response.json();
+
+	  // Execute the AI's move
+	  if (aiMove.stoneMove) {
+		dispatch(voragoSlice.actions.moveStone({
+		  stone: aiMove.stoneMove.stone,
+		  toRing: aiMove.stoneMove.toRing,
+		  toCell: aiMove.stoneMove.toCell
+		}));
+	  }
+
+	  // Execute the AI's coin action
+	  if (aiMove.coinAction) {
+		dispatch(voragoSlice.actions.useCoin(aiMove.coinAction.coinTitle));
+
+		// Handle coin-specific actions
+		switch (aiMove.coinAction.action) {
+		  case 'spinRing':
+			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.direction) {
+			  dispatch(voragoSlice.actions.spinRing({
+				ring: aiMove.coinAction.ring,
+				direction: aiMove.coinAction.direction
+			  }));
+			}
+			break;
+		  case 'resetRing':
+			if (aiMove.coinAction.ring !== undefined) {
+			  dispatch(voragoSlice.actions.resetRing(aiMove.coinAction.ring));
+			}
+			break;
+		  case 'lockRing':
+			if (aiMove.coinAction.ring !== undefined) {
+			  dispatch(voragoSlice.actions.lockRing(aiMove.coinAction.ring));
+			}
+			break;
+		  case 'unlockRing':
+			if (aiMove.coinAction.ring !== undefined) {
+			  dispatch(voragoSlice.actions.unlockRing(aiMove.coinAction.ring));
+			}
+			break;
+		  case 'placeWall':
+			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
+			  dispatch(voragoSlice.actions.placeWall({
+				ring: aiMove.coinAction.ring,
+				cell: aiMove.coinAction.cell
+			  }));
+			}
+			break;
+		  case 'removeWall':
+			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
+			  dispatch(voragoSlice.actions.removeWall({
+				ring: aiMove.coinAction.ring,
+				cell: aiMove.coinAction.cell
+			  }));
+			}
+			break;
+		  case 'placeBridge':
+			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
+			  dispatch(voragoSlice.actions.placeBridge({
+				ring: aiMove.coinAction.ring,
+				cell: aiMove.coinAction.cell
+			  }));
+			}
+			break;
+		  case 'removeBridge':
+			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
+			  dispatch(voragoSlice.actions.removeBridge({
+				ring: aiMove.coinAction.ring,
+				cell: aiMove.coinAction.cell
+			  }));
+			}
+			break;
+		}
+	  }
+
+	  dispatch(voragoSlice.actions.setDisplayMessage('AI turn complete'));
+
+	  // Wait a moment then clear message
+	  await new Promise(resolve => setTimeout(resolve, 1000));
+	  dispatch(voragoSlice.actions.setDisplayMessage(''));
+
+	} catch (error) {
+	  console.error('AI turn error:', error);
+	  dispatch(voragoSlice.actions.setDisplayMessage('AI error - skipping turn'));
+
+	  await new Promise(resolve => setTimeout(resolve, 2000));
+	  dispatch(voragoSlice.actions.setDisplayMessage(''));
+	}
+  }
+);
+
 const voragoSlice = createSlice({
   name: 'vorago',
   initialState,
@@ -374,29 +496,32 @@ const voragoSlice = createSlice({
 
 	// Turn management
 	endTurn: (state) => {
-	  // Clear disabled coins from previous round
-	  const player = `player${state.turn}` as 'player1' | 'player2';
-	  state.disabledCoins[player] = [];
-
-	  // Switch turn
-	  state.turn = state.turn === 1 ? 2 : 1;
-
-	  // Increment round if returning to player 1
-	  if (state.turn === 1) {
-		state.round++;
-		state.frozenRound = false; // Unfreeze after round passes
+	  if (!state.hasMovedStone || !state.hasUsedCoin) {
+		state.displayMessage = 'You must move a stone AND use a coin before ending your turn';
+		return;
 	  }
 
-	  // Reset turn state
+	  // Switch turns
+	  state.turn = state.turn === 1 ? 2 : 1;
 	  state.hasMovedStone = false;
 	  state.hasUsedCoin = false;
 	  state.selectedStone = null;
 	  state.selectedCoin = null;
-	  state.showTurnDialog = true;
 
-	  setTimeout(() => {
-		state.showTurnDialog = false;
-	  }, 2000);
+	  // Update round if back to player 1
+	  if (state.turn === 1) {
+		state.round++;
+
+		// Clear disabled coins from last round
+		state.disabledCoins.player1 = [];
+		state.disabledCoins.player2 = [];
+	  }
+
+	  state.displayMessage = state.turn === 1 ?
+		`${state.player1Name}'s turn` :
+		`${state.player2Name}'s turn`;
+
+	  // NOTE: We'll trigger AI turn from the component, not here
 	},
 
 	// UI state
