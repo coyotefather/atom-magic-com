@@ -305,6 +305,17 @@ const voragoSlice = createSlice({
 	  }
 	},
 
+	// Select unplaced coin
+	selectUnplacedStone: (state, action: PayloadAction<{ player: 1 | 2; index: number }>) => {
+	  const { player, index } = action.payload;
+	  const stone = state.stones[`player${player}` as 'player1' | 'player2'][index];
+
+	  if (stone && stone.ring === -1) {
+		state.selectedStone = stone;
+		state.displayMessage = `Click a cell on the outermost ring to place your stone`;
+	  }
+	},
+
 	// Coin actions
 	useCoin: (state, action: PayloadAction<string>) => {
 	  state.selectedCoin = action.payload;
