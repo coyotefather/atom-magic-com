@@ -1,13 +1,15 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
-import { endTurn } from '@/lib/slices/voragoSlice';
+import { executeAITurn, endTurn } from '@/lib/slices/voragoSlice';
 
 const GameStatus = () => {
   const dispatch = useAppDispatch();
   const {
 	round,
 	turn,
+	isAI,
 	score,
 	player1Name,
 	player2Name,
@@ -15,6 +17,18 @@ const GameStatus = () => {
 	hasUsedCoin,
 	displayMessage
   } = useAppSelector(state => state.vorago);
+
+  // Trigger AI turn when it's AI's turn
+	useEffect(() => {
+	  if (isAI && turn === 2 && !hasMovedStone && !hasUsedCoin) {
+		// Small delay to let UI update
+		const timer = setTimeout(() => {
+		  dispatch(executeAITurn());
+		}, 500);
+
+		return () => clearTimeout(timer);
+	  }
+	}, [isAI, turn, hasMovedStone, hasUsedCoin, dispatch]);
 
   const canEndTurn = hasMovedStone && hasUsedCoin;
   const currentPlayerName = turn === 1 ? player1Name : player2Name;
