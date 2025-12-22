@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Types
-export interface Stone {
+interface Stone {
   player: 1 | 2;
-  ring: number;
-  cell: number;
+  ring: number;  // -1 means unplaced
+  cell: number;  // -1 means unplaced
 }
 
 export interface Cell {
