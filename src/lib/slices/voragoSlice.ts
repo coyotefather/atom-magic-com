@@ -236,17 +236,26 @@ export const executeAITurn = createAsyncThunk(
 	const state = getState() as { vorago: VoragoState };
 	const { isAI, aiDifficulty, turn } = state.vorago;
 
+	console.log('🎮 executeAITurn called');
+	console.log('  isAI:', isAI);
+	console.log('  turn:', turn);
+
 	if (!isAI || turn !== 2) {
+	  console.log('  ❌ Skipping - not AI turn');
 	  return;
 	}
+
+	console.log('  ✅ Starting AI turn...');
 
 	// Show turn dialog
 	dispatch(voragoSlice.actions.setDisplayMessage('AI is thinking...'));
 
 	// Wait a bit for realism
-	await new Promise(resolve => setTimeout(resolve, 1500));
+	await new Promise(resolve => setTimeout(resolve, 1000));
 
 	try {
+	  console.log('  📡 Calling AI API...');
+
 	  const response = await fetch('/api/vorago-ai', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -256,29 +265,45 @@ export const executeAITurn = createAsyncThunk(
 		})
 	  });
 
+	  console.log('  📡 AI API response status:', response.status);
+
 	  if (!response.ok) {
+		const errorText = await response.text();
+		console.error('  ❌ AI API error:', errorText);
 		throw new Error('AI request failed');
 	  }
 
 	  const aiMove = await response.json();
+	  console.log('  🎯 AI Move received:', aiMove);
 
-	  // Execute the AI's move
+	  // Execute the AI's stone move
 	  if (aiMove.stoneMove) {
+		console.log('  🔵 Moving stone:', aiMove.stoneMove);
 		dispatch(voragoSlice.actions.moveStone({
 		  stone: aiMove.stoneMove.stone,
 		  toRing: aiMove.stoneMove.toRing,
 		  toCell: aiMove.stoneMove.toCell
 		}));
+	  } else {
+		console.log('  ⚠️ No stone move from AI');
 	  }
+
+	  // Wait a moment between actions
+	  await new Promise(resolve => setTimeout(resolve, 500));
 
 	  // Execute the AI's coin action
 	  if (aiMove.coinAction) {
+		console.log('  🪙 Using coin:', aiMove.coinAction);
 		dispatch(voragoSlice.actions.useCoin(aiMove.coinAction.coinTitle));
+
+		// Wait a bit then handle coin-specific actions
+		await new Promise(resolve => setTimeout(resolve, 300));
 
 		// Handle coin-specific actions
 		switch (aiMove.coinAction.action) {
 		  case 'spinRing':
 			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.direction) {
+			  console.log('    ↻ Spinning ring', aiMove.coinAction.ring, aiMove.coinAction.direction);
 			  dispatch(voragoSlice.actions.spinRing({
 				ring: aiMove.coinAction.ring,
 				direction: aiMove.coinAction.direction
@@ -287,21 +312,25 @@ export const executeAITurn = createAsyncThunk(
 			break;
 		  case 'resetRing':
 			if (aiMove.coinAction.ring !== undefined) {
+			  console.log('    ⟲ Resetting ring', aiMove.coinAction.ring);
 			  dispatch(voragoSlice.actions.resetRing(aiMove.coinAction.ring));
 			}
 			break;
 		  case 'lockRing':
 			if (aiMove.coinAction.ring !== undefined) {
+			  console.log('    🔒 Locking ring', aiMove.coinAction.ring);
 			  dispatch(voragoSlice.actions.lockRing(aiMove.coinAction.ring));
 			}
 			break;
 		  case 'unlockRing':
 			if (aiMove.coinAction.ring !== undefined) {
+			  console.log('    🔓 Unlocking ring', aiMove.coinAction.ring);
 			  dispatch(voragoSlice.actions.unlockRing(aiMove.coinAction.ring));
 			}
 			break;
 		  case 'placeWall':
 			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
+			  console.log('    🧱 Placing wall at', aiMove.coinAction.ring, aiMove.coinAction.cell);
 			  dispatch(voragoSlice.actions.placeWall({
 				ring: aiMove.coinAction.ring,
 				cell: aiMove.coinAction.cell
@@ -310,6 +339,7 @@ export const executeAITurn = createAsyncThunk(
 			break;
 		  case 'removeWall':
 			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
+			  console.log('    💥 Removing wall at', aiMove.coinAction.ring, aiMove.coinAction.cell);
 			  dispatch(voragoSlice.actions.removeWall({
 				ring: aiMove.coinAction.ring,
 				cell: aiMove.coinAction.cell
@@ -318,6 +348,7 @@ export const executeAITurn = createAsyncThunk(
 			break;
 		  case 'placeBridge':
 			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
+			  console.log('    🌉 Placing bridge at', aiMove.coinAction.ring, aiMove.coinAction.cell);
 			  dispatch(voragoSlice.actions.placeBridge({
 				ring: aiMove.coinAction.ring,
 				cell: aiMove.coinAction.cell
@@ -326,27 +357,38 @@ export const executeAITurn = createAsyncThunk(
 			break;
 		  case 'removeBridge':
 			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
+			  console.log('    🔥 Removing bridge at', aiMove.coinAction.ring, aiMove.coinAction.cell);
 			  dispatch(voragoSlice.actions.removeBridge({
 				ring: aiMove.coinAction.ring,
 				cell: aiMove.coinAction.cell
 			  }));
 			}
 			break;
+		  default:
+			console.log('    ℹ️ No special action for', aiMove.coinAction.action);
 		}
+	  } else {
+		console.log('  ⚠️ No coin action from AI');
 	  }
 
 	  dispatch(voragoSlice.actions.setDisplayMessage('AI turn complete'));
+	  console.log('  ✅ AI turn complete');
 
-	  // Wait a moment then clear message
+	  // Wait a moment then end turn
 	  await new Promise(resolve => setTimeout(resolve, 1000));
-	  dispatch(voragoSlice.actions.setDisplayMessage(''));
+
+	  // End the AI's turn
+	  console.log('  🔄 Ending AI turn...');
+	  dispatch(voragoSlice.actions.endTurn());
 
 	} catch (error) {
-	  console.error('AI turn error:', error);
-	  dispatch(voragoSlice.actions.setDisplayMessage('AI error - skipping turn'));
+	  console.error('  ❌ AI turn error:', error);
+	  dispatch(voragoSlice.actions.setDisplayMessage('AI error - ending turn'));
 
-	  await new Promise(resolve => setTimeout(resolve, 2000));
-	  dispatch(voragoSlice.actions.setDisplayMessage(''));
+	  await new Promise(resolve => setTimeout(resolve, 1500));
+
+	  // End turn anyway to prevent getting stuck
+	  dispatch(voragoSlice.actions.endTurn());
 	}
   }
 );
