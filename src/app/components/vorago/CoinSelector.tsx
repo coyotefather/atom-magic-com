@@ -1,46 +1,194 @@
 'use client';
 
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
-import { useCoin } from '@/lib/slices/voragoSlice';
+import { useCoin, spinRing, resetRing, lockRing, unlockRing, setDisplayMessage } from '@/lib/slices/voragoSlice';
+import { useState } from 'react';
 
 const CoinSelector = () => {
   const dispatch = useAppDispatch();
-  const { availableCoins, disabledCoins, turn, hasUsedCoin } = useAppSelector(state => state.vorago);
+  const { availableCoins, disabledCoins, turn, hasUsedCoin, lockedRings } = useAppSelector(state => state.vorago);
+  const [showRingSelector, setShowRingSelector] = useState<string | null>(null);
+  const [spinDirection, setSpinDirection] = useState<'cw' | 'ccw' | null>(null);
 
   const playerDisabledCoins = disabledCoins[`player${turn}` as 'player1' | 'player2'];
 
+  const handleCoinClick = (coinTitle: string, action: string) => {
+	if (hasUsedCoin) return;
+
+	dispatch(useCoin(coinTitle));
+
+	// Handle coins that need additional input
+	switch (action) {
+	  case 'spinRing':
+		setShowRingSelector('spin');
+		dispatch(setDisplayMessage('Choose a ring to spin, then choose direction'));
+		break;
+	  case 'resetRing':
+		setShowRingSelector('reset');
+		dispatch(setDisplayMessage('Choose a ring to reset'));
+		break;
+	  case 'lockRing':
+		setShowRingSelector('lock');
+		dispatch(setDisplayMessage('Choose a ring to lock'));
+		break;
+	  case 'unlockRing':
+		setShowRingSelector('unlock');
+		dispatch(setDisplayMessage('Choose a ring to unlock'));
+		break;
+	  case 'placeWall':
+	  case 'removeWall':
+	  case 'placeBridge':
+	  case 'removeBridge':
+		dispatch(setDisplayMessage('Click a cell on the board'));
+		break;
+	  case 'freezeRound':
+		dispatch(setDisplayMessage('Next round will be frozen (no stone movement allowed)'));
+		break;
+	  default:
+		dispatch(setDisplayMessage('Coin effect applied'));
+	}
+  };
+
+  const handleRingSelection = (ringIndex: number) => {
+	if (!showRingSelector) return;
+
+	switch (showRingSelector) {
+	  case 'spin':
+		if (spinDirection) {
+		  dispatch(spinRing({ ring: ringIndex, direction: spinDirection }));
+		  setShowRingSelector(null);
+		  setSpinDirection(null);
+		}
+		break;
+	  case 'reset':
+		dispatch(resetRing(ringIndex));
+		setShowRingSelector(null);
+		break;
+	  case 'lock':
+		dispatch(lockRing(ringIndex));
+		setShowRingSelector(null);
+		break;
+	  case 'unlock':
+		dispatch(unlockRing(ringIndex));
+		setShowRingSelector(null);
+		break;
+	}
+  };
+
   if (hasUsedCoin) {
 	return (
-	  <div className="text-center text-gray-500">
+	  <div className="text-center text-gray-500 py-4">
 		You've already used a coin this turn
 	  </div>
 	);
   }
 
   return (
-	<div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto">
-	  {availableCoins.map(coin => {
-		const isDisabled = playerDisabledCoins.includes(coin.title);
+	<div>
+	  {/* Ring selector overlay */}
+	  {showRingSelector && (
+		<div className="mb-6 p-4 bg-black text-white rounded-lg">
+		  <h4 className="marcellus text-lg mb-3">
+			{showRingSelector === 'spin' && !spinDirection && 'First, choose spin direction:'}
+			{showRingSelector === 'spin' && spinDirection && 'Now choose which ring to spin:'}
+			{showRingSelector === 'reset' && 'Choose which ring to reset:'}
+			{showRingSelector === 'lock' && 'Choose which ring to lock:'}
+			{showRingSelector === 'unlock' && 'Choose which ring to unlock:'}
+		  </h4>
 
-		return (
+		  {showRingSelector === 'spin' && !spinDirection && (
+			<div className="flex gap-4 justify-center">
+			  <button
+				onClick={() => setSpinDirection('cw')}
+				className="bg-gold text-black px-6 py-2 rounded hover:bg-brightgold"
+			  >
+				↻ Clockwise
+			  </button>
+			  <button
+				onClick={() => setSpinDirection('ccw')}
+				className="bg-gold text-black px-6 py-2 rounded hover:bg-brightgold"
+			  >
+				↺ Counter-clockwise
+			  </button>
+			</div>
+		  )}
+
+		  {(showRingSelector !== 'spin' || spinDirection) && (
+			<div className="flex gap-2 justify-center flex-wrap">
+			  {[0, 1, 2, 3, 4].map(ringIndex => {
+				const isLocked = lockedRings[ringIndex];
+				const canSelect = showRingSelector === 'unlock' ? isLocked : !isLocked;
+
+				return (
+				  <button
+					key={ringIndex}
+					onClick={() => canSelect && handleRingSelection(ringIndex)}
+					disabled={!canSelect}
+					className={`
+					  px-4 py-2 rounded border-2
+					  ${canSelect
+						? 'bg-gold text-black border-black hover:bg-brightgold cursor-pointer'
+						: 'bg-gray-300 text-gray-500 border-gray-400 cursor-not-allowed'
+					  }
+					`}
+				  >
+					Ring {ringIndex + 1}
+					{isLocked && ' 🔒'}
+				  </button>
+				);
+			  })}
+			</div>
+		  )}
+
 		  <button
-			key={coin.title}
-			onClick={() => !isDisabled && dispatch(useCoin(coin.title))}
-			disabled={isDisabled}
-			className={`
-			  p-4 border-2 rounded-lg transition-all
-			  ${isDisabled
-				? 'opacity-50 cursor-not-allowed bg-gray-200'
-				: 'hover:bg-gold hover:text-black cursor-pointer'
-			  }
-			`}
+			onClick={() => {
+			  setShowRingSelector(null);
+			  setSpinDirection(null);
+			}}
+			className="mt-4 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
 		  >
-			<h3 className="font-bold marcellus">{coin.title}</h3>
-			<p className="text-sm italic">{coin.subtitle}</p>
-			<p className="text-xs mt-2">{coin.description}</p>
+			Cancel
 		  </button>
-		);
-	  })}
+		</div>
+	  )}
+
+	  {/* Coin grid */}
+	  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+		{availableCoins.map(coin => {
+		  const isDisabled = playerDisabledCoins.includes(coin.title);
+
+		  return (
+			<button
+			  key={coin.title}
+			  onClick={() => !isDisabled && handleCoinClick(coin.title, coin.action)}
+			  disabled={isDisabled}
+			  className={`
+				p-4 border-2 rounded-lg transition-all text-left
+				${isDisabled
+				  ? 'opacity-50 cursor-not-allowed bg-gray-200 border-gray-400'
+				  : 'border-black hover:bg-gold hover:scale-105 cursor-pointer'
+				}
+				${coin.aspect === 'um' ? 'bg-blue-50' : coin.aspect === 'os' ? 'bg-red-50' : 'bg-purple-50'}
+			  `}
+			>
+			  <div className="flex justify-between items-start mb-2">
+				<h3 className="font-bold marcellus text-lg">{coin.title}</h3>
+				<span className="text-xs px-2 py-1 rounded bg-black text-white">
+				  {coin.aspect.toUpperCase()}
+				</span>
+			  </div>
+			  <p className="text-xs italic text-gray-600 mb-2">{coin.subtitle}</p>
+			  <p className="text-sm">{coin.description}</p>
+
+			  {isDisabled && (
+				<div className="mt-2 text-xs text-red-600 font-semibold">
+				  Used last round
+				</div>
+			  )}
+			</button>
+		  );
+		})}
+	  </div>
 	</div>
   );
 };
