@@ -439,42 +439,57 @@ const voragoSlice = createSlice({
 	// Stone movement
 	moveStone: (state, action: PayloadAction<{ stone: Stone; toRing: number; toCell: number }>) => {
 	  const { stone, toRing, toCell } = action.payload;
-	  const toKey = `${toRing}-${toCell}`;
 
 	  // If stone was previously placed, remove it from old position
-	  if (stone.ring >= 0 && stone.cell >= 0) {
+	  if (stone.ring >= 0 && stone.ring < 5 && stone.cell >= 0) {
 		const fromKey = `${stone.ring}-${stone.cell}`;
 		state.cells[fromKey].stone = null;
 	  }
 
-	  // Add to new position
-	  state.cells[toKey].stone = { ...stone, ring: toRing, cell: toCell };
+	  // Check if moving to goal (ring 5)
+	  if (toRing === 5) {
+		// Don't place stone in cells - it goes to goal and disappears from board
+		const playerKey = `player${stone.player}` as 'player1' | 'player2';
+		state.score[playerKey]++;
 
-	  // Update in stones array
-	  const playerKey = `player${stone.player}` as 'player1' | 'player2';
-	  const stoneArray = state.stones[playerKey];
-	  const stoneIndex = stoneArray.findIndex(s =>
-		(s.ring === stone.ring && s.cell === stone.cell) ||
-		(s.ring === -1 && stone.ring === -1)
-	  );
+		// Remove stone from stones array (it's scored now)
+		const stoneArray = state.stones[playerKey];
+		const stoneIndex = stoneArray.findIndex(s =>
+		  s.ring === stone.ring && s.cell === stone.cell
+		);
 
-	  if (stoneIndex >= 0) {
-		stoneArray[stoneIndex] = { ...stone, ring: toRing, cell: toCell };
-	  }
+		if (stoneIndex >= 0) {
+		  // Mark as scored by setting to a special state (ring: 99, cell: 99)
+		  stoneArray[stoneIndex] = { ...stone, ring: 99, cell: 99 };
+		}
 
-	  state.hasMovedStone = true;
-
-	  // Check if reached center
-	  if (toRing === 4) {
-		const playerScoreKey = playerKey;
-		state.score[playerScoreKey]++;
-
-		// Check win condition (3 stones to center)
-		if (state.score[playerScoreKey] === 3) {
+		// Check win condition
+		if (state.score[playerKey] === 3) {
 		  state.gameWin = true;
 		  state.winner = stone.player;
 		}
+
+		state.displayMessage = `${playerKey === 'player1' ? state.player1Name : state.player2Name} scored! (${state.score[playerKey]}/3)`;
+	  } else {
+		// Normal move - place on board
+		const toKey = `${toRing}-${toCell}`;
+		state.cells[toKey].stone = { ...stone, ring: toRing, cell: toCell };
+
+		// Update in stones array
+		const playerKey = `player${stone.player}` as 'player1' | 'player2';
+		const stoneArray = state.stones[playerKey];
+		const stoneIndex = stoneArray.findIndex(s =>
+		  (s.ring === stone.ring && s.cell === stone.cell) ||
+		  (s.ring === -1 && stone.ring === -1)
+		);
+
+		if (stoneIndex >= 0) {
+		  stoneArray[stoneIndex] = { ...stone, ring: toRing, cell: toCell };
+		}
 	  }
+
+	  state.hasMovedStone = true;
+	  state.selectedStone = null;
 	},
 
 	// Select unplaced coin
@@ -517,8 +532,20 @@ const voragoSlice = createSlice({
 	},
 
 	placeWall: (state, action: PayloadAction<{ ring: number; cell: number }>) => {
-	  const key = `${action.payload.ring}-${action.payload.cell}`;
-	  state.cells[key].hasWall = true;
+	  const { ring, cell } = action.payload;
+	  const cellKey = `${ring}-${cell}`;
+
+	  // Check if cell has a bridge
+	  if (state.cells[cellKey]?.hasBridge) {
+		state.displayMessage = 'Cannot place wall on a cell with a bridge';
+		setTimeout(() => {
+		  state.displayMessage = '';
+		}, 2000);
+		return;
+	  }
+
+	  state.cells[cellKey].hasWall = true;
+	  state.hasUsedCoin = true;
 	},
 
 	removeWall: (state, action: PayloadAction<{ ring: number; cell: number }>) => {
@@ -527,8 +554,20 @@ const voragoSlice = createSlice({
 	},
 
 	placeBridge: (state, action: PayloadAction<{ ring: number; cell: number }>) => {
-	  const key = `${action.payload.ring}-${action.payload.cell}`;
-	  state.cells[key].hasBridge = true;
+	  const { ring, cell } = action.payload;
+	  const cellKey = `${ring}-${cell}`;
+
+	  // Check if cell has a wall
+	  if (state.cells[cellKey]?.hasWall) {
+		state.displayMessage = 'Cannot place bridge on a cell with a wall';
+		setTimeout(() => {
+		  state.displayMessage = '';
+		}, 2000);
+		return;
+	  }
+
+	  state.cells[cellKey].hasBridge = true;
+	  state.hasUsedCoin = true;
 	},
 
 	removeBridge: (state, action: PayloadAction<{ ring: number; cell: number }>) => {

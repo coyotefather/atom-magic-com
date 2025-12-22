@@ -4,8 +4,8 @@ import Header from '@/app/components/common/Header';
 import VoragoBoard from '@/app/components/vorago/VoragoBoard';
 import CoinSelector from '@/app/components/vorago/CoinSelector';
 import GameStatus from '@/app/components/vorago/GameStatus';
-import StoneTray from '@/app/components/vorago/StoneTray';
 import GameSetup from '@/app/components/vorago/GameSetup';
+import StoneTray from '@/app/components/vorago/StoneTray';
 import { useAppSelector } from '@/lib/hooks';
 import { useState } from 'react';
 
@@ -43,8 +43,8 @@ const Page = () => {
 		  </div>
 		) : (
 		  /* Game Board */
-		  <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
-			{/* Left sidebar: Game Status */}
+		  <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
+			{/* Left sidebar: Game Status - UNCHANGED */}
 			<div className="xl:col-span-1 space-y-4">
 			  <GameStatus />
 
@@ -54,7 +54,7 @@ const Page = () => {
 				<ul className="space-y-1 text-xs">
 				  <li>• Click your stone to select it</li>
 				  <li>• Click a cell to move there</li>
-				  <li>• Use coins for special effects</li>
+				  <li>• Hover coins for descriptions</li>
 				  <li>• Complete both actions to end turn</li>
 				</ul>
 			  </div>
@@ -68,18 +68,24 @@ const Page = () => {
 			</div>
 
 			{/* Main area: Board and Coins */}
-			<div className="xl:col-span-3 space-y-8">
-				{/* Stone Tray - NEW */}
+			<div className="xl:col-span-4">
+			  {/* Stone Tray - Compact at top */}
+			  <div className="mb-4">
 				<StoneTray />
-			  {/* Board */}
-			  <div className="bg-white p-6 rounded-lg border-2 border-black">
-				<VoragoBoard />
 			  </div>
 
-			  {/* Coins */}
-			  <div className="bg-white p-6 rounded-lg border-2 border-black">
-				<h3 className="marcellus text-2xl mb-4">Cardinal Coins</h3>
-				<CoinSelector />
+			  {/* Board with Coins - Side by Side */}
+			  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+				{/* Left: Board */}
+				<div className="bg-white p-4 rounded-lg border-2 border-black">
+				  <VoragoBoard />
+				</div>
+
+				{/* Right: Coins */}
+				<div className="bg-white p-4 rounded-lg border-2 border-black">
+				  <h3 className="marcellus text-xl mb-3 text-center">Cardinal Coins</h3>
+				  <CoinSelector />
+				</div>
 			  </div>
 			</div>
 		  </div>
