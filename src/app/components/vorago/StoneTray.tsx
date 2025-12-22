@@ -10,14 +10,24 @@ const StoneTray = () => {
   const player1Stones = stones.player1.filter(s => s.ring === -1);
   const player2Stones = stones.player2.filter(s => s.ring === -1);
 
-  const handleStoneClick = (player: 1 | 2, index: number) => {
+  const handleStoneClick = (player: 1 | 2, stoneArrayIndex: number) => {
 	if (player !== turn || hasMovedStone) return;
 
+	// Get the full stone array for this player
 	const stoneArray = stones[`player${player}` as 'player1' | 'player2'];
-	const unplacedIndex = stoneArray.findIndex((s, i) => s.ring === -1 && i === index);
 
-	if (unplacedIndex >= 0) {
-	  dispatch(selectUnplacedStone({ player, index: unplacedIndex }));
+	// Find the actual unplaced stone at this position in the filtered array
+	const unplacedStones = stoneArray
+	  .map((stone, originalIndex) => ({ stone, originalIndex }))
+	  .filter(item => item.stone.ring === -1);
+
+	// Get the stone at the display index
+	if (stoneArrayIndex < unplacedStones.length) {
+	  const { stone, originalIndex } = unplacedStones[stoneArrayIndex];
+
+	  console.log('Selecting stone:', stone, 'from original index:', originalIndex);
+
+	  dispatch(selectUnplacedStone({ player, index: originalIndex }));
 	}
   };
 
@@ -27,12 +37,12 @@ const StoneTray = () => {
 	  <div className="flex-1">
 		<h3 className="marcellus text-lg mb-3 text-center">Player 1 Stones</h3>
 		<div className="flex gap-4 justify-center">
-		  {player1Stones.map((stone, idx) => {
+		  {player1Stones.map((stone, displayIdx) => {
 			const isSelected = selectedStone?.player === 1 && selectedStone?.ring === -1;
 			return (
 			  <div
-				key={`p1-stone-${idx}`}
-				onClick={() => handleStoneClick(1, idx)}
+				key={`p1-stone-${displayIdx}`}
+				onClick={() => handleStoneClick(1, displayIdx)} // Use displayIdx
 				className={`
 				  w-16 h-16 rounded-full border-4 transition-all
 				  ${turn === 1 && !hasMovedStone ? 'cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed'}
