@@ -418,6 +418,7 @@ export const {
   removeBridge,
   endTurn,
   setDisplayMessage,
+  selectUnplacedStone,
   selectStone
 } = voragoSlice.actions;
 
