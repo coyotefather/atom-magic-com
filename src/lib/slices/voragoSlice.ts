@@ -516,23 +516,10 @@ const voragoSlice = createSlice({
 	spinRing: (state, action: PayloadAction<{ ring: number; direction: 'cw' | 'ccw' }>) => {
 	  const { ring, direction } = action.payload;
 
-	  // Calculate rotation increment based on alignment rules
+	  // Each ring rotates by exactly one cell
 	  // Ring cell counts: [32, 16, 16, 8, 4] from ring 0-4
 	  const cellCounts = [32, 16, 16, 8, 4];
-
-	  let increment;
-	  if (ring === 1) {
-		// Ring 1 has same cells as Ring 2 (16) - rotates 1:1 with Ring 2
-		// Rotate by its own cell size (22.5°)
-		increment = 360 / cellCounts[ring];
-	  } else if (ring === 4) {
-		// Ring 4 (innermost) - rotate by its own cell size (90°)
-		increment = 360 / cellCounts[ring];
-	  } else {
-		// Other rings - rotate by inner ring's cell size for alignment
-		const innerRing = ring + 1;
-		increment = 360 / cellCounts[innerRing];
-	  }
+	  const increment = 360 / cellCounts[ring];
 
 	  const rotation = direction === 'cw' ? increment : -increment;
 	  state.degrees[ring] = (state.degrees[ring] + rotation) % 360;
@@ -553,16 +540,6 @@ const voragoSlice = createSlice({
 	placeWall: (state, action: PayloadAction<{ ring: number; cell: number }>) => {
 	  const { ring, cell } = action.payload;
 	  const cellKey = `${ring}-${cell}`;
-
-	  // Check if cell has a bridge
-	  if (state.cells[cellKey]?.hasBridge) {
-		state.displayMessage = 'Cannot place wall on a cell with a bridge';
-		setTimeout(() => {
-		  state.displayMessage = '';
-		}, 2000);
-		return;
-	  }
-
 	  state.cells[cellKey].hasWall = true;
 	  state.hasUsedCoin = true;
 	},
@@ -575,16 +552,6 @@ const voragoSlice = createSlice({
 	placeBridge: (state, action: PayloadAction<{ ring: number; cell: number }>) => {
 	  const { ring, cell } = action.payload;
 	  const cellKey = `${ring}-${cell}`;
-
-	  // Check if cell has a wall
-	  if (state.cells[cellKey]?.hasWall) {
-		state.displayMessage = 'Cannot place bridge on a cell with a wall';
-		setTimeout(() => {
-		  state.displayMessage = '';
-		}, 2000);
-		return;
-	  }
-
 	  state.cells[cellKey].hasBridge = true;
 	  state.hasUsedCoin = true;
 	},

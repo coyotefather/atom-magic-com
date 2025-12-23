@@ -65,28 +65,28 @@ function generatePieSlicePath(ringIndex: number, cellIndex: number): string {
   }
 }
 
-// Get center position of a cell for placing stones/walls/bridges
-function getCellCenter(ringIndex: number, cellIndex: number): { x: number; y: number } {
+// Get center position and rotation angle for placing stones/walls/bridges
+function getCellCenter(ringIndex: number, cellIndex: number): { x: number; y: number; rotation: number } {
   const config = RING_CONFIG[ringIndex];
   const anglePerCell = 360 / config.cells;
   const angle = (cellIndex + 0.5) * anglePerCell; // Center of the slice
 
-  // Position at 70% of the way from inner to outer radius
+  // Position at 50% of the way from inner to outer radius (true center)
   const innerRadius = ringIndex < 4 ? RING_CONFIG[ringIndex + 1].radius : 0;
   const outerRadius = config.radius;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.7;
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
 
   const radians = ((angle - 90) * Math.PI) / 180;
 
   return {
 	x: BOARD_CENTER + radius * Math.cos(radians),
-	y: BOARD_CENTER + radius * Math.sin(radians)
+	y: BOARD_CENTER + radius * Math.sin(radians),
+	rotation: angle // Rotation to orient perpendicular to center
   };
 }
 
 // Check if two cells are adjacent (accounting for rotation)
-// With the doubling cell structure and aligned rotation, this is much simpler!
-// Special case: Ring 1 = Ring 2 (same cell count, 1:1 alignment)
+// Uses angular positions to determine adjacency since rings can rotate independently
 function areCellsAdjacent(
   fromRing: number,
   fromCell: number,
@@ -97,40 +97,35 @@ function areCellsAdjacent(
   // New stones (fromRing === -1) can be placed anywhere on ring 0
   if (fromRing === -1) return toRing === 0;
 
-  // Same ring - check if cells are adjacent
+  // Same ring - check if cells are adjacent (rotation doesn't affect intra-ring adjacency)
   if (fromRing === toRing) {
-	const ringConfig = RING_CONFIG[fromRing];
-	const cellCount = ringConfig.cells;
-
-	// For same ring, just check logical adjacency
+	const cellCount = RING_CONFIG[fromRing].cells;
 	const diff = Math.abs(fromCell - toCell);
 	return diff === 1 || diff === cellCount - 1;
   }
 
-  // Adjacent rings
-  if (Math.abs(fromRing - toRing) === 1) {
-	// Special case: Ring 1 ↔ Ring 2 have same cell count (1:1 alignment)
-	if ((fromRing === 1 && toRing === 2) || (fromRing === 2 && toRing === 1)) {
-	  // 1:1 mapping - same cell numbers are adjacent
-	  return fromCell === toCell;
-	}
+  // Must be adjacent rings
+  if (Math.abs(fromRing - toRing) !== 1) return false;
 
-	// Standard doubling case: each parent cell aligns with 2 child cells
-	const outerRing = Math.min(fromRing, toRing);
-	const innerRing = Math.max(fromRing, toRing);
+  // Calculate angular positions accounting for rotation
+  const fromCells = RING_CONFIG[fromRing].cells;
+  const toCells = RING_CONFIG[toRing].cells;
+  const fromAnglePerCell = 360 / fromCells;
+  const toAnglePerCell = 360 / toCells;
 
-	const outerCell = fromRing === outerRing ? fromCell : toCell;
-	const innerCell = fromRing === innerRing ? fromCell : toCell;
+  // Angular center of each cell (with rotation)
+  let fromAngle = ((fromCell + 0.5) * fromAnglePerCell + degrees[fromRing]) % 360;
+  let toAngle = ((toCell + 0.5) * toAnglePerCell + degrees[toRing]) % 360;
+  if (fromAngle < 0) fromAngle += 360;
+  if (toAngle < 0) toAngle += 360;
 
-	// Each inner cell corresponds to 2 outer cells
-	// Inner cell N aligns with outer cells 2N and 2N+1
-	const expectedOuter1 = innerCell * 2;
-	const expectedOuter2 = innerCell * 2 + 1;
+  // Shortest angular distance around circle
+  let angularDiff = Math.abs(fromAngle - toAngle);
+  if (angularDiff > 180) angularDiff = 360 - angularDiff;
 
-	return outerCell === expectedOuter1 || outerCell === expectedOuter2;
-  }
-
-  return false;
+  // Adjacent if centers are within sum of half-widths
+  const maxDistance = (fromAnglePerCell + toAnglePerCell) / 2;
+  return angularDiff < maxDistance;
 }
 
 // Calculate logical cell from visual cell based on rotation
@@ -142,6 +137,9 @@ function getLogicalCell(ringIndex: number, visualCell: number, rotation: number)
   if (logicalCell < 0) logicalCell += config.cells;
   return logicalCell;
 }
+
+// Debug mode - set to true to show cell/ring indices
+const DEBUG_MODE = false;
 
 const VoragoBoard = () => {
   const dispatch = useAppDispatch();
@@ -169,7 +167,8 @@ const VoragoBoard = () => {
 	  return;
 	}
 
-	const logicalCell = getLogicalCell(ring, visualCell, degrees[ring]);
+	// With group rotation, visualCell IS the logical cell
+	const logicalCell = visualCell;
 	const cellKey = `${ring}-${logicalCell}`;
 	const cellData = cells[cellKey];
 
@@ -234,13 +233,23 @@ const VoragoBoard = () => {
 	else if (selectedCoin) {
 	  switch (selectedCoin) {
 		case 'Sovereign':
-		  if (!cellData.hasWall) dispatch(placeWall({ ring, cell: logicalCell }));
+		  if (cellData.hasBridge) {
+			dispatch(setDisplayMessage('Cannot place wall on a cell with a bridge'));
+			setTimeout(() => dispatch(setDisplayMessage('')), 2000);
+		  } else if (!cellData.hasWall) {
+			dispatch(placeWall({ ring, cell: logicalCell }));
+		  }
 		  break;
 		case 'Rubicon':
 		  if (cellData.hasWall) dispatch(removeWall({ ring, cell: logicalCell }));
 		  break;
 		case 'Arcadia':
-		  if (!cellData.hasBridge) dispatch(placeBridge({ ring, cell: logicalCell }));
+		  if (cellData.hasWall) {
+			dispatch(setDisplayMessage('Cannot place bridge on a cell with a wall'));
+			setTimeout(() => dispatch(setDisplayMessage('')), 2000);
+		  } else if (!cellData.hasBridge) {
+			dispatch(placeBridge({ ring, cell: logicalCell }));
+		  }
 		  break;
 		case 'Gamma':
 		  if (cellData.hasBridge) dispatch(removeBridge({ ring, cell: logicalCell }));
@@ -255,6 +264,22 @@ const VoragoBoard = () => {
 
   return (
 	<div className="relative w-full max-w-[600px] mx-auto aspect-square">
+	  {/* Debug panel */}
+	  {DEBUG_MODE && (
+		<div className="absolute top-0 left-0 bg-black/70 text-white text-xs p-2 rounded z-10 font-mono">
+		  <div className="font-bold mb-1">Ring Rotations:</div>
+		  {degrees.map((deg, i) => (
+			<div key={i}>R{i}: {deg.toFixed(1)}°</div>
+		  ))}
+		  {selectedStone && (
+			<div className="mt-2 border-t border-white/30 pt-1">
+			  <div className="font-bold">Selected:</div>
+			  <div>Ring: {selectedStone.ring}</div>
+			  <div>Cell: {selectedStone.cell}</div>
+			</div>
+		  )}
+		</div>
+	  )}
 	  <svg viewBox="0 0 500 500" className="w-full h-full">
 		{/* Background gradient */}
 		<defs>
@@ -283,12 +308,12 @@ const VoragoBoard = () => {
 		  >
 			{/* Cells */}
 			{Array.from({ length: config.cells }).map((_, cellIdx) => {
-			  const logicalCell = getLogicalCell(ringIdx, cellIdx, degrees[ringIdx]);
-			  const cellKey = `${ringIdx}-${logicalCell}`;
+			  // Use cellIdx directly - the group transform handles visual rotation
+			  const cellKey = `${ringIdx}-${cellIdx}`;
 			  const cellData = cells[cellKey];
 			  const center = getCellCenter(ringIdx, cellIdx);
 			  const isHovered = hoveredCell === cellKey;
-			  const isSelected = selectedStone?.ring === ringIdx && selectedStone?.cell === logicalCell;
+			  const isSelected = selectedStone?.ring === ringIdx && selectedStone?.cell === cellIdx;
 
 			  return (
 				<g key={cellKey}>
@@ -318,35 +343,55 @@ const VoragoBoard = () => {
 
 				  {/* Wall */}
 				  {cellData.hasWall && (
-					<motion.rect
-					  initial={{ scale: 0 }}
-					  animate={{ scale: 1 }}
-					  x={center.x - 15}
-					  y={center.y - 15}
-					  width="30"
-					  height="30"
-					  fill="#5a5550"
-					  stroke="#000"
-					  strokeWidth="2"
-					  rx="3"
-					  className="pointer-events-none"
-					/>
+					<g transform={`translate(${center.x}, ${center.y}) rotate(${center.rotation})`}>
+					  <motion.rect
+						initial={{ scale: 0 }}
+						animate={{ scale: 1 }}
+						x={-15}
+						y={-15}
+						width="30"
+						height="30"
+						fill="#5a5550"
+						stroke="#000"
+						strokeWidth="2"
+						rx="3"
+						className="pointer-events-none"
+					  />
+					</g>
 				  )}
 
 				  {/* Bridge */}
 				  {cellData.hasBridge && (
-					<motion.g
-					  initial={{ opacity: 0, y: -10 }}
-					  animate={{ opacity: 1, y: 0 }}
-					  className="pointer-events-none"
+					<g transform={`translate(${center.x}, ${center.y}) rotate(${center.rotation})`}>
+					  <motion.g
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						className="pointer-events-none"
+					  >
+						<line x1={-15} y1={0} x2={15} y2={0}
+							  stroke="#6b8e23" strokeWidth="4" strokeLinecap="round"/>
+						<line x1={-12} y1={-6} x2={12} y2={-6}
+							  stroke="#6b8e23" strokeWidth="2" strokeLinecap="round"/>
+						<line x1={-12} y1={6} x2={12} y2={6}
+							  stroke="#6b8e23" strokeWidth="2" strokeLinecap="round"/>
+					  </motion.g>
+					</g>
+				  )}
+
+				  {/* Debug: Cell index label */}
+				  {DEBUG_MODE && (
+					<text
+					  x={center.x}
+					  y={center.y + (cellData.stone ? -20 : 0)}
+					  textAnchor="middle"
+					  dominantBaseline="central"
+					  fill="#666"
+					  fontSize={ringIdx === 0 ? "7" : ringIdx <= 2 ? "9" : "11"}
+					  className="pointer-events-none select-none"
+					  fontFamily="monospace"
 					>
-					  <line x1={center.x - 15} y1={center.y} x2={center.x + 15} y2={center.y}
-							stroke="#6b8e23" strokeWidth="4" strokeLinecap="round"/>
-					  <line x1={center.x - 12} y1={center.y - 6} x2={center.x + 12} y2={center.y - 6}
-							stroke="#6b8e23" strokeWidth="2" strokeLinecap="round"/>
-					  <line x1={center.x - 12} y1={center.y + 6} x2={center.x + 12} y2={center.y + 6}
-							stroke="#6b8e23" strokeWidth="2" strokeLinecap="round"/>
-					</motion.g>
+					  {cellIdx}
+					</text>
 				  )}
 
 				  {/* Stone */}
@@ -376,10 +421,10 @@ const VoragoBoard = () => {
 				  <AnimatePresence>
 					{cellData.stone && isSelected && (
 					  <motion.circle
-						key={`pulse-${ringIdx}-${logicalCell}-p${cellData.stone.player}`}
+						key={`pulse-${ringIdx}-${cellIdx}-p${cellData.stone.player}`}
 						initial={{ scale: 0.8, opacity: 0 }}
 						animate={{ scale: 1.3, opacity: 0.6 }}
-						exit={{ scale: 0, opacity: 0 }}
+						exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
 						transition={{
 						  repeat: Infinity,
 						  duration: 1,
