@@ -76,17 +76,9 @@ const CoinSelector = () => {
 	}
   };
 
-  if (hasUsedCoin) {
-	return (
-	  <div className="text-center text-gray-500 py-4">
-		You've already used a coin this turn
-	  </div>
-	);
-  }
-
   return (
 	<div>
-	  {/* Ring selector overlay */}
+	  {/* Ring selector overlay - show this even if coin used */}
 	  {showRingSelector && (
 		<div className="mb-6 p-4 bg-black text-white rounded-lg">
 		  <h4 className="marcellus text-lg mb-3">
@@ -153,8 +145,16 @@ const CoinSelector = () => {
 		</div>
 	  )}
 
-	  {/* Coin grid */}
-	  <div className="grid grid-cols-2 gap-4">
+	  {/* Show "already used" message only when not selecting ring */}
+	  {hasUsedCoin && !showRingSelector && (
+		<div className="text-center text-gray-500 py-4">
+		  You've already used a coin this turn
+		</div>
+	  )}
+
+	  {/* Coin list - hide when selecting ring or after coin used */}
+	  {!hasUsedCoin && !showRingSelector && (
+		<div className="space-y-2">
 		{availableCoins.map(coin => {
 		  const isDisabled = playerDisabledCoins.includes(coin.title);
 
@@ -164,37 +164,36 @@ const CoinSelector = () => {
 			  onClick={() => !isDisabled && handleCoinClick(coin.title, coin.action)}
 			  disabled={isDisabled}
 			  className={`
-				p-3 border-2 rounded-lg transition-all
+				w-full p-2 border-2 rounded-lg transition-all relative flex items-center gap-3 text-left
 				${isDisabled
-				  ? 'opacity-40 cursor-not-allowed border-gray-400'
-				  : 'border-black hover:shadow-lg hover:scale-[1.02] cursor-pointer'
+				  ? 'opacity-50 cursor-not-allowed border-gray-400 bg-gray-100'
+				  : 'border-black hover:shadow-md hover:scale-[1.01] cursor-pointer bg-white'
 				}
-				bg-white
 			  `}
 			>
-			  {/* Coin SVG circle at top */}
-			  <div className="flex justify-center mb-3">
-				<div className="w-20 h-20 hover:scale-110 transition-transform">
+			  {/* Coin SVG on left - small */}
+			  <div className="flex-shrink-0">
+				<div className={`w-12 h-12 transition-transform ${!isDisabled && 'hover:scale-110'}`}>
 				  <CoinSVG aspect={coin.aspect} />
 				</div>
 			  </div>
 
-			  {/* Coin info */}
-			  <div className="text-center">
-				<h3 className="font-bold marcellus text-base mb-1">{coin.title}</h3>
-				<p className="text-xs italic text-gray-600 mb-2">{coin.subtitle}</p>
-				<p className="text-xs text-gray-700">{coin.description}</p>
-			  </div>
+			  {/* Coin info on right */}
+			  <div className="flex-grow min-w-0">
+				<h3 className="font-bold marcellus text-sm leading-tight mb-1">{coin.title}</h3>
+				<p className="text-[11px] text-gray-700 leading-tight">{coin.description}</p>
 
-			  {isDisabled && (
-				<div className="mt-2 text-xs text-red-600 font-semibold text-center">
-				  Used last round
-				</div>
-			  )}
+				{isDisabled && (
+				  <div className="mt-1 px-1.5 py-0.5 bg-red-100 border border-red-300 rounded text-[10px] text-red-700 font-semibold inline-block">
+					🚫 Used Last Round
+				  </div>
+				)}
+			  </div>
 			</button>
 		  );
 		})}
 	  </div>
+	  )}
 	</div>
   );
 };

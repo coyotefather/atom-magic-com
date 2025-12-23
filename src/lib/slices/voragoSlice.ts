@@ -169,7 +169,7 @@ const COINS: Coin[] = [
 // Helper to create cell map
 function createCellMap(): Record<string, Cell> {
   const cells: Record<string, Cell> = {};
-  const ringCellCounts = [12, 10, 8, 6, 4]; // cells per ring
+  const ringCellCounts = [32, 16, 16, 8, 4]; // Ring 1 same as Ring 2 (1:1 alignment)
 
   ringCellCounts.forEach((count, ringIndex) => {
 	for (let cellIndex = 0; cellIndex < count; cellIndex++) {
@@ -515,8 +515,27 @@ const voragoSlice = createSlice({
 
 	spinRing: (state, action: PayloadAction<{ ring: number; direction: 'cw' | 'ccw' }>) => {
 	  const { ring, direction } = action.payload;
-	  const increment = direction === 'cw' ? 30 : -30; // 30 degrees per cell
-	  state.degrees[ring] = (state.degrees[ring] + increment) % 360;
+
+	  // Calculate rotation increment based on alignment rules
+	  // Ring cell counts: [32, 16, 16, 8, 4] from ring 0-4
+	  const cellCounts = [32, 16, 16, 8, 4];
+
+	  let increment;
+	  if (ring === 1) {
+		// Ring 1 has same cells as Ring 2 (16) - rotates 1:1 with Ring 2
+		// Rotate by its own cell size (22.5°)
+		increment = 360 / cellCounts[ring];
+	  } else if (ring === 4) {
+		// Ring 4 (innermost) - rotate by its own cell size (90°)
+		increment = 360 / cellCounts[ring];
+	  } else {
+		// Other rings - rotate by inner ring's cell size for alignment
+		const innerRing = ring + 1;
+		increment = 360 / cellCounts[innerRing];
+	  }
+
+	  const rotation = direction === 'cw' ? increment : -increment;
+	  state.degrees[ring] = (state.degrees[ring] + rotation) % 360;
 	},
 
 	resetRing: (state, action: PayloadAction<number>) => {
