@@ -54,7 +54,7 @@ const Page = () => {
 				<ul className="space-y-1 text-xs">
 				  <li>• Click your stone to select it</li>
 				  <li>• Click a cell to move there</li>
-				  <li>• Hover coins for descriptions</li>
+				  <li>• All coins have a cooldown of one round.</li>
 				  <li>• Complete both actions to end turn</li>
 				</ul>
 			  </div>
