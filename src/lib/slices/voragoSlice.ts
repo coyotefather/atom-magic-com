@@ -74,6 +74,7 @@ export interface VoragoState {
   selectedCoin: string | null;
   showTurnDialog: boolean;
   displayMessage: string;
+  isAIThinking: boolean;
 }
 
 const COINS: Coin[] = [
@@ -234,7 +235,8 @@ const initialState: VoragoState = {
   selectedStone: null,
   selectedCoin: null,
   showTurnDialog: false,
-  displayMessage: "Move a stone or use a coin"
+  displayMessage: "Move a stone or use a coin",
+  isAIThinking: false
 };
 
 // Async thunk for AI turn
@@ -255,7 +257,8 @@ export const executeAITurn = createAsyncThunk(
 
 	console.log('  ✅ Starting AI turn...');
 
-	// Show turn dialog
+	// Set AI thinking state
+	dispatch(voragoSlice.actions.setAIThinking(true));
 	dispatch(voragoSlice.actions.setDisplayMessage('AI is thinking...'));
 
 	// Wait a bit for realism
@@ -400,6 +403,7 @@ export const executeAITurn = createAsyncThunk(
 
 	  // End the AI's turn
 	  console.log('  🔄 Ending AI turn...');
+	  dispatch(voragoSlice.actions.setAIThinking(false));
 	  dispatch(voragoSlice.actions.endTurn());
 
 	} catch (error) {
@@ -409,6 +413,7 @@ export const executeAITurn = createAsyncThunk(
 	  await new Promise(resolve => setTimeout(resolve, 1500));
 
 	  // End turn anyway to prevent getting stuck
+	  dispatch(voragoSlice.actions.setAIThinking(false));
 	  dispatch(voragoSlice.actions.endTurn());
 	}
   }
@@ -633,6 +638,10 @@ const voragoSlice = createSlice({
 
 	selectStone: (state, action: PayloadAction<Stone | null>) => {
 	  state.selectedStone = action.payload;
+	},
+
+	setAIThinking: (state, action: PayloadAction<boolean>) => {
+	  state.isAIThinking = action.payload;
 	}
   }
 });
@@ -656,7 +665,8 @@ export const {
   endTurn,
   setDisplayMessage,
   selectUnplacedStone,
-  selectStone
+  selectStone,
+  setAIThinking
 } = voragoSlice.actions;
 
 export default voragoSlice.reducer;

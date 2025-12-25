@@ -10,7 +10,7 @@ import { useAppSelector } from '@/lib/hooks';
 import { useState, useRef, useEffect } from 'react';
 
 const Page = () => {
-  const { gameWin, winner, player1Name, player2Name } = useAppSelector(state => state.vorago);
+  const { gameWin, winner, player1Name, player2Name, isAIThinking } = useAppSelector(state => state.vorago);
   const [gameStarted, setGameStarted] = useState(false);
   const [showTips, setShowTips] = useState(false);
   const tipsRef = useRef<HTMLDivElement>(null);
@@ -94,20 +94,36 @@ const Page = () => {
 			</div>
 
 			{/* Main area: Board and Coins side by side */}
-			<div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 items-start">
-			  {/* Left: Stone Tray + Board */}
-			  <div className="space-y-4">
-				<StoneTray />
+			<div className="relative">
+			  <div className={`grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 items-start transition-opacity ${isAIThinking ? 'opacity-50 pointer-events-none' : ''}`}>
+				{/* Left: Stone Tray + Board */}
+				<div className="space-y-4">
+				  <StoneTray />
+				  <div className="bg-white p-4 rounded-lg border-2 border-black">
+					<VoragoBoard />
+				  </div>
+				</div>
+
+				{/* Right: Coins */}
 				<div className="bg-white p-4 rounded-lg border-2 border-black">
-				  <VoragoBoard />
+				  <h3 className="marcellus text-lg mb-3 text-center">Cardinal Coins</h3>
+				  <CoinSelector />
 				</div>
 			  </div>
 
-			  {/* Right: Coins */}
-			  <div className="bg-white p-4 rounded-lg border-2 border-black">
-				<h3 className="marcellus text-lg mb-3 text-center">Cardinal Coins</h3>
-				<CoinSelector />
-			  </div>
+			  {/* AI Thinking Overlay */}
+			  {isAIThinking && (
+				<div className="absolute inset-0 flex items-center justify-center">
+				  <div className="bg-black text-white px-8 py-6 rounded-lg shadow-2xl text-center">
+					<div className="flex items-center justify-center gap-3 mb-2">
+					  <div className="w-3 h-3 bg-gold rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+					  <div className="w-3 h-3 bg-gold rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+					  <div className="w-3 h-3 bg-gold rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+					</div>
+					<p className="marcellus text-xl">{player2Name} is thinking...</p>
+				  </div>
+				</div>
+			  )}
 			</div>
 		  </div>
 		)}
