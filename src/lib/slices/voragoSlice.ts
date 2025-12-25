@@ -59,6 +59,10 @@ export interface VoragoState {
 	player1: string[];
 	player2: string[];
   };
+  coinsUsedThisRound: {
+	player1: string[];
+	player2: string[];
+  };
 
   // Turn state
   hasMovedStone: boolean;
@@ -217,6 +221,10 @@ const initialState: VoragoState = {
 	},
   availableCoins: COINS,
   disabledCoins: {
+	player1: [],
+	player2: []
+  },
+  coinsUsedThisRound: {
 	player1: [],
 	player2: []
   },
@@ -508,9 +516,9 @@ const voragoSlice = createSlice({
 	  state.selectedCoin = action.payload;
 	  state.hasUsedCoin = true;
 
-	  // Add to disabled coins for next round
+	  // Track coins used this round (will become disabled next round)
 	  const player = `player${state.turn}` as 'player1' | 'player2';
-	  state.disabledCoins[player].push(action.payload);
+	  state.coinsUsedThisRound[player].push(action.payload);
 	},
 
 	spinRing: (state, action: PayloadAction<{ ring: number; direction: 'cw' | 'ccw' }>) => {
@@ -579,9 +587,13 @@ const voragoSlice = createSlice({
 	  if (state.turn === 1) {
 		state.round++;
 
-		// Clear disabled coins from last round
-		state.disabledCoins.player1 = [];
-		state.disabledCoins.player2 = [];
+		// Rotate disabled coins:
+		// 1. Clear coins that were disabled last round (they're now available)
+		// 2. Move coins used this round to disabled (they'll be disabled next round)
+		state.disabledCoins.player1 = [...state.coinsUsedThisRound.player1];
+		state.disabledCoins.player2 = [...state.coinsUsedThisRound.player2];
+		state.coinsUsedThisRound.player1 = [];
+		state.coinsUsedThisRound.player2 = [];
 	  }
 
 	  state.displayMessage = state.turn === 1 ?

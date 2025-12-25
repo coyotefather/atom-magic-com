@@ -145,35 +145,32 @@ const CoinSelector = () => {
 		</div>
 	  )}
 
-	  {/* Show "already used" message only when not selecting ring */}
-	  {hasUsedCoin && !showRingSelector && (
-		<div className="text-center text-gray-500 py-4">
-		  You've already used a coin this turn
-		</div>
-	  )}
-
-	  {/* Coin list - hide when selecting ring or after coin used */}
-	  {!hasUsedCoin && !showRingSelector && (
+	  {/* Coin list - always visible, but hide when selecting ring */}
+	  {!showRingSelector && (
 		<div className="space-y-2">
 		{availableCoins.map(coin => {
-		  const isDisabled = playerDisabledCoins.includes(coin.title);
+		  const isDisabledFromLastRound = playerDisabledCoins.includes(coin.title);
+		  const isUsedThisTurn = hasUsedCoin;
+		  const isClickable = !isDisabledFromLastRound && !isUsedThisTurn;
 
 		  return (
 			<button
 			  key={coin.title}
-			  onClick={() => !isDisabled && handleCoinClick(coin.title, coin.action)}
-			  disabled={isDisabled}
+			  onClick={() => isClickable && handleCoinClick(coin.title, coin.action)}
+			  disabled={!isClickable}
 			  className={`
 				w-full p-2 border-2 rounded-lg transition-all relative flex items-center gap-3 text-left
-				${isDisabled
+				${isDisabledFromLastRound
 				  ? 'opacity-50 cursor-not-allowed border-gray-400 bg-gray-100'
-				  : 'border-black hover:shadow-md hover:scale-[1.01] cursor-pointer bg-white'
+				  : isUsedThisTurn
+					? 'opacity-70 cursor-not-allowed border-gray-300 bg-gray-50'
+					: 'border-black hover:shadow-md hover:scale-[1.01] cursor-pointer bg-white'
 				}
 			  `}
 			>
 			  {/* Coin SVG on left - small */}
 			  <div className="flex-shrink-0">
-				<div className={`w-12 h-12 transition-transform ${!isDisabled && 'hover:scale-110'}`}>
+				<div className={`w-12 h-12 transition-transform ${isClickable && 'hover:scale-110'}`}>
 				  <CoinSVG aspect={coin.aspect} />
 				</div>
 			  </div>
@@ -183,7 +180,7 @@ const CoinSelector = () => {
 				<h3 className="font-bold marcellus text-sm leading-tight mb-1">{coin.title}</h3>
 				<p className="text-[11px] text-gray-700 leading-tight">{coin.description}</p>
 
-				{isDisabled && (
+				{isDisabledFromLastRound && (
 				  <div className="mt-1 px-1.5 py-0.5 bg-red-100 border border-red-300 rounded text-[10px] text-red-700 font-semibold inline-block">
 					🚫 Used Last Round
 				  </div>
