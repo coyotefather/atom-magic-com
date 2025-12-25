@@ -7,11 +7,26 @@ import GameStatus from '@/app/components/vorago/GameStatus';
 import GameSetup from '@/app/components/vorago/GameSetup';
 import StoneTray from '@/app/components/vorago/StoneTray';
 import { useAppSelector } from '@/lib/hooks';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const Page = () => {
   const { gameWin, winner, player1Name, player2Name } = useAppSelector(state => state.vorago);
   const [gameStarted, setGameStarted] = useState(false);
+  const [showTips, setShowTips] = useState(false);
+  const tipsRef = useRef<HTMLDivElement>(null);
+
+  // Close tips popup when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (tipsRef.current && !tipsRef.current.contains(event.target as Node)) {
+        setShowTips(false);
+      }
+    };
+    if (showTips) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showTips]);
 
   return (
 	<main className="notoserif min-h-screen">
@@ -43,49 +58,55 @@ const Page = () => {
 		  </div>
 		) : (
 		  /* Game Board */
-		  <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
-			{/* Left sidebar: Game Status - UNCHANGED */}
-			<div className="xl:col-span-1 space-y-4">
-			  <GameStatus />
+		  <div className="space-y-4">
+			{/* Top row: Game Status and controls - fixed height */}
+			<div className="flex items-center gap-3 h-10">
+			  <div className="flex-grow">
+				<GameStatus />
+			  </div>
 
-			  {/* Quick reference card */}
-			  <div className="bg-white border-2 border-black p-4 rounded-lg text-sm">
-				<h4 className="font-bold mb-2 marcellus">Quick Tips:</h4>
-				<ul className="space-y-1 text-xs">
-				  <li>• Click your stone to select it</li>
-				  <li>• Click a cell to move there</li>
-				  <li>• All coins have a cooldown of one round.</li>
-				  <li>• Complete both actions to end turn</li>
-				</ul>
+			  {/* Tips popup trigger */}
+			  <div className="relative" ref={tipsRef}>
+				<button
+				  onClick={() => setShowTips(!showTips)}
+				  className="py-1 px-3 bg-gray-200 text-black rounded border border-gray-400 hover:bg-gray-300 transition-all text-xs"
+				>
+				  Tips
+				</button>
+				{showTips && (
+				  <div className="absolute right-0 top-8 z-50 bg-white border-2 border-black p-3 rounded-lg text-sm shadow-lg w-64">
+					<h4 className="font-bold mb-1 marcellus text-sm">Quick Tips:</h4>
+					<ul className="space-y-0.5 text-xs">
+					  <li>• Click your stone to select, then click a cell to move</li>
+					  <li>• All coins have a cooldown of one round</li>
+					  <li>• Complete both actions to end turn</li>
+					</ul>
+				  </div>
+				)}
 			  </div>
 
 			  <button
 				onClick={() => setGameStarted(false)}
-				className="w-full py-2 px-4 bg-gray-200 text-black rounded border-2 border-gray-400 hover:bg-gray-300 transition-all"
+				className="py-1 px-3 bg-gray-200 text-black rounded border border-gray-400 hover:bg-gray-300 transition-all text-xs"
 			  >
-				← Back to Setup
+				← Back
 			  </button>
 			</div>
 
-			{/* Main area: Board and Coins */}
-			<div className="xl:col-span-4">
-			  <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 items-start">
-				{/* Left: Board Area */}
-				<div className="space-y-4">
-				  {/* Stone Tray - Above board only */}
-				  <StoneTray />
-
-				  {/* Board */}
-				  <div className="bg-white p-4 rounded-lg border-2 border-black">
-					<VoragoBoard />
-				  </div>
-				</div>
-
-				{/* Right: Coins - Narrow column */}
+			{/* Main area: Board and Coins side by side */}
+			<div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4 items-start">
+			  {/* Left: Stone Tray + Board */}
+			  <div className="space-y-4">
+				<StoneTray />
 				<div className="bg-white p-4 rounded-lg border-2 border-black">
-				  <h3 className="marcellus text-lg mb-3 text-center">Cardinal Coins</h3>
-				  <CoinSelector />
+				  <VoragoBoard />
 				</div>
+			  </div>
+
+			  {/* Right: Coins */}
+			  <div className="bg-white p-4 rounded-lg border-2 border-black">
+				<h3 className="marcellus text-lg mb-3 text-center">Cardinal Coins</h3>
+				<CoinSelector />
 			  </div>
 			</div>
 		  </div>

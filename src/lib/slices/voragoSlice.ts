@@ -316,24 +316,28 @@ export const executeAITurn = createAsyncThunk(
 				ring: aiMove.coinAction.ring,
 				direction: aiMove.coinAction.direction
 			  }));
+			  dispatch(voragoSlice.actions.completeCoinAction());
 			}
 			break;
 		  case 'resetRing':
 			if (aiMove.coinAction.ring !== undefined) {
 			  console.log('    ⟲ Resetting ring', aiMove.coinAction.ring);
 			  dispatch(voragoSlice.actions.resetRing(aiMove.coinAction.ring));
+			  dispatch(voragoSlice.actions.completeCoinAction());
 			}
 			break;
 		  case 'lockRing':
 			if (aiMove.coinAction.ring !== undefined) {
 			  console.log('    🔒 Locking ring', aiMove.coinAction.ring);
 			  dispatch(voragoSlice.actions.lockRing(aiMove.coinAction.ring));
+			  dispatch(voragoSlice.actions.completeCoinAction());
 			}
 			break;
 		  case 'unlockRing':
 			if (aiMove.coinAction.ring !== undefined) {
 			  console.log('    🔓 Unlocking ring', aiMove.coinAction.ring);
 			  dispatch(voragoSlice.actions.unlockRing(aiMove.coinAction.ring));
+			  dispatch(voragoSlice.actions.completeCoinAction());
 			}
 			break;
 		  case 'placeWall':
@@ -343,6 +347,7 @@ export const executeAITurn = createAsyncThunk(
 				ring: aiMove.coinAction.ring,
 				cell: aiMove.coinAction.cell
 			  }));
+			  dispatch(voragoSlice.actions.completeCoinAction());
 			}
 			break;
 		  case 'removeWall':
@@ -352,6 +357,7 @@ export const executeAITurn = createAsyncThunk(
 				ring: aiMove.coinAction.ring,
 				cell: aiMove.coinAction.cell
 			  }));
+			  dispatch(voragoSlice.actions.completeCoinAction());
 			}
 			break;
 		  case 'placeBridge':
@@ -361,6 +367,7 @@ export const executeAITurn = createAsyncThunk(
 				ring: aiMove.coinAction.ring,
 				cell: aiMove.coinAction.cell
 			  }));
+			  dispatch(voragoSlice.actions.completeCoinAction());
 			}
 			break;
 		  case 'removeBridge':
@@ -370,10 +377,16 @@ export const executeAITurn = createAsyncThunk(
 				ring: aiMove.coinAction.ring,
 				cell: aiMove.coinAction.cell
 			  }));
+			  dispatch(voragoSlice.actions.completeCoinAction());
 			}
+			break;
+		  case 'freezeRound':
+			console.log('    ❄️ Freezing next round');
+			dispatch(voragoSlice.actions.completeCoinAction());
 			break;
 		  default:
 			console.log('    ℹ️ No special action for', aiMove.coinAction.action);
+			dispatch(voragoSlice.actions.completeCoinAction());
 		}
 	  } else {
 		console.log('  ⚠️ No coin action from AI');
@@ -513,12 +526,24 @@ const voragoSlice = createSlice({
 
 	// Coin actions
 	useCoin: (state, action: PayloadAction<string>) => {
+	  // Just select the coin - don't mark as used yet
+	  // hasUsedCoin will be set when the action is fully complete
 	  state.selectedCoin = action.payload;
-	  state.hasUsedCoin = true;
+	},
 
-	  // Track coins used this round (will become disabled next round)
-	  const player = `player${state.turn}` as 'player1' | 'player2';
-	  state.coinsUsedThisRound[player].push(action.payload);
+	// Called when a coin action is fully completed
+	completeCoinAction: (state) => {
+	  if (state.selectedCoin) {
+		const player = `player${state.turn}` as 'player1' | 'player2';
+		state.coinsUsedThisRound[player].push(state.selectedCoin);
+		state.hasUsedCoin = true;
+		state.selectedCoin = null;
+	  }
+	},
+
+	// Called when user cancels a coin action
+	cancelCoin: (state) => {
+	  state.selectedCoin = null;
 	},
 
 	spinRing: (state, action: PayloadAction<{ ring: number; direction: 'cw' | 'ccw' }>) => {
@@ -549,7 +574,6 @@ const voragoSlice = createSlice({
 	  const { ring, cell } = action.payload;
 	  const cellKey = `${ring}-${cell}`;
 	  state.cells[cellKey].hasWall = true;
-	  state.hasUsedCoin = true;
 	},
 
 	removeWall: (state, action: PayloadAction<{ ring: number; cell: number }>) => {
@@ -561,7 +585,6 @@ const voragoSlice = createSlice({
 	  const { ring, cell } = action.payload;
 	  const cellKey = `${ring}-${cell}`;
 	  state.cells[cellKey].hasBridge = true;
-	  state.hasUsedCoin = true;
 	},
 
 	removeBridge: (state, action: PayloadAction<{ ring: number; cell: number }>) => {
@@ -620,6 +643,8 @@ export const {
   setAIMode,
   moveStone,
   useCoin,
+  completeCoinAction,
+  cancelCoin,
   spinRing,
   resetRing,
   lockRing,

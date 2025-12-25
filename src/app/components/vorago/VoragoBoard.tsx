@@ -8,6 +8,7 @@ import {
   removeWall,
   placeBridge,
   removeBridge,
+  completeCoinAction,
   setDisplayMessage
 } from '@/lib/slices/voragoSlice';
 import { useState } from 'react';
@@ -238,10 +239,14 @@ const VoragoBoard = () => {
 			setTimeout(() => dispatch(setDisplayMessage('')), 2000);
 		  } else if (!cellData.hasWall) {
 			dispatch(placeWall({ ring, cell: logicalCell }));
+			dispatch(completeCoinAction());
 		  }
 		  break;
 		case 'Rubicon':
-		  if (cellData.hasWall) dispatch(removeWall({ ring, cell: logicalCell }));
+		  if (cellData.hasWall) {
+			dispatch(removeWall({ ring, cell: logicalCell }));
+			dispatch(completeCoinAction());
+		  }
 		  break;
 		case 'Arcadia':
 		  if (cellData.hasWall) {
@@ -249,10 +254,14 @@ const VoragoBoard = () => {
 			setTimeout(() => dispatch(setDisplayMessage('')), 2000);
 		  } else if (!cellData.hasBridge) {
 			dispatch(placeBridge({ ring, cell: logicalCell }));
+			dispatch(completeCoinAction());
 		  }
 		  break;
 		case 'Gamma':
-		  if (cellData.hasBridge) dispatch(removeBridge({ ring, cell: logicalCell }));
+		  if (cellData.hasBridge) {
+			dispatch(removeBridge({ ring, cell: logicalCell }));
+			dispatch(completeCoinAction());
+		  }
 		  break;
 	  }
 	}
