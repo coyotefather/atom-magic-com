@@ -59,6 +59,10 @@ export interface VoragoState {
 	player1: string[];
 	player2: string[];
   };
+  coinsUsedThisRound: {
+	player1: string[];
+	player2: string[];
+  };
 
   // Turn state
   hasMovedStone: boolean;
@@ -70,6 +74,7 @@ export interface VoragoState {
   selectedCoin: string | null;
   showTurnDialog: boolean;
   displayMessage: string;
+  isAIThinking: boolean;
 }
 
 const COINS: Coin[] = [
@@ -220,13 +225,18 @@ const initialState: VoragoState = {
 	player1: [],
 	player2: []
   },
+  coinsUsedThisRound: {
+	player1: [],
+	player2: []
+  },
   hasMovedStone: false,
   hasUsedCoin: false,
   frozenRound: false,
   selectedStone: null,
   selectedCoin: null,
   showTurnDialog: false,
-  displayMessage: "Move a stone or use a coin"
+  displayMessage: "Move a stone or use a coin",
+  isAIThinking: false
 };
 
 // Async thunk for AI turn
@@ -247,7 +257,8 @@ export const executeAITurn = createAsyncThunk(
 
 	console.log('  ✅ Starting AI turn...');
 
-	// Show turn dialog
+	// Set AI thinking state
+	dispatch(voragoSlice.actions.setAIThinking(true));
 	dispatch(voragoSlice.actions.setDisplayMessage('AI is thinking...'));
 
 	// Wait a bit for realism
@@ -299,73 +310,121 @@ export const executeAITurn = createAsyncThunk(
 		// Wait a bit then handle coin-specific actions
 		await new Promise(resolve => setTimeout(resolve, 300));
 
-		// Handle coin-specific actions
+		// Get current state for fallback logic
+		const currentState = (getState() as { vorago: VoragoState }).vorago;
+		const { lockedRings, cells } = currentState;
+
+		// Helper to get a random unlocked ring
+		const getRandomUnlockedRing = (): number => {
+		  const unlocked = lockedRings.map((locked, i) => locked ? -1 : i).filter(i => i >= 0);
+		  return unlocked.length > 0 ? unlocked[Math.floor(Math.random() * unlocked.length)] : 0;
+		};
+
+		// Helper to get a random locked ring
+		const getRandomLockedRing = (): number | null => {
+		  const locked = lockedRings.map((isLocked, i) => isLocked ? i : -1).filter(i => i >= 0);
+		  return locked.length > 0 ? locked[Math.floor(Math.random() * locked.length)] : null;
+		};
+
+		// Helper to get a random empty cell (no wall, no bridge, no stone)
+		const getRandomEmptyCell = (): { ring: number; cell: number } | null => {
+		  const emptyCells: { ring: number; cell: number }[] = [];
+		  Object.values(cells).forEach(cell => {
+			if (!cell.hasWall && !cell.hasBridge && !cell.stone) {
+			  emptyCells.push({ ring: cell.ring, cell: cell.cell });
+			}
+		  });
+		  return emptyCells.length > 0 ? emptyCells[Math.floor(Math.random() * emptyCells.length)] : null;
+		};
+
+		// Handle coin-specific actions with fallbacks
 		switch (aiMove.coinAction.action) {
-		  case 'spinRing':
-			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.direction) {
-			  console.log('    ↻ Spinning ring', aiMove.coinAction.ring, aiMove.coinAction.direction);
-			  dispatch(voragoSlice.actions.spinRing({
-				ring: aiMove.coinAction.ring,
-				direction: aiMove.coinAction.direction
-			  }));
-			}
+		  case 'spinRing': {
+			const ring = aiMove.coinAction.ring ?? getRandomUnlockedRing();
+			const direction = aiMove.coinAction.direction ?? (Math.random() > 0.5 ? 'cw' : 'ccw');
+			console.log('    ↻ Spinning ring', ring, direction);
+			dispatch(voragoSlice.actions.spinRing({ ring, direction }));
+			dispatch(voragoSlice.actions.completeCoinAction());
 			break;
-		  case 'resetRing':
-			if (aiMove.coinAction.ring !== undefined) {
-			  console.log('    ⟲ Resetting ring', aiMove.coinAction.ring);
-			  dispatch(voragoSlice.actions.resetRing(aiMove.coinAction.ring));
-			}
+		  }
+		  case 'resetRing': {
+			const ring = aiMove.coinAction.ring ?? getRandomUnlockedRing();
+			console.log('    ⟲ Resetting ring', ring);
+			dispatch(voragoSlice.actions.resetRing(ring));
+			dispatch(voragoSlice.actions.completeCoinAction());
 			break;
-		  case 'lockRing':
-			if (aiMove.coinAction.ring !== undefined) {
-			  console.log('    🔒 Locking ring', aiMove.coinAction.ring);
-			  dispatch(voragoSlice.actions.lockRing(aiMove.coinAction.ring));
-			}
+		  }
+		  case 'lockRing': {
+			const ring = aiMove.coinAction.ring ?? getRandomUnlockedRing();
+			console.log('    🔒 Locking ring', ring);
+			dispatch(voragoSlice.actions.lockRing(ring));
+			dispatch(voragoSlice.actions.completeCoinAction());
 			break;
-		  case 'unlockRing':
-			if (aiMove.coinAction.ring !== undefined) {
-			  console.log('    🔓 Unlocking ring', aiMove.coinAction.ring);
-			  dispatch(voragoSlice.actions.unlockRing(aiMove.coinAction.ring));
+		  }
+		  case 'unlockRing': {
+			const ring = aiMove.coinAction.ring ?? getRandomLockedRing();
+			if (ring !== null) {
+			  console.log('    🔓 Unlocking ring', ring);
+			  dispatch(voragoSlice.actions.unlockRing(ring));
 			}
+			dispatch(voragoSlice.actions.completeCoinAction());
 			break;
-		  case 'placeWall':
-			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
-			  console.log('    🧱 Placing wall at', aiMove.coinAction.ring, aiMove.coinAction.cell);
-			  dispatch(voragoSlice.actions.placeWall({
-				ring: aiMove.coinAction.ring,
-				cell: aiMove.coinAction.cell
-			  }));
+		  }
+		  case 'placeWall': {
+			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
+			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
+			  : getRandomEmptyCell();
+			if (target) {
+			  console.log('    🧱 Placing wall at', target.ring, target.cell);
+			  dispatch(voragoSlice.actions.placeWall(target));
 			}
+			dispatch(voragoSlice.actions.completeCoinAction());
 			break;
-		  case 'removeWall':
-			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
-			  console.log('    💥 Removing wall at', aiMove.coinAction.ring, aiMove.coinAction.cell);
-			  dispatch(voragoSlice.actions.removeWall({
-				ring: aiMove.coinAction.ring,
-				cell: aiMove.coinAction.cell
-			  }));
+		  }
+		  case 'removeWall': {
+			// Find a cell with a wall
+			const wallCells = Object.values(cells).filter(c => c.hasWall);
+			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
+			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
+			  : wallCells.length > 0 ? wallCells[Math.floor(Math.random() * wallCells.length)] : null;
+			if (target) {
+			  console.log('    💥 Removing wall at', target.ring, target.cell);
+			  dispatch(voragoSlice.actions.removeWall({ ring: target.ring, cell: target.cell }));
 			}
+			dispatch(voragoSlice.actions.completeCoinAction());
 			break;
-		  case 'placeBridge':
-			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
-			  console.log('    🌉 Placing bridge at', aiMove.coinAction.ring, aiMove.coinAction.cell);
-			  dispatch(voragoSlice.actions.placeBridge({
-				ring: aiMove.coinAction.ring,
-				cell: aiMove.coinAction.cell
-			  }));
+		  }
+		  case 'placeBridge': {
+			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
+			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
+			  : getRandomEmptyCell();
+			if (target) {
+			  console.log('    🌉 Placing bridge at', target.ring, target.cell);
+			  dispatch(voragoSlice.actions.placeBridge(target));
 			}
+			dispatch(voragoSlice.actions.completeCoinAction());
 			break;
-		  case 'removeBridge':
-			if (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined) {
-			  console.log('    🔥 Removing bridge at', aiMove.coinAction.ring, aiMove.coinAction.cell);
-			  dispatch(voragoSlice.actions.removeBridge({
-				ring: aiMove.coinAction.ring,
-				cell: aiMove.coinAction.cell
-			  }));
+		  }
+		  case 'removeBridge': {
+			// Find a cell with a bridge
+			const bridgeCells = Object.values(cells).filter(c => c.hasBridge);
+			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
+			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
+			  : bridgeCells.length > 0 ? bridgeCells[Math.floor(Math.random() * bridgeCells.length)] : null;
+			if (target) {
+			  console.log('    🔥 Removing bridge at', target.ring, target.cell);
+			  dispatch(voragoSlice.actions.removeBridge({ ring: target.ring, cell: target.cell }));
 			}
+			dispatch(voragoSlice.actions.completeCoinAction());
+			break;
+		  }
+		  case 'freezeRound':
+			console.log('    ❄️ Freezing next round');
+			dispatch(voragoSlice.actions.completeCoinAction());
 			break;
 		  default:
 			console.log('    ℹ️ No special action for', aiMove.coinAction.action);
+			dispatch(voragoSlice.actions.completeCoinAction());
 		}
 	  } else {
 		console.log('  ⚠️ No coin action from AI');
@@ -379,6 +438,7 @@ export const executeAITurn = createAsyncThunk(
 
 	  // End the AI's turn
 	  console.log('  🔄 Ending AI turn...');
+	  dispatch(voragoSlice.actions.setAIThinking(false));
 	  dispatch(voragoSlice.actions.endTurn());
 
 	} catch (error) {
@@ -388,6 +448,7 @@ export const executeAITurn = createAsyncThunk(
 	  await new Promise(resolve => setTimeout(resolve, 1500));
 
 	  // End turn anyway to prevent getting stuck
+	  dispatch(voragoSlice.actions.setAIThinking(false));
 	  dispatch(voragoSlice.actions.endTurn());
 	}
   }
@@ -505,12 +566,24 @@ const voragoSlice = createSlice({
 
 	// Coin actions
 	useCoin: (state, action: PayloadAction<string>) => {
+	  // Just select the coin - don't mark as used yet
+	  // hasUsedCoin will be set when the action is fully complete
 	  state.selectedCoin = action.payload;
-	  state.hasUsedCoin = true;
+	},
 
-	  // Add to disabled coins for next round
-	  const player = `player${state.turn}` as 'player1' | 'player2';
-	  state.disabledCoins[player].push(action.payload);
+	// Called when a coin action is fully completed
+	completeCoinAction: (state) => {
+	  if (state.selectedCoin) {
+		const player = `player${state.turn}` as 'player1' | 'player2';
+		state.coinsUsedThisRound[player].push(state.selectedCoin);
+		state.hasUsedCoin = true;
+		state.selectedCoin = null;
+	  }
+	},
+
+	// Called when user cancels a coin action
+	cancelCoin: (state) => {
+	  state.selectedCoin = null;
 	},
 
 	spinRing: (state, action: PayloadAction<{ ring: number; direction: 'cw' | 'ccw' }>) => {
@@ -541,7 +614,6 @@ const voragoSlice = createSlice({
 	  const { ring, cell } = action.payload;
 	  const cellKey = `${ring}-${cell}`;
 	  state.cells[cellKey].hasWall = true;
-	  state.hasUsedCoin = true;
 	},
 
 	removeWall: (state, action: PayloadAction<{ ring: number; cell: number }>) => {
@@ -553,7 +625,6 @@ const voragoSlice = createSlice({
 	  const { ring, cell } = action.payload;
 	  const cellKey = `${ring}-${cell}`;
 	  state.cells[cellKey].hasBridge = true;
-	  state.hasUsedCoin = true;
 	},
 
 	removeBridge: (state, action: PayloadAction<{ ring: number; cell: number }>) => {
@@ -579,9 +650,13 @@ const voragoSlice = createSlice({
 	  if (state.turn === 1) {
 		state.round++;
 
-		// Clear disabled coins from last round
-		state.disabledCoins.player1 = [];
-		state.disabledCoins.player2 = [];
+		// Rotate disabled coins:
+		// 1. Clear coins that were disabled last round (they're now available)
+		// 2. Move coins used this round to disabled (they'll be disabled next round)
+		state.disabledCoins.player1 = [...state.coinsUsedThisRound.player1];
+		state.disabledCoins.player2 = [...state.coinsUsedThisRound.player2];
+		state.coinsUsedThisRound.player1 = [];
+		state.coinsUsedThisRound.player2 = [];
 	  }
 
 	  state.displayMessage = state.turn === 1 ?
@@ -598,6 +673,10 @@ const voragoSlice = createSlice({
 
 	selectStone: (state, action: PayloadAction<Stone | null>) => {
 	  state.selectedStone = action.payload;
+	},
+
+	setAIThinking: (state, action: PayloadAction<boolean>) => {
+	  state.isAIThinking = action.payload;
 	}
   }
 });
@@ -608,6 +687,8 @@ export const {
   setAIMode,
   moveStone,
   useCoin,
+  completeCoinAction,
+  cancelCoin,
   spinRing,
   resetRing,
   lockRing,
@@ -619,7 +700,8 @@ export const {
   endTurn,
   setDisplayMessage,
   selectUnplacedStone,
-  selectStone
+  selectStone,
+  setAIThinking
 } = voragoSlice.actions;
 
 export default voragoSlice.reducer;

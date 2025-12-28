@@ -1,13 +1,13 @@
 'use client';
 
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
-import { useCoin, spinRing, resetRing, lockRing, unlockRing, setDisplayMessage } from '@/lib/slices/voragoSlice';
+import { useCoin, completeCoinAction, cancelCoin, spinRing, resetRing, lockRing, unlockRing, setDisplayMessage } from '@/lib/slices/voragoSlice';
 import { useState } from 'react';
 import CoinSVG from './CoinSVGs';
 
 const CoinSelector = () => {
   const dispatch = useAppDispatch();
-  const { availableCoins, disabledCoins, turn, hasUsedCoin, lockedRings } = useAppSelector(state => state.vorago);
+  const { availableCoins, disabledCoins, turn, hasUsedCoin, selectedCoin, lockedRings } = useAppSelector(state => state.vorago);
   const [showRingSelector, setShowRingSelector] = useState<string | null>(null);
   const [spinDirection, setSpinDirection] = useState<'cw' | 'ccw' | null>(null);
 
@@ -40,13 +40,18 @@ const CoinSelector = () => {
 	  case 'removeWall':
 	  case 'placeBridge':
 	  case 'removeBridge':
+		// These complete when user clicks a cell on the board
 		dispatch(setDisplayMessage('Click a cell on the board'));
 		break;
 	  case 'freezeRound':
+		// Immediate action - complete now
 		dispatch(setDisplayMessage('Next round will be frozen (no stone movement allowed)'));
+		dispatch(completeCoinAction());
 		break;
 	  default:
+		// Other immediate actions
 		dispatch(setDisplayMessage('Coin effect applied'));
+		dispatch(completeCoinAction());
 	}
   };
 
@@ -57,20 +62,24 @@ const CoinSelector = () => {
 	  case 'spin':
 		if (spinDirection) {
 		  dispatch(spinRing({ ring: ringIndex, direction: spinDirection }));
+		  dispatch(completeCoinAction());
 		  setShowRingSelector(null);
 		  setSpinDirection(null);
 		}
 		break;
 	  case 'reset':
 		dispatch(resetRing(ringIndex));
+		dispatch(completeCoinAction());
 		setShowRingSelector(null);
 		break;
 	  case 'lock':
 		dispatch(lockRing(ringIndex));
+		dispatch(completeCoinAction());
 		setShowRingSelector(null);
 		break;
 	  case 'unlock':
 		dispatch(unlockRing(ringIndex));
+		dispatch(completeCoinAction());
 		setShowRingSelector(null);
 		break;
 	}
@@ -135,6 +144,7 @@ const CoinSelector = () => {
 
 		  <button
 			onClick={() => {
+			  dispatch(cancelCoin());
 			  setShowRingSelector(null);
 			  setSpinDirection(null);
 			}}
@@ -145,49 +155,58 @@ const CoinSelector = () => {
 		</div>
 	  )}
 
-	  {/* Show "already used" message only when not selecting ring */}
-	  {hasUsedCoin && !showRingSelector && (
-		<div className="text-center text-gray-500 py-4">
-		  You've already used a coin this turn
-		</div>
-	  )}
-
-	  {/* Coin list - hide when selecting ring or after coin used */}
-	  {!hasUsedCoin && !showRingSelector && (
-		<div className="space-y-2">
+	  {/* Coin list - always visible, but hide when selecting ring */}
+	  {!showRingSelector && (
+		<div className="grid grid-cols-2 gap-2">
 		{availableCoins.map(coin => {
-		  const isDisabled = playerDisabledCoins.includes(coin.title);
+		  const isDisabledFromLastRound = playerDisabledCoins.includes(coin.title);
+		  const isUsedThisTurn = hasUsedCoin;
+		  const isSelected = selectedCoin === coin.title;
+		  const isOtherSelected = selectedCoin && selectedCoin !== coin.title;
+		  const isClickable = !isDisabledFromLastRound && !isUsedThisTurn && !isOtherSelected;
 
 		  return (
 			<button
 			  key={coin.title}
-			  onClick={() => !isDisabled && handleCoinClick(coin.title, coin.action)}
-			  disabled={isDisabled}
+			  onClick={() => isClickable && handleCoinClick(coin.title, coin.action)}
+			  disabled={!isClickable}
 			  className={`
-				w-full p-2 border-2 rounded-lg transition-all relative flex items-center gap-3 text-left
-				${isDisabled
+				p-2 border-2 rounded-lg transition-all relative flex flex-col items-center gap-1 text-center
+				${isDisabledFromLastRound
 				  ? 'opacity-50 cursor-not-allowed border-gray-400 bg-gray-100'
-				  : 'border-black hover:shadow-md hover:scale-[1.01] cursor-pointer bg-white'
+				  : isUsedThisTurn
+					? 'opacity-70 cursor-not-allowed border-gray-300 bg-gray-50'
+					: isSelected
+					  ? 'border-gold bg-yellow-50 ring-2 ring-gold shadow-lg scale-[1.02]'
+					  : isOtherSelected
+						? 'opacity-40 cursor-not-allowed border-gray-300 bg-gray-50'
+						: 'border-black hover:shadow-md hover:scale-[1.02] cursor-pointer bg-white'
 				}
 			  `}
 			>
-			  {/* Coin SVG on left - small */}
-			  <div className="flex-shrink-0">
-				<div className={`w-12 h-12 transition-transform ${!isDisabled && 'hover:scale-110'}`}>
-				  <CoinSVG aspect={coin.aspect} />
+			  {/* Cooldown badge - absolutely positioned */}
+			  {isDisabledFromLastRound && (
+				<div className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-red-500 text-white rounded text-[8px] font-bold shadow-sm">
+				  Cooldown
 				</div>
+			  )}
+
+			  {/* Selected indicator */}
+			  {isSelected && (
+				<div className="absolute -top-1 -left-1 px-1.5 py-0.5 bg-gold text-black rounded text-[8px] font-bold shadow-sm">
+				  Active
+				</div>
+			  )}
+
+			  {/* Coin SVG */}
+			  <div className={`w-10 h-10 transition-transform ${isClickable && 'hover:scale-110'}`}>
+				<CoinSVG aspect={coin.aspect} />
 			  </div>
 
-			  {/* Coin info on right */}
-			  <div className="flex-grow min-w-0">
-				<h3 className="font-bold marcellus text-sm leading-tight mb-1">{coin.title}</h3>
-				<p className="text-[11px] text-gray-700 leading-tight">{coin.description}</p>
-
-				{isDisabled && (
-				  <div className="mt-1 px-1.5 py-0.5 bg-red-100 border border-red-300 rounded text-[10px] text-red-700 font-semibold inline-block">
-					🚫 Used Last Round
-				  </div>
-				)}
+			  {/* Coin info */}
+			  <div className="w-full">
+				<h3 className="font-bold marcellus text-xs leading-tight">{coin.title}</h3>
+				<p className="text-[10px] text-gray-700 leading-tight mt-0.5">{coin.description}</p>
 			  </div>
 			</button>
 		  );
