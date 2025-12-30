@@ -34,7 +34,7 @@ export interface VoragoState {
   player1Name: string;
   player2Name: string;
   isAI: boolean;
-  aiDifficulty: 'easy' | 'medium' | 'hard' | 'expert';
+  aiDifficulty: 'easy' | 'medium' | 'hard';
 
   // Score
   score: {
@@ -63,6 +63,17 @@ export interface VoragoState {
 	player1: string[];
 	player2: string[];
   };
+  magnaDisabledCoin: string | null; // Coin disabled by Magna for both players next round
+
+  // History tracking (for Mnemonic and Charlatan)
+  lastStoneMove: {
+	player1: { from: { ring: number; cell: number } | null; to: { ring: number; cell: number } | null } | null;
+	player2: { from: { ring: number; cell: number } | null; to: { ring: number; cell: number } | null } | null;
+  };
+  lastCoinUsed: {
+	player1: string | null;
+	player2: string | null;
+  };
 
   // Turn state
   hasMovedStone: boolean;
@@ -82,15 +93,15 @@ const COINS: Coin[] = [
 	title: "Aura",
 	subtitle: "The Eternal Shadow of Umos",
 	aspect: "umos",
-	description: "Place a stone on the outermost ring.",
-	action: "placeStone"
+	description: "Transform a wall into a bridge or a bridge into a wall.",
+	action: "transformWallBridge"
   },
   {
 	title: "Mnemonic",
 	subtitle: "The Memory of Umos",
 	aspect: "um",
-	description: "Repeat the action from the last coin you played.",
-	action: "repeatCoin"
+	description: "Return opponent's last moved stone to its previous position.",
+	action: "returnOpponentStone"
   },
   {
 	title: "Cadence",
@@ -117,8 +128,8 @@ const COINS: Coin[] = [
 	title: "Magna",
 	subtitle: "The Prime Ambassador",
 	aspect: "um",
-	description: "Prevent all movement of stones the next round.",
-	action: "freezeRound"
+	description: "Choose any coin - neither player can use it next round.",
+	action: "disableCoin"
   },
   {
 	title: "Sovereign",
@@ -152,8 +163,8 @@ const COINS: Coin[] = [
 	title: "Spectrum",
 	subtitle: "The Heart of Solum",
 	aspect: "os",
-	description: "Move a stone between rings.",
-	action: "moveBetweenRings"
+	description: "Move a wall or bridge to an adjacent empty cell.",
+	action: "moveWallBridge"
   },
   {
 	title: "Polyphony",
@@ -166,8 +177,8 @@ const COINS: Coin[] = [
 	title: "Charlatan",
 	subtitle: "The Master of Lies",
 	aspect: "os",
-	description: "Move a stone within the same ring.",
-	action: "moveWithinRing"
+	description: "Use the action of the last coin your opponent played.",
+	action: "copyOpponentCoin"
   }
 ];
 
@@ -228,6 +239,15 @@ const initialState: VoragoState = {
   coinsUsedThisRound: {
 	player1: [],
 	player2: []
+  },
+  magnaDisabledCoin: null,
+  lastStoneMove: {
+	player1: null,
+	player2: null
+  },
+  lastCoinUsed: {
+	player1: null,
+	player2: null
   },
   hasMovedStone: false,
   hasUsedCoin: false,
@@ -418,10 +438,59 @@ export const executeAITurn = createAsyncThunk(
 			dispatch(voragoSlice.actions.completeCoinAction());
 			break;
 		  }
-		  case 'freezeRound':
-			console.log('    ❄️ Freezing next round');
+		  case 'transformWallBridge': {
+			// Aura: Transform wall to bridge or vice versa
+			const wallBridgeCells = Object.values(cells).filter(c => c.hasWall || c.hasBridge);
+			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
+			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
+			  : wallBridgeCells.length > 0 ? wallBridgeCells[Math.floor(Math.random() * wallBridgeCells.length)] : null;
+			if (target) {
+			  console.log('    🔄 Transforming wall/bridge at', target.ring, target.cell);
+			  dispatch(voragoSlice.actions.transformWallBridge({ ring: target.ring, cell: target.cell }));
+			}
 			dispatch(voragoSlice.actions.completeCoinAction());
 			break;
+		  }
+		  case 'returnOpponentStone': {
+			// Mnemonic: Return opponent's last moved stone
+			console.log('    ↩️ Returning opponent stone');
+			dispatch(voragoSlice.actions.returnOpponentStone());
+			dispatch(voragoSlice.actions.completeCoinAction());
+			break;
+		  }
+		  case 'disableCoin': {
+			// Magna: Disable a coin for both players next round
+			const targetCoin = aiMove.coinAction.targetCoin ?? 'Vertigo'; // Default to Vertigo
+			console.log('    🚫 Disabling coin:', targetCoin);
+			dispatch(voragoSlice.actions.setMagnaDisabledCoin(targetCoin));
+			dispatch(voragoSlice.actions.completeCoinAction());
+			break;
+		  }
+		  case 'moveWallBridge': {
+			// Spectrum: Move wall/bridge to adjacent cell
+			const wallBridgeCells2 = Object.values(cells).filter(c => c.hasWall || c.hasBridge);
+			if (wallBridgeCells2.length > 0) {
+			  const source = (aiMove.coinAction.fromRing !== undefined && aiMove.coinAction.fromCell !== undefined)
+				? { ring: aiMove.coinAction.fromRing, cell: aiMove.coinAction.fromCell }
+				: wallBridgeCells2[Math.floor(Math.random() * wallBridgeCells2.length)];
+			  // Simple: move to next cell in same ring
+			  const ringCellCounts = [32, 16, 16, 8, 4];
+			  const destCell = (source.cell + 1) % ringCellCounts[source.ring];
+			  console.log('    ➡️ Moving wall/bridge from', source.ring, source.cell, 'to', source.ring, destCell);
+			  dispatch(voragoSlice.actions.moveWallBridge({
+				from: { ring: source.ring, cell: source.cell },
+				to: { ring: source.ring, cell: destCell }
+			  }));
+			}
+			dispatch(voragoSlice.actions.completeCoinAction());
+			break;
+		  }
+		  case 'copyOpponentCoin': {
+			// Charlatan: Copy opponent's last coin (simplified - just complete)
+			console.log('    🎭 Copying opponent coin:', aiMove.coinAction.copiedCoin);
+			dispatch(voragoSlice.actions.completeCoinAction());
+			break;
+		  }
 		  default:
 			console.log('    ℹ️ No special action for', aiMove.coinAction.action);
 			dispatch(voragoSlice.actions.completeCoinAction());
@@ -490,7 +559,7 @@ const voragoSlice = createSlice({
 	  state.player2Name = action.payload.player2;
 	},
 
-	setAIMode: (state, action: PayloadAction<{ enabled: boolean; difficulty?: 'easy' | 'medium' | 'hard' | 'expert' }>) => {
+	setAIMode: (state, action: PayloadAction<{ enabled: boolean; difficulty?: 'easy' | 'medium' | 'hard' }>) => {
 	  state.isAI = action.payload.enabled;
 	  if (action.payload.difficulty) {
 		state.aiDifficulty = action.payload.difficulty;
@@ -500,6 +569,16 @@ const voragoSlice = createSlice({
 	// Stone movement
 	moveStone: (state, action: PayloadAction<{ stone: Stone; toRing: number; toCell: number }>) => {
 	  const { stone, toRing, toCell } = action.payload;
+	  const playerKey = `player${stone.player}` as 'player1' | 'player2';
+
+	  // Track the last stone move for Mnemonic
+	  const fromPos = (stone.ring >= 0 && stone.ring < 5)
+		? { ring: stone.ring, cell: stone.cell }
+		: null;
+	  state.lastStoneMove[playerKey] = {
+		from: fromPos,
+		to: { ring: toRing, cell: toCell }
+	  };
 
 	  // If stone was previously placed, remove it from old position
 	  if (stone.ring >= 0 && stone.ring < 5 && stone.cell >= 0) {
@@ -510,7 +589,6 @@ const voragoSlice = createSlice({
 	  // Check if moving to goal (ring 5)
 	  if (toRing === 5) {
 		// Don't place stone in cells - it goes to goal and disappears from board
-		const playerKey = `player${stone.player}` as 'player1' | 'player2';
 		state.score[playerKey]++;
 
 		// Remove stone from stones array (it's scored now)
@@ -537,7 +615,6 @@ const voragoSlice = createSlice({
 		state.cells[toKey].stone = { ...stone, ring: toRing, cell: toCell };
 
 		// Update in stones array
-		const playerKey = `player${stone.player}` as 'player1' | 'player2';
 		const stoneArray = state.stones[playerKey];
 		const stoneIndex = stoneArray.findIndex(s =>
 		  (s.ring === stone.ring && s.cell === stone.cell) ||
@@ -576,6 +653,7 @@ const voragoSlice = createSlice({
 	  if (state.selectedCoin) {
 		const player = `player${state.turn}` as 'player1' | 'player2';
 		state.coinsUsedThisRound[player].push(state.selectedCoin);
+		state.lastCoinUsed[player] = state.selectedCoin;
 		state.hasUsedCoin = true;
 		state.selectedCoin = null;
 	  }
@@ -632,6 +710,88 @@ const voragoSlice = createSlice({
 	  state.cells[key].hasBridge = false;
 	},
 
+	// Aura: Transform wall to bridge or bridge to wall
+	transformWallBridge: (state, action: PayloadAction<{ ring: number; cell: number }>) => {
+	  const key = `${action.payload.ring}-${action.payload.cell}`;
+	  const cell = state.cells[key];
+	  if (cell.hasWall) {
+		cell.hasWall = false;
+		cell.hasBridge = true;
+	  } else if (cell.hasBridge) {
+		cell.hasBridge = false;
+		cell.hasWall = true;
+	  }
+	},
+
+	// Mnemonic: Return opponent's last moved stone to its previous position
+	returnOpponentStone: (state) => {
+	  const opponent = state.turn === 1 ? 'player2' : 'player1';
+	  const lastMove = state.lastStoneMove[opponent];
+
+	  if (!lastMove || !lastMove.to) return;
+
+	  // Find the stone at the "to" position
+	  const toKey = `${lastMove.to.ring}-${lastMove.to.cell}`;
+	  const stone = state.cells[toKey]?.stone;
+
+	  if (!stone) return;
+
+	  // Remove from current position
+	  state.cells[toKey].stone = null;
+
+	  // If there was a previous position, move it back there
+	  if (lastMove.from) {
+		const fromKey = `${lastMove.from.ring}-${lastMove.from.cell}`;
+		state.cells[fromKey].stone = { ...stone, ring: lastMove.from.ring, cell: lastMove.from.cell };
+
+		// Update in stones array
+		const stoneArray = state.stones[opponent];
+		const stoneIndex = stoneArray.findIndex(s =>
+		  s.ring === lastMove.to!.ring && s.cell === lastMove.to!.cell
+		);
+		if (stoneIndex >= 0) {
+		  stoneArray[stoneIndex] = { ...stone, ring: lastMove.from.ring, cell: lastMove.from.cell };
+		}
+	  } else {
+		// Stone was newly placed, return to unplaced state
+		const stoneArray = state.stones[opponent];
+		const stoneIndex = stoneArray.findIndex(s =>
+		  s.ring === lastMove.to!.ring && s.cell === lastMove.to!.cell
+		);
+		if (stoneIndex >= 0) {
+		  stoneArray[stoneIndex] = { ...stone, ring: -1, cell: -1 };
+		}
+	  }
+
+	  // Clear opponent's last move since we undid it
+	  state.lastStoneMove[opponent] = null;
+	},
+
+	// Magna: Set a coin to be disabled for both players next round
+	setMagnaDisabledCoin: (state, action: PayloadAction<string>) => {
+	  state.magnaDisabledCoin = action.payload;
+	},
+
+	// Spectrum: Move a wall or bridge to an adjacent empty cell
+	moveWallBridge: (state, action: PayloadAction<{
+	  from: { ring: number; cell: number };
+	  to: { ring: number; cell: number };
+	}>) => {
+	  const { from, to } = action.payload;
+	  const fromKey = `${from.ring}-${from.cell}`;
+	  const toKey = `${to.ring}-${to.cell}`;
+	  const fromCell = state.cells[fromKey];
+	  const toCell = state.cells[toKey];
+
+	  if (fromCell.hasWall) {
+		fromCell.hasWall = false;
+		toCell.hasWall = true;
+	  } else if (fromCell.hasBridge) {
+		fromCell.hasBridge = false;
+		toCell.hasBridge = true;
+	  }
+	},
+
 	// Turn management
 	endTurn: (state) => {
 	  if (!state.hasMovedStone || !state.hasUsedCoin) {
@@ -655,6 +815,18 @@ const voragoSlice = createSlice({
 		// 2. Move coins used this round to disabled (they'll be disabled next round)
 		state.disabledCoins.player1 = [...state.coinsUsedThisRound.player1];
 		state.disabledCoins.player2 = [...state.coinsUsedThisRound.player2];
+
+		// Add Magna-disabled coin to both players' disabled lists
+		if (state.magnaDisabledCoin) {
+		  if (!state.disabledCoins.player1.includes(state.magnaDisabledCoin)) {
+			state.disabledCoins.player1.push(state.magnaDisabledCoin);
+		  }
+		  if (!state.disabledCoins.player2.includes(state.magnaDisabledCoin)) {
+			state.disabledCoins.player2.push(state.magnaDisabledCoin);
+		  }
+		  state.magnaDisabledCoin = null; // Clear after applying
+		}
+
 		state.coinsUsedThisRound.player1 = [];
 		state.coinsUsedThisRound.player2 = [];
 	  }
@@ -697,6 +869,10 @@ export const {
   removeWall,
   placeBridge,
   removeBridge,
+  transformWallBridge,
+  returnOpponentStone,
+  setMagnaDisabledCoin,
+  moveWallBridge,
   endTurn,
   setDisplayMessage,
   selectUnplacedStone,

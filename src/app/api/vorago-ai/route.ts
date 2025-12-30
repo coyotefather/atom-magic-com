@@ -22,6 +22,16 @@ interface GameState {
   }>;
   degrees: number[];
   lockedRings: boolean[];
+  round: number;
+  lastStoneMove: {
+	player1: { from: { ring: number; cell: number } | null; to: { ring: number; cell: number } | null } | null;
+	player2: { from: { ring: number; cell: number } | null; to: { ring: number; cell: number } | null } | null;
+  };
+  lastCoinUsed: {
+	player1: string | null;
+	player2: string | null;
+  };
+  magnaDisabledCoin: string | null;
 }
 
 export async function POST(request: NextRequest) {
@@ -122,9 +132,97 @@ function chooseStoneMove(gameState: GameState): any {
   return null;
 }
 
+function getInapplicableCoins(gameState: GameState): Set<string> {
+  const inapplicable = new Set<string>();
+
+  // Check board state
+  const hasWalls = Object.values(gameState.cells).some((cell: any) => cell.hasWall);
+  const hasBridges = Object.values(gameState.cells).some((cell: any) => cell.hasBridge);
+  const hasWallsOrBridges = hasWalls || hasBridges;
+  const allRingsLocked = gameState.lockedRings.every(locked => locked);
+  const anyRingLocked = gameState.lockedRings.some(locked => locked);
+  const anyUnlockedRingRotated = gameState.degrees.some((deg, i) => !gameState.lockedRings[i] && deg !== 0);
+
+  // Aura (transformWallBridge) - disabled if no walls or bridges exist
+  if (!hasWallsOrBridges) {
+    inapplicable.add('Aura');
+  }
+
+  // Mnemonic (returnOpponentStone) - disabled if:
+  // 1. Opponent (player1) hasn't moved a stone yet
+  // 2. Previous position is now occupied
+  const opponentLastMove = gameState.lastStoneMove?.player1;
+  if (!opponentLastMove || !opponentLastMove.to) {
+    inapplicable.add('Mnemonic');
+  } else if (opponentLastMove.from) {
+    const fromKey = `${opponentLastMove.from.ring}-${opponentLastMove.from.cell}`;
+    if (gameState.cells[fromKey]?.stone) {
+      inapplicable.add('Mnemonic');
+    }
+  }
+
+  // Cadence (resetRing) - disabled if no unlocked rings have been rotated
+  if (!anyUnlockedRingRotated) {
+    inapplicable.add('Cadence');
+  }
+
+  // Anathema (lockRing) - disabled if all rings are already locked
+  if (allRingsLocked) {
+    inapplicable.add('Anathema');
+  }
+
+  // Gamma (removeBridge) - disabled if no bridges exist
+  if (!hasBridges) {
+    inapplicable.add('Gamma');
+  }
+
+  // Rubicon (removeWall) - disabled if no walls exist
+  if (!hasWalls) {
+    inapplicable.add('Rubicon');
+  }
+
+  // Vertigo (spinRing) - disabled if all rings are locked
+  if (allRingsLocked) {
+    inapplicable.add('Vertigo');
+  }
+
+  // Polyphony (unlockRing) - disabled if no rings are locked
+  if (!anyRingLocked) {
+    inapplicable.add('Polyphony');
+  }
+
+  // Spectrum (moveWallBridge) - disabled if no walls or bridges exist
+  if (!hasWallsOrBridges) {
+    inapplicable.add('Spectrum');
+  }
+
+  // Charlatan (copyOpponentCoin) - disabled if:
+  // 1. Round 1 (no opponent history)
+  // 2. Opponent's last coin was Charlatan
+  // 3. Opponent's last coin is disabled by Magna
+  // 4. Opponent's last coin is one AI used last round (AI's cooldown)
+  const opponentLastCoin = gameState.lastCoinUsed?.player1;
+  const aiDisabledCoins = gameState.disabledCoins?.player2 || [];
+  if (gameState.round === 1 || !opponentLastCoin) {
+    inapplicable.add('Charlatan');
+  } else if (opponentLastCoin === 'Charlatan') {
+    inapplicable.add('Charlatan');
+  } else if (gameState.magnaDisabledCoin === opponentLastCoin) {
+    inapplicable.add('Charlatan');
+  } else if (aiDisabledCoins.includes(opponentLastCoin)) {
+    inapplicable.add('Charlatan');
+  }
+
+  return inapplicable;
+}
+
 function chooseCoinAction(gameState: GameState): any {
+  // Get inapplicable coins based on game state
+  const inapplicableCoins = getInapplicableCoins(gameState);
+
   const availableCoins = gameState.availableCoins.filter(
-	coin => !gameState.disabledCoins.player2.includes(coin.title)
+	coin => !gameState.disabledCoins.player2.includes(coin.title) &&
+			!inapplicableCoins.has(coin.title)
   );
 
   if (availableCoins.length === 0) {
@@ -145,7 +243,7 @@ function chooseCoinAction(gameState: GameState): any {
 
   // Add required parameters for specific actions
   switch (coin.action) {
-	case 'spinRing':
+	case 'spinRing': {
 	  // Pick a random unlocked ring
 	  const unlockedRings = gameState.degrees
 		.map((_, idx) => idx)
@@ -156,8 +254,9 @@ function chooseCoinAction(gameState: GameState): any {
 		coinAction.direction = Math.random() > 0.5 ? 'cw' : 'ccw';
 	  }
 	  break;
+	}
 
-	case 'resetRing':
+	case 'resetRing': {
 	  // Pick a ring that has been rotated
 	  const rotatedRings = gameState.degrees
 		.map((deg, idx) => ({ idx, deg }))
@@ -167,23 +266,116 @@ function chooseCoinAction(gameState: GameState): any {
 		coinAction.ring = rotatedRings[Math.floor(Math.random() * rotatedRings.length)].idx;
 	  }
 	  break;
+	}
 
-	case 'lockRing':
-	case 'unlockRing':
-	  // Pick a random ring
-	  coinAction.ring = Math.floor(Math.random() * 5);
+	case 'lockRing': {
+	  // Pick a random unlocked ring
+	  const unlocked = gameState.lockedRings
+		.map((locked, idx) => locked ? -1 : idx)
+		.filter(idx => idx >= 0);
+	  if (unlocked.length > 0) {
+		coinAction.ring = unlocked[Math.floor(Math.random() * unlocked.length)];
+	  }
 	  break;
+	}
+
+	case 'unlockRing': {
+	  // Pick a random locked ring
+	  const locked = gameState.lockedRings
+		.map((isLocked, idx) => isLocked ? idx : -1)
+		.filter(idx => idx >= 0);
+	  if (locked.length > 0) {
+		coinAction.ring = locked[Math.floor(Math.random() * locked.length)];
+	  }
+	  break;
+	}
 
 	case 'placeWall':
-	case 'placeBridge':
-	case 'removeWall':
-	case 'removeBridge':
-	  // Pick a random cell
-	  const randomRing = Math.floor(Math.random() * 5);
-	  const randomCell = Math.floor(Math.random() * getRingSize(randomRing));
-	  coinAction.ring = randomRing;
-	  coinAction.cell = randomCell;
+	case 'placeBridge': {
+	  // Pick a random empty cell
+	  const emptyCells: { ring: number; cell: number }[] = [];
+	  Object.values(gameState.cells).forEach((cell: any) => {
+		if (!cell.hasWall && !cell.hasBridge && !cell.stone) {
+		  emptyCells.push({ ring: cell.ring, cell: cell.cell });
+		}
+	  });
+	  if (emptyCells.length > 0) {
+		const target = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+		coinAction.ring = target.ring;
+		coinAction.cell = target.cell;
+	  }
 	  break;
+	}
+
+	case 'removeWall': {
+	  // Find a cell with a wall
+	  const wallCells = Object.values(gameState.cells).filter((c: any) => c.hasWall);
+	  if (wallCells.length > 0) {
+		const target = wallCells[Math.floor(Math.random() * wallCells.length)] as any;
+		coinAction.ring = target.ring;
+		coinAction.cell = target.cell;
+	  }
+	  break;
+	}
+
+	case 'removeBridge': {
+	  // Find a cell with a bridge
+	  const bridgeCells = Object.values(gameState.cells).filter((c: any) => c.hasBridge);
+	  if (bridgeCells.length > 0) {
+		const target = bridgeCells[Math.floor(Math.random() * bridgeCells.length)] as any;
+		coinAction.ring = target.ring;
+		coinAction.cell = target.cell;
+	  }
+	  break;
+	}
+
+	case 'transformWallBridge': {
+	  // Find a cell with a wall or bridge
+	  const wallBridgeCells = Object.values(gameState.cells).filter((c: any) => c.hasWall || c.hasBridge);
+	  if (wallBridgeCells.length > 0) {
+		const target = wallBridgeCells[Math.floor(Math.random() * wallBridgeCells.length)] as any;
+		coinAction.ring = target.ring;
+		coinAction.cell = target.cell;
+	  }
+	  break;
+	}
+
+	case 'returnOpponentStone': {
+	  // Immediate action - no parameters needed
+	  break;
+	}
+
+	case 'disableCoin': {
+	  // Pick a random coin to disable (exclude coins already on cooldown for simplicity)
+	  const allCoins = gameState.availableCoins.map(c => c.title);
+	  const randomCoin = allCoins[Math.floor(Math.random() * allCoins.length)];
+	  coinAction.targetCoin = randomCoin;
+	  break;
+	}
+
+	case 'moveWallBridge': {
+	  // Find a wall or bridge and an adjacent empty cell
+	  const wallBridgeCells = Object.values(gameState.cells).filter((c: any) => c.hasWall || c.hasBridge) as any[];
+	  if (wallBridgeCells.length > 0) {
+		const source = wallBridgeCells[Math.floor(Math.random() * wallBridgeCells.length)];
+		coinAction.fromRing = source.ring;
+		coinAction.fromCell = source.cell;
+		// Find an adjacent empty cell (simplified - just pick same ring +1 cell)
+		const destCell = (source.cell + 1) % getRingSize(source.ring);
+		coinAction.toRing = source.ring;
+		coinAction.toCell = destCell;
+	  }
+	  break;
+	}
+
+	case 'copyOpponentCoin': {
+	  // Get opponent's last coin and copy its action
+	  const opponentCoin = gameState.lastCoinUsed?.player1;
+	  if (opponentCoin) {
+		coinAction.copiedCoin = opponentCoin;
+	  }
+	  break;
+	}
   }
 
   return coinAction;
