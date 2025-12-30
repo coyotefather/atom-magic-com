@@ -1,17 +1,49 @@
 'use client';
 
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
-import { useCoin, completeCoinAction, cancelCoin, spinRing, resetRing, lockRing, unlockRing, setDisplayMessage } from '@/lib/slices/voragoSlice';
+import {
+  useCoin,
+  completeCoinAction,
+  cancelCoin,
+  spinRing,
+  resetRing,
+  lockRing,
+  unlockRing,
+  setDisplayMessage,
+  transformWallBridge,
+  returnOpponentStone,
+  setMagnaDisabledCoin,
+  moveWallBridge
+} from '@/lib/slices/voragoSlice';
 import { useState } from 'react';
 import CoinSVG from './CoinSVGs';
 
 const CoinSelector = () => {
   const dispatch = useAppDispatch();
-  const { availableCoins, disabledCoins, turn, hasUsedCoin, selectedCoin, lockedRings, degrees, cells, stones } = useAppSelector(state => state.vorago);
+  const {
+    availableCoins,
+    disabledCoins,
+    turn,
+    hasUsedCoin,
+    selectedCoin,
+    lockedRings,
+    degrees,
+    cells,
+    stones,
+    round,
+    lastStoneMove,
+    lastCoinUsed,
+    magnaDisabledCoin,
+    coinsUsedThisRound
+  } = useAppSelector(state => state.vorago);
   const [showRingSelector, setShowRingSelector] = useState<string | null>(null);
   const [spinDirection, setSpinDirection] = useState<'cw' | 'ccw' | null>(null);
+  const [showCoinSelector, setShowCoinSelector] = useState(false); // For Magna
+  const [showSpectrumSelector, setShowSpectrumSelector] = useState<{ ring: number; cell: number } | null>(null); // For Spectrum - selected wall/bridge
 
   const playerDisabledCoins = disabledCoins[`player${turn}` as 'player1' | 'player2'];
+  const opponent = turn === 1 ? 'player2' : 'player1';
+  const currentPlayer = `player${turn}` as 'player1' | 'player2';
 
   // Compute which coins are inapplicable based on current game state
   const getInapplicableCoins = (): Set<string> => {
@@ -20,13 +52,30 @@ const CoinSelector = () => {
     // Check board state
     const hasWalls = Object.values(cells).some(cell => cell.hasWall);
     const hasBridges = Object.values(cells).some(cell => cell.hasBridge);
+    const hasWallsOrBridges = hasWalls || hasBridges;
     const allRingsLocked = lockedRings.every(locked => locked);
     const anyRingLocked = lockedRings.some(locked => locked);
     const anyUnlockedRingRotated = degrees.some((deg, i) => !lockedRings[i] && deg !== 0);
 
-    // Check player's stones
-    const playerStones = stones[`player${turn}` as 'player1' | 'player2'];
-    const hasPlacedStones = playerStones.some(s => s.ring >= 0 && s.ring < 5);
+    // Aura (transformWallBridge) - disabled if no walls or bridges exist
+    if (!hasWallsOrBridges) {
+      inapplicable.add('Aura');
+    }
+
+    // Mnemonic (returnOpponentStone) - disabled if:
+    // 1. Opponent hasn't moved a stone yet
+    // 2. Previous position is now occupied
+    const opponentLastMove = lastStoneMove[opponent];
+    if (!opponentLastMove || !opponentLastMove.to) {
+      inapplicable.add('Mnemonic');
+    } else if (opponentLastMove.from) {
+      // Check if the "from" position is now occupied
+      const fromKey = `${opponentLastMove.from.ring}-${opponentLastMove.from.cell}`;
+      if (cells[fromKey]?.stone) {
+        inapplicable.add('Mnemonic');
+      }
+    }
+    // If from is null (was unplaced), we can always return to unplaced state
 
     // Cadence (resetRing) - disabled if no unlocked rings have been rotated
     if (!anyUnlockedRingRotated) {
@@ -58,13 +107,25 @@ const CoinSelector = () => {
       inapplicable.add('Polyphony');
     }
 
-    // Spectrum (moveBetweenRings) - disabled if player has no placed stones
-    if (!hasPlacedStones) {
+    // Spectrum (moveWallBridge) - disabled if no walls or bridges exist
+    if (!hasWallsOrBridges) {
       inapplicable.add('Spectrum');
     }
 
-    // Charlatan (moveWithinRing) - disabled if player has no placed stones
-    if (!hasPlacedStones) {
+    // Charlatan (copyOpponentCoin) - disabled if:
+    // 1. Round 1 (no opponent history)
+    // 2. Opponent's last coin was Charlatan
+    // 3. Opponent's last coin is disabled by Magna
+    // 4. Opponent's last coin is one you used last round (your cooldown)
+    const opponentLastCoin = lastCoinUsed[opponent];
+    if (round === 1 || !opponentLastCoin) {
+      inapplicable.add('Charlatan');
+    } else if (opponentLastCoin === 'Charlatan') {
+      inapplicable.add('Charlatan');
+    } else if (magnaDisabledCoin === opponentLastCoin) {
+      inapplicable.add('Charlatan');
+    } else if (playerDisabledCoins.includes(opponentLastCoin)) {
+      // Can't use Charlatan to replay a coin you used last round
       inapplicable.add('Charlatan');
     }
 
@@ -103,14 +164,95 @@ const CoinSelector = () => {
 		// These complete when user clicks a cell on the board
 		dispatch(setDisplayMessage('Click a cell on the board'));
 		break;
-	  case 'freezeRound':
-		// Immediate action - complete now
-		dispatch(setDisplayMessage('Next round will be frozen (no stone movement allowed)'));
+	  case 'transformWallBridge':
+		// Aura: Click a wall or bridge on the board to transform it
+		dispatch(setDisplayMessage('Click a wall or bridge on the board to transform it'));
+		break;
+	  case 'returnOpponentStone':
+		// Mnemonic: Immediate action - return opponent's last stone
+		dispatch(returnOpponentStone());
+		dispatch(setDisplayMessage('Opponent\'s stone returned to previous position'));
 		dispatch(completeCoinAction());
 		break;
+	  case 'disableCoin':
+		// Magna: Show coin selector
+		setShowCoinSelector(true);
+		dispatch(setDisplayMessage('Choose a coin to disable for both players next round'));
+		break;
+	  case 'moveWallBridge':
+		// Spectrum: Click a wall or bridge to select it, then click adjacent empty cell
+		dispatch(setDisplayMessage('Click a wall or bridge to move'));
+		break;
+	  case 'copyOpponentCoin': {
+		// Charlatan: Execute opponent's last coin action
+		const opponentCoin = lastCoinUsed[opponent];
+		if (opponentCoin) {
+		  dispatch(setDisplayMessage(`Copying ${opponentCoin}...`));
+		  // Find the coin's action and trigger it
+		  const coinDef = availableCoins.find(c => c.title === opponentCoin);
+		  if (coinDef) {
+			// Handle the copied action - completeCoinAction will be called when the action finishes
+			// Only complete immediately for actions that don't need additional input
+			const immediateActions = ['returnOpponentStone'];
+			if (immediateActions.includes(coinDef.action)) {
+			  handleCopiedCoinAction(coinDef.action);
+			  dispatch(completeCoinAction());
+			} else {
+			  // For actions needing input, don't complete yet - it will complete when user finishes
+			  handleCopiedCoinAction(coinDef.action);
+			}
+		  }
+		}
+		break;
+	  }
 	  default:
 		// Other immediate actions
 		dispatch(setDisplayMessage('Coin effect applied'));
+		dispatch(completeCoinAction());
+	}
+  };
+
+  // Handle Charlatan's copied coin action
+  // Note: completeCoinAction is called by the parent for immediate actions,
+  // or by the selection handlers (ring selector, coin selector, board click) for actions needing input
+  const handleCopiedCoinAction = (action: string) => {
+	switch (action) {
+	  case 'spinRing':
+		setShowRingSelector('spin');
+		dispatch(setDisplayMessage('(Charlatan) Choose a ring to spin'));
+		break;
+	  case 'resetRing':
+		setShowRingSelector('reset');
+		dispatch(setDisplayMessage('(Charlatan) Choose a ring to reset'));
+		break;
+	  case 'lockRing':
+		setShowRingSelector('lock');
+		dispatch(setDisplayMessage('(Charlatan) Choose a ring to lock'));
+		break;
+	  case 'unlockRing':
+		setShowRingSelector('unlock');
+		dispatch(setDisplayMessage('(Charlatan) Choose a ring to unlock'));
+		break;
+	  case 'placeWall':
+	  case 'removeWall':
+	  case 'placeBridge':
+	  case 'removeBridge':
+	  case 'transformWallBridge':
+	  case 'moveWallBridge':
+		dispatch(setDisplayMessage('(Charlatan) Click a cell on the board'));
+		break;
+	  case 'returnOpponentStone':
+		// Immediate action - execute it (completeCoinAction called by parent)
+		dispatch(returnOpponentStone());
+		dispatch(setDisplayMessage('(Charlatan) Opponent\'s stone returned'));
+		break;
+	  case 'disableCoin':
+		setShowCoinSelector(true);
+		dispatch(setDisplayMessage('(Charlatan) Choose a coin to disable'));
+		break;
+	  default:
+		// Unknown action - complete immediately
+		dispatch(setDisplayMessage('Charlatan effect applied'));
 		dispatch(completeCoinAction());
 	}
   };
@@ -215,8 +357,40 @@ const CoinSelector = () => {
 		</div>
 	  )}
 
-	  {/* Coin list - always visible, but hide when selecting ring */}
-	  {!showRingSelector && (
+	  {/* Magna coin selector overlay */}
+	  {showCoinSelector && (
+		<div className="mb-6 p-4 bg-black text-white rounded-lg">
+		  <h4 className="marcellus text-lg mb-3">Choose a coin to disable for both players next round:</h4>
+		  <div className="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto">
+			{availableCoins.map(coin => (
+			  <button
+				key={coin.title}
+				onClick={() => {
+				  dispatch(setMagnaDisabledCoin(coin.title));
+				  dispatch(completeCoinAction());
+				  setShowCoinSelector(false);
+				  dispatch(setDisplayMessage(`${coin.title} will be disabled for both players next round`));
+				}}
+				className="p-2 bg-gold text-black rounded hover:bg-brightgold text-sm"
+			  >
+				{coin.title}
+			  </button>
+			))}
+		  </div>
+		  <button
+			onClick={() => {
+			  dispatch(cancelCoin());
+			  setShowCoinSelector(false);
+			}}
+			className="mt-4 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+		  >
+			Cancel
+		  </button>
+		</div>
+	  )}
+
+	  {/* Coin list - always visible, but hide when selecting ring or coin */}
+	  {!showRingSelector && !showCoinSelector && (
 		<div className="grid grid-cols-2 gap-2">
 		{availableCoins.map(coin => {
 		  const isDisabledFromLastRound = playerDisabledCoins.includes(coin.title);
@@ -274,7 +448,12 @@ const CoinSelector = () => {
 			  {/* Coin info */}
 			  <div className="w-full">
 				<h3 className="font-bold marcellus text-xs leading-tight">{coin.title}</h3>
-				<p className="text-[10px] text-gray-700 leading-tight mt-0.5">{coin.description}</p>
+				<p className="text-[10px] text-gray-700 leading-tight mt-0.5">
+				  {coin.title === 'Charlatan' && lastCoinUsed[opponent]
+					? <>Will copy: <span className="font-bold text-blue-600">{lastCoinUsed[opponent]}</span></>
+					: coin.description
+				  }
+				</p>
 			  </div>
 			</button>
 		  );

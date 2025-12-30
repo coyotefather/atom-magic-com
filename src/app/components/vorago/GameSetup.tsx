@@ -13,7 +13,7 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
   const [player1Name, setPlayer1NameLocal] = useState('Player 1');
   const [player2Name, setPlayer2NameLocal] = useState('AI Opponent');
   const [vsAI, setVsAI] = useState(true);
-  const [aiDifficulty, setAIDifficulty] = useState<'easy' | 'medium' | 'hard' | 'expert'>('medium');
+  const [aiDifficulty, setAIDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
 
   const handleStartGame = () => {
 	dispatch(setPlayerNames({
@@ -77,7 +77,7 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 		  <div>
 			<label className="block mb-2 font-semibold">AI Difficulty:</label>
 			<div className="grid grid-cols-2 gap-3">
-			  {(['easy', 'medium', 'hard', 'expert'] as const).map(level => (
+			  {(['easy', 'medium', 'hard'] as const).map(level => (
 				<button
 				  key={level}
 				  onClick={() => setAIDifficulty(level)}
@@ -88,7 +88,6 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 				  }`}
 				>
 				  {level}
-				  {level === 'expert' && ' ⚡'}
 				</button>
 			  ))}
 			</div>
@@ -96,7 +95,6 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 			  {aiDifficulty === 'easy' && '🟢 AI makes basic moves'}
 			  {aiDifficulty === 'medium' && '🟡 AI uses simple strategy'}
 			  {aiDifficulty === 'hard' && '🟠 AI plays competitively'}
-			  {aiDifficulty === 'expert' && '🔴 AI uses advanced reasoning (powered by Claude)'}
 			</p>
 		  </div>
 		)}

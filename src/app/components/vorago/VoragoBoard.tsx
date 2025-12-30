@@ -9,7 +9,9 @@ import {
   placeBridge,
   removeBridge,
   completeCoinAction,
-  setDisplayMessage
+  setDisplayMessage,
+  transformWallBridge,
+  moveWallBridge
 } from '@/lib/slices/voragoSlice';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -154,6 +156,7 @@ const VoragoBoard = () => {
 	lockedRings
   } = useAppSelector(state => state.vorago);
   const [hoveredCell, setHoveredCell] = useState<string | null>(null);
+  const [spectrumSource, setSpectrumSource] = useState<{ ring: number; cell: number } | null>(null);
 
   const handleCellClick = (ring: number, visualCell: number) => {
 	// Goal handling
@@ -261,6 +264,56 @@ const VoragoBoard = () => {
 		  if (cellData.hasBridge) {
 			dispatch(removeBridge({ ring, cell: logicalCell }));
 			dispatch(completeCoinAction());
+		  }
+		  break;
+		case 'Aura':
+		  // Transform wall to bridge or bridge to wall
+		  if (cellData.hasWall || cellData.hasBridge) {
+			dispatch(transformWallBridge({ ring, cell: logicalCell }));
+			dispatch(completeCoinAction());
+		  } else {
+			dispatch(setDisplayMessage('Click a wall or bridge to transform it'));
+			setTimeout(() => dispatch(setDisplayMessage('')), 2000);
+		  }
+		  break;
+		case 'Spectrum':
+		  // Move wall/bridge to adjacent cell - two step process
+		  if (!spectrumSource) {
+			// First click - select source wall/bridge
+			if (cellData.hasWall || cellData.hasBridge) {
+			  setSpectrumSource({ ring, cell: logicalCell });
+			  dispatch(setDisplayMessage('Now click an adjacent empty cell to move it there'));
+			} else {
+			  dispatch(setDisplayMessage('Click a wall or bridge to move'));
+			  setTimeout(() => dispatch(setDisplayMessage('')), 2000);
+			}
+		  } else {
+			// Second click - select destination (must be adjacent and empty)
+			// Check if destination is empty
+			if (cellData.hasWall || cellData.hasBridge || cellData.stone) {
+			  dispatch(setDisplayMessage('Destination must be an empty cell'));
+			  setTimeout(() => dispatch(setDisplayMessage('')), 2000);
+			  return;
+			}
+
+			// Check adjacency (same ring ±1 cell, or inner/outer ring)
+			const isAdjacentSameRing = ring === spectrumSource.ring &&
+			  (Math.abs(logicalCell - spectrumSource.cell) === 1 ||
+			   (logicalCell === 0 && spectrumSource.cell === RING_CONFIG[ring].cells - 1) ||
+			   (spectrumSource.cell === 0 && logicalCell === RING_CONFIG[ring].cells - 1));
+			const isAdjacentInnerOuter = Math.abs(ring - spectrumSource.ring) === 1;
+
+			if (isAdjacentSameRing || isAdjacentInnerOuter) {
+			  dispatch(moveWallBridge({
+				from: spectrumSource,
+				to: { ring, cell: logicalCell }
+			  }));
+			  dispatch(completeCoinAction());
+			  setSpectrumSource(null);
+			} else {
+			  dispatch(setDisplayMessage('Must move to an adjacent cell'));
+			  setTimeout(() => dispatch(setDisplayMessage('')), 2000);
+			}
 		  }
 		  break;
 	  }
