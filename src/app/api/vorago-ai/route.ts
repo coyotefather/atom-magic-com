@@ -122,9 +122,70 @@ function chooseStoneMove(gameState: GameState): any {
   return null;
 }
 
+function getInapplicableCoins(gameState: GameState): Set<string> {
+  const inapplicable = new Set<string>();
+
+  // Check board state
+  const hasWalls = Object.values(gameState.cells).some((cell: any) => cell.hasWall);
+  const hasBridges = Object.values(gameState.cells).some((cell: any) => cell.hasBridge);
+  const allRingsLocked = gameState.lockedRings.every(locked => locked);
+  const anyRingLocked = gameState.lockedRings.some(locked => locked);
+  const anyUnlockedRingRotated = gameState.degrees.some((deg, i) => !gameState.lockedRings[i] && deg !== 0);
+
+  // Check AI's stones (player 2)
+  const aiStones = gameState.stones.player2;
+  const hasPlacedStones = aiStones.some(s => s.ring >= 0 && s.ring < 5);
+
+  // Cadence (resetRing) - disabled if no unlocked rings have been rotated
+  if (!anyUnlockedRingRotated) {
+    inapplicable.add('Cadence');
+  }
+
+  // Anathema (lockRing) - disabled if all rings are already locked
+  if (allRingsLocked) {
+    inapplicable.add('Anathema');
+  }
+
+  // Gamma (removeBridge) - disabled if no bridges exist
+  if (!hasBridges) {
+    inapplicable.add('Gamma');
+  }
+
+  // Rubicon (removeWall) - disabled if no walls exist
+  if (!hasWalls) {
+    inapplicable.add('Rubicon');
+  }
+
+  // Vertigo (spinRing) - disabled if all rings are locked
+  if (allRingsLocked) {
+    inapplicable.add('Vertigo');
+  }
+
+  // Polyphony (unlockRing) - disabled if no rings are locked
+  if (!anyRingLocked) {
+    inapplicable.add('Polyphony');
+  }
+
+  // Spectrum (moveBetweenRings) - disabled if AI has no placed stones
+  if (!hasPlacedStones) {
+    inapplicable.add('Spectrum');
+  }
+
+  // Charlatan (moveWithinRing) - disabled if AI has no placed stones
+  if (!hasPlacedStones) {
+    inapplicable.add('Charlatan');
+  }
+
+  return inapplicable;
+}
+
 function chooseCoinAction(gameState: GameState): any {
+  // Get inapplicable coins based on game state
+  const inapplicableCoins = getInapplicableCoins(gameState);
+
   const availableCoins = gameState.availableCoins.filter(
-	coin => !gameState.disabledCoins.player2.includes(coin.title)
+	coin => !gameState.disabledCoins.player2.includes(coin.title) &&
+			!inapplicableCoins.has(coin.title)
   );
 
   if (availableCoins.length === 0) {

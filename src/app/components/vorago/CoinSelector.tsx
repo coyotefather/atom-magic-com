@@ -7,11 +7,71 @@ import CoinSVG from './CoinSVGs';
 
 const CoinSelector = () => {
   const dispatch = useAppDispatch();
-  const { availableCoins, disabledCoins, turn, hasUsedCoin, selectedCoin, lockedRings } = useAppSelector(state => state.vorago);
+  const { availableCoins, disabledCoins, turn, hasUsedCoin, selectedCoin, lockedRings, degrees, cells, stones } = useAppSelector(state => state.vorago);
   const [showRingSelector, setShowRingSelector] = useState<string | null>(null);
   const [spinDirection, setSpinDirection] = useState<'cw' | 'ccw' | null>(null);
 
   const playerDisabledCoins = disabledCoins[`player${turn}` as 'player1' | 'player2'];
+
+  // Compute which coins are inapplicable based on current game state
+  const getInapplicableCoins = (): Set<string> => {
+    const inapplicable = new Set<string>();
+
+    // Check board state
+    const hasWalls = Object.values(cells).some(cell => cell.hasWall);
+    const hasBridges = Object.values(cells).some(cell => cell.hasBridge);
+    const allRingsLocked = lockedRings.every(locked => locked);
+    const anyRingLocked = lockedRings.some(locked => locked);
+    const anyUnlockedRingRotated = degrees.some((deg, i) => !lockedRings[i] && deg !== 0);
+
+    // Check player's stones
+    const playerStones = stones[`player${turn}` as 'player1' | 'player2'];
+    const hasPlacedStones = playerStones.some(s => s.ring >= 0 && s.ring < 5);
+
+    // Cadence (resetRing) - disabled if no unlocked rings have been rotated
+    if (!anyUnlockedRingRotated) {
+      inapplicable.add('Cadence');
+    }
+
+    // Anathema (lockRing) - disabled if all rings are already locked
+    if (allRingsLocked) {
+      inapplicable.add('Anathema');
+    }
+
+    // Gamma (removeBridge) - disabled if no bridges exist
+    if (!hasBridges) {
+      inapplicable.add('Gamma');
+    }
+
+    // Rubicon (removeWall) - disabled if no walls exist
+    if (!hasWalls) {
+      inapplicable.add('Rubicon');
+    }
+
+    // Vertigo (spinRing) - disabled if all rings are locked
+    if (allRingsLocked) {
+      inapplicable.add('Vertigo');
+    }
+
+    // Polyphony (unlockRing) - disabled if no rings are locked
+    if (!anyRingLocked) {
+      inapplicable.add('Polyphony');
+    }
+
+    // Spectrum (moveBetweenRings) - disabled if player has no placed stones
+    if (!hasPlacedStones) {
+      inapplicable.add('Spectrum');
+    }
+
+    // Charlatan (moveWithinRing) - disabled if player has no placed stones
+    if (!hasPlacedStones) {
+      inapplicable.add('Charlatan');
+    }
+
+    return inapplicable;
+  };
+
+  const inapplicableCoins = getInapplicableCoins();
 
   const handleCoinClick = (coinTitle: string, action: string) => {
 	if (hasUsedCoin) return;
@@ -160,10 +220,11 @@ const CoinSelector = () => {
 		<div className="grid grid-cols-2 gap-2">
 		{availableCoins.map(coin => {
 		  const isDisabledFromLastRound = playerDisabledCoins.includes(coin.title);
+		  const isInapplicable = inapplicableCoins.has(coin.title);
 		  const isUsedThisTurn = hasUsedCoin;
 		  const isSelected = selectedCoin === coin.title;
 		  const isOtherSelected = selectedCoin && selectedCoin !== coin.title;
-		  const isClickable = !isDisabledFromLastRound && !isUsedThisTurn && !isOtherSelected;
+		  const isClickable = !isDisabledFromLastRound && !isInapplicable && !isUsedThisTurn && !isOtherSelected;
 
 		  return (
 			<button
@@ -172,7 +233,7 @@ const CoinSelector = () => {
 			  disabled={!isClickable}
 			  className={`
 				p-2 border-2 rounded-lg transition-all relative flex flex-col items-center gap-1 text-center
-				${isDisabledFromLastRound
+				${isDisabledFromLastRound || isInapplicable
 				  ? 'opacity-50 cursor-not-allowed border-gray-400 bg-gray-100'
 				  : isUsedThisTurn
 					? 'opacity-70 cursor-not-allowed border-gray-300 bg-gray-50'
@@ -188,6 +249,13 @@ const CoinSelector = () => {
 			  {isDisabledFromLastRound && (
 				<div className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-red-500 text-white rounded text-[8px] font-bold shadow-sm">
 				  Cooldown
+				</div>
+			  )}
+
+			  {/* N/A badge for inapplicable coins (only show if not also on cooldown) */}
+			  {isInapplicable && !isDisabledFromLastRound && (
+				<div className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-gray-500 text-white rounded text-[8px] font-bold shadow-sm">
+				  N/A
 				</div>
 			  )}
 
