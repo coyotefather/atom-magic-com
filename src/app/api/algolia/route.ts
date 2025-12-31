@@ -103,14 +103,6 @@ export async function POST(request: Request) {
 
 	const { _id, operation, value } = payload;
 
-	// Debug: Log what fields we're receiving from the webhook
-	console.log("Webhook payload fields:", {
-		_id,
-		operation,
-		valueKeys: value ? Object.keys(value) : 'no value',
-		path: value?.path
-	});
-
 	if (!operation || !_id || !value) {
 	  return Response.json(
 		{ error: "Invalid payload, missing required fields" },
