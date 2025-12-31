@@ -38,14 +38,14 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 
 	return (
 		<article className="notoserif mx-auto max-w-none bg-white m-0">
-			<div className="trapezoid-bar z-1 py-4 bg-black">
+			<div className="z-1 py-4 bg-black border-b-2 border-stone">
 				<div className="container mt-4">
 					<Breadcrumbs currentPage={title ? title : ""} parents={parents} />
 				</div>
 			</div>
 			<div className="container mt-8 grid grid-cols-3 gap-4">
 				<div className="md:ml-8">
-					<Card radius="none" shadow="none" className="w-full z-10 trapezoid-bar-reverse trapezoid-top-bar-reverse bg-black text-white overflow-visible">
+					<Card radius="none" shadow="none" className="w-full z-10 bg-black text-white border-2 border-stone">
 						<CardHeader className={clsx(
 							"flex-col items-start!",
 							{ 'z-10 top-0': mainImage?.asset?._ref }
@@ -90,7 +90,7 @@ export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
 					</div>
 				</section>
 			</div>
-			<section className="bg-gradient trapezoid-bar-reverse mt-16">
+			<section className="bg-gradient border-t-2 border-stone mt-16">
 				<div className="container py-4">
 					<Link href="/codex">&larr; Return to Codex</Link>
 				</div>

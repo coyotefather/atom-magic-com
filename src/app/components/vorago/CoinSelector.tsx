@@ -291,7 +291,7 @@ const CoinSelector = () => {
 	<div>
 	  {/* Ring selector overlay - show this even if coin used */}
 	  {showRingSelector && (
-		<div className="mb-6 p-4 bg-black text-white rounded-lg">
+		<div className="mb-6 p-4 bg-black text-white border-2 border-stone">
 		  <h4 className="marcellus text-lg mb-3">
 			{showRingSelector === 'spin' && !spinDirection && 'First, choose spin direction:'}
 			{showRingSelector === 'spin' && spinDirection && 'Now choose which ring to spin:'}
@@ -359,7 +359,7 @@ const CoinSelector = () => {
 
 	  {/* Magna coin selector overlay */}
 	  {showCoinSelector && (
-		<div className="mb-6 p-4 bg-black text-white rounded-lg">
+		<div className="mb-6 p-4 bg-black text-white border-2 border-stone">
 		  <h4 className="marcellus text-lg mb-3">Choose a coin to disable for both players next round:</h4>
 		  <div className="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto">
 			{availableCoins.map(coin => (
@@ -406,7 +406,7 @@ const CoinSelector = () => {
 			  onClick={() => isClickable && handleCoinClick(coin.title, coin.action)}
 			  disabled={!isClickable}
 			  className={`
-				p-2 border-2 rounded-lg transition-all relative flex flex-col items-center gap-1 text-center
+				p-2 border-2 transition-all relative flex flex-col items-center gap-1 text-center
 				${isDisabledFromLastRound || isInapplicable
 				  ? 'opacity-50 cursor-not-allowed border-gray-400 bg-gray-100'
 				  : isUsedThisTurn

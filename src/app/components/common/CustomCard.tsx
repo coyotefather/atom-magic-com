@@ -31,8 +31,8 @@ const CustomCard = ({
 			href={url}
 			className="transition duration-200 ease-in hover:brightness-110 hover:drop-shadow-lg block w-full no-underline hover:no-underline"
 		>
-			<Card shadow="sm" className={clsx(
-				"w-full notoserif",
+			<Card shadow="sm" radius="none" className={clsx(
+				"w-full notoserif border-2 border-stone",
 				isCategory ? 'gold-gradient' : 'bg-parchment',
 				showImage ? 'h-[300px]' : 'h-[200px]',
 			)}>

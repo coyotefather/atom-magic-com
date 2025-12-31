@@ -29,7 +29,7 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
   };
 
   return (
-	<div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg border-2 border-black">
+	<div className="max-w-2xl mx-auto bg-white p-8 shadow-lg border-2 border-black">
 	  <h2 className="marcellus text-3xl mb-6 text-center">Setup New Game</h2>
 
 	  <div className="space-y-6">
@@ -40,7 +40,7 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 			type="text"
 			value={player1Name}
 			onChange={(e) => setPlayer1NameLocal(e.target.value)}
-			className="w-full px-4 py-2 border-2 border-black rounded"
+			className="w-full px-4 py-2 border-2 border-black"
 			placeholder="Enter your name"
 		  />
 		</div>
@@ -51,7 +51,7 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 		  <div className="flex gap-4">
 			<button
 			  onClick={() => setVsAI(true)}
-			  className={`flex-1 py-3 px-4 rounded border-2 transition-all ${
+			  className={`flex-1 py-3 px-4 border-2 transition-all ${
 				vsAI
 				  ? 'bg-gold text-black border-black'
 				  : 'bg-white text-black border-gray-300 hover:border-black'
@@ -61,7 +61,7 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 			</button>
 			<button
 			  onClick={() => setVsAI(false)}
-			  className={`flex-1 py-3 px-4 rounded border-2 transition-all ${
+			  className={`flex-1 py-3 px-4 border-2 transition-all ${
 				!vsAI
 				  ? 'bg-gold text-black border-black'
 				  : 'bg-white text-black border-gray-300 hover:border-black'
@@ -81,7 +81,7 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 				<button
 				  key={level}
 				  onClick={() => setAIDifficulty(level)}
-				  className={`py-2 px-4 rounded border-2 transition-all capitalize ${
+				  className={`py-2 px-4 border-2 transition-all capitalize ${
 					aiDifficulty === level
 					  ? 'bg-gold text-black border-black'
 					  : 'bg-white text-black border-gray-300 hover:border-black'
@@ -107,7 +107,7 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 			  type="text"
 			  value={player2Name}
 			  onChange={(e) => setPlayer2NameLocal(e.target.value)}
-			  className="w-full px-4 py-2 border-2 border-black rounded"
+			  className="w-full px-4 py-2 border-2 border-black"
 			  placeholder="Enter opponent's name"
 			/>
 		  </div>
@@ -116,14 +116,14 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 		{/* Start Button */}
 		<button
 		  onClick={handleStartGame}
-		  className="w-full py-4 px-6 bg-gold text-black border-2 border-black rounded-lg marcellus text-xl hover:bg-brightgold transition-all transform hover:scale-105"
+		  className="w-full py-4 px-6 bg-gold text-black border-2 border-black marcellus text-xl hover:bg-brightgold transition-all transform hover:scale-105"
 		>
 		  Start Game
 		</button>
 	  </div>
 
 	  {/* Game Rules */}
-	  <div className="mt-8 p-4 bg-gray-50 rounded border border-gray-300">
+	  <div className="mt-8 p-4 bg-parchment border-2 border-stone">
 		<h3 className="font-bold mb-2">Quick Rules:</h3>
 		<ul className="text-sm space-y-1 list-disc list-inside">
 		  <li>Move all 3 stones to the center goal to win</li>

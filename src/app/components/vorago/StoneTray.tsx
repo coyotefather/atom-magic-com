@@ -33,7 +33,7 @@ const StoneTray = () => {
 
  // In StoneTray.tsx, make it horizontal and minimal:
  return (
-   <div className="flex gap-4 items-center justify-between p-3 bg-white border-2 border-black rounded-lg">
+   <div className="flex gap-4 items-center justify-between p-3 bg-white border-2 border-black">
 	 {/* Player 1 */}
 	 <div className="flex items-center gap-2">
 	   <span className="text-xs font-bold marcellus">P1:</span>

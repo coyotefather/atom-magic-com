@@ -41,7 +41,7 @@ const Page = () => {
 		) : gameWin ? (
 		  /* Win Screen */
 		  <div className="text-center">
-			<div className="bg-black text-white p-12 rounded-lg inline-block">
+			<div className="bg-black text-white p-12 inline-block border-2 border-stone">
 			  <h2 className="marcellus text-5xl mb-6">
 				🎉 {winner === 1 ? player1Name : player2Name} Wins! 🎉
 			  </h2>
@@ -50,7 +50,7 @@ const Page = () => {
 			  </p>
 			  <button
 				onClick={() => setGameStarted(false)}
-				className="bg-gold text-black py-3 px-8 rounded-lg marcellus text-xl border-2 border-gold hover:bg-brightgold transition-all"
+				className="bg-gold text-black py-3 px-8 marcellus text-xl border-2 border-gold hover:bg-brightgold transition-all"
 			  >
 				Play Again
 			  </button>
@@ -74,7 +74,7 @@ const Page = () => {
 				  Tips
 				</button>
 				{showTips && (
-				  <div className="absolute right-0 top-8 z-50 bg-white border-2 border-black p-3 rounded-lg text-sm shadow-lg w-64">
+				  <div className="absolute right-0 top-8 z-50 bg-white border-2 border-black p-3 text-sm shadow-lg w-64">
 					<h4 className="font-bold mb-1 marcellus text-sm">Quick Tips:</h4>
 					<ul className="space-y-0.5 text-xs">
 					  <li>• Click your stone to select, then click a cell to move</li>
@@ -99,13 +99,13 @@ const Page = () => {
 				{/* Left: Stone Tray + Board */}
 				<div className="space-y-4">
 				  <StoneTray />
-				  <div className="bg-white p-4 rounded-lg border-2 border-black">
+				  <div className="bg-white p-4 border-2 border-black">
 					<VoragoBoard />
 				  </div>
 				</div>
 
 				{/* Right: Coins */}
-				<div className="bg-white p-4 rounded-lg border-2 border-black">
+				<div className="bg-white p-4 border-2 border-black">
 				  <h3 className="marcellus text-lg mb-3 text-center">Cardinal Coins</h3>
 				  <CoinSelector />
 				</div>
@@ -114,7 +114,7 @@ const Page = () => {
 			  {/* AI Thinking Overlay */}
 			  {isAIThinking && (
 				<div className="absolute inset-0 flex items-center justify-center">
-				  <div className="bg-black text-white px-8 py-6 rounded-lg shadow-2xl text-center">
+				  <div className="bg-black text-white px-8 py-6 shadow-2xl text-center border-2 border-stone">
 					<div className="flex items-center justify-center gap-3 mb-2">
 					  <div className="w-3 h-3 bg-gold rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
 					  <div className="w-3 h-3 bg-gold rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>

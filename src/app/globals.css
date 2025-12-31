@@ -80,53 +80,11 @@
   background-image: url('/atom-magic-circle-black.png');
 }
 
-.trapezoid-bar, .trapezoid-bar-reverse, .trapezoid-top-bar, .trapezoid-bar-top-reverse {
-  position: relative;
-}
-
-.trapezoid-bar::after, .trapezoid-bar-reverse::after, .trapezoid-top-bar::before, .trapezoid-top-bar-reverse::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 100%;
-  transform-origin: top left;
-}
-
-.trapezoid-bar::after {
-  bottom: 0px;
-  height: 40px; /* adjust slant */
-  transform: skewY(0.5deg);
-  background-color: inherit;
-  z-index: -1;
-}
-
-.trapezoid-bar-reverse::after {
-  bottom: -20px;
-  height: 40px; /* adjust slant */
-  transform: skewY(-0.5deg);
-  background: inherit;
-  z-index: 9;
-}
-
-.trapezoid-top-bar::before {
-  top: -20px;
-  height: 40px; /* adjust slant */
-  transform: skewY(0.5deg);
-  background-color: inherit;
-  z-index: -1;
-}
-
-.trapezoid-top-bar-reverse::before {
-  top: -10px;
-  height: 40px; /* adjust slant */
-  transform: skewY(-0.5deg);
-  background: inherit;
-  z-index: 9;
-}
 
 @theme {
   /* Primary */
   --color-gold: rgb(187, 151, 49);
+  --color-gold-dark: #836A22;  /* Accessible on light backgrounds (4.5:1) */
   --color-brightgold: rgb(226, 185, 68);
   --color-white: rgb(255, 255, 240);
   --color-black: rgb(35, 31, 32);
@@ -237,7 +195,7 @@
   } */
 
   main a {
-    @apply underline font-semibold transition duration-200 ease-in-out text-gold  hover:text-brightgold hover:contrast-100 hover:saturate-150;
+    @apply underline font-semibold transition duration-200 ease-in-out text-gold-dark hover:text-gold hover:contrast-100 hover:saturate-150;
   }
   button {
     @apply marcellus transition duration-200 ease-in border-2 border-black hover:contrast-150 hover:saturate-150 hover:brightness-90;
@@ -272,6 +230,10 @@
 
 @utility text-brightgold {
   color: rgb(var(--brightgold));
+}
+
+@utility text-gold-dark {
+  color: var(--color-gold-dark);
 }
 
 @utility marcellus {
