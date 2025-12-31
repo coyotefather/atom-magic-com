@@ -103,8 +103,8 @@ const GearTable = ({
 						<TableCell
 							className={clsx(
 								"capitalize w-8 align-top",
-								{ "font-bold text-dark-olive-green" : g.damageBonus && g.damageBonus > 0 },
-								{ "font-bold text-adobe" : g.damageBonus && g.damageBonus < 0 },
+								{ "font-bold text-laurel" : g.damageBonus && g.damageBonus > 0 },
+								{ "font-bold text-oxblood" : g.damageBonus && g.damageBonus < 0 },
 							)}>
 							{g.damageBonus && g.damageBonus > 0 ? `+${g.damageBonus}` : "" }
 							{g.damageBonus && g.damageBonus < 0 || g.damageBonus === 0 ? g.damageBonus : "" }
@@ -112,8 +112,8 @@ const GearTable = ({
 						<TableCell
 							className={clsx(
 								"capitalize max-w-8 align-top",
-								{ "font-bold text-dark-olive-green" : g.shieldBonus && g.shieldBonus > 0 },
-								{ "font-bold text-adobe" : g.shieldBonus && g.shieldBonus < 0 },
+								{ "font-bold text-laurel" : g.shieldBonus && g.shieldBonus > 0 },
+								{ "font-bold text-oxblood" : g.shieldBonus && g.shieldBonus < 0 },
 							)}>
 							{ g.shieldBonus && g.shieldBonus > 0 ? `+${g.shieldBonus}` : "" }
 							{ g.shieldBonus && g.shieldBonus < 0 || g.shieldBonus === 0 ? g.shieldBonus : "" }
@@ -127,8 +127,8 @@ const GearTable = ({
 									<div>{gm.modifierSubscore && gm.modifierSubscore.title ? gm.modifierSubscore.title : ""}</div>
 									<div className={clsx(
 										"",
-										{ "font-bold text-dark-olive-green" : gm.modifierValue && gm.modifierValue > 0 },
-										{ "font-bold text-adobe" : gm.modifierValue && gm.modifierValue < 0 },
+										{ "font-bold text-laurel" : gm.modifierValue && gm.modifierValue > 0 },
+										{ "font-bold text-oxblood" : gm.modifierValue && gm.modifierValue < 0 },
 									)}>
 										{gm.modifierValue && gm.modifierValue > 0 ? "+" : ""}
 										{gm.modifierValue}

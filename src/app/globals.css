@@ -14,12 +14,33 @@
   color utility to any element that depends on these defaults.
 */
 
+/* Classical gold gradient - warm metallic feel */
+.gold-gradient {
+  background: linear-gradient(135deg, #BB9731 0%, #D4AF37 50%, #E2B944 100%);
+}
+
+/* Subtle parchment gradient - aged manuscript feel */
+.parchment-gradient {
+  background: linear-gradient(180deg, #F5F0E1 0%, #E8E0CC 100%);
+}
+
+/* Deep classical gradient - oxblood to bronze warmth */
+.classical-gradient {
+  background: linear-gradient(135deg, #722F37 0%, #8C7853 50%, #BB9731 100%);
+}
+
+/* Stone gradient - marble/carved feel */
+.stone-gradient {
+  background: linear-gradient(180deg, #B5B5A8 0%, #9A9A8E 50%, #6B6B62 100%);
+}
+
+/* Legacy aliases for backwards compatibility */
 .standard-gradient {
-  background: linear-gradient(85deg, rgb(211, 142, 39) 0%, rgb(208, 145, 37) 11%, rgb(205, 151, 35) 23%, rgb(202, 154, 33) 34%, rgb(197, 159, 32) 46%, rgb(192, 160, 33) 57%, rgb(186, 163, 33) 68%, rgb(180, 165, 34) 79%, rgb(177, 170, 37) 90%, rgb(171, 174, 41) 100%);
+  background: linear-gradient(135deg, #BB9731 0%, #D4AF37 50%, #E2B944 100%);
 }
 
 .sunset-gradient {
-  background: linear-gradient(195deg, rgb(0, 179, 164) 0%, rgb(66, 184, 145) 10%, rgb(104, 187, 123) 20%, rgb(141, 189, 107) 30%, rgb(175, 187, 93) 40%, rgb(208, 184, 88) 50%, rgb(215, 169, 71) 60%, rgb(221, 154, 60) 70%, rgb(227, 137, 53) 80%, rgb(234, 119, 52) 90%, rgb(238, 100, 58) 100%);
+  background: linear-gradient(135deg, #BB9731 0%, #D4AF37 50%, #E2B944 100%);
 }
 
 .textured-overlay {
@@ -47,10 +68,9 @@
   }
 }
 
+/* Soft parchment background with subtle warmth */
 .bg-gradient {
-background: linear-gradient(90deg, #f3f4f6, #e5e7eb, #d1d5db, #fef3c7, #f3f4f6);
-/* background-size: 300% 300%;
-animation: drift-soft 10s ease-in-out infinite; */
+  background: linear-gradient(180deg, #F5F0E1 0%, #FFFFF0 50%, #F5F0E1 100%);
 }
 
 .bg-atom-magic-circle-white {
@@ -60,65 +80,30 @@ animation: drift-soft 10s ease-in-out infinite; */
   background-image: url('/atom-magic-circle-black.png');
 }
 
-.trapezoid-bar, .trapezoid-bar-reverse, .trapezoid-top-bar, .trapezoid-bar-top-reverse {
-  position: relative;
-}
-
-.trapezoid-bar::after, .trapezoid-bar-reverse::after, .trapezoid-top-bar::before, .trapezoid-top-bar-reverse::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 100%;
-  transform-origin: top left;
-}
-
-.trapezoid-bar::after {
-  bottom: 0px;
-  height: 40px; /* adjust slant */
-  transform: skewY(0.5deg);
-  background-color: inherit;
-  z-index: -1;
-}
-
-.trapezoid-bar-reverse::after {
-  bottom: -20px;
-  height: 40px; /* adjust slant */
-  transform: skewY(-0.5deg);
-  background: inherit;
-  z-index: 9;
-}
-
-.trapezoid-top-bar::before {
-  top: -20px;
-  height: 40px; /* adjust slant */
-  transform: skewY(0.5deg);
-  background-color: inherit;
-  z-index: -1;
-}
-
-.trapezoid-top-bar-reverse::before {
-  top: -10px;
-  height: 40px; /* adjust slant */
-  transform: skewY(-0.5deg);
-  background: inherit;
-  z-index: 9;
-}
 
 @theme {
+  /* Primary */
   --color-gold: rgb(187, 151, 49);
+  --color-gold-dark: #836A22;  /* Accessible on light backgrounds (4.5:1) */
   --color-brightgold: rgb(226, 185, 68);
   --color-white: rgb(255, 255, 240);
   --color-black: rgb(35, 31, 32);
   --color-ivory-black: #231F20;
   --color-ivory-black-lighter: #3E3A36;
   --color-ivory: #fffff0;
-  --color-pale-blue: #ADE4E4;
-  --color-adobe: #bd6c48;
-  --color-olive-green: #BAB86C;
-  --color-dark-olive-green: #8A8841;
-  --color-goldenrod: #daa520;
-  --color-sunset-blue: rgb(0, 179, 164);
-  --color-sunset-red: rgb(238, 100, 58);
+
+  /* Classical Palette */
+  --color-oxblood: #722F37;
+  --color-oxblood-light: #8B3A42;
+  --color-laurel: #5A6F4E;
+  --color-laurel-light: #6B8260;
+  --color-stone: #9A9A8E;
+  --color-stone-light: #B5B5A8;
+  --color-stone-dark: #6B6B62;
+  --color-bronze: #8C7853;
+  --color-bronze-light: #A69066;
+  --color-parchment: #F5F0E1;
+  --color-parchment-dark: #E8E0CC;
 }
 
 @layer base {
@@ -210,7 +195,7 @@ animation: drift-soft 10s ease-in-out infinite; */
   } */
 
   main a {
-    @apply underline font-semibold transition duration-200 ease-in-out text-gold  hover:text-brightgold hover:contrast-100 hover:saturate-150;
+    @apply underline font-semibold transition duration-200 ease-in-out text-gold-dark hover:text-gold hover:contrast-100 hover:saturate-150;
   }
   button {
     @apply marcellus transition duration-200 ease-in border-2 border-black hover:contrast-150 hover:saturate-150 hover:brightness-90;
@@ -247,6 +232,10 @@ animation: drift-soft 10s ease-in-out infinite; */
   color: rgb(var(--brightgold));
 }
 
+@utility text-gold-dark {
+  color: var(--color-gold-dark);
+}
+
 @utility marcellus {
   fontFamily: var(--font-marcellus);
 }
@@ -254,29 +243,6 @@ animation: drift-soft 10s ease-in-out infinite; */
 @utility container {
   margin-left: auto; margin-right: auto; padding: '6rem';
 }
-
-/* @layer utilities {
-  :root {
-    --foreground-rgb: 0, 0, 0;
-    --background-start-rgb: 255, 255, 240;
-    --background-end-rgb: 255, 255, 255;
-    --gold-rgb: 187, 151, 49;
-    --gold: rgb(187, 151, 49);
-    --brightgold-rgb: 226, 185, 68;
-    --black-rgb: 35, 31, 32;
-    --ivory-black: #231f20;
-    --ivory-black-lighter: #3e3a36;
-    --ivory: #fffff0;
-    --pale-blue: #ade4e4;
-    --adobe: #bd6c48;
-    --olive-green: #bab86c;
-    --dark-olive-green: #8a8841;
-    --goldenrod: #daa520;
-    --sunset-blue: rgb(0, 179, 164);
-    --sunset-red: rgb(238, 100, 58);
-  }
-} */
-
 
 @layer utilities {
   @media (prefers-color-scheme: light) {
@@ -324,37 +290,13 @@ animation: drift-soft 10s ease-in-out infinite; */
   }
 
   button.gradient {
-    color: rgb(var(--black-rgb));
-    background: linear-gradient(
-      85deg,
-      rgb(211, 142, 39) 0%,
-      rgb(208, 145, 37) 11%,
-      rgb(205, 151, 35) 23%,
-      rgb(202, 154, 33) 34%,
-      rgb(197, 159, 32) 46%,
-      rgb(192, 160, 33) 57%,
-      rgb(186, 163, 33) 68%,
-      rgb(180, 165, 34) 79%,
-      rgb(177, 170, 37) 90%,
-      rgb(171, 174, 41) 100%
-    );
+    color: var(--color-ivory-black);
+    background: linear-gradient(135deg, #BB9731 0%, #D4AF37 50%, #E2B944 100%);
   }
 
   button.gradient:hover {
-    color: rgb(var(--black-rgb));
-    background: linear-gradient(
-      85deg,
-      rgb(241, 172, 69) 0%,
-      rgb(238, 175, 67) 11%,
-      rgb(235, 181, 65) 23%,
-      rgb(232, 184, 63) 34%,
-      rgb(227, 189, 62) 46%,
-      rgb(222, 190, 63) 57%,
-      rgb(216, 193, 63) 68%,
-      rgb(210, 195, 64) 79%,
-      rgb(207, 200, 67) 90%,
-      rgb(201, 204, 71) 100%
-    );
+    color: var(--color-ivory-black);
+    background: linear-gradient(135deg, #D4AF37 0%, #E2B944 50%, #F0CC5B 100%);
   }
 
   .fade-enter {

@@ -468,7 +468,7 @@ const VoragoBoard = () => {
 						  cx={center.x}
 						  cy={center.y}
 						  r="14"
-						  fill={cellData.stone.player === 1 ? '#4682b4' : '#dc143c'}
+						  fill={cellData.stone.player === 1 ? '#8C7853' : '#722F37'}
 						  stroke={isSelected ? '#d4af37' : '#000'}
 						  strokeWidth={isSelected ? '4' : '2.5'}
 						  className="cursor-pointer"

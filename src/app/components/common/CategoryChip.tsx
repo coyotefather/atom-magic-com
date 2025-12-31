@@ -17,7 +17,7 @@ const CategoryChip = ({
 			<Chip
 				style={{ backgroundColor: `${category.chipColor.hex}`}}
 				classNames={{
-				base: `rounded-full hover:sunset-gradient`,
+				base: `rounded-full hover:gold-gradient`,
 				content: "text-black font-semibold hover:text-black hover:font-bold",
 			  }}
 			>

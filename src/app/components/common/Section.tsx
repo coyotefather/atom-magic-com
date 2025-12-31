@@ -125,7 +125,7 @@ const Section = ({
 										disableRipple={true}
 										className={clsx("text-black font-extrabold",
 											{
-												'uppercase tracking-widest p-2 pl-4 pr-4 sunset-gradient': nextExpanded === false
+												'uppercase tracking-widest p-2 pl-4 pr-4 gold-gradient': nextExpanded === false
 											},
 											{
 												'cursor-default bg-white': nextExpanded === true

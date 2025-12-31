@@ -33,7 +33,7 @@ const StoneTray = () => {
 
  // In StoneTray.tsx, make it horizontal and minimal:
  return (
-   <div className="flex gap-4 items-center justify-between p-3 bg-white border-2 border-black rounded-lg">
+   <div className="flex gap-4 items-center justify-between p-3 bg-white border-2 border-black">
 	 {/* Player 1 */}
 	 <div className="flex items-center gap-2">
 	   <span className="text-xs font-bold marcellus">P1:</span>
@@ -48,7 +48,7 @@ const StoneTray = () => {
 			   ${selectedStone?.player === 1 && selectedStone?.ring === -1 ? 'ring-2 ring-gold scale-110' : ''}
 			 `}
 			 style={{
-			   backgroundColor: 'var(--color-sunset-blue)',
+			   backgroundColor: 'var(--color-bronze)',
 			   borderColor: 'var(--color-black)'
 			 }}
 		   />
@@ -78,7 +78,7 @@ const StoneTray = () => {
 			   ${selectedStone?.player === 2 && selectedStone?.ring === -1 ? 'ring-2 ring-gold scale-110' : ''}
 			 `}
 			 style={{
-			   backgroundColor: 'var(--color-sunset-red)',
+			   backgroundColor: 'var(--color-oxblood)',
 			   borderColor: 'var(--color-black)'
 			 }}
 		   />
