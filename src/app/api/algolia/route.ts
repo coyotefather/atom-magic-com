@@ -125,12 +125,12 @@ export async function POST(request: Request) {
 		const updatedValue = {
 			_id: value._id,
 			title: value.title,
-			slug: value.slug,
+			path: value.slug?.current,  // Extract slug.current to match initial indexing format
 			entryBody: value.entryBody?.slice(0, 9000),
 			description: value.description,
 			_type: value._type,
-			createdAt: value._createdAt,
-			updatedAt: value._updatedAt
+			_createdAt: value._createdAt,
+			_updatedAt: value._updatedAt
 		}
 	  // Add or update the document in Algolia
 	  await algoliaClient.saveObject({
