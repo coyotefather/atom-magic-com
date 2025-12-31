@@ -125,7 +125,7 @@ export async function POST(request: Request) {
 		const updatedValue = {
 			_id: value._id,
 			title: value.title,
-			slug: value.slug.current,
+			slug: value.slug,
 			entryBody: value.entryBody?.slice(0, 9000),
 			description: value.description,
 			_type: value._type,
