@@ -18,7 +18,7 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 	};
 
 	return (
-		<div className="sunset-gradient border-t-2">
+		<div className="parchment-gradient border-t-2">
 			<div className="container pt-8 pb-8">
 				<div className="grid grid-cols-2 pt-8 pb-8">
 					<div className="text-center text-xl">

@@ -48,7 +48,7 @@ const StoneTray = () => {
 			   ${selectedStone?.player === 1 && selectedStone?.ring === -1 ? 'ring-2 ring-gold scale-110' : ''}
 			 `}
 			 style={{
-			   backgroundColor: 'var(--color-sunset-blue)',
+			   backgroundColor: 'var(--color-bronze)',
 			   borderColor: 'var(--color-black)'
 			 }}
 		   />
@@ -78,7 +78,7 @@ const StoneTray = () => {
 			   ${selectedStone?.player === 2 && selectedStone?.ring === -1 ? 'ring-2 ring-gold scale-110' : ''}
 			 `}
 			 style={{
-			   backgroundColor: 'var(--color-sunset-red)',
+			   backgroundColor: 'var(--color-oxblood)',
 			   borderColor: 'var(--color-black)'
 			 }}
 		   />

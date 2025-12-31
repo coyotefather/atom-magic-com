@@ -31,7 +31,7 @@ const ErrorDialog = ({
 					  <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
 					  <ModalBody>
 						<p>
-						  {message} <span className="text-adobe text-semibold">{incomplete}</span>
+						  {message} <span className="text-oxblood text-semibold">{incomplete}</span>
 						</p>
 					  </ModalBody>
 					  <ModalFooter>

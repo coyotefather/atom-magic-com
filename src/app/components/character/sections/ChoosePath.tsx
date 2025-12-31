@@ -87,10 +87,10 @@ const ChoosePath = ({
 									<TableCell className={clsx(
 										'pl-0 font-bold',
 										{
-											'text-adobe': m.modifierValue && m.modifierValue < 0
+											'text-oxblood': m.modifierValue && m.modifierValue < 0
 										},
 										{
-											'text-dark-olive-green': m.modifierValue && m.modifierValue > 0
+											'text-laurel': m.modifierValue && m.modifierValue > 0
 										},
 									)}>
 										{m.modifierValue && m.modifierValue > 0 ? "+" : ""}
