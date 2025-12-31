@@ -103,6 +103,14 @@ export async function POST(request: Request) {
 
 	const { _id, operation, value } = payload;
 
+	// Debug: Log what fields we're receiving from the webhook
+	console.log("Webhook payload fields:", {
+		_id,
+		operation,
+		valueKeys: value ? Object.keys(value) : 'no value',
+		path: value?.path
+	});
+
 	if (!operation || !_id || !value) {
 	  return Response.json(
 		{ error: "Invalid payload, missing required fields" },
@@ -122,10 +130,11 @@ export async function POST(request: Request) {
 	  });
 	} else {
 		// create a copy and slice off to only 9000 - this prevents sending something over the size limit allowed by Algolia
+		// Note: Sanity webhook projection already extracts slug.current as "path"
 		const updatedValue = {
 			_id: value._id,
 			title: value.title,
-			path: value.slug?.current,  // Extract slug.current to match initial indexing format
+			path: value.path,
 			entryBody: value.entryBody?.slice(0, 9000),
 			description: value.description,
 			_type: value._type,
