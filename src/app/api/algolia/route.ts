@@ -15,7 +15,7 @@ const algoliaClient = algoliasearch(algoliaAppId, algoliaApiKey);
 const sanityClient = createClient({
   projectId: sanityProjectId,
   dataset: sanityDataset,
-  apiVersion: "2021-03-25",
+  apiVersion: "2024-08-20",
   useCdn: false,
 });
 
