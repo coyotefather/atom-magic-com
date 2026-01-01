@@ -12,6 +12,7 @@ import {pathType} from './pathType'
 import {patronageType} from './patronageType'
 import {disciplineType} from './disciplineType'
 import {techniqueType} from './techniqueType'
+import {enhancementType} from './enhancementType'
 import {gearType} from './gearType'
 import {timelineType} from './timelineType'
 import {authorType} from './authorType'
@@ -30,6 +31,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     patronageType,
     disciplineType,
     techniqueType,
+    enhancementType,
     gearType,
     timelineType,
     authorType
