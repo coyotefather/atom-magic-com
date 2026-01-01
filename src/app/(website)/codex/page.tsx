@@ -3,13 +3,13 @@ import CustomCard from '@/app/components/common/CustomCard';
 import { Search } from '@/app/components/global/search/Search';
 // import { sanityFetch } from "@/sanity/lib/client";
 // import { ENTRIES_QUERY } from "@/sanity/lib/queries";
-// import { ENTRIES_QUERYResult } from "../../../../sanity.types";
+// import { ENTRIES_QUERY_RESULT } from "../../../../sanity.types";
 
 export const dynamic = 'force-dynamic';
 
 const Page = async () => {
 
-	// const entries = await sanityFetch<ENTRIES_QUERYResult>({
+	// const entries = await sanityFetch<ENTRIES_QUERY_RESULT>({
 	// 	query: ENTRIES_QUERY,
 	// });
 

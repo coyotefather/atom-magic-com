@@ -10,14 +10,14 @@ import { useState, useRef } from 'react';
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import {
-	PATHS_QUERYResult,
+	PATHS_QUERY_RESULT,
 } from "../../../../../sanity.types";
 
 const ChoosePath = ({
 		paths,
 		incompleteFields
 	}: {
-		paths: PATHS_QUERYResult,
+		paths: PATHS_QUERY_RESULT,
 		incompleteFields: string
 	}) => {
 	const detailsRef = useRef(null);

@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setDisciplines, setTechniques } from "@/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import {
-	DISCIPLINES_QUERYResult,
+	DISCIPLINES_QUERY_RESULT,
 } from "../../../../../sanity.types";
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
@@ -23,7 +23,7 @@ const ManageGear = ({
 		disciplines,
 	}: {
 		incompleteFields: string
-		disciplines: DISCIPLINES_QUERYResult
+		disciplines: DISCIPLINES_QUERY_RESULT
 	}) => {
 
 	const detailsRef = useRef(null);
@@ -54,7 +54,7 @@ const ManageGear = ({
 // 			);
 // 		} else {
 // 			// construct array of disciplines filtered by path, and uncheck any disciplines or techniques that were checked
-// 			let localDisciplines:DISCIPLINES_QUERYResult = disciplines.filter( d => {
+// 			let localDisciplines:DISCIPLINES_QUERY_RESULT = disciplines.filter( d => {
 // 				let check = false;
 // 				d.paths?.forEach( p => {
 // 					if(p._id === path){
@@ -187,7 +187,7 @@ const ManageGear = ({
 				);
 			} else {
 				// construct array of disciplines filtered by path, and uncheck any disciplines or techniques that were checked
-				let localDisciplines:DISCIPLINES_QUERYResult = disciplines.filter( d => {
+				let localDisciplines:DISCIPLINES_QUERY_RESULT = disciplines.filter( d => {
 					let check = false;
 					d.paths?.forEach( p => {
 						if(p._id === path){
@@ -271,7 +271,7 @@ const ManageGear = ({
 	useEffect(() => {
 		let content = (<></>);
 		if(characterDisciplines) {
-			let chosen:DISCIPLINES_QUERYResult = [];
+			let chosen:DISCIPLINES_QUERY_RESULT = [];
 			characterDisciplines.forEach( needle => {
 				let discFound = disciplines.find( (d) => d._id === needle );
 				let disc;

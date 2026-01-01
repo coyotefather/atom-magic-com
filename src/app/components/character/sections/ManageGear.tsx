@@ -6,7 +6,7 @@ import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import GearTable from '@/app/components/character/sections/gear/GearTable'
 import FunctionButton from '@/app/components/common/FunctionButton';
 import {
-	GEAR_QUERYResult,
+	GEAR_QUERY_RESULT,
 } from "../../../../../sanity.types";
 import clsx from 'clsx';
 import { mdiDiceMultiple } from '@mdi/js';
@@ -17,7 +17,7 @@ const ManageGear = ({
 		gear,
 	}: {
 		incompleteFields: string
-		gear: GEAR_QUERYResult
+		gear: GEAR_QUERY_RESULT
 	}) => {
 
 	// function via Mozilla docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random

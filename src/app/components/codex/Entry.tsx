@@ -7,7 +7,7 @@ import { remarkExtendedTable } from 'remark-extended-table';
 import { remarkDefinitionList } from 'remark-definition-list';
 import remarkHeadingId from 'remark-heading-id';
 import { urlFor } from "@/sanity/lib/image";
-import { ENTRY_QUERYResult } from "../../../../sanity.types";
+import { ENTRY_QUERY_RESULT } from "../../../../sanity.types";
 import Link from "next/link";
 //import {Card, CardHeader, CardFooter} from "@heroui/card";
 import {Card, CardHeader, CardFooter} from "@heroui/react";
@@ -15,7 +15,7 @@ import Breadcrumbs from '@/app/components/common/Breadcrumbs';
 import TableOfContents from '@/app/components/codex/TableOfContents';
 import clsx from 'clsx';
 
-export function Entry({ entry }: { entry: ENTRY_QUERYResult }) {
+export function Entry({ entry }: { entry: ENTRY_QUERY_RESULT }) {
 
 	const { title, mainImage, cardDetails, entryBody, toc, author, publishedAt, category } = entry || {};
 

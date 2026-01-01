@@ -9,7 +9,7 @@ import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import {
-	PATRONAGES_QUERYResult,
+	PATRONAGES_QUERY_RESULT,
 } from "../../../../../sanity.types";
 
 const ChoosePatronage = ({
@@ -17,7 +17,7 @@ const ChoosePatronage = ({
 		patronages,
 	}: {
 		incompleteFields: string,
-		patronages: PATRONAGES_QUERYResult
+		patronages: PATRONAGES_QUERY_RESULT
 	}) => {
 	const detailsRef = useRef(null);
 	const dispatch = useAppDispatch();

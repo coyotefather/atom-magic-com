@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { GEAR_PAGE_QUERYResult } from "../../../../../sanity.types";
+import { GEAR_PAGE_QUERY_RESULT } from "../../../../../sanity.types";
 import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell, getKeyValue} from "@heroui/react";
 import {Select, SelectItem} from "@heroui/react";
 import Icon from '@mdi/react';
@@ -29,7 +29,7 @@ interface Path {
 export default function Gear({
 		gear
 	}: {
-		gear: GEAR_PAGE_QUERYResult
+		gear: GEAR_PAGE_QUERY_RESULT
 	}) {
 
 	const columns = [

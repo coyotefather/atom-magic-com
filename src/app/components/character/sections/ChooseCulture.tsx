@@ -8,18 +8,18 @@ import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import {
-	CULTURES_QUERYResult,
+	CULTURES_QUERY_RESULT,
 } from "../../../../../sanity.types";
 
 const ChooseCulture = ({
 		cultures,
 		incompleteFields
 	}: {
-		cultures: CULTURES_QUERYResult,
+		cultures: CULTURES_QUERY_RESULT,
 		incompleteFields: string
 	}) => {
 
-	// const cultures = await sanityFetch<CULTURES_QUERYResult>({
+	// const cultures = await sanityFetch<CULTURES_QUERY_RESULT>({
 	// 	query: CULTURES_QUERY,
 	// });
 	// if (!cultures) {
