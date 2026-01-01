@@ -17,13 +17,13 @@ import WrapUp from '@/app/components/character/sections/WrapUp';
 import { useAppSelector } from '@/lib/hooks'
 
 import {
-	CULTURES_QUERYResult,
-	SCORES_QUERYResult,
-	ADDITIONAL_SCORES_QUERYResult,
-	PATHS_QUERYResult,
-	PATRONAGES_QUERYResult,
-	DISCIPLINES_QUERYResult,
-	GEAR_QUERYResult,
+	CULTURES_QUERY_RESULT,
+	SCORES_QUERY_RESULT,
+	ADDITIONAL_SCORES_QUERY_RESULT,
+	PATHS_QUERY_RESULT,
+	PATRONAGES_QUERY_RESULT,
+	DISCIPLINES_QUERY_RESULT,
+	GEAR_QUERY_RESULT,
 } from "../../../../sanity.types";
 
 interface Modifier {
@@ -46,13 +46,13 @@ const Sections = ({
 		disciplines,
 		gear,
 	}:{
-		cultures: CULTURES_QUERYResult,
-		scores: SCORES_QUERYResult,
-		additionalScores: ADDITIONAL_SCORES_QUERYResult,
-		paths: PATHS_QUERYResult,
-		patronages: PATRONAGES_QUERYResult,
-		disciplines: DISCIPLINES_QUERYResult,
-		gear: GEAR_QUERYResult,
+		cultures: CULTURES_QUERY_RESULT,
+		scores: SCORES_QUERY_RESULT,
+		additionalScores: ADDITIONAL_SCORES_QUERY_RESULT,
+		paths: PATHS_QUERY_RESULT,
+		patronages: PATRONAGES_QUERY_RESULT,
+		disciplines: DISCIPLINES_QUERY_RESULT,
+		gear: GEAR_QUERY_RESULT,
 	}) => {
 	const character = useAppSelector(state => state.character);
 	const [basicsIncomplete, setBasicsIncomplete] = useState("init");

@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 import {
-	CULTURES_QUERYResult,
-	SCORES_QUERYResult,
-	ADDITIONAL_SCORES_QUERYResult,
-	PATHS_QUERYResult,
-	PATRONAGES_QUERYResult,
-	DISCIPLINES_QUERYResult,
-	GEAR_QUERYResult,
+	CULTURES_QUERY_RESULT,
+	SCORES_QUERY_RESULT,
+	ADDITIONAL_SCORES_QUERY_RESULT,
+	PATHS_QUERY_RESULT,
+	PATRONAGES_QUERY_RESULT,
+	DISCIPLINES_QUERY_RESULT,
+	GEAR_QUERY_RESULT,
 } from "../../../sanity.types";
 
 interface SanityScore {
@@ -85,10 +85,10 @@ export interface CharacterState {
 	patronage: string,
 	scorePoints: number,
 	scores: Array<Score>,
-	additionalScores: ADDITIONAL_SCORES_QUERYResult,
+	additionalScores: ADDITIONAL_SCORES_QUERY_RESULT,
 	disciplines: Array<string>,
 	techniques: Array<string>,
-	gear: GEAR_QUERYResult,
+	gear: GEAR_QUERY_RESULT,
 	wealth: {
 		silver: number,
 		gold: number,
@@ -174,7 +174,7 @@ export const characterSlice = createSlice({
 	// setLoaded: (state, action: PayloadAction<boolean>) => {
 	// 	state.loaded = action.payload;
 	// },
-	initAdditionalScores: (state, action: PayloadAction<ADDITIONAL_SCORES_QUERYResult>) => {
+	initAdditionalScores: (state, action: PayloadAction<ADDITIONAL_SCORES_QUERY_RESULT>) => {
 		if(state.additionalScores.length === 0) {
 			state.additionalScores = action.payload;
 			//state.loaded = true;
@@ -303,7 +303,7 @@ export const characterSlice = createSlice({
 	setPatronage: (state, action: PayloadAction<string>) => {
 		state.patronage = action.payload;
 	},
-	setGear: (state, action: PayloadAction<GEAR_QUERYResult>) => {
+	setGear: (state, action: PayloadAction<GEAR_QUERY_RESULT>) => {
 		state.gear = action.payload;
 	},
 	// setShield: (state) => {

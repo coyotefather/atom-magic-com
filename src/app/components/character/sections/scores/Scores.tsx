@@ -3,7 +3,7 @@ import ScoreRefactor from '@/app/components/character/sections/scores/ScoreRefac
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { initScore } from "@/lib/slices/characterSlice";
 import {
-	SCORES_QUERYResult,
+	SCORES_QUERY_RESULT,
 } from "../../../../../../sanity.types";
 import { useEffect } from 'react';
 
@@ -22,7 +22,7 @@ const Scores = ({
 		scores,
 		modifiers
 	}: {
-		scores: SCORES_QUERYResult,
+		scores: SCORES_QUERY_RESULT,
 		modifiers: Modifiers
 	}) => {
 

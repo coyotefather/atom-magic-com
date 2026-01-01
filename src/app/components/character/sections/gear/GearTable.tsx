@@ -6,7 +6,7 @@ import Icon from '@mdi/react';
 import { mdiChevronLeftCircle, mdiBankCircleOutline } from '@mdi/js';
 import clsx from 'clsx';
 import {
-	GEAR_QUERYResult,
+	GEAR_QUERY_RESULT,
 } from "../../../../../../sanity.types";
 
 const columns = [
@@ -31,7 +31,7 @@ const columns = [
 const GearTable = ({
 		gear
 	}: {
-		gear: GEAR_QUERYResult,
+		gear: GEAR_QUERY_RESULT,
 	}) => {
 
 	return (

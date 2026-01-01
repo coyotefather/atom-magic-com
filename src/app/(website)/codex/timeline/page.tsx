@@ -3,12 +3,12 @@ import Header from '@/app/components/common/Header';
 import { TIMELINE_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/client";
 import {
-	TIMELINE_QUERYResult,
+	TIMELINE_QUERY_RESULT,
 } from "../../../../../sanity.types";
 import Timeline from '@/app/components/codex/Timeline';
 
 export default async function Page() {
-	const timeline = await sanityFetch<TIMELINE_QUERYResult>({
+	const timeline = await sanityFetch<TIMELINE_QUERY_RESULT>({
 		query: TIMELINE_QUERY,
 	});
 	if (!timeline) {

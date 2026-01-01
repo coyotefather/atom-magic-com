@@ -1,9 +1,9 @@
 // ./src/components/Entries.tsx
 
-import { ENTRIES_QUERYResult } from "../../../../sanity.types";
+import { ENTRIES_QUERY_RESULT } from "../../../../sanity.types";
 import Hit from '@/app/components/global/search/Hit';
 
-const Entries = ({ entries }: { entries: ENTRIES_QUERYResult }) => {
+const Entries = ({ entries }: { entries: ENTRIES_QUERY_RESULT }) => {
   return (
 	<section className="container">
 		<h3 className="marcellus text-2xl font-bold">Entries</h3>

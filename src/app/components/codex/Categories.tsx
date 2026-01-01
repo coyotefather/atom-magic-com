@@ -1,9 +1,9 @@
 // ./src/components/Posts.tsx
 
-import { CATEGORIES_QUERYResult } from "../../../../sanity.types";
+import { CATEGORIES_QUERY_RESULT } from "../../../../sanity.types";
 import CustomCard from '@/app/components/common/CustomCard';
 
-const Categories = ({ categories }: { categories: CATEGORIES_QUERYResult }) => {
+const Categories = ({ categories }: { categories: CATEGORIES_QUERY_RESULT }) => {
   return (
 	<section className="container">
 		<h3 className="marcellus text-2xl font-bold">Categories</h3>

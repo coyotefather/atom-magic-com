@@ -7,13 +7,13 @@ import { CATEGORIES_QUERY, CATEGORY_QUERY } from "@/sanity/lib/queries";
 
 import { client } from "@/sanity/lib/client";
 import {
-  CATEGORY_QUERYResult,
-  CATEGORIES_QUERYResult,
+  CATEGORY_QUERY_RESULT,
+  CATEGORIES_QUERY_RESULT,
 } from "../../../../../../sanity.types";
 import { Category } from "@/app/components/codex/Category";
 
 export async function generateStaticParams() {
-  const categories = await client.fetch<CATEGORIES_QUERYResult>(
+  const categories = await client.fetch<CATEGORIES_QUERY_RESULT>(
 	CATEGORIES_QUERY,
 	{},
 	{ perspective: "published" }
@@ -27,7 +27,7 @@ export async function generateStaticParams() {
 const options = { next: { revalidate: 30 } };
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const category = await client.fetch<CATEGORY_QUERYResult>(CATEGORY_QUERY, await params, options);
+  const category = await client.fetch<CATEGORY_QUERY_RESULT>(CATEGORY_QUERY, await params, options);
   if (!category) {
 	return notFound();
   }

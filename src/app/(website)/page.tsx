@@ -7,7 +7,7 @@ import { ENTRIES_COUNT_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/client";
 import { groq } from "next-sanity";
 import {
-	ENTRIES_COUNT_QUERYResult,
+	ENTRIES_COUNT_QUERY_RESULT,
 	Slug
 } from "../../../sanity.types";
 //import Alea from 'alea';
@@ -23,7 +23,7 @@ export type EntryById = {
 } | null;
 
 export default async function Home() {
-	let total = await sanityFetch<ENTRIES_COUNT_QUERYResult>({
+	let total = await sanityFetch<ENTRIES_COUNT_QUERY_RESULT>({
 		query: ENTRIES_COUNT_QUERY,
 	});
 	if (!total) {

@@ -1,5 +1,5 @@
 // ./src/components/Post.tsx
-import { CATEGORY_QUERYResult } from "../../../../sanity.types";
+import { CATEGORY_QUERY_RESULT } from "../../../../sanity.types";
 import Header from '@/app/components/common/Header';
 import Entries from '@/app/components/codex/Entries';
 import Categories from '@/app/components/codex/Categories';
@@ -8,7 +8,7 @@ import Link from "next/link";
 export function Category({
 		category
 	}: {
-		category: CATEGORY_QUERYResult
+		category: CATEGORY_QUERY_RESULT
 	}) {
 
 	const { title, description, entries, children } = category || {};

@@ -1,11 +1,11 @@
-import { TIMELINE_QUERYResult } from "../../../../sanity.types";
+import { TIMELINE_QUERY_RESULT } from "../../../../sanity.types";
 import TimelineItem from '@/app/components/codex/TimelineItem';
 import { mdiHuman, mdiHumanQueue, mdiMap, mdiWaves, mdiImageFilterHdr, mdiSwordCross, mdiShieldSun, mdiPineTree, mdiBird, mdiPaw, mdiSnake, mdiFire, mdiBottleTonicSkull, mdiHammerScrewdriver, mdiAtom, mdiNuke } from '@mdi/js';
 
 export default function Timeline({
 		timeline
 	}: {
-		timeline: TIMELINE_QUERYResult
+		timeline: TIMELINE_QUERY_RESULT
 	}) {
 
 	let iconPaths = new Map();

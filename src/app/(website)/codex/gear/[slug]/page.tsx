@@ -4,7 +4,7 @@ import Header from '@/app/components/common/Header';
 import { GEAR_PAGE_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/client";
 import {
-	GEAR_PAGE_QUERYResult,
+	GEAR_PAGE_QUERY_RESULT,
 } from "../../../../../../sanity.types";
 import Gear from '@/app/components/codex/gear/Gear';
 
@@ -12,7 +12,7 @@ type QueryParams = Promise<{ slug: string }>
 
 export default async function Page({ params }: { params: QueryParams }) {
 	const { slug } = await params;
-	const gear = await sanityFetch<GEAR_PAGE_QUERYResult>({
+	const gear = await sanityFetch<GEAR_PAGE_QUERY_RESULT>({
 		query: GEAR_PAGE_QUERY,
 		params: params
 	});
