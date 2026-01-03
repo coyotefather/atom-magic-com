@@ -262,7 +262,9 @@
   }
 
   .lapideum {
-    font-family: var(--font-lapideum);
+    font-family: var(--font-lapideum), monospace;
+    letter-spacing: 0.15em;
+    word-spacing: 0.5em;
   }
 
   input[type='search']::-webkit-search-decoration,
