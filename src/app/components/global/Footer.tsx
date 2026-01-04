@@ -27,7 +27,7 @@ const Footer = () => {
 						</div>
 						<div>
 							<div>
-								Copyright © Adam J. Butler 2024.
+								Copyright © Adam J. Butler 2026.
 							</div>
 							<div>
 								Content is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="nofollow" target="_new" title="ATTRIBUTION-NONCOMMERCIAL-SHAREALIKE 4.0 INTERNATIONAL">Creative Commons Attribution-NonCommercial</a> unless otherwise noted.
