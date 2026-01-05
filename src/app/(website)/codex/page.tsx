@@ -23,9 +23,9 @@ const Page = async () => {
 					<div className="flex flex-col gap-4">
 						<CustomCard
 							type="category"
-							title="Rules"
+							title="Gameplay"
 							description="Find everything you need to play a game of Atom Magic."
-							url="/codex/categories/rules"
+							url="/codex/categories/gameplay"
 							imagePath="/Wheel_of_Cardinals.svg"
 							showImage={true} />
 						<CustomCard
