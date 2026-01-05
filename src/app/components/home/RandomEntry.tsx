@@ -5,7 +5,7 @@ import Markdown from 'react-markdown'
 
 export type EntryById = {
   title: string | null;
-  entryBody: string | null;
+  description: string | null;
   slug: Slug | null;
 } | null;
 
@@ -15,10 +15,10 @@ const RandomEntry = ({
 		entry: EntryById
 	}) => {
 
-	const { title, entryBody, slug } = entry || {};
+	const { title, description, slug } = entry || {};
 
-	let text = entryBody ? entryBody.substring(0, 300) : "not found";
-	if(entryBody && entryBody.length > 300) {
+	let text = description ? description.substring(0, 300) : "...";
+	if(description && description.length > 300) {
 		text += "...";
 	}
 

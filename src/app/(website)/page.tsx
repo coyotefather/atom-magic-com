@@ -18,7 +18,7 @@ import Srand from 'seeded-rand';
 
 export type EntryById = {
   title: string | null;
-  entryBody: string | null;
+  description: string | null;
   slug: Slug | null;
 } | null;
 
@@ -38,7 +38,7 @@ export default async function Home() {
 
 	const entry = await sanityFetch<EntryById>({
 		query: groq`*[_type == "entry"][${random}]{
-		  title, entryBody, slug
+		  title, description, slug
 		}`
 	});
 	if(!entry) {
