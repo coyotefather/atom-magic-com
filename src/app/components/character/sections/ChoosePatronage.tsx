@@ -6,6 +6,8 @@ import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setPatronage } from "@/lib/slices/characterSlice";
 import {Select, SelectItem} from "@heroui/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import {
@@ -61,7 +63,11 @@ const ChoosePatronage = ({
 										{effect.entry && effect.entry.slug ? <ExternalLink
 										href={`https://atom-magic.com/codex/entries/${effect.entry.slug.current}`} name={effect.title ? effect.title :""} />:effect.title}
 									</TableCell>
-									<TableCell className="w-1/3 pl-0">{effect && effect.description ? effect.description : ""}</TableCell>
+									<TableCell className="w-1/3 pl-0 prose prose-sm">
+										<Markdown remarkPlugins={[remarkGfm]}>
+											{effect?.description ?? ""}
+										</Markdown>
+									</TableCell>
 								</TableRow>
 							))}
 						</TableBody>

@@ -13,6 +13,8 @@
  */
 
 // Source: schema.json
+export type Markdown = string;
+
 export type Timeline = {
   _id: string;
   _type: "timeline";
@@ -43,6 +45,34 @@ export type Timeline = {
   year?: number;
 };
 
+export type PathReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "path";
+};
+
+export type EntryReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "entry";
+};
+
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
+export type SubscoreReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "subscore";
+};
+
 export type Gear = {
   _id: string;
   _type: "gear";
@@ -53,26 +83,14 @@ export type Gear = {
   latin?: string;
   type?: "weapon" | "armor" | "other";
   value?: number;
-  paths?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "path";
-  }>;
-  entry?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "entry";
-  };
+  paths?: Array<
+    {
+      _key: string;
+    } & PathReference
+  >;
+  entry?: EntryReference;
   mainImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -82,17 +100,41 @@ export type Gear = {
   damageBonus?: number;
   shieldBonus?: number;
   modifiers?: Array<{
-    modifierSubscore?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "subscore";
-    };
+    modifierSubscore?: SubscoreReference;
     modifierValue?: number;
     _type: "modifier";
     _key: string;
   }>;
-  description?: string;
+  description?: Markdown;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type Enhancement = {
+  _id: string;
+  _type: "enhancement";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  latin?: string;
+  entry?: EntryReference;
+  cooldown?: number;
+  description?: Markdown;
 };
 
 export type Technique = {
@@ -103,14 +145,16 @@ export type Technique = {
   _rev: string;
   title?: string;
   latin?: string;
-  entry?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "entry";
-  };
+  entry?: EntryReference;
   cooldown?: number;
-  description?: string;
+  description?: Markdown;
+};
+
+export type TechniqueReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "technique";
 };
 
 export type Discipline = {
@@ -120,27 +164,18 @@ export type Discipline = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  entry?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "entry";
-  };
-  paths?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "path";
-  }>;
-  techniques?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "technique";
-  }>;
-  description?: string;
+  entry?: EntryReference;
+  paths?: Array<
+    {
+      _key: string;
+    } & PathReference
+  >;
+  techniques?: Array<
+    {
+      _key: string;
+    } & TechniqueReference
+  >;
+  description?: Markdown;
 };
 
 export type Patronage = {
@@ -153,19 +188,9 @@ export type Patronage = {
   titleLatin?: string;
   epithet?: string;
   epithetLatin?: string;
-  entry?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "entry";
-  };
+  entry?: EntryReference;
   mainImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -175,24 +200,12 @@ export type Patronage = {
   effects?: Array<{
     title?: string;
     titleLatin?: string;
-    entry?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "entry";
-    };
-    polarity?: "positive" | "negative";
-    levels?: Array<{
-      level?: "I" | "II" | "III";
-      description?: string;
-      _type: "level";
-      _key: string;
-    }>;
-    description?: string;
+    entry?: EntryReference;
+    description?: Markdown;
     _type: "effect";
     _key: string;
   }>;
-  description?: string;
+  description?: Markdown;
 };
 
 export type Path = {
@@ -203,19 +216,9 @@ export type Path = {
   _rev: string;
   title?: string;
   latin?: string;
-  entry?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "entry";
-  };
+  entry?: EntryReference;
   mainImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -223,17 +226,19 @@ export type Path = {
     _type: "image";
   };
   modifiers?: Array<{
-    modifierSubscore?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "subscore";
-    };
+    modifierSubscore?: SubscoreReference;
     modifierValue?: number;
     _type: "modifier";
     _key: string;
   }>;
-  description?: string;
+  description?: Markdown;
+};
+
+export type ScoreReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "score";
 };
 
 export type AdditionalScores = {
@@ -244,26 +249,8 @@ export type AdditionalScores = {
   _rev: string;
   title?: string;
   value?: number;
-  entry?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "entry";
-  };
-  scores?: Array<
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "score";
-      }
-    | {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "subscore";
-      }
-  >;
+  entry?: EntryReference;
+  scores?: Array<ScoreReference | SubscoreReference>;
   calculation?: "sum" | "difference" | "multiply" | "divide";
   additionalCalculations?: Array<{
     calculationType?: "sum" | "difference" | "multiply" | "divide";
@@ -271,7 +258,7 @@ export type AdditionalScores = {
     _type: "additionalCalculation";
     _key: string;
   }>;
-  description?: string;
+  description?: Markdown;
 };
 
 export type Subscore = {
@@ -281,14 +268,9 @@ export type Subscore = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  score?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "score";
-  };
+  score?: ScoreReference;
   defaultValue?: number;
-  description?: string;
+  description?: Markdown;
 };
 
 export type Score = {
@@ -299,14 +281,12 @@ export type Score = {
   _rev: string;
   title?: string;
   id?: string;
-  subscores?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "subscore";
-  }>;
-  description?: string;
+  subscores?: Array<
+    {
+      _key: string;
+    } & SubscoreReference
+  >;
+  description?: Markdown;
 };
 
 export type Culture = {
@@ -316,19 +296,9 @@ export type Culture = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  entry?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "entry";
-  };
+  entry?: EntryReference;
   mainImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -339,11 +309,25 @@ export type Culture = {
     aspectName?: string;
     aspectId?: string;
     aspectContentSlug?: string;
-    aspectDescription?: string;
+    aspectDescription?: Markdown;
     _type: "aspect";
     _key: string;
   }>;
-  description?: string;
+  description?: Markdown;
+};
+
+export type AuthorReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "author";
+};
+
+export type CategoryReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "category";
 };
 
 export type Entry = {
@@ -354,31 +338,16 @@ export type Entry = {
   _rev: string;
   title?: string;
   slug?: Slug;
-  author?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "author";
-  };
+  author?: AuthorReference;
   mainImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
   };
-  category?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "category";
-  };
+  category?: CategoryReference;
   publishedAt?: string;
   cardDetails?: Array<{
     detailName?: string;
@@ -387,8 +356,14 @@ export type Entry = {
     _key: string;
   }>;
   description?: string;
-  toc?: string;
-  entryBody?: string;
+  toc?: Markdown;
+  entryBody?: Markdown;
+};
+
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
 };
 
 export type Post = {
@@ -399,68 +374,53 @@ export type Post = {
   _rev: string;
   title?: string;
   slug?: Slug;
-  author?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "author";
-  };
+  author?: AuthorReference;
   mainImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
   };
-  categories?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "category";
-  }>;
-  publishedAt?: string;
-  body?: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-        listItem?: "bullet";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        _type: "image";
-        _key: string;
-      }
+  categories?: Array<
+    {
+      _key: string;
+    } & CategoryReference
   >;
+  publishedAt?: string;
+  body?: BlockContent;
 };
+
+export type BlockContent = Array<
+  | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+      listItem?: "bullet";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }
+  | {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+      _key: string;
+    }
+>;
 
 export type Author = {
   _id: string;
@@ -471,12 +431,7 @@ export type Author = {
   name?: string;
   slug?: Slug;
   image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -512,48 +467,8 @@ export type Category = {
   slug?: Slug;
   chipColor?: Color;
   description?: string;
-  parent?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "category";
-  };
+  parent?: CategoryReference;
 };
-
-export type BlockContent = Array<
-  | {
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-      listItem?: "bullet";
-      markDefs?: Array<{
-        href?: string;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }
-  | {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
-      _key: string;
-    }
->;
 
 export type Color = {
   _type: "color";
@@ -588,8 +503,6 @@ export type HslaColor = {
   a?: number;
 };
 
-export type Markdown = string;
-
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
   background?: string;
@@ -616,20 +529,15 @@ export type SanityImageDimensions = {
   aspectRatio?: number;
 };
 
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
+export type SanityImageMetadata = {
+  _type: "sanity.imageMetadata";
+  location?: Geopoint;
+  dimensions?: SanityImageDimensions;
+  palette?: SanityImagePalette;
+  lqip?: string;
+  blurHash?: string;
+  hasAlpha?: boolean;
+  isOpaque?: boolean;
 };
 
 export type SanityFileAsset = {
@@ -652,6 +560,13 @@ export type SanityFileAsset = {
   path?: string;
   url?: string;
   source?: SanityAssetSourceData;
+};
+
+export type SanityAssetSourceData = {
+  _type: "sanity.assetSourceData";
+  name?: string;
+  id?: string;
+  url?: string;
 };
 
 export type SanityImageAsset = {
@@ -677,17 +592,6 @@ export type SanityImageAsset = {
   source?: SanityAssetSourceData;
 };
 
-export type SanityImageMetadata = {
-  _type: "sanity.imageMetadata";
-  location?: Geopoint;
-  dimensions?: SanityImageDimensions;
-  palette?: SanityImagePalette;
-  lqip?: string;
-  blurHash?: string;
-  hasAlpha?: boolean;
-  isOpaque?: boolean;
-};
-
 export type Geopoint = {
   _type: "geopoint";
   lat?: number;
@@ -695,51 +599,47 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
-};
-
-export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
 export type AllSanitySchemaTypes =
+  | Markdown
   | Timeline
+  | PathReference
+  | EntryReference
+  | SanityImageAssetReference
+  | SubscoreReference
   | Gear
+  | SanityImageCrop
+  | SanityImageHotspot
+  | Enhancement
   | Technique
+  | TechniqueReference
   | Discipline
   | Patronage
   | Path
+  | ScoreReference
   | AdditionalScores
   | Subscore
   | Score
   | Culture
+  | AuthorReference
+  | CategoryReference
   | Entry
+  | Slug
   | Post
+  | BlockContent
   | Author
   | Category
-  | BlockContent
   | Color
   | RgbaColor
   | HsvaColor
   | HslaColor
-  | Markdown
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
-  | SanityImageHotspot
-  | SanityImageCrop
-  | SanityFileAsset
-  | SanityImageAsset
   | SanityImageMetadata
-  | Geopoint
-  | Slug
-  | SanityAssetSourceData;
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint;
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
@@ -756,24 +656,19 @@ export type CULTURES_QUERY_RESULT = Array<{
     aspectName?: string;
     aspectId?: string;
     aspectContentSlug?: string;
-    aspectDescription?: string;
+    aspectDescription?: Markdown;
     _type: "aspect";
     _key: string;
   }> | null;
   mainImage: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
   } | null;
-  description: string | null;
+  description: Markdown | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts
@@ -788,9 +683,9 @@ export type SCORES_QUERY_RESULT = Array<{
     title: string | null;
     id: null;
     defaultValue: number | null;
-    description: string | null;
+    description: Markdown | null;
   }> | null;
-  description: string | null;
+  description: Markdown | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts
@@ -805,7 +700,7 @@ export type SUBSCORES_QUERY_RESULT = Array<{
     id: string | null;
   } | null;
   defaultValue: number | null;
-  description: string | null;
+  description: Markdown | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts
@@ -829,7 +724,7 @@ export type ADDITIONAL_SCORES_QUERY_RESULT = Array<{
     _type: "additionalCalculation";
     _key: string;
   }> | null;
-  description: string | null;
+  description: Markdown | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts
@@ -839,19 +734,9 @@ export type PATHS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
   latin: string | null;
-  entry: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "entry";
-  } | null;
+  entry: EntryReference | null;
   mainImage: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -869,12 +754,12 @@ export type PATHS_QUERY_RESULT = Array<{
     } | null;
     modifierValue: number | null;
   }> | null;
-  description: string | null;
+  description: Markdown | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: PATRONAGES_QUERY
-// Query: *[_type == "patronage"]{  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description}
+// Query: *[_type == "patronage"]{  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, description }, description}
 export type PATRONAGES_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
@@ -885,12 +770,7 @@ export type PATRONAGES_QUERY_RESULT = Array<{
     slug: Slug | null;
   } | null;
   mainImage: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -903,14 +783,9 @@ export type PATRONAGES_QUERY_RESULT = Array<{
     entry: {
       slug: Slug | null;
     } | null;
-    polarity: "negative" | "positive" | null;
-    levels: Array<{
-      level: "I" | "II" | "III" | null;
-      description: string | null;
-    }> | null;
-    description: string | null;
+    description: Markdown | null;
   }> | null;
-  description: string | null;
+  description: Markdown | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts
@@ -928,9 +803,9 @@ export type DISCIPLINES_QUERY_RESULT = Array<{
     title: string | null;
     latin: string | null;
     cooldown: number | null;
-    description: string | null;
+    description: Markdown | null;
   }> | null;
-  description: string | null;
+  description: Markdown | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts
@@ -944,19 +819,9 @@ export type GEAR_QUERY_RESULT = Array<{
   value: number | null;
   damageBonus: number | null;
   shieldBonus: number | null;
-  entry: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "entry";
-  } | null;
+  entry: EntryReference | null;
   mainImage: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -977,7 +842,7 @@ export type GEAR_QUERY_RESULT = Array<{
     } | null;
     modifierValue: number | null;
   }> | null;
-  description: string | null;
+  description: Markdown | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts
@@ -991,19 +856,9 @@ export type GEAR_PAGE_QUERY_RESULT = Array<{
   value: number | null;
   damageBonus: number | null;
   shieldBonus: number | null;
-  entry: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "entry";
-  } | null;
+  entry: EntryReference | null;
   mainImage: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1025,12 +880,12 @@ export type GEAR_PAGE_QUERY_RESULT = Array<{
     } | null;
     modifierValue: number | null;
   }> | null;
-  description: string | null;
+  description: Markdown | null;
 }>;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: CHARACTER_MANAGER_QUERY
-// Query: {  "cultures": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "paths": *[_type == "path"]{  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},  "patronages": *[_type == "patronage"]{  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description},  "disciplines": *[_type == "discipline"]| order(title asc){  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description},  "scores": *[_type == "score"]| order(title asc){  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description},  "subscores": *[_type == "subscore"]{  _id, title, score->{_id, title, id}, defaultValue, description},  "additionalScores": *[_type == "additionalScores"]{  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description},  "gear": *[_type == "gear"]{  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},}
+// Query: {  "cultures": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "paths": *[_type == "path"]{  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},  "patronages": *[_type == "patronage"]{  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, description }, description},  "disciplines": *[_type == "discipline"]| order(title asc){  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description},  "scores": *[_type == "score"]| order(title asc){  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description},  "subscores": *[_type == "subscore"]{  _id, title, score->{_id, title, id}, defaultValue, description},  "additionalScores": *[_type == "additionalScores"]{  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description},  "gear": *[_type == "gear"]{  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},}
 export type CHARACTER_MANAGER_QUERY_RESULT = {
   cultures: Array<{
     _id: string;
@@ -1042,42 +897,27 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
       aspectName?: string;
       aspectId?: string;
       aspectContentSlug?: string;
-      aspectDescription?: string;
+      aspectDescription?: Markdown;
       _type: "aspect";
       _key: string;
     }> | null;
     mainImage: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
+      asset?: SanityImageAssetReference;
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       alt?: string;
       _type: "image";
     } | null;
-    description: string | null;
+    description: Markdown | null;
   }>;
   paths: Array<{
     _id: string;
     title: string | null;
     latin: string | null;
-    entry: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "entry";
-    } | null;
+    entry: EntryReference | null;
     mainImage: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
+      asset?: SanityImageAssetReference;
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
@@ -1095,7 +935,7 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
       } | null;
       modifierValue: number | null;
     }> | null;
-    description: string | null;
+    description: Markdown | null;
   }>;
   patronages: Array<{
     _id: string;
@@ -1107,12 +947,7 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
       slug: Slug | null;
     } | null;
     mainImage: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
+      asset?: SanityImageAssetReference;
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
@@ -1125,14 +960,9 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
       entry: {
         slug: Slug | null;
       } | null;
-      polarity: "negative" | "positive" | null;
-      levels: Array<{
-        level: "I" | "II" | "III" | null;
-        description: string | null;
-      }> | null;
-      description: string | null;
+      description: Markdown | null;
     }> | null;
-    description: string | null;
+    description: Markdown | null;
   }>;
   disciplines: Array<{
     _id: string;
@@ -1146,9 +976,9 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
       title: string | null;
       latin: string | null;
       cooldown: number | null;
-      description: string | null;
+      description: Markdown | null;
     }> | null;
-    description: string | null;
+    description: Markdown | null;
   }>;
   scores: Array<{
     _id: string;
@@ -1159,9 +989,9 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
       title: string | null;
       id: null;
       defaultValue: number | null;
-      description: string | null;
+      description: Markdown | null;
     }> | null;
-    description: string | null;
+    description: Markdown | null;
   }>;
   subscores: Array<{
     _id: string;
@@ -1172,7 +1002,7 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
       id: string | null;
     } | null;
     defaultValue: number | null;
-    description: string | null;
+    description: Markdown | null;
   }>;
   additionalScores: Array<{
     _id: string;
@@ -1192,7 +1022,7 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
       _type: "additionalCalculation";
       _key: string;
     }> | null;
-    description: string | null;
+    description: Markdown | null;
   }>;
   gear: Array<{
     _id: string;
@@ -1202,19 +1032,9 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
     value: number | null;
     damageBonus: number | null;
     shieldBonus: number | null;
-    entry: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "entry";
-    } | null;
+    entry: EntryReference | null;
     mainImage: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
+      asset?: SanityImageAssetReference;
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
@@ -1235,7 +1055,7 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
       } | null;
       modifierValue: number | null;
     }> | null;
-    description: string | null;
+    description: Markdown | null;
   }>;
 };
 
@@ -1253,47 +1073,9 @@ export type POSTS_QUERY_RESULT = Array<{
 // Query: *[_type == "post" && slug.current == $slug][0]{  title, body, mainImage, categories[]->{title, slug}}
 export type POST_QUERY_RESULT = {
   title: string | null;
-  body: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
-        listItem?: "bullet";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        _type: "image";
-        _key: string;
-      }
-  > | null;
+  body: BlockContent | null;
   mainImage: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1332,15 +1114,10 @@ export type ENTRY_QUERY_RESULT = {
     _type: "cardDetail";
     _key: string;
   }> | null;
-  entryBody: string | null;
-  toc: string | null;
+  entryBody: Markdown | null;
+  toc: Markdown | null;
   mainImage: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -1446,11 +1223,11 @@ declare module "@sanity/client" {
     '*[_type == "subscore"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n}': SUBSCORES_QUERY_RESULT;
     '*[_type == "additionalScores"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n}': ADDITIONAL_SCORES_QUERY_RESULT;
     '*[_type == "path"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}': PATHS_QUERY_RESULT;
-    '*[_type == "patronage"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description\n}': PATRONAGES_QUERY_RESULT;
+    '*[_type == "patronage"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, description }, description\n}': PATRONAGES_QUERY_RESULT;
     '*[_type == "discipline"]| order(title asc){\n  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description\n}': DISCIPLINES_QUERY_RESULT;
     '*[_type == "gear"]{\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}': GEAR_QUERY_RESULT;
     '*[_type == "gear" && type == $slug]| order( title asc, path.title asc ){\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id, title }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}': GEAR_PAGE_QUERY_RESULT;
-    '{\n  "cultures": *[_type == "culture"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  "paths": *[_type == "path"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n  "patronages": *[_type == "patronage"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description\n},\n  "disciplines": *[_type == "discipline"]| order(title asc){\n  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description\n},\n  "scores": *[_type == "score"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n},\n  "subscores": *[_type == "subscore"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n},\n  "additionalScores": *[_type == "additionalScores"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n},\n  "gear": *[_type == "gear"]{\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n}': CHARACTER_MANAGER_QUERY_RESULT;
+    '{\n  "cultures": *[_type == "culture"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  "paths": *[_type == "path"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n  "patronages": *[_type == "patronage"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, description }, description\n},\n  "disciplines": *[_type == "discipline"]| order(title asc){\n  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description\n},\n  "scores": *[_type == "score"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n},\n  "subscores": *[_type == "subscore"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n},\n  "additionalScores": *[_type == "additionalScores"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n},\n  "gear": *[_type == "gear"]{\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n}': CHARACTER_MANAGER_QUERY_RESULT;
     '*[_type == "post" && defined(slug.current)][0...12]{\n  _id, title, slug\n}': POSTS_QUERY_RESULT;
     '*[_type == "post" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}': POST_QUERY_RESULT;
     '*[_type == "entry" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}': ENTRIES_QUERY_RESULT;
