@@ -51,8 +51,10 @@ const SelectDetail = ({
 						{ "col-span-3": imagePath === "" },
 					)}>
 						<h3 className="marcellus text-3xl border-b-2 mb-4">{name}</h3>
-						<div>
-							{description}
+						<div className="prose prose-sm">
+							<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>
+								{description}
+							</Markdown>
 						</div>
 					</div>
 					<div className="flex justify-around">
