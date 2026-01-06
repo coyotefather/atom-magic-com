@@ -1,12 +1,5 @@
 [
   {
-    "name": "markdown",
-    "type": "type",
-    "value": {
-      "type": "string"
-    }
-  },
-  {
     "name": "timeline",
     "type": "document",
     "attributes": {
@@ -499,6 +492,13 @@
         },
         "optional": true
       }
+    }
+  },
+  {
+    "name": "markdown",
+    "type": "type",
+    "value": {
+      "type": "string"
     }
   },
   {
