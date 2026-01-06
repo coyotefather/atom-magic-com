@@ -23,7 +23,7 @@ const PATHS_PRE_QUERY = `*[_type == "path"]{
 }`;
 
 const PATRONAGES_PRE_QUERY = `*[_type == "patronage"]{
-  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, polarity, levels[]{ level, description }, description }, description
+  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, description }, description
 }`;
 
 const DISCIPLINES_PRE_QUERY = `*[_type == "discipline"]| order(title asc){

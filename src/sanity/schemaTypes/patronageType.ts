@@ -60,38 +60,7 @@ export const patronageType = defineType({
             description: 'Optional reference to a codex entry.',
             to: {type: 'entry'},
           },
-          {
-            title: 'Polarity',
-            name: 'polarity',
-            type: 'string',
-            description: 'Is the effect positive or negative?',
-            options: {
-              list: [
-                {title: 'positive', value: 'positive'},
-                {title: 'negative', value: 'negative'}
-              ],
-            }
-          },
-          { name: 'levels', type: 'array', of: [
-            { name: 'level', type: 'object', fields: [
-              {
-                title: 'Level',
-                name: 'level',
-                type: 'string',
-                validation: rule => rule.required(),
-                description: 'Is the effect positive or negative?',
-                options: {
-                  list: [
-                    {title: 'I', value: 'I'},
-                    {title: 'II', value: 'II'},
-                    {title: 'III', value: 'III'}
-                  ],
-                }
-              },
-              {name: 'description', type: 'string'},
-            ]},
-          ]},
-          { name: 'description', type: 'string'},
+          { name: 'description', type: 'markdown'},
         ]},
       ],
     }),
