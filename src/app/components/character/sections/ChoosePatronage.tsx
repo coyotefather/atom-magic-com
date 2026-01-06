@@ -59,11 +59,11 @@ const ChoosePatronage = ({
 						<TableBody>
 							{(cardinal.effects).map((effect, index) => (
 								<TableRow key={`effect-${index}`}>
-									<TableCell className="align-top pl-0">
+									<TableCell className="align-top w-1/3 pl-0">
 										{effect.entry && effect.entry.slug ? <ExternalLink
 										href={`https://atom-magic.com/codex/entries/${effect.entry.slug.current}`} name={effect.title ? effect.title :""} />:effect.title}
 									</TableCell>
-									<TableCell className="w-1/3 pl-0 prose prose-sm">
+									<TableCell className="pl-0 prose prose-sm">
 										<Markdown remarkPlugins={[remarkGfm]}>
 											{effect?.description ?? ""}
 										</Markdown>
