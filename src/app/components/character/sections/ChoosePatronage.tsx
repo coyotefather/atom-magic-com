@@ -46,7 +46,7 @@ const ChoosePatronage = ({
 						aria-label={`${cardinal.title} Patronage Effects`}
 						className="mt-8">
 						<TableHeader>
-							{["Name","Description","Effects"].map((tc) => (
+							{["Name","Description"].map((tc) => (
 								<TableColumn
 									key={tc}
 									className="bg-transparent border-b-2 pl-0">
@@ -62,12 +62,6 @@ const ChoosePatronage = ({
 										href={`https://atom-magic.com/codex/entries/${effect.entry.slug.current}`} name={effect.title ? effect.title :""} />:effect.title}
 									</TableCell>
 									<TableCell className="w-1/3 pl-0">{effect && effect.description ? effect.description : ""}</TableCell>
-									<TableCell className="pl-0">{effect.levels ? effect.levels.sort((a,b) => a.level && b.level ? a.level.length - b.level.length:0).map((level, index) => (
-										<dl key={`level-${index}`} className="flex">
-											<dt className="uppercase w-12">{level.level}:</dt>
-											<dd className="">{level.description}</dd>
-										</dl>
-									)):"-"}</TableCell>
 								</TableRow>
 							))}
 						</TableBody>
