@@ -5,6 +5,8 @@ import { useAppDispatch } from '@/lib/hooks'
 import { setCulture } from "@/lib/slices/characterSlice";
 import {Select, SelectItem} from "@heroui/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/react";
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import {
@@ -70,8 +72,10 @@ const ChooseCulture = ({
 										<ExternalLink
 										href={`https://atom-magic.com/codex/${aspect.aspectContentSlug}`} name={aspect.aspectName ? aspect.aspectName : ""} />
 									</TableCell>
-									<TableCell className="pl-0">
-										{aspect.aspectDescription}
+									<TableCell className="pl-0 prose prose-sm">
+										<Markdown remarkPlugins={[remarkGfm]}>
+											{aspect.aspectDescription}
+										</Markdown>
 									</TableCell>
 								</TableRow>
 							))}

@@ -41,7 +41,7 @@ export const cultureType = defineType({
           {name: 'aspectName', title: 'Name',  type: 'string'},
           {name: 'aspectId', title: 'ID', description: 'Note: changing this ID will break existing saved characters. Please avoid spaces.',  type: 'string'},
           {name: 'aspectContentSlug', title: 'Content slug', description: 'This should be the slug of a codex entry.',  type: 'string'},
-          {name: 'aspectDescription', title: 'Description', type: 'text'}
+          {name: 'aspectDescription', title: 'Description', type: 'markdown'}
         ]},
       ],
     }),
