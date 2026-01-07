@@ -9,7 +9,7 @@ const nextConfig = {
 		],
 	  },
 	turbopack: {
-		// options
+		root: import.meta.dirname,
 	  },
 };
 

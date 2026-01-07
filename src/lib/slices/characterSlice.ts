@@ -1,14 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 import {
-	CULTURES_QUERY_RESULT,
-	SCORES_QUERY_RESULT,
 	ADDITIONAL_SCORES_QUERY_RESULT,
-	PATHS_QUERY_RESULT,
-	PATRONAGES_QUERY_RESULT,
-	DISCIPLINES_QUERY_RESULT,
-	GEAR_QUERY_RESULT,
 } from "../../../sanity.types";
+import { CharacterGearItem } from '../gear-data';
 
 interface SanityScore {
 	_id: string,
@@ -88,7 +83,7 @@ export interface CharacterState {
 	additionalScores: ADDITIONAL_SCORES_QUERY_RESULT,
 	disciplines: Array<string>,
 	techniques: Array<string>,
-	gear: GEAR_QUERY_RESULT,
+	gear: CharacterGearItem[],
 	wealth: {
 		silver: number,
 		gold: number,
@@ -303,7 +298,7 @@ export const characterSlice = createSlice({
 	setPatronage: (state, action: PayloadAction<string>) => {
 		state.patronage = action.payload;
 	},
-	setGear: (state, action: PayloadAction<GEAR_QUERY_RESULT>) => {
+	setGear: (state, action: PayloadAction<CharacterGearItem[]>) => {
 		state.gear = action.payload;
 	},
 	// setShield: (state) => {

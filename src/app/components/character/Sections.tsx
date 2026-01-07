@@ -178,23 +178,8 @@ const Sections = ({
 		}
 	});
 
-	character.gear.map( (gear) => {
-		// form array of path IDs that this gear has and then also check if path id matches
-		let paths: string[];
-		paths = [];
-		if(gear.paths) {
-			gear.paths.forEach( p => {
-				paths.push(p._id);
-			});
-		}
-		if(gear.modifiers && gear.paths && paths.includes(character.path)) {
-			gear.modifiers.map( (m) => {
-				if(m.modifierSubscore && m.modifierSubscore._id && m.modifierSubscore.score) {
-					modifiers.gear.push({ _id: m.modifierSubscore._id, parent_id: m.modifierSubscore.score._id, value: m.modifierValue });
-				}
-			});
-		}
-	});
+	// Note: Gear modifiers are now handled through the enhancement system in gear-data.ts
+	// The old Sanity-based gear modifier system has been replaced
 
 	return (
 		<div>
@@ -309,7 +294,6 @@ const Sections = ({
 				clickCheck={setClickCheck}
 				expandFunction={() => setShowManageWealth(true)}>
 				<ManageGear
-					gear={gear}
 					incompleteFields={gearIncomplete} />
 			</Section>
 			<Section
