@@ -23,6 +23,8 @@ export interface Armor {
   penalties: string;
   isExotic: boolean;
   description?: string;
+  physicalShieldBonus?: number;
+  psychicShieldBonus?: number;
 }
 
 export interface Enhancement {
@@ -32,6 +34,8 @@ export interface Enhancement {
   description: string;
   isPermanent: boolean;
   isTemporary: boolean;
+  physicalShieldBonus?: number;
+  psychicShieldBonus?: number;
 }
 
 // Standard Weapons Data
@@ -239,48 +243,48 @@ export const STANDARD_ARMOR: Armor[] = [
 export const EXOTIC_ARMOR: Armor[] = [
   // Light Exotic - Tier 1
   { name: 'Spider Silk Weave', category: 'light', tier: 1, capacity: 15, penalties: 'None', isExotic: true, description: 'Silent +15 Stealth, Climbing +10, Fragile vs fire' },
-  { name: 'Bone Plates', category: 'light', tier: 1, capacity: 18, penalties: '-5 Agility', isExotic: true, description: '+5 Physical Shield, +5 Intimidation, Rigid' },
-  { name: 'Enchanted Robes', category: 'light', tier: 1, capacity: 12, penalties: '+3 physical damage taken', isExotic: true, description: '+10 spellcasting, +15 Psychic Shield, Store 1 spell' },
+  { name: 'Bone Plates', category: 'light', tier: 1, capacity: 18, penalties: '-5 Agility', isExotic: true, description: '+5 Physical Shield, +5 Intimidation, Rigid', physicalShieldBonus: 5 },
+  { name: 'Enchanted Robes', category: 'light', tier: 1, capacity: 12, penalties: '+3 physical damage taken', isExotic: true, description: '+10 spellcasting, +15 Psychic Shield, Store 1 spell', psychicShieldBonus: 15 },
   { name: 'Shadow Leather', category: 'light', tier: 1, capacity: 15, penalties: '-5 Stealth in bright light', isExotic: true, description: '+10 Stealth (+15 dim/dark), Shadow Step 1/combat' },
   // Light Exotic - Tier 2
   { name: 'Quality Spider Silk Weave', category: 'light', tier: 2, capacity: 20, penalties: '+5 Agility', isExotic: true, description: 'Silent +20 Stealth, Wall walk, Fragile vs fire' },
-  { name: 'Quality Bone Plates', category: 'light', tier: 2, capacity: 23, penalties: '-5 Agility', isExotic: true, description: '+10 Physical Shield, +10 Intimidation, Regen 5/day' },
-  { name: 'Quality Enchanted Robes', category: 'light', tier: 2, capacity: 15, penalties: '+3 physical damage taken', isExotic: true, description: '+15 spellcasting, +20 Psychic Shield, Store 2 spells, 20% reflect' },
+  { name: 'Quality Bone Plates', category: 'light', tier: 2, capacity: 23, penalties: '-5 Agility', isExotic: true, description: '+10 Physical Shield, +10 Intimidation, Regen 5/day', physicalShieldBonus: 10 },
+  { name: 'Quality Enchanted Robes', category: 'light', tier: 2, capacity: 15, penalties: '+3 physical damage taken', isExotic: true, description: '+15 spellcasting, +20 Psychic Shield, Store 2 spells, 20% reflect', psychicShieldBonus: 20 },
   { name: 'Quality Shadow Leather', category: 'light', tier: 2, capacity: 20, penalties: '-5 Stealth in bright light', isExotic: true, description: '+15 Stealth (+20 dark), Shadow Step 2/combat, Blend +25' },
   // Light Exotic - Tier 3
   { name: 'Masterwork Spider Silk Weave', category: 'light', tier: 3, capacity: 25, penalties: '+10 Agility', isExotic: true, description: 'Silent +25, Walk walls/ceilings, Web creation, Fragile vs fire' },
-  { name: 'Masterwork Bone Plates', category: 'light', tier: 3, capacity: 30, penalties: 'None', isExotic: true, description: '+15 Physical Shield, Fear aura, Regen 10/day, Bone spikes d6' },
-  { name: 'Masterwork Enchanted Robes', category: 'light', tier: 3, capacity: 18, penalties: '+3 physical damage taken', isExotic: true, description: '+20 spellcasting, +25 Psychic Shield, Store 3 spells, 30% reflect, Absorb' },
+  { name: 'Masterwork Bone Plates', category: 'light', tier: 3, capacity: 30, penalties: 'None', isExotic: true, description: '+15 Physical Shield, Fear aura, Regen 10/day, Bone spikes d6', physicalShieldBonus: 15 },
+  { name: 'Masterwork Enchanted Robes', category: 'light', tier: 3, capacity: 18, penalties: '+3 physical damage taken', isExotic: true, description: '+20 spellcasting, +25 Psychic Shield, Store 3 spells, 30% reflect, Absorb', psychicShieldBonus: 25 },
   { name: 'Masterwork Shadow Leather', category: 'light', tier: 3, capacity: 25, penalties: 'None', isExotic: true, description: '+20 Stealth (+30 dark), Shadow Step 3/combat, Invisible motionless, Shadow Form 1/day' },
 
   // Medium Exotic - Tier 1
-  { name: 'Living Bark Armor', category: 'medium', tier: 1, capacity: 28, penalties: '-10 Agility, -5 Stealth', isExotic: true, description: 'Regen 3/hr in sun, Rooted +10, Nature Ward +5' },
+  { name: 'Living Bark Armor', category: 'medium', tier: 1, capacity: 28, penalties: '-10 Agility, -5 Stealth', isExotic: true, description: 'Regen 3/hr in sun, Rooted +10, Nature Ward +5 Physical Shield in nature', physicalShieldBonus: 5 },
   { name: 'Crystal Plate', category: 'medium', tier: 1, capacity: 22, penalties: '-5 Agility, -5 Stealth, Brittle', isExotic: true, description: '+10 spellcasting, 20% deflect ranged, Resonance +3 sonic' },
   { name: 'Scaled Hide', category: 'medium', tier: 1, capacity: 30, penalties: '-5 Agility, -10 Stealth', isExotic: true, description: '-3 slash/pierce dmg, -5 fire dmg, Flexible -3 Agi penalty' },
   { name: 'Chain Mesh', category: 'medium', tier: 1, capacity: 25, penalties: '-5 Agility, -5 Stealth, Magnetic vuln', isExotic: true, description: '+5 defense with allies, 50% knockback reduction, Acrobatics -5' },
   // Medium Exotic - Tier 2
-  { name: 'Quality Living Bark Armor', category: 'medium', tier: 2, capacity: 38, penalties: '-8 Agility, -5 Stealth', isExotic: true, description: 'Regen 5/hr sun, Rooted +15, Nature Ward +10, Thorns d4' },
+  { name: 'Quality Living Bark Armor', category: 'medium', tier: 2, capacity: 38, penalties: '-8 Agility, -5 Stealth', isExotic: true, description: 'Regen 5/hr sun, Rooted +15, Nature Ward +10 Physical Shield in nature', physicalShieldBonus: 10 },
   { name: 'Quality Crystal Plate', category: 'medium', tier: 2, capacity: 30, penalties: '-5 Agility, -5 Stealth, Brittle', isExotic: true, description: '+15 spellcasting, 30% deflect, Illusions, Resonance +5 sonic' },
   { name: 'Quality Scaled Hide', category: 'medium', tier: 2, capacity: 40, penalties: '-8 Stealth', isExotic: true, description: '-4 slash/pierce, -8 fire, No Agi penalty, Aquatic swim/breathe' },
   { name: 'Quality Chain Mesh', category: 'medium', tier: 2, capacity: 35, penalties: '-5 Agility, -5 Stealth, Magnetic vuln', isExotic: true, description: '+10 defense allies, Negate knockback <2, Acrobatics no penalty, Magnet trap +10 disarm' },
   // Medium Exotic - Tier 3
-  { name: 'Masterwork Living Bark Armor', category: 'medium', tier: 3, capacity: 50, penalties: '-5 Agility, -5 Stealth', isExotic: true, description: 'Regen 8/hr sun, Immune knockback on earth, Nature +15, Thorns d6, Heal 1 injury/day' },
+  { name: 'Masterwork Living Bark Armor', category: 'medium', tier: 3, capacity: 50, penalties: '-5 Agility, -5 Stealth', isExotic: true, description: 'Regen 8/hr sun, Immune knockback on earth, Nature +15 Physical Shield in nature', physicalShieldBonus: 15 },
   { name: 'Masterwork Crystal Plate', category: 'medium', tier: 3, capacity: 38, penalties: '-5 Agility, -5 Stealth, Brittle reduced', isExotic: true, description: '+20 spellcasting, 40% deflect redirect, Complex illusions, Resonance +8, Energy store' },
   { name: 'Masterwork Scaled Hide', category: 'medium', tier: 3, capacity: 50, penalties: 'None', isExotic: true, description: '-5 slash/pierce, -10 fire, +5 Agi bonus, Aquatic indefinite, Adaptive' },
   { name: 'Masterwork Chain Mesh', category: 'medium', tier: 3, capacity: 45, penalties: '-5 Agility, -5 Stealth', isExotic: true, description: '+15 defense allies share DR, Immune knockback, +5 Agi acrobatics, Magnetic control, Conductive' },
 
   // Heavy Exotic - Tier 1
-  { name: 'Stone Plate', category: 'heavy', tier: 1, capacity: 50, penalties: '-20 Agility, -15 Stealth, Cannot swim', isExotic: true, description: '-5 all physical dmg, Immovable +20, Earthbound +10' },
+  { name: 'Stone Plate', category: 'heavy', tier: 1, capacity: 50, penalties: '-20 Agility, -15 Stealth, Cannot swim', isExotic: true, description: '-5 all physical dmg, Immovable +20, Earthbound +10 Physical Shield on earth/stone', physicalShieldBonus: 10 },
   { name: 'Spiked Juggernaut Armor', category: 'heavy', tier: 1, capacity: 45, penalties: '-15 Agility, -15 Stealth', isExotic: true, description: 'Attackers take d6, Charge +10 dmg, Intimidating +10' },
   { name: 'Shell Armor', category: 'heavy', tier: 1, capacity: 45, penalties: '-10 Agility, -15 Stealth, 50% movement, Joint vuln', isExotic: true, description: 'Turtle +30 defense (no attack), DR -4' },
   { name: 'Reinforced Plate', category: 'heavy', tier: 1, capacity: 55, penalties: '-15 Agility, -15 Stealth', isExotic: true, description: '+10 capacity, DR -3, Tower Shield +10 defense' },
   // Heavy Exotic - Tier 2
-  { name: 'Quality Stone Plate', category: 'heavy', tier: 2, capacity: 65, penalties: '-18 Agility, -15 Stealth, Cannot swim', isExotic: true, description: '-7 all physical, Immovable +25, Earthbound +15, Stone Skin 1/combat' },
+  { name: 'Quality Stone Plate', category: 'heavy', tier: 2, capacity: 65, penalties: '-18 Agility, -15 Stealth, Cannot swim', isExotic: true, description: '-7 all physical, Immovable +25, Earthbound +15 Physical Shield on earth/stone', physicalShieldBonus: 15 },
   { name: 'Quality Spiked Juggernaut Armor', category: 'heavy', tier: 2, capacity: 58, penalties: '-13 Agility, -15 Stealth', isExotic: true, description: 'Attackers take d8, Charge +15 knockback, Intimidating +15, Rampage +5/kill' },
   { name: 'Quality Shell Armor', category: 'heavy', tier: 2, capacity: 58, penalties: '-10 Agility, -15 Stealth, 40% movement, Joint vuln reduced', isExotic: true, description: 'Turtle +40 defense, DR -5, Counter Shell 50% reflect' },
   { name: 'Quality Reinforced Plate', category: 'heavy', tier: 2, capacity: 68, penalties: '-13 Agility, -15 Stealth', isExotic: true, description: '+15 capacity, DR -4, Tower Shield +15, Wall brace +10 ally defense' },
   // Heavy Exotic - Tier 3
-  { name: 'Masterwork Stone Plate', category: 'heavy', tier: 3, capacity: 85, penalties: '-15 Agility, -15 Stealth, Cannot swim', isExotic: true, description: '-10 all physical, Immovable +30 immune knockback, Earthbound +20, Stone Skin 2/combat, Earthquake Stomp' },
+  { name: 'Masterwork Stone Plate', category: 'heavy', tier: 3, capacity: 85, penalties: '-15 Agility, -15 Stealth, Cannot swim', isExotic: true, description: '-10 all physical, Immovable +30 immune knockback, Earthbound +20 Physical Shield on earth/stone', physicalShieldBonus: 20 },
   { name: 'Masterwork Spiked Juggernaut Armor', category: 'heavy', tier: 3, capacity: 75, penalties: '-10 Agility, -15 Stealth', isExotic: true, description: 'Attackers take d10, Charge +20 stun, Intimidating +20, Rampage +10/kill, Unstoppable' },
   { name: 'Masterwork Shell Armor', category: 'heavy', tier: 3, capacity: 75, penalties: '-10 Agility, -15 Stealth, 30% movement', isExotic: true, description: 'Turtle +50 defense + ranged, DR -6, Counter 75% reflect, Fortified +20, No joint vuln' },
   { name: 'Masterwork Reinforced Plate', category: 'heavy', tier: 3, capacity: 85, penalties: '-10 Agility, -15 Stealth', isExotic: true, description: '+20 capacity, DR -5, Tower +20 all adj allies, Wall Formation barrier, Bastion difficult terrain' },
@@ -293,9 +297,36 @@ export const GENERIC_ENHANCEMENTS: Enhancement[] = [
   { name: 'Precision Edge', discipline: 'Generic', type: 'weapon', description: '+10 to attack roll', isPermanent: true, isTemporary: true },
   { name: 'Shield Breaker', discipline: 'Generic', type: 'weapon', description: '+10 damage vs Physical Shield', isPermanent: true, isTemporary: true },
   // Armor
-  { name: 'Reinforced Field', discipline: 'Generic', type: 'armor', description: '+10 to Physical Shield', isPermanent: true, isTemporary: true },
-  { name: 'Mental Ward', discipline: 'Generic', type: 'armor', description: '+10 to Psychic Shield', isPermanent: true, isTemporary: true },
+  { name: 'Reinforced Field', discipline: 'Generic', type: 'armor', description: '+10 to Physical Shield', isPermanent: true, isTemporary: true, physicalShieldBonus: 10 },
+  { name: 'Mental Ward', discipline: 'Generic', type: 'armor', description: '+10 to Psychic Shield', isPermanent: true, isTemporary: true, psychicShieldBonus: 10 },
   { name: 'Damage Reduction', discipline: 'Generic', type: 'armor', description: '-2 from next attack', isPermanent: true, isTemporary: true },
+];
+
+// Discipline-specific Armor Enhancements (with shield bonuses)
+export const DISCIPLINE_ARMOR_ENHANCEMENTS: Enhancement[] = [
+  // Biological
+  { name: 'Vital Fortification', discipline: 'Biological', type: 'armor', description: '+10 to Physical Shield, enhanced natural healing', isPermanent: true, isTemporary: true, physicalShieldBonus: 10 },
+  { name: 'Regenerative Tissue', discipline: 'Biological', type: 'armor', description: 'Regenerate 2 Shield per minute when not in combat', isPermanent: true, isTemporary: false },
+
+  // Fission/Fusion
+  { name: 'Fusion Battery', discipline: 'Fission/Fusion', type: 'armor', description: 'Regenerate 5 Shield per round (always active), +20 Physical Shield for 1 min (1/day)', isPermanent: true, isTemporary: false, physicalShieldBonus: 5 },
+  { name: 'Radiation Shielding', discipline: 'Fission/Fusion', type: 'armor', description: 'Immunity to radiation damage, +5 Physical Shield', isPermanent: true, isTemporary: false, physicalShieldBonus: 5 },
+
+  // Luminous
+  { name: 'Photon Absorption', discipline: 'Luminous', type: 'armor', description: '+5 Shield per light-based attack absorbed (max +25)', isPermanent: true, isTemporary: false, physicalShieldBonus: 5 },
+
+  // Psychic
+  { name: 'Mental Aegis', discipline: 'Psychic', type: 'armor', description: '+20 to Psychic Shield, mental fortress', isPermanent: true, isTemporary: true, psychicShieldBonus: 20 },
+  { name: 'Consciousness Ward', discipline: 'Psychic', type: 'armor', description: '+15 to Psychic Shield, resist mental intrusion', isPermanent: true, isTemporary: true, psychicShieldBonus: 15 },
+  { name: 'Empathic Feedback', discipline: 'Psychic', type: 'armor', description: '+10 to Psychic Shield, attackers feel pain backlash', isPermanent: true, isTemporary: true, psychicShieldBonus: 10 },
+
+  // Thermal
+  { name: 'Reactive Temperature', discipline: 'Thermal', type: 'armor', description: '+10 to Physical Shield, temperature adaptation', isPermanent: true, isTemporary: true, physicalShieldBonus: 10 },
+  { name: 'Flame Aura', discipline: 'Thermal', type: 'armor', description: '+15 to Physical Shield vs physical attacks, melee attackers take d4 fire', isPermanent: true, isTemporary: true, physicalShieldBonus: 15 },
+
+  // Theurgist (Disciplina Academica)
+  { name: 'Academy Wards', discipline: 'Theurgist', type: 'armor', description: '+10 to Physical Shield, systematic magical protection', isPermanent: true, isTemporary: false, physicalShieldBonus: 10 },
+  { name: 'Systematic Protection', discipline: 'Theurgist', type: 'armor', description: 'Regen 5 armor/round, emergency +20 Shield when armor depleted', isPermanent: true, isTemporary: false },
 ];
 
 // Helper functions
@@ -351,9 +382,13 @@ export interface CharacterGearItem {
   penalties?: string;
   description?: string;
   isExotic: boolean;
+  physicalShieldBonus?: number;
+  psychicShieldBonus?: number;
   enhancement?: {
     name: string;
     description: string;
+    physicalShieldBonus?: number;
+    psychicShieldBonus?: number;
   };
 }
 

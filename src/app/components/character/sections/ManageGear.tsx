@@ -65,6 +65,8 @@ const ManageGear = ({
 				enhancement: result.weaponEnhancement ? {
 					name: result.weaponEnhancement.name,
 					description: result.weaponEnhancement.description,
+					physicalShieldBonus: result.weaponEnhancement.physicalShieldBonus,
+					psychicShieldBonus: result.weaponEnhancement.psychicShieldBonus,
 				} : undefined,
 			});
 		}
@@ -79,9 +81,13 @@ const ManageGear = ({
 				penalties: result.armor.penalties,
 				description: result.armor.description,
 				isExotic: result.armor.isExotic,
+				physicalShieldBonus: result.armor.physicalShieldBonus,
+				psychicShieldBonus: result.armor.psychicShieldBonus,
 				enhancement: result.armorEnhancement ? {
 					name: result.armorEnhancement.name,
 					description: result.armorEnhancement.description,
+					physicalShieldBonus: result.armorEnhancement.physicalShieldBonus,
+					psychicShieldBonus: result.armorEnhancement.psychicShieldBonus,
 				} : undefined,
 			});
 		}
