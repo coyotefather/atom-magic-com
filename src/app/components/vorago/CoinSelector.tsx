@@ -288,11 +288,11 @@ const CoinSelector = () => {
   };
 
   return (
-	<div>
+	<div role="region" aria-label="Coin abilities">
 	  {/* Ring selector overlay - show this even if coin used */}
 	  {showRingSelector && (
-		<div className="mb-6 p-4 bg-black text-white border-2 border-stone">
-		  <h4 className="marcellus text-lg mb-3">
+		<div className="mb-6 p-4 bg-black text-white border-2 border-stone" role="dialog" aria-modal="true" aria-labelledby="ring-selector-title">
+		  <h4 id="ring-selector-title" className="marcellus text-lg mb-3">
 			{showRingSelector === 'spin' && !spinDirection && 'First, choose spin direction:'}
 			{showRingSelector === 'spin' && spinDirection && 'Now choose which ring to spin:'}
 			{showRingSelector === 'reset' && 'Choose which ring to reset:'}
@@ -301,24 +301,26 @@ const CoinSelector = () => {
 		  </h4>
 
 		  {showRingSelector === 'spin' && !spinDirection && (
-			<div className="flex gap-4 justify-center">
+			<div className="flex gap-4 justify-center" role="group" aria-label="Spin direction">
 			  <button
 				onClick={() => setSpinDirection('cw')}
-				className="bg-gold text-black px-6 py-2 rounded hover:bg-brightgold"
+				className="bg-gold text-black px-6 py-2 rounded hover:bg-brightgold focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+				aria-label="Spin clockwise"
 			  >
-				↻ Clockwise
+				<span aria-hidden="true">↻</span> Clockwise
 			  </button>
 			  <button
 				onClick={() => setSpinDirection('ccw')}
-				className="bg-gold text-black px-6 py-2 rounded hover:bg-brightgold"
+				className="bg-gold text-black px-6 py-2 rounded hover:bg-brightgold focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+				aria-label="Spin counter-clockwise"
 			  >
-				↺ Counter-clockwise
+				<span aria-hidden="true">↺</span> Counter-clockwise
 			  </button>
 			</div>
 		  )}
 
 		  {(showRingSelector !== 'spin' || spinDirection) && (
-			<div className="flex gap-2 justify-center flex-wrap">
+			<div className="flex gap-2 justify-center flex-wrap" role="group" aria-label="Ring selection">
 			  {[0, 1, 2, 3, 4].map(ringIndex => {
 				const isLocked = lockedRings[ringIndex];
 				const canSelect = showRingSelector === 'unlock' ? isLocked : !isLocked;
@@ -328,8 +330,9 @@ const CoinSelector = () => {
 					key={ringIndex}
 					onClick={() => canSelect && handleRingSelection(ringIndex)}
 					disabled={!canSelect}
+					aria-label={`Ring ${ringIndex + 1}${isLocked ? ', locked' : ''}${!canSelect ? ', unavailable' : ''}`}
 					className={`
-					  px-4 py-2 rounded border-2
+					  px-4 py-2 rounded border-2 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black
 					  ${canSelect
 						? 'bg-gold text-black border-black hover:bg-brightgold cursor-pointer'
 						: 'bg-gray-300 text-gray-500 border-gray-400 cursor-not-allowed'
@@ -337,7 +340,7 @@ const CoinSelector = () => {
 					`}
 				  >
 					Ring {ringIndex + 1}
-					{isLocked && ' 🔒'}
+					{isLocked && <span aria-hidden="true"> 🔒</span>}
 				  </button>
 				);
 			  })}
@@ -350,7 +353,8 @@ const CoinSelector = () => {
 			  setShowRingSelector(null);
 			  setSpinDirection(null);
 			}}
-			className="mt-4 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+			className="mt-4 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+			aria-label="Cancel ring selection"
 		  >
 			Cancel
 		  </button>
@@ -359,19 +363,22 @@ const CoinSelector = () => {
 
 	  {/* Magna coin selector overlay */}
 	  {showCoinSelector && (
-		<div className="mb-6 p-4 bg-black text-white border-2 border-stone">
-		  <h4 className="marcellus text-lg mb-3">Choose a coin to disable for both players next round:</h4>
-		  <div className="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto">
+		<div className="mb-6 p-4 bg-black text-white border-2 border-stone" role="dialog" aria-modal="true" aria-labelledby="magna-selector-title">
+		  <h4 id="magna-selector-title" className="marcellus text-lg mb-3">Choose a coin to disable for both players next round:</h4>
+		  <div className="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto" role="listbox" aria-label="Available coins to disable">
 			{availableCoins.map(coin => (
 			  <button
 				key={coin.title}
+				role="option"
+				aria-selected={false}
 				onClick={() => {
 				  dispatch(setMagnaDisabledCoin(coin.title));
 				  dispatch(completeCoinAction());
 				  setShowCoinSelector(false);
 				  dispatch(setDisplayMessage(`${coin.title} will be disabled for both players next round`));
 				}}
-				className="p-2 bg-gold text-black rounded hover:bg-brightgold text-sm"
+				className="p-2 bg-gold text-black rounded hover:bg-brightgold text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+				aria-label={`Disable ${coin.title} coin`}
 			  >
 				{coin.title}
 			  </button>
@@ -382,7 +389,8 @@ const CoinSelector = () => {
 			  dispatch(cancelCoin());
 			  setShowCoinSelector(false);
 			}}
-			className="mt-4 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+			className="mt-4 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+			aria-label="Cancel coin selection"
 		  >
 			Cancel
 		  </button>
@@ -391,7 +399,7 @@ const CoinSelector = () => {
 
 	  {/* Coin list - always visible, but hide when selecting ring or coin */}
 	  {!showRingSelector && !showCoinSelector && (
-		<div className="grid grid-cols-2 gap-2">
+		<div className="grid grid-cols-2 gap-2" role="listbox" aria-label="Available coin abilities">
 		{availableCoins.map(coin => {
 		  const isDisabledFromLastRound = playerDisabledCoins.includes(coin.title);
 		  const isInapplicable = inapplicableCoins.has(coin.title);
@@ -400,13 +408,23 @@ const CoinSelector = () => {
 		  const isOtherSelected = selectedCoin && selectedCoin !== coin.title;
 		  const isClickable = !isDisabledFromLastRound && !isInapplicable && !isUsedThisTurn && !isOtherSelected;
 
+		  const statusText = isDisabledFromLastRound ? ', on cooldown' :
+			isInapplicable ? ', not applicable' :
+			isUsedThisTurn ? ', already used this turn' :
+			isSelected ? ', active' :
+			isOtherSelected ? ', another coin is selected' : '';
+
 		  return (
 			<button
 			  key={coin.title}
+			  role="option"
+			  aria-selected={isSelected}
+			  aria-disabled={!isClickable}
 			  onClick={() => isClickable && handleCoinClick(coin.title, coin.action)}
 			  disabled={!isClickable}
+			  aria-label={`${coin.title}: ${coin.description}${statusText}`}
 			  className={`
-				p-2 border-2 transition-all relative flex flex-col items-center gap-1 text-center
+				p-2 border-2 transition-all relative flex flex-col items-center gap-1 text-center focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2
 				${isDisabledFromLastRound || isInapplicable
 				  ? 'opacity-50 cursor-not-allowed border-gray-400 bg-gray-100'
 				  : isUsedThisTurn
@@ -421,27 +439,27 @@ const CoinSelector = () => {
 			>
 			  {/* Cooldown badge - absolutely positioned */}
 			  {isDisabledFromLastRound && (
-				<div className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-red-500 text-white rounded text-[8px] font-bold shadow-sm">
+				<div className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-red-500 text-white rounded text-[8px] font-bold shadow-sm" aria-hidden="true">
 				  Cooldown
 				</div>
 			  )}
 
 			  {/* N/A badge for inapplicable coins (only show if not also on cooldown) */}
 			  {isInapplicable && !isDisabledFromLastRound && (
-				<div className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-gray-500 text-white rounded text-[8px] font-bold shadow-sm">
+				<div className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-gray-500 text-white rounded text-[8px] font-bold shadow-sm" aria-hidden="true">
 				  N/A
 				</div>
 			  )}
 
 			  {/* Selected indicator */}
 			  {isSelected && (
-				<div className="absolute -top-1 -left-1 px-1.5 py-0.5 bg-gold text-black rounded text-[8px] font-bold shadow-sm">
+				<div className="absolute -top-1 -left-1 px-1.5 py-0.5 bg-gold text-black rounded text-[8px] font-bold shadow-sm" aria-hidden="true">
 				  Active
 				</div>
 			  )}
 
 			  {/* Coin SVG */}
-			  <div className={`w-10 h-10 transition-transform ${isClickable && 'hover:scale-110'}`}>
+			  <div className={`w-10 h-10 transition-transform ${isClickable && 'hover:scale-110'}`} aria-hidden="true">
 				<CoinSVG aspect={coin.aspect} />
 			  </div>
 

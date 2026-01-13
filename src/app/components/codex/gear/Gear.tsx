@@ -138,7 +138,6 @@ export default function Gear({
 				updatedGear.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0))
 				break;
 			case "damageBonus":
-				console.log('dmg');
 				updatedGear.sort((a,b) => (a.damageBonus < b.damageBonus) ? 1 : ((b.damageBonus < a.damageBonus) ? -1 : 0))
 				break;
 			case "shieldBonus":

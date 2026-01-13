@@ -14,7 +14,8 @@ import ManageGear from '@/app/components/character/sections/ManageGear';
 import ManageWealth from '@/app/components/character/sections/ManageWealth';
 import ChooseAnimalCompanion from '@/app/components/character/sections/ChooseAnimalCompanion';
 import WrapUp from '@/app/components/character/sections/WrapUp';
-import { useAppSelector } from '@/lib/hooks'
+import { useAppSelector } from '@/lib/hooks';
+import { useCharacterPersistence } from '@/lib/hooks/useCharacterPersistence';
 
 import {
 	CULTURES_QUERY_RESULT,
@@ -55,6 +56,7 @@ const Sections = ({
 		gear: GEAR_QUERY_RESULT,
 	}) => {
 	const character = useAppSelector(state => state.character);
+	const { showResumePrompt, resumeCharacter, startFresh } = useCharacterPersistence();
 	const [basicsIncomplete, setBasicsIncomplete] = useState("init");
 	const [showChooseCulture, setShowChooseCulture] = useState(false);
 	const [cultureIncomplete, setCultureIncomplete] = useState("init");
@@ -164,7 +166,6 @@ const Sections = ({
 		setShowManageWealth(true);
 		setShowChooseAnimalCompanion(true);
 		setShowWrapUp(true);
-		console.log("roll character");
 	};
 
 	let modifiers: Modifiers | undefined = { path: [], gear: [] };
@@ -183,6 +184,32 @@ const Sections = ({
 
 	return (
 		<div>
+			{showResumePrompt && (
+				<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+					<div className="bg-white border-2 border-stone p-8 max-w-md mx-4">
+						<h2 className="font-marcellus text-xl text-oxblood mb-4">
+							Resume Previous Character?
+						</h2>
+						<p className="font-notoserif text-stone mb-6">
+							You have an unfinished character. Would you like to continue where you left off?
+						</p>
+						<div className="flex gap-4">
+							<button
+								onClick={resumeCharacter}
+								className="px-4 py-2 bg-gold text-white font-marcellus hover:bg-bronze transition-colors"
+							>
+								Resume
+							</button>
+							<button
+								onClick={startFresh}
+								className="px-4 py-2 border-2 border-stone text-stone font-marcellus hover:border-oxblood hover:text-oxblood transition-colors"
+							>
+								Start Fresh
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 			<Section
 				expanded={true}
 				nextExpanded={true}

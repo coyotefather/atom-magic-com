@@ -8,7 +8,10 @@ import CustomSearchBox from '@/app/components/global/search/CustomSearchBox';
 import CustomPagination from '@/app/components/global/search/CustomPagination';
 import CustomHitsPerPage from '@/app/components/global/search/CustomHitsPerPage';
 
-const searchClient = algoliasearch('578IHPAJAF', '59762a6202a01eaa2723bf1033011e39');
+const searchClient = algoliasearch(
+	process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!,
+	process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY!
+);
 
 export function Search() {
 	return (
