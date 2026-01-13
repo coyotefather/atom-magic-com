@@ -4,6 +4,7 @@ import {
 	ADDITIONAL_SCORES_QUERY_RESULT,
 } from "../../../sanity.types";
 import { CharacterGearItem } from '../gear-data';
+import { saveCharacterToStorage, clearCharacterFromStorage } from '../characterPersistence';
 
 interface SanityScore {
 	_id: string,
@@ -321,6 +322,16 @@ export const characterSlice = createSlice({
 		state.animalCompanion.id = action.payload.id;
 		state.animalCompanion.details = action.payload.details;
 	},
+	loadCharacter: (state, action: PayloadAction<CharacterState>) => {
+		return { ...action.payload, loaded: true };
+	},
+	clearCharacter: (state) => {
+		clearCharacterFromStorage();
+		return { ...initialState };
+	},
+	saveCharacter: (state) => {
+		saveCharacterToStorage(state);
+	},
   }
 })
 
@@ -349,7 +360,10 @@ export const {
 	// setReputation,
 	// setResurrectionDuration,
 	setWealth,
-	setAnimalCompanion } = characterSlice.actions
+	setAnimalCompanion,
+	loadCharacter,
+	clearCharacter,
+	saveCharacter } = characterSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const characterName = (state: RootState) => state.character.name

@@ -8,6 +8,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import NavBar from '@/app/components/global/NavBar';
 import Footer from '@/app/components/global/Footer';
+import ErrorBoundary from '@/app/components/common/ErrorBoundary';
 
 const marcellus = Marcellus_SC({
   weight: ['400'],
@@ -39,9 +40,11 @@ export default function RootLayout({
       <body className={`${marcellus.variable} ${lapideum.variable} ${noto_serif.variable} flex flex-col h-screen`}>
         <NavBar />
         <div className="grow">
-          <HeroProvider>
-            <StoreProvider>{children}</StoreProvider>
-          </HeroProvider>
+          <ErrorBoundary>
+            <HeroProvider>
+              <StoreProvider>{children}</StoreProvider>
+            </HeroProvider>
+          </ErrorBoundary>
         </div>
         <Footer />
         <Analytics />

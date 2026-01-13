@@ -50,27 +50,38 @@ const GameStatus = () => {
   const currentPlayerName = turn === 1 ? player1Name : player2Name;
 
   return (
-	<div className="bg-black text-white px-3 py-1.5 rounded flex items-center gap-4 text-sm h-full">
+	<div
+	  className="bg-black text-white px-3 py-1.5 rounded flex items-center gap-4 text-sm h-full"
+	  role="status"
+	  aria-live="polite"
+	  aria-label="Game status"
+	>
 	  {/* Round and Turn */}
 	  <div className="flex items-center gap-2">
-		<span className="marcellus">R{round}</span>
-		<span className="text-gold">{currentPlayerName}'s Turn</span>
+		<span className="marcellus" aria-label={`Round ${round}`}>R{round}</span>
+		<span className="text-gold" aria-live="assertive">{currentPlayerName}&apos;s Turn</span>
 	  </div>
 
 	  {/* Score */}
-	  <div className="flex items-center gap-2 text-xs">
-		<span>{player1Name}: {score.player1}</span>
-		<span className="text-gray-500">|</span>
-		<span>{player2Name}: {score.player2}</span>
+	  <div className="flex items-center gap-2 text-xs" role="group" aria-label="Score">
+		<span aria-label={`${player1Name} score: ${score.player1}`}>{player1Name}: {score.player1}</span>
+		<span className="text-gray-500" aria-hidden="true">|</span>
+		<span aria-label={`${player2Name} score: ${score.player2}`}>{player2Name}: {score.player2}</span>
 	  </div>
 
 	  {/* Action indicators */}
-	  <div className="flex items-center gap-2 text-xs ml-auto">
-		<span className={hasMovedStone ? 'text-green-400' : 'text-gray-500'}>
-		  {hasMovedStone ? '✓' : '○'} Move
+	  <div className="flex items-center gap-2 text-xs ml-auto" role="group" aria-label="Turn actions">
+		<span
+		  className={hasMovedStone ? 'text-green-400' : 'text-gray-500'}
+		  aria-label={hasMovedStone ? 'Stone moved, complete' : 'Stone move required'}
+		>
+		  <span aria-hidden="true">{hasMovedStone ? '✓' : '○'}</span> Move
 		</span>
-		<span className={hasUsedCoin ? 'text-green-400' : 'text-gray-500'}>
-		  {hasUsedCoin ? '✓' : '○'} Coin
+		<span
+		  className={hasUsedCoin ? 'text-green-400' : 'text-gray-500'}
+		  aria-label={hasUsedCoin ? 'Coin used, complete' : 'Coin use required'}
+		>
+		  <span aria-hidden="true">{hasUsedCoin ? '✓' : '○'}</span> Coin
 		</span>
 	  </div>
 	</div>

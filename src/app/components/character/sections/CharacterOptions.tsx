@@ -8,31 +8,25 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 		buttonFunction: Function
 	}) => {
 	const bottomRef = useRef<null | HTMLDivElement>(null);
-	const handleStartClick = () => {
+	const scrollToBottom = () => {
 		if (bottomRef) {
-			setTimeout( () => {
-				bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
-			}, 500 );
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
+				});
+			});
 		}
-		console.log("start character");
+	};
+	const handleStartClick = () => {
+		scrollToBottom();
 	};
 	const handleUploadClick = () => {
 		buttonFunction();
-		if (bottomRef) {
-			setTimeout( () => {
-				bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
-			}, 500 );
-		}
-		console.log("upload character");
+		scrollToBottom();
 	};
 	const handleGenerateClick = () => {
 		buttonFunction();
-		if (bottomRef) {
-			setTimeout( () => {
-				bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
-			}, 500 );
-		}
-		console.log("roll character");
+		scrollToBottom();
 	};
 
 	return (

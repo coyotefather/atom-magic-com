@@ -61,14 +61,14 @@ const TheBasics = ({
 
 	return (
 
-		<div className="grid grid-cols-2 divide-x-2 bg-white">
-			<div className="flex justify-end pt-16 pb-16">
-				<div className="max-w-[673px] pr-4">
-					<h2 className="marcellus text-3xl w-full border-b-2 border-solid mb-4">Enter Basics</h2>
+		<div className="grid grid-cols-1 lg:grid-cols-2 lg:divide-x-2 bg-white">
+			<div className="flex justify-center lg:justify-end py-8 lg:pt-16 lg:pb-16 px-4 lg:px-0">
+				<div className="w-full max-w-[673px] lg:pr-4">
+					<h2 className="marcellus text-2xl lg:text-3xl w-full border-b-2 border-solid mb-4">Enter Basics</h2>
 					<p className="pb-2 w-full">
 						Enter some basic information about your character. Note that none of the choices here affect scores. These are purely for roleplaying purposes.
 					</p>
-					<div className="mb-2 flex justify-between">
+					<div className="mb-2 flex flex-col sm:flex-row gap-2 sm:gap-4">
 						<Input
 							isRequired
 							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
@@ -78,7 +78,7 @@ const TheBasics = ({
 							label="Name"
 							variant="bordered"
 							radius="sm"
-							className="w-72"
+							className="w-full sm:flex-1"
 							placeholder="Enter Character Name" />
 						<Input
 							onChange={(e) => handleChange(e, 'update_age')}
@@ -86,16 +86,16 @@ const TheBasics = ({
 							label="Age"
 							variant="bordered"
 							radius="sm"
-							className="w-20"
-							placeholder="Enter Age" />
+							className="w-full sm:w-24"
+							placeholder="Age" />
 						<Input
 							onChange={(e) => handleChange(e, 'update_pronouns')}
 							type="text"
 							label="Pronouns"
 							variant="bordered"
 							radius="sm"
-							className="w-56"
-							placeholder="Enter Character Pronouns" />
+							className="w-full sm:w-40"
+							placeholder="Pronouns" />
 					</div>
 					<Textarea
 						onChange={(e) => handleChange(e, 'update_description')}
@@ -106,8 +106,8 @@ const TheBasics = ({
 					/>
 				</div>
 			</div>
-			<div className="pt-16 pb-16">
-				<div className="max-w-[768px] pl-4">
+			<div className="py-8 lg:pt-16 lg:pb-16 px-4 lg:px-0">
+				<div className="w-full max-w-[768px] lg:pl-4">
 					<SwitchTransition mode="out-in">
 						<CSSTransition
 						   key={detailsUpdated ? "x" : "y"}

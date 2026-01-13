@@ -82,7 +82,7 @@ const AdditionalScores = ({
 	];
 
 	return (
-		<div className="grid grid-cols-2 divide-x-2 bg-white container">
+		<div className="grid grid-cols-1 lg:grid-cols-2 lg:divide-x-2 bg-white container">
 			<div className="pt-16 pb-16 pr-4">
 				<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Additional Scores</h2>
 				<p className="pb-2">

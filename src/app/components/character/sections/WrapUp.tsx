@@ -10,11 +10,9 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 	const bottomRef = useRef<null | HTMLDivElement>(null);
 	const handleDownloadClick = () => {
 		buttonFunction();
-		console.log("download character");
 	};
 	const handlePrintClick = () => {
 		buttonFunction();
-		console.log("print character");
 	};
 
 	return (

@@ -39,12 +39,15 @@ const Section = ({
 		} else {
 			clickCheck(false);
 			expandFunction();
+			// Use requestAnimationFrame to wait for the DOM update, then scroll
+			// This is more reliable than arbitrary setTimeout delays
 			if (bottomRef) {
-				setTimeout( () => {
-					bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
-				}, 500 );
+				requestAnimationFrame(() => {
+					requestAnimationFrame(() => {
+						bottomRef.current?.scrollIntoView({behavior: 'smooth', block: "start"});
+					});
+				});
 			}
-
 		}
 	};
 
