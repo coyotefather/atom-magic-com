@@ -36,22 +36,42 @@ interface GameState {
 
 export async function POST(request: NextRequest) {
   try {
-	const { gameState, difficulty } = await request.json();
+	const body = await request.json();
 
-	console.log('🤖 AI Turn Started');
-	console.log('Difficulty:', difficulty);
-	console.log('AI Stones:', gameState.stones.player2);
+	if (!body.gameState) {
+	  return NextResponse.json(
+		{ error: 'Missing gameState in request body' },
+		{ status: 400 }
+	  );
+	}
 
-	// Simple AI logic
+	const { gameState, difficulty = 'medium' } = body;
+
+	// Validate required game state properties
+	if (!gameState.stones || !gameState.cells || !gameState.availableCoins) {
+	  return NextResponse.json(
+		{ error: 'Invalid gameState: missing required properties' },
+		{ status: 400 }
+	  );
+	}
+
+	// Generate AI move
 	const aiMove = makeAIMove(gameState, difficulty);
 
-	console.log('🎯 AI Move:', aiMove);
+	if (!aiMove.stoneMove && !aiMove.coinAction) {
+	  return NextResponse.json(
+		{ error: 'AI could not determine a valid move', stoneMove: null, coinAction: null },
+		{ status: 200 }
+	  );
+	}
 
 	return NextResponse.json(aiMove);
   } catch (error) {
-	console.error('AI Error:', error);
+	const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+	console.error('Vorago AI Error:', errorMessage);
+
 	return NextResponse.json(
-	  { error: 'AI failed to make a move' },
+	  { error: 'AI failed to process turn', details: errorMessage },
 	  { status: 500 }
 	);
   }
@@ -81,7 +101,6 @@ function chooseStoneMove(gameState: GameState): any {
 	const targetCell = findEmptyCell(gameState, targetRing);
 
 	if (targetCell !== -1) {
-	  console.log('🔵 AI placing new stone on ring', targetRing, 'cell', targetCell);
 	  return {
 		stone: unplacedStones[0],
 		toRing: targetRing,
@@ -102,7 +121,6 @@ function chooseStoneMove(gameState: GameState): any {
 	const targetCell = findEmptyCell(gameState, targetRing);
 
 	if (targetCell !== -1) {
-	  console.log('🔵 AI moving stone from ring', stone.ring, 'to ring', targetRing);
 	  return {
 		stone: stone,
 		toRing: targetRing,
@@ -119,7 +137,6 @@ function chooseStoneMove(gameState: GameState): any {
 	const cellKey = `${stone.ring}-${adjacentCell}`;
 
 	if (!gameState.cells[cellKey]?.stone) {
-	  console.log('🔵 AI moving stone within ring', stone.ring);
 	  return {
 		stone: stone,
 		toRing: stone.ring,
@@ -128,7 +145,6 @@ function chooseStoneMove(gameState: GameState): any {
 	}
   }
 
-  console.log('⚠️ AI could not find valid stone move');
   return null;
 }
 
@@ -226,14 +242,11 @@ function chooseCoinAction(gameState: GameState): any {
   );
 
   if (availableCoins.length === 0) {
-	console.log('⚠️ No available coins for AI');
 	return null;
   }
 
   // Pick a random available coin
   const coin = availableCoins[Math.floor(Math.random() * availableCoins.length)];
-
-  console.log('🪙 AI using coin:', coin.title);
 
   // Handle different coin actions
   const coinAction: any = {

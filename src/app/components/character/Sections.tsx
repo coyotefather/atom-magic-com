@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Section from '@/app/components/common/Section';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import CharacterOptions from '@/app/components/character/sections/CharacterOptions';
@@ -14,8 +14,10 @@ import ManageGear from '@/app/components/character/sections/ManageGear';
 import ManageWealth from '@/app/components/character/sections/ManageWealth';
 import ChooseAnimalCompanion from '@/app/components/character/sections/ChooseAnimalCompanion';
 import WrapUp from '@/app/components/character/sections/WrapUp';
+import ProgressIndicator from '@/app/components/character/ProgressIndicator';
 import { useAppSelector } from '@/lib/hooks';
 import { useCharacterPersistence } from '@/lib/hooks/useCharacterPersistence';
+import { useCharacterValidation } from '@/lib/hooks/useCharacterValidation';
 
 import {
 	CULTURES_QUERY_RESULT,
@@ -57,104 +59,28 @@ const Sections = ({
 	}) => {
 	const character = useAppSelector(state => state.character);
 	const { showResumePrompt, resumeCharacter, startFresh } = useCharacterPersistence();
-	const [basicsIncomplete, setBasicsIncomplete] = useState("init");
+	const {
+		basicsIncomplete,
+		cultureIncomplete,
+		pathIncomplete,
+		patronageIncomplete,
+		disciplinesIncomplete,
+		gearIncomplete,
+		wealthIncomplete,
+		animalCompanionIncomplete,
+		clickCheck,
+		setClickCheck,
+	} = useCharacterValidation();
+
 	const [showChooseCulture, setShowChooseCulture] = useState(false);
-	const [cultureIncomplete, setCultureIncomplete] = useState("init");
 	const [showChoosePath, setShowChoosePath] = useState(false);
-	const [pathIncomplete, setPathIncomplete] = useState("init");
 	const [showChoosePatronage, setShowChoosePatronage] = useState(false);
-	const [patronageIncomplete, setPatronageIncomplete] = useState("init");
 	const [showChooseDisciplinesAndTechniques, setShowDisciplinesAndTechniques] = useState(false);
-	const [disciplinesAndTechniquesIncomplete, setDisciplinesAndTechniquesIncomplete] = useState("init");
 	const [showAdjustScoresAndScores, setShowAdjustScoresAndScores] = useState(false);
 	const [showManageGear, setShowManageGear] = useState(false);
-	const [gearIncomplete, setGearIncomplete] = useState("init");
 	const [showManageWealth, setShowManageWealth] = useState(false);
-	const [wealthIncomplete, setWealthIncomplete] = useState("init");
 	const [showChooseAnimalCompanion, setShowChooseAnimalCompanion] = useState(false);
-	const [chooseAnimalCompanionIncomplete, setChooseAnimalCompanionIncomplete] = useState("init");
 	const [showWrapUp, setShowWrapUp] = useState(false);
-	const [clickCheck, setClickCheck] = useState(false);
-
-	useEffect( () => {
-		if(character.name === "" && clickCheck) {
-			setBasicsIncomplete("Name");
-		} else if(character.name === "" && !clickCheck) {
-			setBasicsIncomplete("init");
-		} else {
-			setBasicsIncomplete("");
-		}
-	},[character.name, clickCheck]);
-
-	useEffect( () => {
-		if(character.culture === "" && clickCheck) {
-			setCultureIncomplete("Culture");
-		} else if(character.culture === "" && !clickCheck) {
-			setCultureIncomplete("init");
-		} else {
-			setCultureIncomplete("");
-		}
-	},[character.culture, clickCheck]);
-
-	useEffect( () => {
-		if(character.path === "" && clickCheck) {
-			setPathIncomplete("Path");
-		} else if(character.path === "" && !clickCheck) {
-			setPathIncomplete("init");
-		} else {
-			setPathIncomplete("");
-		}
-	},[character.path, clickCheck]);
-
-	useEffect( () => {
-		if(character.patronage === "" && clickCheck) {
-			setPatronageIncomplete("Patronage");
-		} else if(character.patronage === "" && !clickCheck) {
-			setPatronageIncomplete("init");
-		} else {
-			setPatronageIncomplete("");
-		}
-	},[character.patronage, clickCheck]);
-
-	useEffect( () => {
-		if(character.disciplines.length === 0 && clickCheck) {
-			setDisciplinesAndTechniquesIncomplete("Disciplines and Techniques");
-		} else if(character.disciplines.length === 0 && !clickCheck) {
-			setDisciplinesAndTechniquesIncomplete("init");
-		} else {
-			setDisciplinesAndTechniquesIncomplete("");
-		}
-	},[character.disciplines, clickCheck]);
-
-	useEffect( () => {
-		if(character.gear.length === 0 && clickCheck) {
-			setGearIncomplete("Gear");
-		} else if(character.gear.length === 0 && !clickCheck) {
-			setGearIncomplete("init");
-		} else {
-			setGearIncomplete("");
-		}
-	},[character.gear, clickCheck]);
-
-	useEffect( () => {
-		if(character.wealth.silver === 0 && clickCheck) {
-			setWealthIncomplete("Wealth");
-		} else if(character.wealth.silver === 0 && !clickCheck) {
-			setWealthIncomplete("init");
-		} else {
-			setWealthIncomplete("");
-		}
-	},[character.wealth, clickCheck]);
-
-	useEffect( () => {
-		if(character.animalCompanion.id === "" && clickCheck) {
-			setChooseAnimalCompanionIncomplete("Animal Companion");
-		} else if(character.animalCompanion.id === "" && !clickCheck) {
-			setChooseAnimalCompanionIncomplete("init");
-		} else {
-			setChooseAnimalCompanionIncomplete("");
-		}
-	},[character.animalCompanion, clickCheck]);
 
 	const rollCharacter = () => {
 		setShowChooseCulture(true);
@@ -182,8 +108,44 @@ const Sections = ({
 	// Note: Gear modifiers are now handled through the enhancement system in gear-data.ts
 	// The old Sanity-based gear modifier system has been replaced
 
+	// Calculate progress for the progress indicator
+	const completedSteps = useMemo(() => [
+		character.name !== '',                    // Basics
+		character.culture !== '',                 // Culture
+		character.path !== '',                    // Path
+		character.patronage !== '',               // Patronage
+		character.scores.length > 0,              // Scores
+		character.disciplines.length > 0,         // Disciplines
+		character.gear.length > 0,                // Gear
+		character.wealth.silver > 0,              // Wealth
+		character.animalCompanion.id !== '',      // Companion
+		showWrapUp                                // Finish (reached wrap up)
+	], [character, showWrapUp]);
+
+	const currentStep = useMemo(() => {
+		if (showWrapUp) return 9;
+		if (showChooseAnimalCompanion) return 8;
+		if (showManageWealth) return 7;
+		if (showManageGear) return 6;
+		if (showChooseDisciplinesAndTechniques) return 5;
+		if (showAdjustScoresAndScores) return 4;
+		if (showChoosePatronage) return 3;
+		if (showChoosePath) return 2;
+		if (showChooseCulture) return 1;
+		return 0;
+	}, [showChooseCulture, showChoosePath, showChoosePatronage, showAdjustScoresAndScores, showChooseDisciplinesAndTechniques, showManageGear, showManageWealth, showChooseAnimalCompanion, showWrapUp]);
+
+	// Only show progress indicator once user has started
+	const showProgress = showChooseCulture || character.name !== '';
+
 	return (
 		<div>
+			{showProgress && (
+				<ProgressIndicator
+					currentStep={currentStep}
+					completedSteps={completedSteps}
+				/>
+			)}
 			{showResumePrompt && (
 				<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 					<div className="bg-white border-2 border-stone p-8 max-w-md mx-4">
@@ -303,14 +265,14 @@ const Sections = ({
 			<Section
 				expanded={showChooseDisciplinesAndTechniques}
 				nextExpanded={showManageGear}
-				incomplete={disciplinesAndTechniquesIncomplete}
+				incomplete={disciplinesIncomplete}
 				showExpandButton={true}
 				variant="dual"
 				clickCheck={setClickCheck}
 				expandFunction={() => setShowManageGear(true)}>
 				<ChooseDisciplineAndTechniques
 					disciplines={disciplines}
-					incompleteFields={disciplinesAndTechniquesIncomplete} />
+					incompleteFields={disciplinesIncomplete} />
 			</Section>
 			<Section
 				expanded={showManageGear}
@@ -341,7 +303,7 @@ const Sections = ({
 				variant="dual"
 				clickCheck={setClickCheck}
 				expandFunction={() => setShowWrapUp(true)}>
-				<ChooseAnimalCompanion incompleteFields={chooseAnimalCompanionIncomplete} />
+				<ChooseAnimalCompanion incompleteFields={animalCompanionIncomplete} />
 			</Section>
 			<Section
 				expanded={showWrapUp}
