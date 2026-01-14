@@ -40,7 +40,7 @@ const SelectDetail = ({
 	return (
 		<>
 			<div className={clsx(
-			'',
+			'p-4 border-2 border-gold bg-white',
 			{
 				'hidden': disabled === true,
 			})}>
