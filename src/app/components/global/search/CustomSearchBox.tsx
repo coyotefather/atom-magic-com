@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import {Input} from "@heroui/react";
-import {Button} from "@heroui/react";
 import Icon from '@mdi/react';
 import { mdiMagnify } from '@mdi/js';
-import { useInstantSearch, useSearchBox, UseSearchBoxProps } from 'react-instantsearch';
+import {
+	useInstantSearch,
+	useSearchBox,
+	UseSearchBoxProps,
+} from 'react-instantsearch';
 
 export default function CustomSearchBox(props: UseSearchBoxProps) {
 	const { query, refine } = useSearchBox(props);
@@ -17,23 +19,16 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 	function setQuery(newQuery: string) {
 		debounced(newQuery);
 		setInputValue(newQuery);
-		//refine(newQuery);
 	}
 
-	const debounced = useDebouncedCallback(
-		// function
-		(value: string) => {
-		  //setInputValue(value);
-		  refine(value);
-		},
-		// delay in ms
-		1500
-	);
+	const debounced = useDebouncedCallback((value: string) => {
+		refine(value);
+	}, 1500);
 
 	return (
 		<div className="w-full">
 			<form
-				className="flex items-center gap-2 not-prose"
+				className="flex items-stretch gap-0 not-prose"
 				action=""
 				role="search"
 				noValidate
@@ -54,40 +49,46 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 					if (inputRef.current) {
 						inputRef.current.focus();
 					}
-				}}>
-				<Input
-					isClearable
-					variant="bordered"
-					size="lg"
-					className="block w-full"
-					ref={inputRef}
-					autoComplete="off"
-					autoCorrect="off"
-					autoCapitalize="off"
-					placeholder="Search Codex"
-					maxLength={512}
-					type="search"
-					value={inputValue}
-					onChange={(event) => {
-						setQuery(event.currentTarget.value);
-					}}
-					onClear={() => setInputValue("")}
-					autoFocus/>
-				<Button
-					onPress={() => {
-						setQuery(inputValue);
-					}}
-					endContent={<Icon path={mdiMagnify} size={3} />}
-					className="gold-gradient font-extrabold uppercase tracking-widest p-2 pl-4 pr-4 border-black border-2"
- 					size="lg"
-					radius="full"
-					variant="bordered"
-					isIconOnly={false}
-					type="submit">
-					SEARCH
-				</Button>
-				<span hidden={!isSearchStalled}>Searching…</span>
+				}}
+			>
+				<div className="relative flex-grow">
+					<input
+						ref={inputRef}
+						type="search"
+						autoComplete="off"
+						autoCorrect="off"
+						autoCapitalize="off"
+						placeholder="Search the Codex..."
+						maxLength={512}
+						value={inputValue}
+						onChange={(event) => {
+							setQuery(event.currentTarget.value);
+						}}
+						autoFocus
+						className="w-full h-full px-4 py-3 border-2 border-stone border-r-0 text-lg focus:border-gold focus:outline-none transition-colors"
+					/>
+					{inputValue && (
+						<button
+							type="button"
+							onClick={() => setQuery('')}
+							className="absolute right-3 top-1/2 -translate-y-1/2 text-stone hover:text-black transition-colors"
+							aria-label="Clear search"
+						>
+							&times;
+						</button>
+					)}
+				</div>
+				<button
+					type="submit"
+					className="px-6 bg-gold text-black border-2 border-gold hover:bg-brightgold transition-colors flex items-center gap-2 marcellus uppercase tracking-wider"
+				>
+					<Icon path={mdiMagnify} size={1} />
+					<span className="hidden sm:inline">Search</span>
+				</button>
 			</form>
+			{isSearchStalled && (
+				<p className="text-sm text-stone mt-2 animate-pulse">Searching...</p>
+			)}
 		</div>
 	);
 }
