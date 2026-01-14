@@ -1,53 +1,86 @@
-import Header from '@/app/components/common/Header';
-import CustomCard from '@/app/components/common/CustomCard';
+import CodexHero from '@/app/components/codex/CodexHero';
+import ContentCard from '@/app/components/common/ContentCard';
 import { Search } from '@/app/components/global/search/Search';
-// import { sanityFetch } from "@/sanity/lib/client";
-// import { ENTRIES_QUERY } from "@/sanity/lib/queries";
-// import { ENTRIES_QUERY_RESULT } from "../../../../sanity.types";
+import { mdiSword, mdiBookOpenVariant, mdiCalendarClock } from '@mdi/js';
 
 export const dynamic = 'force-dynamic';
 
 const Page = async () => {
-
-	// const entries = await sanityFetch<ENTRIES_QUERY_RESULT>({
-	// 	query: ENTRIES_QUERY,
-	// });
+	const categories = [
+		{
+			title: 'Gameplay',
+			description:
+				'Rules, character creation, disciplines, techniques, and everything you need to play.',
+			href: '/codex/categories/gameplay',
+			icon: mdiSword,
+			accentColor: 'var(--color-oxblood)',
+		},
+		{
+			title: 'Lore',
+			description:
+				'The history, cultures, and mysteries of Solum and its Cardinal forces.',
+			href: '/codex/categories/lore',
+			icon: mdiBookOpenVariant,
+			accentColor: 'var(--color-gold)',
+		},
+		{
+			title: 'Timeline',
+			description:
+				'A chronological journey through the major events that shaped Solum.',
+			href: '/codex/timeline',
+			icon: mdiCalendarClock,
+			accentColor: 'var(--color-laurel)',
+		},
+	];
 
 	return (
 		<main className="notoserif">
-			<Header name="Codex">
-				Lore, rules and more about Atom Magic.
-			</Header>
-			<div className="my-16 container">
-				<div className="grid grid-cols-4 gap-8">
-					<div className="flex flex-col gap-4">
-						<CustomCard
-							type="category"
-							title="Gameplay"
-							description="Find everything you need to play a game of Atom Magic."
-							url="/codex/categories/gameplay"
-							imagePath="/Wheel_of_Cardinals.svg"
-							showImage={true} />
-						<CustomCard
-							type="category"
-							title="Lore"
-							description="Delve deep into the lore of Atom Magic."
-							url="/codex/categories/lore"
-							imagePath="/Wheel_of_Cardinals.svg"
-							showImage={true} />
-						<CustomCard
-							type="category"
-							title="Timeline"
-							description="Explore a timeline of events in the world of Solum."
-							url="/codex/timeline"
-							imagePath=""
-							showImage={false} />
+			<CodexHero />
+
+			{/* Categories Section */}
+			<section className="bg-white py-12 md:py-16">
+				<div className="container px-6 md:px-8">
+					<div className="text-center mb-10">
+						<h2 className="marcellus text-2xl md:text-3xl text-black mb-3">
+							Browse by Category
+						</h2>
+						<p className="text-stone-dark max-w-xl mx-auto">
+							Explore the Codex through curated collections of entries.
+						</p>
 					</div>
-					<div className="col-span-3">
+
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+						{categories.map((category) => (
+							<ContentCard
+								key={category.title}
+								title={category.title}
+								description={category.description}
+								href={category.href}
+								icon={category.icon}
+								accentColor={category.accentColor}
+							/>
+						))}
+					</div>
+				</div>
+			</section>
+
+			{/* Search Section */}
+			<section className="bg-parchment py-12 md:py-16 border-t-2 border-stone">
+				<div className="container px-6 md:px-8">
+					<div className="text-center mb-10">
+						<h2 className="marcellus text-2xl md:text-3xl text-black mb-3">
+							Search the Codex
+						</h2>
+						<p className="text-stone-dark max-w-xl mx-auto">
+							Find specific entries, rules, or lore by keyword.
+						</p>
+					</div>
+
+					<div className="max-w-4xl mx-auto">
 						<Search />
 					</div>
 				</div>
-			</div>
+			</section>
 		</main>
 	);
 };
