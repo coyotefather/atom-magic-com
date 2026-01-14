@@ -36,11 +36,11 @@ const GearRollingOptions = ({ options, onChange, disabled = false }: GearRolling
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Exotic & Enhancement Toggles */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 p-4 border border-stone bg-parchment/50">
         <div className="space-y-2">
-          <h4 className="text-sm font-semibold text-stone">Weapons</h4>
+          <h4 className="text-sm font-bold text-stone marcellus">Weapons</h4>
           <Checkbox
             color="default"
             isSelected={options.includeExoticWeapons}
@@ -59,7 +59,7 @@ const GearRollingOptions = ({ options, onChange, disabled = false }: GearRolling
           </Checkbox>
         </div>
         <div className="space-y-2">
-          <h4 className="text-sm font-semibold text-stone">Armor</h4>
+          <h4 className="text-sm font-bold text-stone marcellus">Armor</h4>
           <Checkbox
             color="default"
             isSelected={options.includeExoticArmor}
@@ -80,7 +80,7 @@ const GearRollingOptions = ({ options, onChange, disabled = false }: GearRolling
       </div>
 
       {/* Weapon Categories */}
-      <div>
+      <div className="p-4 border border-stone bg-parchment/50">
         <CheckboxGroup
           label="Weapon Categories"
           orientation="horizontal"
@@ -99,7 +99,7 @@ const GearRollingOptions = ({ options, onChange, disabled = false }: GearRolling
       </div>
 
       {/* Weapon Types */}
-      <div>
+      <div className="p-4 border border-stone bg-parchment/50">
         <CheckboxGroup
           label="Weapon Types"
           orientation="horizontal"
@@ -117,7 +117,7 @@ const GearRollingOptions = ({ options, onChange, disabled = false }: GearRolling
       </div>
 
       {/* Armor Categories */}
-      <div>
+      <div className="p-4 border border-stone bg-parchment/50">
         <CheckboxGroup
           label="Armor Categories"
           orientation="horizontal"
@@ -136,7 +136,7 @@ const GearRollingOptions = ({ options, onChange, disabled = false }: GearRolling
       </div>
 
       {/* Tiers */}
-      <div>
+      <div className="p-4 border border-stone bg-parchment/50">
         <CheckboxGroup
           label="Tiers"
           orientation="horizontal"

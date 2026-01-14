@@ -38,11 +38,12 @@ const FunctionButton = ({
 			isIconOnly={iconOnly}
 			endContent={icon}
 			className={clsx(
-				`${buttonColor} font-bold`,
+				`${buttonColor} font-bold transition-opacity`,
 				{
 					'uppercase tracking-widest p-2 pl-4 pr-4' : iconOnly === false
 				},
-				{ 'border-2 border-white': variant === 'secondary' }
+				{ 'border-2 border-white': variant === 'secondary' },
+				{ 'opacity-50 cursor-not-allowed': isDisabled }
 			)}>
 		  		<span>
 			  		{children}

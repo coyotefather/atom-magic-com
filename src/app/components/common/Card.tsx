@@ -20,7 +20,7 @@ const Card = ({
 		description: string
 	}) => {
 	return (
-		<div>
+		<div className="border-2 border-stone bg-white shadow-md p-4">
 		  <div className="flex h-40 mb-4">
 			<Image
 			  className="object-cover"

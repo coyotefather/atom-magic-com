@@ -46,9 +46,9 @@ const ProgressIndicator = ({ currentStep, completedSteps }: ProgressIndicatorPro
 				</div>
 
 				{/* Progress bar */}
-				<div className="h-2 bg-parchment border border-stone">
+				<div className="h-2 bg-parchment border border-stone shadow-inner">
 					<div
-						className="h-full bg-gold transition-all duration-300 ease-out"
+						className="h-full bg-gold transition-all duration-300 ease-out shadow-sm"
 						style={{ width: `${progress}%` }}
 					/>
 				</div>
