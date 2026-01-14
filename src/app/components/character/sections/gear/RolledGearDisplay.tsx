@@ -49,7 +49,7 @@ const WeaponDisplay = ({ weapon, enhancement }: { weapon: Weapon; enhancement?: 
         {weapon.isExotic && (
           <Chip
             size="sm"
-            startContent={<Icon path={mdiStar} size={0.5} />}
+            startContent={<Icon path={mdiStar} size={0.6} />}
             classNames={{
               base: "bg-oxblood",
               content: "text-white",
@@ -72,7 +72,7 @@ const WeaponDisplay = ({ weapon, enhancement }: { weapon: Weapon; enhancement?: 
       {enhancement && (
         <div className="mt-3 p-2 bg-parchment border border-brightgold">
           <div className="flex items-center gap-1 text-sm font-semibold text-gold">
-            <Icon path={mdiStar} size={0.5} />
+            <Icon path={mdiStar} size={0.6} />
             Enhancement: {enhancement.name}
           </div>
           <div className="text-sm">{enhancement.description}</div>
@@ -111,7 +111,7 @@ const ArmorDisplay = ({ armor, enhancement }: { armor: Armor; enhancement?: Enha
         {armor.isExotic && (
           <Chip
             size="sm"
-            startContent={<Icon path={mdiStar} size={0.5} />}
+            startContent={<Icon path={mdiStar} size={0.6} />}
             classNames={{
               base: "bg-oxblood",
               content: "text-white",
@@ -137,7 +137,7 @@ const ArmorDisplay = ({ armor, enhancement }: { armor: Armor; enhancement?: Enha
       {enhancement && (
         <div className="mt-3 p-2 bg-parchment border border-brightgold">
           <div className="flex items-center gap-1 text-sm font-semibold text-gold">
-            <Icon path={mdiStar} size={0.5} />
+            <Icon path={mdiStar} size={0.6} />
             Enhancement: {enhancement.name}
           </div>
           <div className="text-sm">{enhancement.description}</div>

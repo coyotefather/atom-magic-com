@@ -103,22 +103,24 @@ const SubScore = ({
 
 	return (
 		<div className="mb-2 select-none">
-			<span className="font-semibold">{subscore}</span>
-			<div className="w-20 float-right flex justify-between">
-				<div
-					onClick={handleMinusClick}
-					className="my-auto cursor-pointer">
-					<Icon
-						path={mdiMinus}
-						size={0.75} />
-				</div>
-				{calcSubscoreValue}
-				<div
-					onClick={handlePlusClick}
-					className="my-auto cursor-pointer">
-					<Icon
-						path={mdiPlus}
-						size={0.75} />
+			<div className="flex justify-between items-center">
+				<span className="font-semibold">{subscore}</span>
+				<div className="w-20 flex justify-between items-center">
+					<div
+						onClick={handleMinusClick}
+						className="cursor-pointer">
+						<Icon
+							path={mdiMinus}
+							size={0.75} />
+					</div>
+					{calcSubscoreValue}
+					<div
+						onClick={handlePlusClick}
+						className="cursor-pointer">
+						<Icon
+							path={mdiPlus}
+							size={0.75} />
+					</div>
 				</div>
 			</div>
 			<div className="pb-2 w-full text-sm">
@@ -140,16 +142,16 @@ const SubScore = ({
 						aria-label={`${subscore}_modifiers`}
 						indicator={<Icon path={mdiChevronLeftCircle} size={0.75} />}
 						title="Modifiers">
-						<div className="border-b text-sm">
-							Base Score
-							<span className="float-right">{baseSubscoreValue}</span>
+						<div className="border-b text-sm flex justify-between">
+							<span>Base Score</span>
+							<span>{baseSubscoreValue}</span>
 						</div>
-						<div className="border-b text-sm">
-							Elective Modifier
-							<span className="float-right">0</span>
+						<div className="border-b text-sm flex justify-between">
+							<span>Elective Modifier</span>
+							<span>0</span>
 						</div>
 						<div className={clsx(
-							"text-sm border-b",
+							"text-sm border-b flex justify-between",
 							{
 								"text-oxblood font-semibold" : pathModifierTotal < 0
 							},
@@ -157,14 +159,14 @@ const SubScore = ({
 								"text-laurel font-semibold" : pathModifierTotal > 0
 							},
 						)}>
-							Path Modifier
-							<span className="float-right">
+							<span>Path Modifier</span>
+							<span>
 								{ pathModifierTotal > 0 ? "+" : "" }
 								{pathModifierTotal}
 							</span>
 						</div>
 						<div className={clsx(
-							"text-sm",
+							"text-sm flex justify-between",
 							{
 								"text-oxblood font-semibold" : gearModifierTotal < 0
 							},
@@ -172,8 +174,8 @@ const SubScore = ({
 								"text-laurel font-semibold" : gearModifierTotal > 0
 							},
 						)}>
-							Gear Modifier
-							<span className="float-right">
+							<span>Gear Modifier</span>
+							<span>
 								{ gearModifierTotal > 0 ? "+" : "" }
 								{gearModifierTotal}
 							</span>
