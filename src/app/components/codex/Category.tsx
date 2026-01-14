@@ -1,42 +1,54 @@
-// ./src/components/Post.tsx
-import { CATEGORY_QUERY_RESULT } from "../../../../sanity.types";
+import { CATEGORY_QUERY_RESULT } from '../../../../sanity.types';
 import Header from '@/app/components/common/Header';
 import Entries from '@/app/components/codex/Entries';
 import Categories from '@/app/components/codex/Categories';
-import Link from "next/link";
+import Link from 'next/link';
+import Icon from '@mdi/react';
+import { mdiArrowLeft } from '@mdi/js';
 
-export function Category({
-		category
-	}: {
-		category: CATEGORY_QUERY_RESULT
-	}) {
-
+export function Category({ category }: { category: CATEGORY_QUERY_RESULT }) {
 	const { title, description, entries, children } = category || {};
-	let allEntries = (<></>);
-	let allChildren = (<></>);
 
-	if(children && children.length > 0) {
-		allChildren = (
-			<Categories categories={children} />
-		);
-	}
+	return (
+		<article className="notoserif bg-white">
+			<Header name={title ?? 'Category'}>{description ?? null}</Header>
 
-	if(entries && entries.length > 0) {
-		allEntries = <Entries entries={entries} />;
-	}
+			<div className="py-8 md:py-12">
+				{/* Child categories */}
+				{children && children.length > 0 && (
+					<div className="mb-12">
+						<Categories categories={children} />
+					</div>
+				)}
 
-  return (
-	<article className="notoserif mx-auto prose prose-md max-w-none bg-white m-0">
-		<Header name={title ? title : "Category"}>
-			{description ? description : null}
-		</Header>
-		{allChildren}
-		{allEntries}
-		<section className="parchment-gradient mt-16">
-			<div className="container py-4">
-				<Link href="/codex">&larr; Return to Codex</Link>
+				{/* Entries */}
+				{entries && entries.length > 0 && <Entries entries={entries} />}
+
+				{/* Empty state */}
+				{(!children || children.length === 0) &&
+					(!entries || entries.length === 0) && (
+						<div className="container px-6 md:px-8 text-center py-12">
+							<p className="text-stone-dark">
+								No entries found in this category yet.
+							</p>
+						</div>
+					)}
 			</div>
-		</section>
-	</article>
-  );
+
+			{/* Footer */}
+			<section className="bg-parchment border-t-2 border-stone">
+				<div className="container px-6 md:px-8 py-6">
+					<Link
+						href="/codex"
+						className="inline-flex items-center gap-2 text-stone hover:text-gold transition-colors no-underline"
+					>
+						<Icon path={mdiArrowLeft} size={0.875} />
+						<span className="marcellus uppercase tracking-wider text-sm">
+							Return to Codex
+						</span>
+					</Link>
+				</div>
+			</section>
+		</article>
+	);
 }

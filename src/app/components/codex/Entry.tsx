@@ -1,98 +1,172 @@
-// ./src/components/Entry.tsx
 'use client';
-import Image from "next/image";
-import Markdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import Image from 'next/image';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { remarkExtendedTable } from 'remark-extended-table';
 import { remarkDefinitionList } from 'remark-definition-list';
 import remarkHeadingId from 'remark-heading-id';
-import { urlFor } from "@/sanity/lib/image";
-import { ENTRY_QUERY_RESULT } from "../../../../sanity.types";
-import Link from "next/link";
-//import {Card, CardHeader, CardFooter} from "@heroui/card";
-import {Card, CardHeader, CardFooter} from "@heroui/react";
+import { urlFor } from '@/sanity/lib/image';
+import { ENTRY_QUERY_RESULT } from '../../../../sanity.types';
+import Link from 'next/link';
 import Breadcrumbs from '@/app/components/common/Breadcrumbs';
 import TableOfContents from '@/app/components/codex/TableOfContents';
-import clsx from 'clsx';
+import Icon from '@mdi/react';
+import { mdiArrowLeft } from '@mdi/js';
 
 export function Entry({ entry }: { entry: ENTRY_QUERY_RESULT }) {
+	const {
+		title,
+		mainImage,
+		cardDetails,
+		entryBody,
+		toc,
+		author,
+		publishedAt,
+		category,
+	} = entry || {};
 
-	const { title, mainImage, cardDetails, entryBody, toc, author, publishedAt, category } = entry || {};
+	let parents = [{ title: 'Home', url: '/' }];
 
-	let parents = [
-		{ title: "Home", url: "/" }
-	];
-
-	if(category) {
-		if(category.parent) {
-  			if(category.parent.parent) {
-				if(category.parent.parent.parent) {
-					parents.push({ title: "" + category.parent.parent.parent.title, url: "/codex/categories/" + category.parent.parent.parent?.slug?.current });
+	if (category) {
+		if (category.parent) {
+			if (category.parent.parent) {
+				if (category.parent.parent.parent) {
+					parents.push({
+						title: '' + category.parent.parent.parent.title,
+						url:
+							'/codex/categories/' +
+							category.parent.parent.parent?.slug?.current,
+					});
 				}
-				parents.push({ title: "" + category.parent.parent.title, url: "/codex/categories/" + category.parent.parent?.slug?.current });
+				parents.push({
+					title: '' + category.parent.parent.title,
+					url: '/codex/categories/' + category.parent.parent?.slug?.current,
+				});
 			}
-			parents.push({ title: "" + category.parent.title, url: "/codex/categories/" + category.parent?.slug?.current });
+			parents.push({
+				title: '' + category.parent.title,
+				url: '/codex/categories/' + category.parent?.slug?.current,
+			});
 		}
-		parents.push({ title: "" + category.title, url: "/codex/categories/" + category?.slug?.current });
+		parents.push({
+			title: '' + category.title,
+			url: '/codex/categories/' + category?.slug?.current,
+		});
 	}
 
 	return (
-		<article className="notoserif mx-auto max-w-none bg-white m-0">
-			<div className="z-1 py-4 bg-black border-b-2 border-stone">
-				<div className="container mt-4">
-					<Breadcrumbs currentPage={title ? title : ""} parents={parents} />
+		<article className="notoserif bg-white">
+			{/* Breadcrumb bar */}
+			<div className="bg-black border-b-2 border-gold">
+				<div className="container px-6 md:px-8 py-4">
+					<Breadcrumbs currentPage={title ?? ''} parents={parents} />
 				</div>
 			</div>
-			<div className="container mt-8 grid grid-cols-3 gap-4">
-				<div className="md:ml-8">
-					<Card radius="none" shadow="none" className="w-full z-10 bg-black text-white border-2 border-stone">
-						<CardHeader className={clsx(
-							"flex-col items-start!",
-							{ 'z-10 top-0': mainImage?.asset?._ref }
-						)}>
-						</CardHeader>
-						{mainImage?.asset?._ref ? (
-							<Image
-								className="z-0 w-full max-h-48 h-full not-prose object-cover"
-								src={urlFor(mainImage?.asset?._ref).quality(75).url()}
-								width={300}
-								height={300}
-								alt={title || ""}
-							/>
-						) : null }
-						<CardFooter className={clsx(
-							"flex-col items-start!",
-							{ 'z-10 bottom-0': mainImage?.asset?._ref }
-						)}>
-							{ toc ? <TableOfContents toc={toc} /> : ""}
-							<dl className="divide-y w-full my-0 not-prose">
-								{cardDetails?.map((d, index) => (
-									<div key={`${d.detailName}-${index}`} className="flex flex-row py-1">
-										<dt className="w-36 text-white mt-1">{d.detailName}:</dt>
-										<dd className="mt-1">{d.detailDescription}</dd>
+
+			{/* Main content area */}
+			<div className="container px-6 md:px-8 py-8 md:py-12">
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+					{/* Sidebar */}
+					<aside className="md:order-first order-last">
+						<div className="border-2 border-stone bg-parchment sticky top-4">
+							{/* Gold accent line */}
+							<div className="h-1 bg-gold" />
+
+							{/* Image */}
+							{mainImage?.asset?._ref && (
+								<div className="border-b-2 border-stone">
+									<Image
+										className="w-full h-48 object-cover"
+										src={urlFor(mainImage.asset._ref).quality(75).url()}
+										width={300}
+										height={200}
+										alt={title || ''}
+									/>
+								</div>
+							)}
+
+							{/* Content */}
+							<div className="p-4">
+								{/* Table of Contents */}
+								{toc && (
+									<div className="mb-4">
+										<TableOfContents toc={toc} />
 									</div>
-								))}
-								<div className="flex flex-row py-1">
-									<dt className="w-36 mt-1">Author:</dt>
-									<dd className="mt-1">{author?.name ? author?.name : "An unknown scribe"}</dd>
-								</div>
-								<div className="flex flex-row py-1">
-									<dt className="w-36 mt-1">Last update:</dt>
-									<dd className="mt-1">{publishedAt ? new Date(publishedAt).toDateString() : "Date unknown"}</dd>
-								</div>
-							</dl>
-						</CardFooter>
-					</Card>
+								)}
+
+								{/* Details */}
+								<dl className="divide-y divide-stone/30 text-sm">
+									{cardDetails?.map((d, index) => (
+										<div
+											key={`${d.detailName}-${index}`}
+											className="flex flex-col py-2 first:pt-0"
+										>
+											<dt className="text-stone text-xs uppercase tracking-wider mb-1">
+												{d.detailName}
+											</dt>
+											<dd className="text-black">{d.detailDescription}</dd>
+										</div>
+									))}
+									<div className="flex flex-col py-2">
+										<dt className="text-stone text-xs uppercase tracking-wider mb-1">
+											Author
+										</dt>
+										<dd className="text-black">
+											{author?.name ?? 'An unknown scribe'}
+										</dd>
+									</div>
+									<div className="flex flex-col py-2">
+										<dt className="text-stone text-xs uppercase tracking-wider mb-1">
+											Last Updated
+										</dt>
+										<dd className="text-black">
+											{publishedAt
+												? new Date(publishedAt).toLocaleDateString('en-US', {
+														year: 'numeric',
+														month: 'long',
+														day: 'numeric',
+													})
+												: 'Date unknown'}
+										</dd>
+									</div>
+								</dl>
+							</div>
+						</div>
+					</aside>
+
+					{/* Main content */}
+					<section className="md:col-span-2">
+						<h1 className="marcellus text-3xl md:text-4xl text-black mb-6 pb-4 border-b-2 border-gold">
+							{title}
+						</h1>
+						<div className="prose prose-stone prose-lg max-w-none first-letter:text-4xl first-letter:font-bold first-letter:mr-1 first-letter:float-left first-letter:marcellus">
+							<Markdown
+								remarkPlugins={[
+									remarkGfm,
+									remarkExtendedTable,
+									remarkDefinitionList,
+									[remarkHeadingId, { defaults: true, uniqueDefaults: true }],
+								]}
+							>
+								{entryBody}
+							</Markdown>
+						</div>
+					</section>
 				</div>
-				<section className="col-span-2">
-					<div className="first-line:uppercase first-line:marcellus prose prose-md">
-						<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>{entryBody}</Markdown>
-					</div>
-				</section>
 			</div>
-			<section className="bg-gradient border-t-2 border-stone mt-16">
-				<div className="container py-4">
-					<Link href="/codex">&larr; Return to Codex</Link>
+
+			{/* Footer */}
+			<section className="bg-parchment border-t-2 border-stone">
+				<div className="container px-6 md:px-8 py-6">
+					<Link
+						href="/codex"
+						className="inline-flex items-center gap-2 text-stone hover:text-gold transition-colors no-underline"
+					>
+						<Icon path={mdiArrowLeft} size={0.875} />
+						<span className="marcellus uppercase tracking-wider text-sm">
+							Return to Codex
+						</span>
+					</Link>
 				</div>
 			</section>
 		</article>
