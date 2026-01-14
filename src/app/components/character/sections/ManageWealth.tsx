@@ -65,11 +65,11 @@ const ManageGear = ({
 			// generate content
 
 			content = (
-				<div>
+				<div className="overflow-x-auto">
 					<Table isCompact removeWrapper aria-label="Wealth">
 						<TableHeader>
 							{["Name","Description","Type","Quantity"].map((tc) => (
-								<TableColumn key={tc} className="bg-transparent border-b-2 pl-0">
+								<TableColumn key={tc} className="bg-transparent border-b-2 pl-0 font-bold">
 									{tc}
 								</TableColumn>
 							))}
@@ -109,9 +109,9 @@ const ManageGear = ({
 	};
 
 	return (
-		<div className="grid grid-cols-1 lg:grid-cols-2 lg:divide-x-2 bg-white">
-			<div className="flex justify-center lg:justify-end py-8 lg:pt-16 lg:pb-16 px-4 lg:px-0">
-				<div className="max-w-[673px] pr-4">
+		<div className="grid grid-cols-1 md:grid-cols-2 md:divide-x-2 bg-white">
+			<div className="flex justify-center md:justify-end py-8 md:py-16 px-4 md:px-0">
+				<div className="max-w-[673px] md:pr-4">
 					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Roll Wealth</h2>
 					<p className="pb-2">
 						Your character will have two types of wealth: currency and resources. The former is used as you&apos;d expect, whereas the latter can be used to make items or be traded for currency.
@@ -136,8 +136,8 @@ const ManageGear = ({
 					</div>
 				</div>
 			</div>
-			<div className="py-8 lg:pt-16 lg:pb-16 px-4 lg:px-0">
-				<div className="max-w-[673px] pl-4">
+			<div className="py-8 md:py-16 px-4 md:px-0">
+				<div className="max-w-[673px] md:pl-4">
 					<SwitchTransition mode="out-in">
 						<CSSTransition
 				   		key={detailsUpdated ? "x" : "y"}
