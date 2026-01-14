@@ -61,10 +61,10 @@ const TheBasics = ({
 
 	return (
 
-		<div className="grid grid-cols-1 lg:grid-cols-2 lg:divide-x-2 bg-white">
-			<div className="flex justify-center lg:justify-end py-8 lg:pt-16 lg:pb-16 px-4 lg:px-0">
-				<div className="w-full max-w-[673px] lg:pr-4">
-					<h2 className="marcellus text-2xl lg:text-3xl w-full border-b-2 border-solid mb-4">Enter Basics</h2>
+		<div className="grid grid-cols-1 md:grid-cols-2 md:divide-x-2 bg-white">
+			<div className="flex justify-center md:justify-end py-8 md:py-16 px-4 md:px-0">
+				<div className="w-full max-w-[673px] md:pr-4">
+					<h2 className="marcellus text-2xl md:text-3xl w-full border-b-2 border-solid mb-4">Enter Basics</h2>
 					<p className="pb-2 w-full">
 						Enter some basic information about your character. Note that none of the choices here affect scores. These are purely for roleplaying purposes.
 					</p>
@@ -106,8 +106,8 @@ const TheBasics = ({
 					/>
 				</div>
 			</div>
-			<div className="py-8 lg:pt-16 lg:pb-16 px-4 lg:px-0">
-				<div className="w-full max-w-[768px] lg:pl-4">
+			<div className="py-8 md:py-16 px-4 md:px-0">
+				<div className="w-full max-w-[768px] md:pl-4">
 					<SwitchTransition mode="out-in">
 						<CSSTransition
 						   key={detailsUpdated ? "x" : "y"}

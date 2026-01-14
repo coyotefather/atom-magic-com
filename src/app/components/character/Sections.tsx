@@ -155,7 +155,7 @@ const Sections = ({
 						<p className="font-notoserif text-stone mb-6">
 							You have an unfinished character. Would you like to continue where you left off?
 						</p>
-						<div className="flex gap-4">
+						<div className="flex gap-4 justify-end">
 							<button
 								onClick={resumeCharacter}
 								className="px-4 py-2 bg-gold text-white font-marcellus hover:bg-bronze transition-colors"

@@ -87,9 +87,9 @@ const ChoosePatronage = ({
 	};
 
 	return (
-		<div className="grid grid-cols-1 lg:grid-cols-2 lg:divide-x-2 bg-white">
-			<div className="flex justify-center lg:justify-end py-8 lg:pt-16 lg:pb-16 px-4 lg:px-0">
-				<div className="max-w-[673px] pr-4">
+		<div className="grid grid-cols-1 md:grid-cols-2 md:divide-x-2 bg-white">
+			<div className="flex justify-center md:justify-end py-8 md:py-16 px-4 md:px-0">
+				<div className="max-w-[673px] md:pr-4">
 					<h2 className="marcellus text-3xl w-full border-b-2 border-solid mb-4">Choose a Patronage</h2>
 					<p className="pb-2 w-full">
 						Optionally choose a patronage from a Cardinal. This doesn&apos;t directly affect your base or calculated scores but can affect actions you take.
@@ -117,8 +117,8 @@ const ChoosePatronage = ({
 					</div>
 				</div>
 			</div>
-			<div className="py-8 lg:pt-16 lg:pb-16 px-4 lg:px-0">
-				<div className="max-w-[673px] pl-4">
+			<div className="py-8 md:py-16 px-4 md:px-0">
+				<div className="max-w-[673px] md:pl-4">
 					<SwitchTransition mode="out-in">
 						<CSSTransition
 							key={detailsUpdated ? "x" : "y"}

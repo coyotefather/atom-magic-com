@@ -16,7 +16,7 @@ const LinkButton = ({
 	return (
 		<Link href={href}>
 			<button
-				className={`${buttonColor} notoserif uppercase tracking-widest p-2 pl-4 pr-4 rounded-full`}>
+				className={`${buttonColor} marcellus uppercase tracking-widest p-2 pl-4 pr-4 rounded-full`}>
 				<strong>{children}</strong>
 			</button>
 		</Link>
