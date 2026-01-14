@@ -1,13 +1,9 @@
-import Header from '@/app/components/common/Header';
 import Sections from '@/app/components/character/Sections';
 import LoadingPage from '@/app/components/global/LoadingPage';
-import {
-	CHARACTER_MANAGER_QUERY } from "@/sanity/lib/queries";
-import { sanityFetch } from "@/sanity/lib/client";
-import { notFound } from "next/navigation";
-import {
-	CHARACTER_MANAGER_QUERY_RESULT
-} from "../../../../sanity.types";
+import { CHARACTER_MANAGER_QUERY } from '@/sanity/lib/queries';
+import { sanityFetch } from '@/sanity/lib/client';
+import { notFound } from 'next/navigation';
+import { CHARACTER_MANAGER_QUERY_RESULT } from '../../../../sanity.types';
 
 const Page = async () => {
 	const characterManager = await sanityFetch<CHARACTER_MANAGER_QUERY_RESULT>({
@@ -18,11 +14,8 @@ const Page = async () => {
 	}
 
 	return (
-		<main className="notoserif">
+		<main>
 			<LoadingPage />
-			<Header name="Character Manager">
-  				Create your player character and start your journey across the world of Solum.
-			</Header>
 			<Sections
 				cultures={characterManager.cultures}
 				scores={characterManager.scores}
@@ -30,7 +23,8 @@ const Page = async () => {
 				paths={characterManager.paths}
 				patronages={characterManager.patronages}
 				disciplines={characterManager.disciplines}
-				gear={characterManager.gear} />
+				gear={characterManager.gear}
+			/>
 		</main>
 	);
 };
