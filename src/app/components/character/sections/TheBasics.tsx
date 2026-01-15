@@ -77,7 +77,7 @@ const TheBasics = ({
 							type="text"
 							label="Name"
 							variant="bordered"
-							radius="sm"
+							radius="none"
 							className="w-full sm:flex-1"
 							placeholder="Enter Character Name" />
 						<Input
@@ -85,7 +85,7 @@ const TheBasics = ({
 							type="number"
 							label="Age"
 							variant="bordered"
-							radius="sm"
+							radius="none"
 							className="w-full sm:w-24"
 							placeholder="Age" />
 						<Input
@@ -93,13 +93,14 @@ const TheBasics = ({
 							type="text"
 							label="Pronouns"
 							variant="bordered"
-							radius="sm"
+							radius="none"
 							className="w-full sm:w-40"
 							placeholder="Pronouns" />
 					</div>
 					<Textarea
 						onChange={(e) => handleChange(e, 'update_description')}
 						variant="bordered"
+						radius="none"
 						label="Description"
 						labelPlacement="inside"
 						placeholder="Enter Character Description"

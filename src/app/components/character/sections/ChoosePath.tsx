@@ -131,7 +131,7 @@ const ChoosePath = ({
 							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
 							errorMessage="Please select a path."
 							variant="bordered"
-							radius="sm"
+							radius="none"
 							label="Path"
 							placeholder="Select a Path"
 							className="w-96 mt-8"

@@ -19,14 +19,21 @@ const WrapUp = () => {
 	};
 
 	return (
-		<div className="parchment-gradient border-t-2">
-			<div className="container pt-8 pb-8">
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8 pb-8">
-					<div className="text-center md:text-left text-xl flex items-center justify-center md:justify-start">
-						Print or download your completed character.
-					</div>
-					<div>
-						<div className="flex justify-center gap-4">
+		<div className="bg-parchment py-8 md:py-12">
+			<div className="container px-6 md:px-8">
+				<div className="text-center mb-8">
+					<h2 className="marcellus text-2xl md:text-3xl text-black mb-2">
+						Finish & Export
+					</h2>
+					<p className="text-stone-dark">
+						Your character is ready. Print or save for future use.
+					</p>
+				</div>
+
+				<div className="max-w-md mx-auto">
+					<div className="bg-white border-2 border-stone p-6">
+						<div className="h-1 bg-gold -mt-6 -mx-6 mb-6" />
+						<div className="flex flex-col sm:flex-row justify-center gap-4">
 							<FunctionButton
 								isDisabled={false}
 								iconOnly={false}
@@ -34,20 +41,20 @@ const WrapUp = () => {
 								buttonIcon={mdiPrinterOutline}
 								variant="secondary"
 							>
-								Print
+								Print Character
 							</FunctionButton>
 							<FunctionButton
 								isDisabled={false}
 								iconOnly={false}
 								buttonFunction={handleDownloadClick}
 								buttonIcon={mdiFileDownloadOutline}
-								variant="secondary"
+								variant="primary"
 							>
-								Download
+								Download .solum
 							</FunctionButton>
 						</div>
-						<p className="text-center text-sm text-stone mt-3">
-							Downloads as a .solum file you can import later
+						<p className="text-center text-sm text-stone mt-4">
+							Download as a .solum file to import later or share with your Dominus Ludi.
 						</p>
 					</div>
 				</div>

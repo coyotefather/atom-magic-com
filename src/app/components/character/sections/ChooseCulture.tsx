@@ -112,7 +112,7 @@ const ChooseCulture = ({
 							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
 							errorMessage="Please select a culture."
 							variant="bordered"
-							radius="sm"
+							radius="none"
 							label="Culture"
 							placeholder="Select a Culture"
 							className="w-96 mt-8"
