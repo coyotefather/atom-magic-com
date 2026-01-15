@@ -222,6 +222,13 @@
         },
         "optional": true
       },
+      "health": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
       "physicalShield": {
         "type": "objectAttribute",
         "value": {

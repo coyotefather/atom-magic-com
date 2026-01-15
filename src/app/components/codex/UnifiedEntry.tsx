@@ -17,7 +17,13 @@ import {
 	mdiShield,
 	mdiShieldOutline,
 	mdiClockOutline,
+	mdiHeart,
 } from '@mdi/js';
+
+// Helper to display score value or n/a if null/undefined
+const displayScore = (value: number | null | undefined): string => {
+	return value != null ? String(value) : 'n/a';
+};
 
 // Type guards for different document types
 function isCreature(
@@ -209,25 +215,25 @@ function CreatureSidebar({
 				<div className="text-center p-2 bg-white border border-stone/30">
 					<dt className="text-xs text-stone uppercase tracking-wider">PHY</dt>
 					<dd className="marcellus text-lg text-black">
-						{entry.physical || 10}
+						{displayScore(entry.physical)}
 					</dd>
 				</div>
 				<div className="text-center p-2 bg-white border border-stone/30">
 					<dt className="text-xs text-stone uppercase tracking-wider">INT</dt>
 					<dd className="marcellus text-lg text-black">
-						{entry.interpersonal || 10}
+						{displayScore(entry.interpersonal)}
 					</dd>
 				</div>
 				<div className="text-center p-2 bg-white border border-stone/30">
 					<dt className="text-xs text-stone uppercase tracking-wider">ITE</dt>
 					<dd className="marcellus text-lg text-black">
-						{entry.intellect || 10}
+						{displayScore(entry.intellect)}
 					</dd>
 				</div>
 				<div className="text-center p-2 bg-white border border-stone/30">
 					<dt className="text-xs text-stone uppercase tracking-wider">PSY</dt>
 					<dd className="marcellus text-lg text-black">
-						{entry.psyche || 10}
+						{displayScore(entry.psyche)}
 					</dd>
 				</div>
 			</div>
@@ -238,19 +244,25 @@ function CreatureSidebar({
 					Combat
 				</dt>
 				<dd className="flex flex-wrap gap-3 text-black">
+					{entry.health != null && (
+						<span className="flex items-center gap-1">
+							<Icon path={mdiHeart} size={0.5} className="text-oxblood" />
+							{entry.health}
+						</span>
+					)}
 					{entry.damage && (
 						<span className="flex items-center gap-1">
-							<Icon path={mdiSword} size={0.5} className="text-oxblood" />
+							<Icon path={mdiSword} size={0.5} className="text-bronze" />
 							{entry.damage}
 						</span>
 					)}
-					{(entry.physicalShield || 0) > 0 && (
+					{entry.physicalShield != null && entry.physicalShield > 0 && (
 						<span className="flex items-center gap-1">
 							<Icon path={mdiShield} size={0.5} className="text-stone" />
 							{entry.physicalShield}
 						</span>
 					)}
-					{(entry.psychicShield || 0) > 0 && (
+					{entry.psychicShield != null && entry.psychicShield > 0 && (
 						<span className="flex items-center gap-1">
 							<Icon path={mdiShieldOutline} size={0.5} className="text-laurel" />
 							{entry.psychicShield}
