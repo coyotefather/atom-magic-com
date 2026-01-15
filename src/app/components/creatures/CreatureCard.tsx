@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { urlFor } from '@/sanity/lib/image';
 import { CREATURES_QUERY_RESULT } from '../../../../sanity.types';
 import Icon from '@mdi/react';
-import { mdiShield, mdiShieldOutline, mdiSword, mdiOpenInNew } from '@mdi/js';
+import { mdiShield, mdiShieldOutline, mdiSword, mdiOpenInNew, mdiHeart } from '@mdi/js';
 
 type Creature = CREATURES_QUERY_RESULT[number];
 
@@ -12,6 +12,11 @@ interface CreatureCardProps {
 	creature: Creature;
 	isSelected?: boolean;
 }
+
+// Helper to display score value or n/a if null/undefined
+const displayScore = (value: number | null | undefined): string => {
+	return value != null ? String(value) : 'n/a';
+};
 
 const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
 	const challengeLevelColors: Record<string, string> = {
@@ -79,7 +84,7 @@ const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
 							PHY
 						</div>
 						<div className="marcellus text-lg text-black">
-							{creature.physical || 10}
+							{displayScore(creature.physical)}
 						</div>
 					</div>
 					<div className="text-center p-2 bg-white border border-stone/30">
@@ -87,7 +92,7 @@ const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
 							INT
 						</div>
 						<div className="marcellus text-lg text-black">
-							{creature.interpersonal || 10}
+							{displayScore(creature.interpersonal)}
 						</div>
 					</div>
 					<div className="text-center p-2 bg-white border border-stone/30">
@@ -95,7 +100,7 @@ const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
 							ITE
 						</div>
 						<div className="marcellus text-lg text-black">
-							{creature.intellect || 10}
+							{displayScore(creature.intellect)}
 						</div>
 					</div>
 					<div className="text-center p-2 bg-white border border-stone/30">
@@ -103,26 +108,32 @@ const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
 							PSY
 						</div>
 						<div className="marcellus text-lg text-black">
-							{creature.psyche || 10}
+							{displayScore(creature.psyche)}
 						</div>
 					</div>
 				</div>
 
 				{/* Combat stats */}
-				<div className="flex items-center gap-4 text-sm text-stone mb-4">
+				<div className="flex flex-wrap items-center gap-4 text-sm text-stone mb-4">
+					{creature.health != null && (
+						<div className="flex items-center gap-1">
+							<Icon path={mdiHeart} size={0.625} className="text-oxblood" />
+							<span>{creature.health}</span>
+						</div>
+					)}
 					{creature.damage && (
 						<div className="flex items-center gap-1">
-							<Icon path={mdiSword} size={0.625} className="text-oxblood" />
+							<Icon path={mdiSword} size={0.625} className="text-bronze" />
 							<span>{creature.damage}</span>
 						</div>
 					)}
-					{(creature.physicalShield || 0) > 0 && (
+					{creature.physicalShield != null && creature.physicalShield > 0 && (
 						<div className="flex items-center gap-1">
 							<Icon path={mdiShield} size={0.625} className="text-stone" />
 							<span>{creature.physicalShield}</span>
 						</div>
 					)}
-					{(creature.psychicShield || 0) > 0 && (
+					{creature.psychicShield != null && creature.psychicShield > 0 && (
 						<div className="flex items-center gap-1">
 							<Icon
 								path={mdiShieldOutline}
@@ -132,7 +143,7 @@ const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
 							<span>{creature.psychicShield}</span>
 						</div>
 					)}
-					{(creature.armorCapacity || 0) > 0 && (
+					{creature.armorCapacity != null && creature.armorCapacity > 0 && (
 						<div className="flex items-center gap-1">
 							<span className="text-xs uppercase">AC</span>
 							<span>{creature.armorCapacity}</span>

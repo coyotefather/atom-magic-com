@@ -51,6 +51,7 @@ export type Creature = {
   interpersonal?: number;
   intellect?: number;
   psyche?: number;
+  health?: number;
   physicalShield?: number;
   psychicShield?: number;
   armorCapacity?: number;
@@ -1258,7 +1259,7 @@ export type ENTRY_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: UNIFIED_ENTRY_QUERY
-// Query: *[_type in ["entry", "creature", "discipline", "technique", "path"] && slug.current == $slug][0]{  _type,  "title": coalesce(title, name),  slug,  description,  entryBody,  toc,  mainImage,  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}},  // Entry-specific fields  _type == "entry" => {    cardDetails,    publishedAt,    author->{name, slug}  },  // Creature-specific fields  _type == "creature" => {    "name": name,    physical,    interpersonal,    intellect,    psyche,    physicalShield,    psychicShield,    armorCapacity,    damage,    specialAbilities,    challengeLevel,    creatureType,    environments,    isSwarm,    isUnique  },  // Discipline-specific fields  _type == "discipline" => {    paths[]->{_id, title, slug},    techniques[]->{_id, title, latin, slug, cooldown, description}  },  // Technique-specific fields  _type == "technique" => {    latin,    cooldown  },  // Path-specific fields  _type == "path" => {    latin,    modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue }  }}
+// Query: *[_type in ["entry", "creature", "discipline", "technique", "path"] && slug.current == $slug][0]{  _type,  "title": coalesce(title, name),  slug,  description,  entryBody,  toc,  mainImage,  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}},  // Entry-specific fields  _type == "entry" => {    cardDetails,    publishedAt,    author->{name, slug}  },  // Creature-specific fields  _type == "creature" => {    "name": name,    physical,    interpersonal,    intellect,    psyche,    health,    physicalShield,    psychicShield,    armorCapacity,    damage,    specialAbilities,    challengeLevel,    creatureType,    environments,    isSwarm,    isUnique  },  // Discipline-specific fields  _type == "discipline" => {    paths[]->{_id, title, slug},    techniques[]->{_id, title, latin, slug, cooldown, description}  },  // Technique-specific fields  _type == "technique" => {    latin,    cooldown  },  // Path-specific fields  _type == "path" => {    latin,    modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue }  }}
 export type UNIFIED_ENTRY_QUERY_RESULT =
   | {
       _type: "creature";
@@ -1297,6 +1298,7 @@ export type UNIFIED_ENTRY_QUERY_RESULT =
       interpersonal: number | null;
       intellect: number | null;
       psyche: number | null;
+      health: number | null;
       physicalShield: number | null;
       psychicShield: number | null;
       armorCapacity: number | null;
@@ -1590,7 +1592,7 @@ export type TIMELINE_QUERY_RESULT = Array<{
 
 // Source: src/sanity/lib/queries.ts
 // Variable: CREATURES_QUERY
-// Query: *[_type == "creature"]| order(name asc) {  _id,  name,  slug,  description,  mainImage,  physical,  interpersonal,  intellect,  psyche,  physicalShield,  psychicShield,  armorCapacity,  damage,  specialAbilities,  challengeLevel,  creatureType,  environments,  isSwarm,  isUnique}
+// Query: *[_type == "creature"]| order(name asc) {  _id,  name,  slug,  description,  mainImage,  physical,  interpersonal,  intellect,  psyche,  health,  physicalShield,  psychicShield,  armorCapacity,  damage,  specialAbilities,  challengeLevel,  creatureType,  environments,  isSwarm,  isUnique}
 export type CREATURES_QUERY_RESULT = Array<{
   _id: string;
   name: string | null;
@@ -1608,6 +1610,7 @@ export type CREATURES_QUERY_RESULT = Array<{
   interpersonal: number | null;
   intellect: number | null;
   psyche: number | null;
+  health: number | null;
   physicalShield: number | null;
   psychicShield: number | null;
   armorCapacity: number | null;
@@ -1627,7 +1630,7 @@ export type CREATURES_QUERY_RESULT = Array<{
 
 // Source: src/sanity/lib/queries.ts
 // Variable: CREATURE_QUERY
-// Query: *[_type == "creature" && slug.current == $slug][0]{  _id,  name,  slug,  description,  mainImage,  physical,  interpersonal,  intellect,  psyche,  physicalShield,  psychicShield,  armorCapacity,  damage,  specialAbilities,  challengeLevel,  creatureType,  environments,  isSwarm,  isUnique,  entryBody,  toc,  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}}
+// Query: *[_type == "creature" && slug.current == $slug][0]{  _id,  name,  slug,  description,  mainImage,  physical,  interpersonal,  intellect,  psyche,  health,  physicalShield,  psychicShield,  armorCapacity,  damage,  specialAbilities,  challengeLevel,  creatureType,  environments,  isSwarm,  isUnique,  entryBody,  toc,  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}}
 export type CREATURE_QUERY_RESULT = {
   _id: string;
   name: string | null;
@@ -1645,6 +1648,7 @@ export type CREATURE_QUERY_RESULT = {
   interpersonal: number | null;
   intellect: number | null;
   psyche: number | null;
+  health: number | null;
   physicalShield: number | null;
   psychicShield: number | null;
   armorCapacity: number | null;
@@ -1709,12 +1713,12 @@ declare module "@sanity/client" {
     '*[_type in ["entry", "creature", "discipline", "technique", "path"] && defined(slug.current)]| order(coalesce(title, name) asc)[0...96]{\n  _id,\n  _type,\n  "title": coalesce(title, name),\n  slug,\n  description\n}': ENTRIES_QUERY_RESULT;
     'count(*[_type in ["entry", "creature", "discipline", "technique", "path"] && defined(slug.current)])': ENTRIES_COUNT_QUERY_RESULT;
     '*[_type == "entry" && slug.current == $slug][0]{\n  _type,\n  title,\n  cardDetails,\n  entryBody,\n  toc,\n  mainImage,\n  publishedAt,\n  author->{name, slug},\n  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}\n}': ENTRY_QUERY_RESULT;
-    '*[_type in ["entry", "creature", "discipline", "technique", "path"] && slug.current == $slug][0]{\n  _type,\n  "title": coalesce(title, name),\n  slug,\n  description,\n  entryBody,\n  toc,\n  mainImage,\n  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}},\n\n  // Entry-specific fields\n  _type == "entry" => {\n    cardDetails,\n    publishedAt,\n    author->{name, slug}\n  },\n\n  // Creature-specific fields\n  _type == "creature" => {\n    "name": name,\n    physical,\n    interpersonal,\n    intellect,\n    psyche,\n    physicalShield,\n    psychicShield,\n    armorCapacity,\n    damage,\n    specialAbilities,\n    challengeLevel,\n    creatureType,\n    environments,\n    isSwarm,\n    isUnique\n  },\n\n  // Discipline-specific fields\n  _type == "discipline" => {\n    paths[]->{_id, title, slug},\n    techniques[]->{_id, title, latin, slug, cooldown, description}\n  },\n\n  // Technique-specific fields\n  _type == "technique" => {\n    latin,\n    cooldown\n  },\n\n  // Path-specific fields\n  _type == "path" => {\n    latin,\n    modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue }\n  }\n}': UNIFIED_ENTRY_QUERY_RESULT;
+    '*[_type in ["entry", "creature", "discipline", "technique", "path"] && slug.current == $slug][0]{\n  _type,\n  "title": coalesce(title, name),\n  slug,\n  description,\n  entryBody,\n  toc,\n  mainImage,\n  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}},\n\n  // Entry-specific fields\n  _type == "entry" => {\n    cardDetails,\n    publishedAt,\n    author->{name, slug}\n  },\n\n  // Creature-specific fields\n  _type == "creature" => {\n    "name": name,\n    physical,\n    interpersonal,\n    intellect,\n    psyche,\n    health,\n    physicalShield,\n    psychicShield,\n    armorCapacity,\n    damage,\n    specialAbilities,\n    challengeLevel,\n    creatureType,\n    environments,\n    isSwarm,\n    isUnique\n  },\n\n  // Discipline-specific fields\n  _type == "discipline" => {\n    paths[]->{_id, title, slug},\n    techniques[]->{_id, title, latin, slug, cooldown, description}\n  },\n\n  // Technique-specific fields\n  _type == "technique" => {\n    latin,\n    cooldown\n  },\n\n  // Path-specific fields\n  _type == "path" => {\n    latin,\n    modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue }\n  }\n}': UNIFIED_ENTRY_QUERY_RESULT;
     '*[_type == "category" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}': CATEGORIES_QUERY_RESULT;
     '*[_type == "category" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  description,\n  parent->{title, slug},\n  "entries": *[_type in ["entry", "creature", "discipline", "technique", "path"] && references(^._id)]| order(coalesce(title, name) asc) [0...96]{\n    _id,\n    _type,\n    "title": coalesce(title, name),\n    slug,\n    description\n  },\n  "children": *[_type == "category" && references(^._id)]{\n    _id,\n    title,\n    slug,\n    description\n  }\n}': CATEGORY_QUERY_RESULT;
     '*[_type == "timeline"]| order(year desc) {\n  _id, title, URL, year, major, icon, description\n}': TIMELINE_QUERY_RESULT;
-    '*[_type == "creature"]| order(name asc) {\n  _id,\n  name,\n  slug,\n  description,\n  mainImage,\n  physical,\n  interpersonal,\n  intellect,\n  psyche,\n  physicalShield,\n  psychicShield,\n  armorCapacity,\n  damage,\n  specialAbilities,\n  challengeLevel,\n  creatureType,\n  environments,\n  isSwarm,\n  isUnique\n}': CREATURES_QUERY_RESULT;
-    '*[_type == "creature" && slug.current == $slug][0]{\n  _id,\n  name,\n  slug,\n  description,\n  mainImage,\n  physical,\n  interpersonal,\n  intellect,\n  psyche,\n  physicalShield,\n  psychicShield,\n  armorCapacity,\n  damage,\n  specialAbilities,\n  challengeLevel,\n  creatureType,\n  environments,\n  isSwarm,\n  isUnique,\n  entryBody,\n  toc,\n  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}\n}': CREATURE_QUERY_RESULT;
+    '*[_type == "creature"]| order(name asc) {\n  _id,\n  name,\n  slug,\n  description,\n  mainImage,\n  physical,\n  interpersonal,\n  intellect,\n  psyche,\n  health,\n  physicalShield,\n  psychicShield,\n  armorCapacity,\n  damage,\n  specialAbilities,\n  challengeLevel,\n  creatureType,\n  environments,\n  isSwarm,\n  isUnique\n}': CREATURES_QUERY_RESULT;
+    '*[_type == "creature" && slug.current == $slug][0]{\n  _id,\n  name,\n  slug,\n  description,\n  mainImage,\n  physical,\n  interpersonal,\n  intellect,\n  psyche,\n  health,\n  physicalShield,\n  psychicShield,\n  armorCapacity,\n  damage,\n  specialAbilities,\n  challengeLevel,\n  creatureType,\n  environments,\n  isSwarm,\n  isUnique,\n  entryBody,\n  toc,\n  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}\n}': CREATURE_QUERY_RESULT;
     '{\n  "environments": array::unique(*[_type == "creature"].environments[]),\n  "creatureTypes": array::unique(*[_type == "creature"].creatureType),\n  "challengeLevels": ["trivial", "easy", "moderate", "hard", "deadly"]\n}': CREATURE_FILTERS_QUERY_RESULT;
   }
 }

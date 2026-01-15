@@ -116,25 +116,29 @@ export const creatureType = defineType({
 
 		// Combat Stats
 		defineField({
+			name: 'health',
+			title: 'Health',
+			description: 'Total health points',
+			type: 'number',
+			group: 'combat',
+		}),
+		defineField({
 			name: 'physicalShield',
 			title: 'Physical Shield',
 			type: 'number',
 			group: 'combat',
-			initialValue: 0,
 		}),
 		defineField({
 			name: 'psychicShield',
 			title: 'Psychic Shield',
 			type: 'number',
 			group: 'combat',
-			initialValue: 0,
 		}),
 		defineField({
 			name: 'armorCapacity',
 			title: 'Armor Capacity',
 			type: 'number',
 			group: 'combat',
-			initialValue: 0,
 		}),
 		defineField({
 			name: 'damage',
