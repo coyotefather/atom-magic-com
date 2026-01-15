@@ -41,7 +41,7 @@ const CharacterOptionCard = ({
 				<p className="text-sm text-stone-dark mb-4">{description}</p>
 				<button
 					onClick={onClick}
-					className="w-full py-3 px-4 bg-oxblood text-white marcellus uppercase tracking-wider text-sm hover:bg-oxblood-dark transition-colors"
+					className="w-full py-3 px-6 bg-gold text-black marcellus uppercase tracking-widest text-sm font-bold hover:bg-brightgold transition-colors"
 				>
 					{buttonText}
 				</button>

@@ -1,5 +1,5 @@
 'use client';
-import { Button, Link } from "@heroui/react";
+import { Button } from "@heroui/react";
 import clsx from 'clsx';
 import Icon from '@mdi/react';
 
@@ -18,36 +18,35 @@ const FunctionButton = ({
 		isDisabled: boolean,
 		children: React.ReactNode
 	}) => {
-	let buttonColor = "";
 	let icon = (<></>);
-	if(variant == "primary") { buttonColor = "bg-gold hover:bg-brightgold"; }
-	if(variant == "secondary") { buttonColor = "bg-black border-white hover:bg-white hover:text-black text-white hover:border-black" }
-	if(variant == "gradient") { buttonColor = "gradient border-black hover:bg-brightgold"; }
-	if(buttonIcon != "") { icon = (
-		<Icon
-			path={buttonIcon}
-			size={1} />
-	); }
+	if(buttonIcon != "") {
+		icon = (
+			<Icon
+				path={buttonIcon}
+				size={0.875}
+			/>
+		);
+	}
+
 	return (
 		<Button
 			isDisabled={isDisabled}
 			onClick={() => buttonFunction()}
-			radius="full"
+			radius="none"
 			size="lg"
-			variant="bordered"
 			isIconOnly={iconOnly}
-			endContent={icon}
+			startContent={icon}
+			disableRipple={true}
 			className={clsx(
-				`${buttonColor} font-bold transition-opacity`,
+				'marcellus uppercase tracking-widest text-sm font-bold transition-colors px-6 py-3',
 				{
-					'uppercase tracking-widest p-2 pl-4 pr-4' : iconOnly === false
+					'bg-gold text-black hover:bg-brightgold border-0': variant === 'primary',
+					'border-2 border-gold text-gold bg-transparent hover:bg-gold/10': variant === 'secondary',
+					'bg-oxblood text-white hover:bg-oxblood-dark border-0': variant === 'danger',
 				},
-				{ 'border-2 border-white': variant === 'secondary' },
 				{ 'opacity-50 cursor-not-allowed': isDisabled }
 			)}>
-		  		<span>
-			  		{children}
-		  		</span>
+			{children}
 		</Button>
 	);
 };
