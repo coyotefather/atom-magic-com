@@ -16,6 +16,7 @@ import {enhancementType} from './enhancementType'
 import {gearType} from './gearType'
 import {timelineType} from './timelineType'
 import {authorType} from './authorType'
+import {creatureType} from './creatureType'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -34,6 +35,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     enhancementType,
     gearType,
     timelineType,
-    authorType
+    authorType,
+    creatureType,
   ],
 }

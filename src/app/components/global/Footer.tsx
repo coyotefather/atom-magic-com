@@ -17,6 +17,7 @@ const Footer = () => {
 	const mainLinks = [
 		{ href: '/codex', name: 'Codex' },
 		{ href: '/character', name: 'Character Manager' },
+		{ href: '/creatures', name: 'Creature Roller' },
 		{ href: '/vorago', name: 'Vorago' },
 	];
 
