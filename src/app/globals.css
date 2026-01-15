@@ -245,6 +245,73 @@
 }
 
 @layer utilities {
+  /* Print styles for character sheet */
+  @media print {
+    /* Hide everything except the character sheet */
+    body > * {
+      visibility: hidden;
+    }
+
+    /* Hide specific elements */
+    header,
+    footer,
+    nav,
+    .no-print,
+    button,
+    [role="dialog"] {
+      display: none !important;
+    }
+
+    /* Show and style the character sheet */
+    .character-sheet {
+      display: block !important;
+      visibility: visible !important;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      background: white !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Ensure character sheet container is visible */
+    .character-sheet,
+    .character-sheet * {
+      visibility: visible !important;
+    }
+
+    /* Page setup */
+    @page {
+      size: letter portrait;
+      margin: 0.5in;
+    }
+
+    /* Reset backgrounds for print */
+    .character-sheet {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    /* Ensure borders print */
+    .character-sheet * {
+      border-color: black !important;
+    }
+
+    /* Force background colors to print */
+    .character-sheet .bg-black {
+      background-color: black !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .character-sheet .bg-gray-100 {
+      background-color: #f3f4f6 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+
   @media (prefers-color-scheme: light) {
     :root {
       --foreground-rgb: 0, 0, 0;

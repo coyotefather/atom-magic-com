@@ -1,0 +1,44 @@
+# Atom Magic Roadmap
+
+Feature ideas and improvements for the Atom Magic website.
+
+## Character Manager Enhancements
+
+### Quick wins
+- [x] **Print stylesheet** - A dedicated print layout that formats the character as a proper character sheet
+- [ ] **Multiple characters** - Let users save/manage multiple characters in browser storage, not just one
+- [ ] **Character summary card** - A compact view showing key stats at a glance
+
+### Bigger features
+- [ ] **Shareable characters** - Generate a URL or QR code to share a character (could encode in URL params or use a simple backend)
+
+## New Utility Tools
+
+### For players
+- [ ] **Dice roller** - Quick dice roller with presets for common rolls (d20, 2d6, etc.) - useful during play
+- [ ] **Quick reference panel** - Collapsible sidebar with commonly-needed rules (combat flow, damage types, etc.)
+
+### For GMs (Dominus Ludi)
+- [ ] **Encounter builder** - Select creatures from the creature roller, set quantities, calculate total threat
+- [ ] **NPC quick generator** - Lightweight version of character manager for throwaway NPCs
+- [ ] **Loot/treasure roller** - Random item generation tables
+
+## Site-wide
+
+- [ ] **Dark mode toggle** - The color palette would work well inverted (parchment to dark, etc.)
+- [ ] **PWA support** - Offline access to Codex entries would be valuable for sessions without reliable internet
+- [ ] **Bookmarks** - Let users save favorite Codex entries
+
+## Vorago
+
+- [ ] **Save/resume games** - Similar to character persistence
+- [ ] **Game replay** - Step through a completed game move-by-move
+
+---
+
+## Completed
+
+- [x] Character save/load to .solum files
+- [x] Character resume from browser storage
+- [x] Creature roller with filtering
+- [x] Unified entry system (creatures, disciplines, techniques, paths in Codex)

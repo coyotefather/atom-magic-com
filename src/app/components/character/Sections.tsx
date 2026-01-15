@@ -16,6 +16,7 @@ import ChooseAnimalCompanion from '@/app/components/character/sections/ChooseAni
 import WrapUp from '@/app/components/character/sections/WrapUp';
 import ProgressIndicator from '@/app/components/character/ProgressIndicator';
 import CharacterHero from '@/app/components/character/CharacterHero';
+import CharacterSheet from '@/app/components/character/CharacterSheet';
 import { useAppSelector } from '@/lib/hooks';
 import { useCharacterPersistence } from '@/lib/hooks/useCharacterPersistence';
 import { useCharacterValidation } from '@/lib/hooks/useCharacterValidation';
@@ -347,6 +348,14 @@ const Sections = ({
 				expandFunction={() => { return; }}>
 				<WrapUp />
 			</Section>
+
+			{/* Print-only character sheet */}
+			<CharacterSheet
+				cultures={cultures}
+				paths={paths}
+				patronages={patronages}
+				disciplines={disciplines}
+			/>
 		</div>
 	);
 };
