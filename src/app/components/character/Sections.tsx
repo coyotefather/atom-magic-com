@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Section from '@/app/components/common/Section';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import CharacterOptions from '@/app/components/character/sections/CharacterOptions';
@@ -94,6 +94,25 @@ const Sections = ({
 		setShowChooseAnimalCompanion(true);
 		setShowWrapUp(true);
 	};
+
+	// Expand sections when a character is loaded from storage
+	useEffect(() => {
+		if (character.loaded) {
+			// Expand sections based on character progress
+			if (character.name) setShowChooseCulture(true);
+			if (character.culture) setShowChoosePath(true);
+			if (character.path) setShowChoosePatronage(true);
+			if (character.patronage) setShowAdjustScoresAndScores(true);
+			if (character.scores.length > 0) setShowDisciplinesAndTechniques(true);
+			if (character.disciplines.length > 0) setShowManageGear(true);
+			if (character.gear.length > 0) setShowManageWealth(true);
+			if (character.wealth.silver > 0) setShowChooseAnimalCompanion(true);
+			// Show wrap-up if character is substantially complete
+			if (character.gear.length > 0 && character.wealth.silver > 0) {
+				setShowWrapUp(true);
+			}
+		}
+	}, [character.loaded]);
 
 	let modifiers: Modifiers | undefined = { path: [], gear: [] };
 	paths.map( (path) => {
