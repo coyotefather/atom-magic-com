@@ -23,10 +23,10 @@ const sanityClient = createClient({
 async function performInitialIndexing() {
   console.log("Starting initial indexing...");
 
-  // Fetch all documents from Sanity
-  const sanityData = await sanityClient.fetch(`*[_type == "entry"]{
+  // Fetch all entry-like documents from Sanity (entries, creatures, disciplines, techniques, paths)
+  const sanityData = await sanityClient.fetch(`*[_type in ["entry", "creature", "discipline", "technique", "path"] && defined(slug.current)]{
 	_id,
-	title,
+	"title": coalesce(title, name),
 	slug,
 	entryBody,
 	description,
@@ -44,6 +44,7 @@ async function performInitialIndexing() {
 	// https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/how-to/indexing-long-documents/
 	entryBody: doc.entryBody?.slice(0, 9500),
 	description: doc.description,
+	documentType: doc._type,
 	_createdAt: doc._createdAt,
 	_updatedAt: doc._updatedAt,
   }));
@@ -54,9 +55,9 @@ async function performInitialIndexing() {
 	objects: records,
   });
 
-  console.log("Initial indexing completed.");
+  console.log(`Initial indexing completed. Indexed ${records.length} documents.`);
   return {
-	message: "Successfully completed initial indexing!",
+	message: `Successfully completed initial indexing! Indexed ${records.length} documents.`,
   };
 }
 
@@ -122,14 +123,14 @@ export async function POST(request: Request) {
 	  });
 	} else {
 		// create a copy and slice off to only 9000 - this prevents sending something over the size limit allowed by Algolia
-		// Note: Sanity webhook projection already extracts slug.current as "path"
+		// Note: Sanity webhook projection already extracts slug.current as "path" and coalesce(title, name) as "title"
 		const updatedValue = {
 			_id: value._id,
 			title: value.title,
 			path: value.path,
 			entryBody: value.entryBody?.slice(0, 9000),
 			description: value.description,
-			_type: value._type,
+			documentType: value._type,
 			_createdAt: value._createdAt,
 			_updatedAt: value._updatedAt
 		}

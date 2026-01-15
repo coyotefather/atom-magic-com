@@ -13,7 +13,84 @@
  */
 
 // Source: schema.json
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
+export type CategoryReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "category";
+};
+
+export type Creature = {
+  _id: string;
+  _type: "creature";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  slug?: Slug;
+  description?: string;
+  mainImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  category?: CategoryReference;
+  toc?: Markdown;
+  entryBody?: Markdown;
+  physical?: number;
+  interpersonal?: number;
+  intellect?: number;
+  psyche?: number;
+  physicalShield?: number;
+  psychicShield?: number;
+  armorCapacity?: number;
+  damage?: string;
+  specialAbilities?: Array<{
+    name?: string;
+    description?: string;
+    _type: "ability";
+    _key: string;
+  }>;
+  challengeLevel?: "trivial" | "easy" | "moderate" | "hard" | "deadly";
+  creatureType?: string;
+  environments?: Array<string>;
+  isSwarm?: boolean;
+  isUnique?: boolean;
+};
+
 export type Markdown = string;
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
+};
 
 export type Timeline = {
   _id: string;
@@ -59,13 +136,6 @@ export type EntryReference = {
   [internalGroqTypeReferenceTo]?: "entry";
 };
 
-export type SanityImageAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-};
-
 export type SubscoreReference = {
   _ref: string;
   _type: "reference";
@@ -108,22 +178,6 @@ export type Gear = {
   description?: Markdown;
 };
 
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
 export type Enhancement = {
   _id: string;
   _type: "enhancement";
@@ -145,9 +199,20 @@ export type Technique = {
   _rev: string;
   title?: string;
   latin?: string;
-  entry?: EntryReference;
+  slug?: Slug;
+  mainImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   cooldown?: number;
   description?: Markdown;
+  category?: CategoryReference;
+  toc?: Markdown;
+  entryBody?: Markdown;
 };
 
 export type TechniqueReference = {
@@ -164,7 +229,15 @@ export type Discipline = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  entry?: EntryReference;
+  slug?: Slug;
+  mainImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   paths?: Array<
     {
       _key: string;
@@ -176,6 +249,9 @@ export type Discipline = {
     } & TechniqueReference
   >;
   description?: Markdown;
+  category?: CategoryReference;
+  toc?: Markdown;
+  entryBody?: Markdown;
 };
 
 export type Patronage = {
@@ -216,7 +292,7 @@ export type Path = {
   _rev: string;
   title?: string;
   latin?: string;
-  entry?: EntryReference;
+  slug?: Slug;
   mainImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -232,6 +308,9 @@ export type Path = {
     _key: string;
   }>;
   description?: Markdown;
+  category?: CategoryReference;
+  toc?: Markdown;
+  entryBody?: Markdown;
 };
 
 export type ScoreReference = {
@@ -250,7 +329,7 @@ export type AdditionalScores = {
   title?: string;
   value?: number;
   entry?: EntryReference;
-  scores?: Array<ScoreReference | SubscoreReference>;
+  scores?: ArrayOf<ScoreReference | SubscoreReference>;
   calculation?: "sum" | "difference" | "multiply" | "divide";
   additionalCalculations?: Array<{
     calculationType?: "sum" | "difference" | "multiply" | "divide";
@@ -323,13 +402,6 @@ export type AuthorReference = {
   [internalGroqTypeReferenceTo]?: "author";
 };
 
-export type CategoryReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "category";
-};
-
 export type Entry = {
   _id: string;
   _type: "entry";
@@ -358,12 +430,6 @@ export type Entry = {
   description?: string;
   toc?: Markdown;
   entryBody?: Markdown;
-};
-
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
 };
 
 export type Post = {
@@ -536,6 +602,7 @@ export type SanityImageMetadata = {
   palette?: SanityImagePalette;
   lqip?: string;
   blurHash?: string;
+  thumbHash?: string;
   hasAlpha?: boolean;
   isOpaque?: boolean;
 };
@@ -600,15 +667,18 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | SanityImageAssetReference
+  | CategoryReference
+  | Creature
   | Markdown
+  | SanityImageCrop
+  | SanityImageHotspot
+  | Slug
   | Timeline
   | PathReference
   | EntryReference
-  | SanityImageAssetReference
   | SubscoreReference
   | Gear
-  | SanityImageCrop
-  | SanityImageHotspot
   | Enhancement
   | Technique
   | TechniqueReference
@@ -621,9 +691,7 @@ export type AllSanitySchemaTypes =
   | Score
   | Culture
   | AuthorReference
-  | CategoryReference
   | Entry
-  | Slug
   | Post
   | BlockContent
   | Author
@@ -642,6 +710,12 @@ export type AllSanitySchemaTypes =
   | Geopoint;
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
+
+type ArrayOf<T> = Array<
+  T & {
+    _key: string;
+  }
+>;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: CULTURES_QUERY
@@ -729,12 +803,12 @@ export type ADDITIONAL_SCORES_QUERY_RESULT = Array<{
 
 // Source: src/sanity/lib/queries.ts
 // Variable: PATHS_QUERY
-// Query: *[_type == "path"]{  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description}
+// Query: *[_type == "path"]{  _id, title, latin, slug, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description}
 export type PATHS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
   latin: string | null;
-  entry: EntryReference | null;
+  slug: Slug | null;
   mainImage: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -790,10 +864,11 @@ export type PATRONAGES_QUERY_RESULT = Array<{
 
 // Source: src/sanity/lib/queries.ts
 // Variable: DISCIPLINES_QUERY
-// Query: *[_type == "discipline"]| order(title asc){  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description}
+// Query: *[_type == "discipline"]| order(title asc){  _id, title, slug, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description}
 export type DISCIPLINES_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
+  slug: Slug | null;
   paths: Array<{
     _id: string;
     title: string | null;
@@ -885,7 +960,7 @@ export type GEAR_PAGE_QUERY_RESULT = Array<{
 
 // Source: src/sanity/lib/queries.ts
 // Variable: CHARACTER_MANAGER_QUERY
-// Query: {  "cultures": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "paths": *[_type == "path"]{  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},  "patronages": *[_type == "patronage"]{  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, description }, description},  "disciplines": *[_type == "discipline"]| order(title asc){  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description},  "scores": *[_type == "score"]| order(title asc){  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description},  "subscores": *[_type == "subscore"]{  _id, title, score->{_id, title, id}, defaultValue, description},  "additionalScores": *[_type == "additionalScores"]{  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description},  "gear": *[_type == "gear"]{  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},}
+// Query: {  "cultures": *[_type == "culture"]{  _id, title, entry->{ slug }, aspects, mainImage, description},  "paths": *[_type == "path"]{  _id, title, latin, slug, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},  "patronages": *[_type == "patronage"]{  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, description }, description},  "disciplines": *[_type == "discipline"]| order(title asc){  _id, title, slug, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description},  "scores": *[_type == "score"]| order(title asc){  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description},  "subscores": *[_type == "subscore"]{  _id, title, score->{_id, title, id}, defaultValue, description},  "additionalScores": *[_type == "additionalScores"]{  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description},  "gear": *[_type == "gear"]{  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description},}
 export type CHARACTER_MANAGER_QUERY_RESULT = {
   cultures: Array<{
     _id: string;
@@ -915,7 +990,7 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
     _id: string;
     title: string | null;
     latin: string | null;
-    entry: EntryReference | null;
+    slug: Slug | null;
     mainImage: {
       asset?: SanityImageAssetReference;
       media?: unknown;
@@ -967,6 +1042,7 @@ export type CHARACTER_MANAGER_QUERY_RESULT = {
   disciplines: Array<{
     _id: string;
     title: string | null;
+    slug: Slug | null;
     paths: Array<{
       _id: string;
       title: string | null;
@@ -1090,23 +1166,55 @@ export type POST_QUERY_RESULT = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: ENTRIES_QUERY
-// Query: *[_type == "entry" && defined(slug.current)][0...12]{  _id, title, slug, description}
-export type ENTRIES_QUERY_RESULT = Array<{
-  _id: string;
-  title: string | null;
-  slug: Slug | null;
-  description: string | null;
-}>;
+// Query: *[_type in ["entry", "creature", "discipline", "technique", "path"] && defined(slug.current)]| order(coalesce(title, name) asc)[0...96]{  _id,  _type,  "title": coalesce(title, name),  slug,  description}
+export type ENTRIES_QUERY_RESULT = Array<
+  | {
+      _id: string;
+      _type: "creature";
+      title: string | null;
+      slug: Slug | null;
+      description: string | null;
+    }
+  | {
+      _id: string;
+      _type: "discipline";
+      title: string | null;
+      slug: Slug | null;
+      description: Markdown | null;
+    }
+  | {
+      _id: string;
+      _type: "entry";
+      title: string | null;
+      slug: Slug | null;
+      description: string | null;
+    }
+  | {
+      _id: string;
+      _type: "path";
+      title: string | null;
+      slug: Slug | null;
+      description: Markdown | null;
+    }
+  | {
+      _id: string;
+      _type: "technique";
+      title: string | null;
+      slug: Slug | null;
+      description: Markdown | null;
+    }
+>;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: ENTRIES_COUNT_QUERY
-// Query: count(*[_type == 'entry'])
+// Query: count(*[_type in ["entry", "creature", "discipline", "technique", "path"] && defined(slug.current)])
 export type ENTRIES_COUNT_QUERY_RESULT = number;
 
 // Source: src/sanity/lib/queries.ts
 // Variable: ENTRY_QUERY
-// Query: *[_type == "entry" && slug.current == $slug][0]{  title, cardDetails, entryBody, toc, mainImage, publishedAt, author->{name, slug}, category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}}
+// Query: *[_type == "entry" && slug.current == $slug][0]{  _type,  title,  cardDetails,  entryBody,  toc,  mainImage,  publishedAt,  author->{name, slug},  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}}
 export type ENTRY_QUERY_RESULT = {
+  _type: "entry";
   title: string | null;
   cardDetails: Array<{
     detailName?: string;
@@ -1149,6 +1257,241 @@ export type ENTRY_QUERY_RESULT = {
 } | null;
 
 // Source: src/sanity/lib/queries.ts
+// Variable: UNIFIED_ENTRY_QUERY
+// Query: *[_type in ["entry", "creature", "discipline", "technique", "path"] && slug.current == $slug][0]{  _type,  "title": coalesce(title, name),  slug,  description,  entryBody,  toc,  mainImage,  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}},  // Entry-specific fields  _type == "entry" => {    cardDetails,    publishedAt,    author->{name, slug}  },  // Creature-specific fields  _type == "creature" => {    "name": name,    physical,    interpersonal,    intellect,    psyche,    physicalShield,    psychicShield,    armorCapacity,    damage,    specialAbilities,    challengeLevel,    creatureType,    environments,    isSwarm,    isUnique  },  // Discipline-specific fields  _type == "discipline" => {    paths[]->{_id, title, slug},    techniques[]->{_id, title, latin, slug, cooldown, description}  },  // Technique-specific fields  _type == "technique" => {    latin,    cooldown  },  // Path-specific fields  _type == "path" => {    latin,    modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue }  }}
+export type UNIFIED_ENTRY_QUERY_RESULT =
+  | {
+      _type: "creature";
+      title: string | null;
+      slug: Slug | null;
+      description: string | null;
+      entryBody: Markdown | null;
+      toc: Markdown | null;
+      mainImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      category: {
+        title: string | null;
+        slug: Slug | null;
+        parent: {
+          title: string | null;
+          slug: Slug | null;
+          parent: {
+            title: string | null;
+            slug: Slug | null;
+            parent: {
+              title: string | null;
+              slug: Slug | null;
+              parent: {} | null;
+            } | null;
+          } | null;
+        } | null;
+      } | null;
+      name: string | null;
+      physical: number | null;
+      interpersonal: number | null;
+      intellect: number | null;
+      psyche: number | null;
+      physicalShield: number | null;
+      psychicShield: number | null;
+      armorCapacity: number | null;
+      damage: string | null;
+      specialAbilities: Array<{
+        name?: string;
+        description?: string;
+        _type: "ability";
+        _key: string;
+      }> | null;
+      challengeLevel:
+        | "deadly"
+        | "easy"
+        | "hard"
+        | "moderate"
+        | "trivial"
+        | null;
+      creatureType: string | null;
+      environments: Array<string> | null;
+      isSwarm: boolean | null;
+      isUnique: boolean | null;
+    }
+  | {
+      _type: "discipline";
+      title: string | null;
+      slug: Slug | null;
+      description: Markdown | null;
+      entryBody: Markdown | null;
+      toc: Markdown | null;
+      mainImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      category: {
+        title: string | null;
+        slug: Slug | null;
+        parent: {
+          title: string | null;
+          slug: Slug | null;
+          parent: {
+            title: string | null;
+            slug: Slug | null;
+            parent: {
+              title: string | null;
+              slug: Slug | null;
+              parent: {} | null;
+            } | null;
+          } | null;
+        } | null;
+      } | null;
+      paths: Array<{
+        _id: string;
+        title: string | null;
+        slug: Slug | null;
+      }> | null;
+      techniques: Array<{
+        _id: string;
+        title: string | null;
+        latin: string | null;
+        slug: Slug | null;
+        cooldown: number | null;
+        description: Markdown | null;
+      }> | null;
+    }
+  | {
+      _type: "entry";
+      title: string | null;
+      slug: Slug | null;
+      description: string | null;
+      entryBody: Markdown | null;
+      toc: Markdown | null;
+      mainImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      category: {
+        title: string | null;
+        slug: Slug | null;
+        parent: {
+          title: string | null;
+          slug: Slug | null;
+          parent: {
+            title: string | null;
+            slug: Slug | null;
+            parent: {
+              title: string | null;
+              slug: Slug | null;
+              parent: {} | null;
+            } | null;
+          } | null;
+        } | null;
+      } | null;
+      cardDetails: Array<{
+        detailName?: string;
+        detailDescription?: string;
+        _type: "cardDetail";
+        _key: string;
+      }> | null;
+      publishedAt: string | null;
+      author: {
+        name: string | null;
+        slug: Slug | null;
+      } | null;
+    }
+  | {
+      _type: "path";
+      title: string | null;
+      slug: Slug | null;
+      description: Markdown | null;
+      entryBody: Markdown | null;
+      toc: Markdown | null;
+      mainImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      category: {
+        title: string | null;
+        slug: Slug | null;
+        parent: {
+          title: string | null;
+          slug: Slug | null;
+          parent: {
+            title: string | null;
+            slug: Slug | null;
+            parent: {
+              title: string | null;
+              slug: Slug | null;
+              parent: {} | null;
+            } | null;
+          } | null;
+        } | null;
+      } | null;
+      latin: string | null;
+      modifiers: Array<{
+        modifierSubscore: {
+          _id: string;
+          title: string | null;
+          score: {
+            _id: string;
+            title: string | null;
+          } | null;
+        } | null;
+        modifierValue: number | null;
+      }> | null;
+    }
+  | {
+      _type: "technique";
+      title: string | null;
+      slug: Slug | null;
+      description: Markdown | null;
+      entryBody: Markdown | null;
+      toc: Markdown | null;
+      mainImage: {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      category: {
+        title: string | null;
+        slug: Slug | null;
+        parent: {
+          title: string | null;
+          slug: Slug | null;
+          parent: {
+            title: string | null;
+            slug: Slug | null;
+            parent: {
+              title: string | null;
+              slug: Slug | null;
+              parent: {} | null;
+            } | null;
+          } | null;
+        } | null;
+      } | null;
+      latin: string | null;
+      cooldown: number | null;
+    }
+  | null;
+
+// Source: src/sanity/lib/queries.ts
 // Variable: CATEGORIES_QUERY
 // Query: *[_type == "category" && defined(slug.current)][0...12]{  _id, title, slug, description}
 export type CATEGORIES_QUERY_RESULT = Array<{
@@ -1160,7 +1503,7 @@ export type CATEGORIES_QUERY_RESULT = Array<{
 
 // Source: src/sanity/lib/queries.ts
 // Variable: CATEGORY_QUERY
-// Query: *[_type == "category" && slug.current == $slug][0]{  _id, title, slug, description, parent->{title, slug}, "entries": *[_type == "entry" && references(^._id)]| order(_id) [0...96]{_id, title, slug, description}, "children": *[_type == "category" && references(^._id)]{_id, title, slug, description},}
+// Query: *[_type == "category" && slug.current == $slug][0]{  _id,  title,  slug,  description,  parent->{title, slug},  "entries": *[_type in ["entry", "creature", "discipline", "technique", "path"] && references(^._id)]| order(coalesce(title, name) asc) [0...96]{    _id,    _type,    "title": coalesce(title, name),    slug,    description  },  "children": *[_type == "category" && references(^._id)]{    _id,    title,    slug,    description  }}
 export type CATEGORY_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -1170,12 +1513,43 @@ export type CATEGORY_QUERY_RESULT = {
     title: string | null;
     slug: Slug | null;
   } | null;
-  entries: Array<{
-    _id: string;
-    title: string | null;
-    slug: Slug | null;
-    description: string | null;
-  }>;
+  entries: Array<
+    | {
+        _id: string;
+        _type: "creature";
+        title: string | null;
+        slug: Slug | null;
+        description: string | null;
+      }
+    | {
+        _id: string;
+        _type: "discipline";
+        title: string | null;
+        slug: Slug | null;
+        description: Markdown | null;
+      }
+    | {
+        _id: string;
+        _type: "entry";
+        title: string | null;
+        slug: Slug | null;
+        description: string | null;
+      }
+    | {
+        _id: string;
+        _type: "path";
+        title: string | null;
+        slug: Slug | null;
+        description: Markdown | null;
+      }
+    | {
+        _id: string;
+        _type: "technique";
+        title: string | null;
+        slug: Slug | null;
+        description: Markdown | null;
+      }
+  >;
   children: Array<{
     _id: string;
     title: string | null;
@@ -1214,6 +1588,108 @@ export type TIMELINE_QUERY_RESULT = Array<{
   description: string | null;
 }>;
 
+// Source: src/sanity/lib/queries.ts
+// Variable: CREATURES_QUERY
+// Query: *[_type == "creature"]| order(name asc) {  _id,  name,  slug,  description,  mainImage,  physical,  interpersonal,  intellect,  psyche,  physicalShield,  psychicShield,  armorCapacity,  damage,  specialAbilities,  challengeLevel,  creatureType,  environments,  isSwarm,  isUnique}
+export type CREATURES_QUERY_RESULT = Array<{
+  _id: string;
+  name: string | null;
+  slug: Slug | null;
+  description: string | null;
+  mainImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  physical: number | null;
+  interpersonal: number | null;
+  intellect: number | null;
+  psyche: number | null;
+  physicalShield: number | null;
+  psychicShield: number | null;
+  armorCapacity: number | null;
+  damage: string | null;
+  specialAbilities: Array<{
+    name?: string;
+    description?: string;
+    _type: "ability";
+    _key: string;
+  }> | null;
+  challengeLevel: "deadly" | "easy" | "hard" | "moderate" | "trivial" | null;
+  creatureType: string | null;
+  environments: Array<string> | null;
+  isSwarm: boolean | null;
+  isUnique: boolean | null;
+}>;
+
+// Source: src/sanity/lib/queries.ts
+// Variable: CREATURE_QUERY
+// Query: *[_type == "creature" && slug.current == $slug][0]{  _id,  name,  slug,  description,  mainImage,  physical,  interpersonal,  intellect,  psyche,  physicalShield,  psychicShield,  armorCapacity,  damage,  specialAbilities,  challengeLevel,  creatureType,  environments,  isSwarm,  isUnique,  entryBody,  toc,  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}}
+export type CREATURE_QUERY_RESULT = {
+  _id: string;
+  name: string | null;
+  slug: Slug | null;
+  description: string | null;
+  mainImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  physical: number | null;
+  interpersonal: number | null;
+  intellect: number | null;
+  psyche: number | null;
+  physicalShield: number | null;
+  psychicShield: number | null;
+  armorCapacity: number | null;
+  damage: string | null;
+  specialAbilities: Array<{
+    name?: string;
+    description?: string;
+    _type: "ability";
+    _key: string;
+  }> | null;
+  challengeLevel: "deadly" | "easy" | "hard" | "moderate" | "trivial" | null;
+  creatureType: string | null;
+  environments: Array<string> | null;
+  isSwarm: boolean | null;
+  isUnique: boolean | null;
+  entryBody: Markdown | null;
+  toc: Markdown | null;
+  category: {
+    title: string | null;
+    slug: Slug | null;
+    parent: {
+      title: string | null;
+      slug: Slug | null;
+      parent: {
+        title: string | null;
+        slug: Slug | null;
+        parent: {
+          title: string | null;
+          slug: Slug | null;
+          parent: {} | null;
+        } | null;
+      } | null;
+    } | null;
+  } | null;
+} | null;
+
+// Source: src/sanity/lib/queries.ts
+// Variable: CREATURE_FILTERS_QUERY
+// Query: {  "environments": array::unique(*[_type == "creature"].environments[]),  "creatureTypes": array::unique(*[_type == "creature"].creatureType),  "challengeLevels": ["trivial", "easy", "moderate", "hard", "deadly"]}
+export type CREATURE_FILTERS_QUERY_RESULT = {
+  environments: Array<string | null>;
+  creatureTypes: Array<string | null>;
+  challengeLevels: Array<"deadly" | "easy" | "hard" | "moderate" | "trivial">;
+};
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -1222,19 +1698,23 @@ declare module "@sanity/client" {
     '*[_type == "score"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n}': SCORES_QUERY_RESULT;
     '*[_type == "subscore"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n}': SUBSCORES_QUERY_RESULT;
     '*[_type == "additionalScores"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n}': ADDITIONAL_SCORES_QUERY_RESULT;
-    '*[_type == "path"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}': PATHS_QUERY_RESULT;
+    '*[_type == "path"]{\n  _id, title, latin, slug, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}': PATHS_QUERY_RESULT;
     '*[_type == "patronage"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, description }, description\n}': PATRONAGES_QUERY_RESULT;
-    '*[_type == "discipline"]| order(title asc){\n  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description\n}': DISCIPLINES_QUERY_RESULT;
+    '*[_type == "discipline"]| order(title asc){\n  _id, title, slug, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description\n}': DISCIPLINES_QUERY_RESULT;
     '*[_type == "gear"]{\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}': GEAR_QUERY_RESULT;
     '*[_type == "gear" && type == $slug]| order( title asc, path.title asc ){\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id, title }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n}': GEAR_PAGE_QUERY_RESULT;
-    '{\n  "cultures": *[_type == "culture"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  "paths": *[_type == "path"]{\n  _id, title, latin, entry, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n  "patronages": *[_type == "patronage"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, description }, description\n},\n  "disciplines": *[_type == "discipline"]| order(title asc){\n  _id, title, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description\n},\n  "scores": *[_type == "score"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n},\n  "subscores": *[_type == "subscore"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n},\n  "additionalScores": *[_type == "additionalScores"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n},\n  "gear": *[_type == "gear"]{\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n}': CHARACTER_MANAGER_QUERY_RESULT;
+    '{\n  "cultures": *[_type == "culture"]{\n  _id, title, entry->{ slug }, aspects, mainImage, description\n},\n  "paths": *[_type == "path"]{\n  _id, title, latin, slug, mainImage, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n  "patronages": *[_type == "patronage"]{\n  _id, title, titleLatin, epithet, epithetLatin, entry->{ slug }, mainImage, effects[]{ title, titleLatin, entry->{ slug }, description }, description\n},\n  "disciplines": *[_type == "discipline"]| order(title asc){\n  _id, title, slug, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description\n},\n  "scores": *[_type == "score"]| order(title asc){\n  _id, title, id, subscores[]->{_id, title, id, defaultValue, description}, description\n},\n  "subscores": *[_type == "subscore"]{\n  _id, title, score->{_id, title, id}, defaultValue, description\n},\n  "additionalScores": *[_type == "additionalScores"]{\n  _id, title, value, entry->{ slug }, scores[]->{ _id, title }, calculation, additionalCalculations[], description\n},\n  "gear": *[_type == "gear"]{\n  _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description\n},\n}': CHARACTER_MANAGER_QUERY_RESULT;
     '*[_type == "post" && defined(slug.current)][0...12]{\n  _id, title, slug\n}': POSTS_QUERY_RESULT;
     '*[_type == "post" && slug.current == $slug][0]{\n  title, body, mainImage, categories[]->{title, slug}\n}': POST_QUERY_RESULT;
-    '*[_type == "entry" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}': ENTRIES_QUERY_RESULT;
-    "count(*[_type == 'entry'])": ENTRIES_COUNT_QUERY_RESULT;
-    '*[_type == "entry" && slug.current == $slug][0]{\n  title, cardDetails, entryBody, toc, mainImage, publishedAt, author->{name, slug}, category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}\n}': ENTRY_QUERY_RESULT;
+    '*[_type in ["entry", "creature", "discipline", "technique", "path"] && defined(slug.current)]| order(coalesce(title, name) asc)[0...96]{\n  _id,\n  _type,\n  "title": coalesce(title, name),\n  slug,\n  description\n}': ENTRIES_QUERY_RESULT;
+    'count(*[_type in ["entry", "creature", "discipline", "technique", "path"] && defined(slug.current)])': ENTRIES_COUNT_QUERY_RESULT;
+    '*[_type == "entry" && slug.current == $slug][0]{\n  _type,\n  title,\n  cardDetails,\n  entryBody,\n  toc,\n  mainImage,\n  publishedAt,\n  author->{name, slug},\n  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}\n}': ENTRY_QUERY_RESULT;
+    '*[_type in ["entry", "creature", "discipline", "technique", "path"] && slug.current == $slug][0]{\n  _type,\n  "title": coalesce(title, name),\n  slug,\n  description,\n  entryBody,\n  toc,\n  mainImage,\n  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}},\n\n  // Entry-specific fields\n  _type == "entry" => {\n    cardDetails,\n    publishedAt,\n    author->{name, slug}\n  },\n\n  // Creature-specific fields\n  _type == "creature" => {\n    "name": name,\n    physical,\n    interpersonal,\n    intellect,\n    psyche,\n    physicalShield,\n    psychicShield,\n    armorCapacity,\n    damage,\n    specialAbilities,\n    challengeLevel,\n    creatureType,\n    environments,\n    isSwarm,\n    isUnique\n  },\n\n  // Discipline-specific fields\n  _type == "discipline" => {\n    paths[]->{_id, title, slug},\n    techniques[]->{_id, title, latin, slug, cooldown, description}\n  },\n\n  // Technique-specific fields\n  _type == "technique" => {\n    latin,\n    cooldown\n  },\n\n  // Path-specific fields\n  _type == "path" => {\n    latin,\n    modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue }\n  }\n}': UNIFIED_ENTRY_QUERY_RESULT;
     '*[_type == "category" && defined(slug.current)][0...12]{\n  _id, title, slug, description\n}': CATEGORIES_QUERY_RESULT;
-    '*[_type == "category" && slug.current == $slug][0]{\n  _id, title, slug, description, parent->{title, slug}, "entries": *[_type == "entry" && references(^._id)]| order(_id) [0...96]{_id, title, slug, description}, "children": *[_type == "category" && references(^._id)]{_id, title, slug, description},\n}': CATEGORY_QUERY_RESULT;
+    '*[_type == "category" && slug.current == $slug][0]{\n  _id,\n  title,\n  slug,\n  description,\n  parent->{title, slug},\n  "entries": *[_type in ["entry", "creature", "discipline", "technique", "path"] && references(^._id)]| order(coalesce(title, name) asc) [0...96]{\n    _id,\n    _type,\n    "title": coalesce(title, name),\n    slug,\n    description\n  },\n  "children": *[_type == "category" && references(^._id)]{\n    _id,\n    title,\n    slug,\n    description\n  }\n}': CATEGORY_QUERY_RESULT;
     '*[_type == "timeline"]| order(year desc) {\n  _id, title, URL, year, major, icon, description\n}': TIMELINE_QUERY_RESULT;
+    '*[_type == "creature"]| order(name asc) {\n  _id,\n  name,\n  slug,\n  description,\n  mainImage,\n  physical,\n  interpersonal,\n  intellect,\n  psyche,\n  physicalShield,\n  psychicShield,\n  armorCapacity,\n  damage,\n  specialAbilities,\n  challengeLevel,\n  creatureType,\n  environments,\n  isSwarm,\n  isUnique\n}': CREATURES_QUERY_RESULT;
+    '*[_type == "creature" && slug.current == $slug][0]{\n  _id,\n  name,\n  slug,\n  description,\n  mainImage,\n  physical,\n  interpersonal,\n  intellect,\n  psyche,\n  physicalShield,\n  psychicShield,\n  armorCapacity,\n  damage,\n  specialAbilities,\n  challengeLevel,\n  creatureType,\n  environments,\n  isSwarm,\n  isUnique,\n  entryBody,\n  toc,\n  category->{title, slug, parent->{title, slug, parent->{title, slug, parent->{title, slug, parent->{}}}}}\n}': CREATURE_QUERY_RESULT;
+    '{\n  "environments": array::unique(*[_type == "creature"].environments[]),\n  "creatureTypes": array::unique(*[_type == "creature"].creatureType),\n  "challengeLevels": ["trivial", "easy", "moderate", "hard", "deadly"]\n}': CREATURE_FILTERS_QUERY_RESULT;
   }
 }
