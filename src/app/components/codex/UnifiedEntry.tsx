@@ -201,6 +201,7 @@ function CreatureSidebar({
 	entry: Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'creature' }>;
 }) {
 	const challengeLevelColors: Record<string, string> = {
+		harmless: 'text-stone-dark',
 		trivial: 'text-stone',
 		easy: 'text-laurel',
 		moderate: 'text-gold',

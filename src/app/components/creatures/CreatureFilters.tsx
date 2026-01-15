@@ -54,6 +54,7 @@ const CreatureFilters = ({
 	};
 
 	const challengeLevelLabels: Record<string, string> = {
+		harmless: 'Harmless',
 		trivial: 'Trivial',
 		easy: 'Easy',
 		moderate: 'Moderate',

@@ -20,6 +20,7 @@ const displayScore = (value: number | null | undefined): string => {
 
 const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
 	const challengeLevelColors: Record<string, string> = {
+		harmless: 'bg-stone/10 text-stone-dark',
 		trivial: 'bg-stone/20 text-stone',
 		easy: 'bg-laurel/20 text-laurel',
 		moderate: 'bg-gold/20 text-gold',
