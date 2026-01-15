@@ -113,7 +113,7 @@ const Section = ({
 								timeout={100}
 								classNames='fade'>
 								<div className={clsx(
-									"z-10 absolute bottom-[10px] transition duration-300 ease-in",
+									"bg-white z-10 absolute bottom-[10px] transition duration-300 ease-in",
 									{ '-left-[74px]': !nextExpanded },
 									{ '-left-[23px]': nextExpanded },
 								)}>
