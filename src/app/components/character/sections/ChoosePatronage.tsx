@@ -103,8 +103,8 @@ const ChoosePatronage = ({
 							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
 							errorMessage="Please select a patronage."
 							variant="bordered"
-							radius="sm"
-							label="Path"
+							radius="none"
+							label="Patronage"
 							placeholder="Select a Patron"
 							className="w-96 mt-8"
 							onChange={(event) => handleSelectChange(event)}>

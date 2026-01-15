@@ -106,10 +106,10 @@ const ChooseAnimalCompanion = ({
 						For more information, see <ExternalLink href="https://atom-magic.com/codex/Cultures" name="Cultures" />
 					</p>
 					<div className="m-auto">
-						<div className="grid grid-cols-3 gap-4 mt-8 mb-4">
+						<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 mb-4">
 							<Select
 								variant="bordered"
-								radius="sm"
+								radius="none"
 								label="Animal Family"
 								placeholder="Select a Family"
 								onChange={(event) => handleSelectOneChange(event)}>
@@ -124,7 +124,7 @@ const ChooseAnimalCompanion = ({
 							<Select
 								isDisabled={selectedFamily.length === 0 ? true : false}
 								variant="bordered"
-								radius="sm"
+								radius="none"
 								label="Animal"
 								placeholder="Select an Animal"
 								onChange={(event) => handleSelectTwoChange(event)}>
@@ -137,13 +137,14 @@ const ChooseAnimalCompanion = ({
 								type="text"
 								label="Name"
 								variant="bordered"
-								radius="sm"
+								radius="none"
 								placeholder="Enter Animal Name"
 								onChange={(event) => handleInput(event)} />
 						</div>
 						<Textarea
 							isDisabled={animalId ? false : true }
 							variant="bordered"
+							radius="none"
 							label="Details"
 							labelPlacement="inside"
 							placeholder="Enter Animal Companion Details"

@@ -326,8 +326,7 @@ const Sections = ({
 				variant="dual"
 				clickCheck={setClickCheck}
 				expandFunction={() => { return; }}>
-				<WrapUp
-					buttonFunction={() => { return; }} />
+				<WrapUp />
 			</Section>
 		</div>
 	);
