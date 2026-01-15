@@ -250,12 +250,6 @@ function CreatureSidebar({
 							{entry.health}
 						</span>
 					)}
-					{entry.damage && (
-						<span className="flex items-center gap-1">
-							<Icon path={mdiSword} size={0.5} className="text-bronze" />
-							{entry.damage}
-						</span>
-					)}
 					{entry.physicalShield != null && entry.physicalShield > 0 && (
 						<span className="flex items-center gap-1">
 							<Icon path={mdiShield} size={0.5} className="text-stone" />
@@ -270,6 +264,26 @@ function CreatureSidebar({
 					)}
 				</dd>
 			</div>
+
+			{/* Attacks */}
+			{entry.attacks && entry.attacks.length > 0 && (
+				<div className="flex flex-col py-2">
+					<dt className="text-stone text-xs uppercase tracking-wider mb-1">
+						Attacks
+					</dt>
+					<dd className="space-y-1">
+						{entry.attacks.map((attack) => (
+							<div key={attack._key} className="flex items-center gap-2 text-black">
+								<Icon path={mdiSword} size={0.5} className="text-bronze" />
+								<span className="font-semibold">{attack.name}</span>
+								{attack.damage && (
+									<span className="text-stone">({attack.damage})</span>
+								)}
+							</div>
+						))}
+					</dd>
+				</div>
+			)}
 
 			{/* Challenge Level */}
 			{entry.challengeLevel && (
