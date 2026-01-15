@@ -42,3 +42,4 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] Character resume from browser storage
 - [x] Creature roller with filtering
 - [x] Unified entry system (creatures, disciplines, techniques, paths in Codex)
+- [x] Print stylesheet for character sheet
