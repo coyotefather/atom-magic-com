@@ -1,11 +1,15 @@
 'use client';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import {
 	mdiArrowDownBoldCircleOutline,
 	mdiUploadCircleOutline,
 	mdiDiceMultiple,
+	mdiFileUploadOutline,
 } from '@mdi/js';
+import { loadCharacter } from '@/lib/slices/characterSlice';
+import { importCharacterFromFile } from '@/lib/characterPersistence';
 
 interface CharacterOptionCardProps {
 	title: string;
@@ -48,10 +52,15 @@ const CharacterOptionCard = ({
 
 const CharacterOptions = ({
 	buttonFunction,
+	onImportSuccess,
 }: {
 	buttonFunction: () => void;
+	onImportSuccess?: () => void;
 }) => {
 	const bottomRef = useRef<null | HTMLDivElement>(null);
+	const fileInputRef = useRef<HTMLInputElement>(null);
+	const dispatch = useDispatch();
+	const [importError, setImportError] = useState<string | null>(null);
 
 	const scrollToBottom = () => {
 		if (bottomRef) {
@@ -80,6 +89,36 @@ const CharacterOptions = ({
 		scrollToBottom();
 	};
 
+	const handleImportClick = () => {
+		setImportError(null);
+		fileInputRef.current?.click();
+	};
+
+	const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (!file) return;
+
+		try {
+			const character = await importCharacterFromFile(file);
+			dispatch(loadCharacter(character));
+			setImportError(null);
+
+			// Notify parent and scroll
+			if (onImportSuccess) {
+				onImportSuccess();
+			}
+			buttonFunction();
+			scrollToBottom();
+		} catch (err) {
+			setImportError(err instanceof Error ? err.message : 'Failed to import character');
+		}
+
+		// Reset file input so same file can be selected again
+		if (fileInputRef.current) {
+			fileInputRef.current.value = '';
+		}
+	};
+
 	return (
 		<section className="bg-parchment py-8 md:py-12">
 			<div className="container px-6 md:px-8">
@@ -92,7 +131,7 @@ const CharacterOptions = ({
 					</p>
 				</div>
 
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
 					<CharacterOptionCard
 						title="New Character"
 						description="Build a practitioner from scratch, step by step."
@@ -108,6 +147,13 @@ const CharacterOptions = ({
 						onClick={handleManageClick}
 					/>
 					<CharacterOptionCard
+						title="Import Character"
+						description="Load a character from a .solum file."
+						icon={mdiFileUploadOutline}
+						buttonText="Import"
+						onClick={handleImportClick}
+					/>
+					<CharacterOptionCard
 						title="Generate Character"
 						description="Roll the dice and let fate guide your creation."
 						icon={mdiDiceMultiple}
@@ -115,6 +161,22 @@ const CharacterOptions = ({
 						onClick={handleGenerateClick}
 					/>
 				</div>
+
+				{/* Hidden file input */}
+				<input
+					ref={fileInputRef}
+					type="file"
+					accept=".solum,.json"
+					onChange={handleFileSelect}
+					className="hidden"
+				/>
+
+				{/* Error message */}
+				{importError && (
+					<div className="mt-6 max-w-md mx-auto p-4 bg-oxblood/10 border border-oxblood text-oxblood text-center text-sm">
+						{importError}
+					</div>
+				)}
 			</div>
 			<div ref={bottomRef}></div>
 		</section>
