@@ -216,6 +216,7 @@ export const creatureType = defineType({
 			group: 'tags',
 			options: {
 				list: [
+					{ title: 'Harmless', value: 'harmless' },
 					{ title: 'Trivial', value: 'trivial' },
 					{ title: 'Easy', value: 'easy' },
 					{ title: 'Moderate', value: 'moderate' },
