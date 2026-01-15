@@ -119,14 +119,14 @@ const ManageGear = ({
 					<div className="m-auto mt-4">
 						<div className={clsx(
 							"inline-block",
-							{"border-2 rounded-full border-danger": incompleteFields && incompleteFields !== "init"},
+							{"border-2 border-danger": incompleteFields && incompleteFields !== "init"},
 						)}>
 							<FunctionButton
 								isDisabled={detailsUpdated}
 								buttonFunction={handleClick}
 								buttonIcon={mdiDiceMultiple}
 								iconOnly={false}
-								variant="secondary">Roll Wealth</FunctionButton>
+								variant="primary">Roll Wealth</FunctionButton>
 						</div>
 						<div className={clsx(
 							"text-tiny text-danger mt-2",

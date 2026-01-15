@@ -122,14 +122,14 @@ const ManageGear = ({
 					<div className="m-auto mt-4">
 						<div className={clsx(
 							"inline-flex gap-2",
-							{"border-2 rounded-full border-danger": incompleteFields && incompleteFields !== "init" && !rolledGear},
+							{"border-2 border-danger": incompleteFields && incompleteFields !== "init" && !rolledGear},
 						)}>
 							<FunctionButton
 								isDisabled={!hasValidOptions()}
 								buttonFunction={handleRoll}
 								buttonIcon={mdiDiceMultiple}
 								iconOnly={false}
-								variant="secondary">
+								variant="primary">
 								{rolledGear ? 'Roll Again' : 'Roll Gear'}
 							</FunctionButton>
 						</div>

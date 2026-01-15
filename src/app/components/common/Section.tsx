@@ -117,6 +117,8 @@ const Section = ({
 									{ '-left-[74px]': !nextExpanded },
 									{ '-left-[23px]': nextExpanded },
 								)}>
+									{/* White background to cover section border line */}
+									<div className="absolute -top-2 left-1/2 -translate-x-1/2 w-[calc(100%+16px)] h-4 bg-white" />
 									<Button
 										ref={buttonRef}
 										onClick={handleClick}
@@ -126,7 +128,7 @@ const Section = ({
 										endContent={buttonGraphic}
 										isDisabled={nextExpanded}
 										disableRipple={true}
-										className={clsx("font-extrabold",
+										className={clsx("font-extrabold relative z-10 marcellus",
 											{
 												'uppercase tracking-widest px-6 py-2 bg-oxblood text-white border-2 border-oxblood hover:bg-oxblood-dark': nextExpanded === false
 											},

@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Section from '@/app/components/common/Section';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import CharacterOptions from '@/app/components/character/sections/CharacterOptions';
@@ -16,6 +16,7 @@ import ChooseAnimalCompanion from '@/app/components/character/sections/ChooseAni
 import WrapUp from '@/app/components/character/sections/WrapUp';
 import ProgressIndicator from '@/app/components/character/ProgressIndicator';
 import CharacterHero from '@/app/components/character/CharacterHero';
+import CharacterSheet from '@/app/components/character/CharacterSheet';
 import { useAppSelector } from '@/lib/hooks';
 import { useCharacterPersistence } from '@/lib/hooks/useCharacterPersistence';
 import { useCharacterValidation } from '@/lib/hooks/useCharacterValidation';
@@ -94,6 +95,25 @@ const Sections = ({
 		setShowChooseAnimalCompanion(true);
 		setShowWrapUp(true);
 	};
+
+	// Expand sections when a character is loaded from storage
+	useEffect(() => {
+		if (character.loaded) {
+			// Expand sections based on character progress
+			if (character.name) setShowChooseCulture(true);
+			if (character.culture) setShowChoosePath(true);
+			if (character.path) setShowChoosePatronage(true);
+			if (character.patronage) setShowAdjustScoresAndScores(true);
+			if (character.scores.length > 0) setShowDisciplinesAndTechniques(true);
+			if (character.disciplines.length > 0) setShowManageGear(true);
+			if (character.gear.length > 0) setShowManageWealth(true);
+			if (character.wealth.silver > 0) setShowChooseAnimalCompanion(true);
+			// Show wrap-up if character is substantially complete
+			if (character.gear.length > 0 && character.wealth.silver > 0) {
+				setShowWrapUp(true);
+			}
+		}
+	}, [character.loaded]);
 
 	let modifiers: Modifiers | undefined = { path: [], gear: [] };
 	paths.map( (path) => {
@@ -328,6 +348,14 @@ const Sections = ({
 				expandFunction={() => { return; }}>
 				<WrapUp />
 			</Section>
+
+			{/* Print-only character sheet */}
+			<CharacterSheet
+				cultures={cultures}
+				paths={paths}
+				patronages={patronages}
+				disciplines={disciplines}
+			/>
 		</div>
 	);
 };
