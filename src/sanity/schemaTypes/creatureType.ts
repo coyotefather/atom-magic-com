@@ -141,11 +141,38 @@ export const creatureType = defineType({
 			group: 'combat',
 		}),
 		defineField({
-			name: 'damage',
-			title: 'Damage',
-			description: 'e.g., "2d6 + 3" or "1d8"',
-			type: 'string',
+			name: 'attacks',
+			title: 'Attacks',
+			type: 'array',
 			group: 'combat',
+			of: [
+				{
+					name: 'attack',
+					title: 'Attack',
+					type: 'object',
+					fields: [
+						{
+							name: 'name',
+							title: 'Name',
+							type: 'string',
+							description: 'e.g., "Claw", "Bite", "Tail Swipe"',
+							validation: (Rule: any) => Rule.required(),
+						},
+						{
+							name: 'damage',
+							title: 'Damage',
+							type: 'string',
+							description: 'e.g., "2d6 + 3" or "1d8"',
+						},
+					],
+					preview: {
+						select: {
+							title: 'name',
+							subtitle: 'damage',
+						},
+					},
+				},
+			],
 		}),
 		defineField({
 			name: 'specialAbilities',

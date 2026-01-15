@@ -121,12 +121,6 @@ const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
 							<span>{creature.health}</span>
 						</div>
 					)}
-					{creature.damage && (
-						<div className="flex items-center gap-1">
-							<Icon path={mdiSword} size={0.625} className="text-bronze" />
-							<span>{creature.damage}</span>
-						</div>
-					)}
 					{creature.physicalShield != null && creature.physicalShield > 0 && (
 						<div className="flex items-center gap-1">
 							<Icon path={mdiShield} size={0.625} className="text-stone" />
@@ -150,6 +144,29 @@ const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
 						</div>
 					)}
 				</div>
+
+				{/* Attacks */}
+				{creature.attacks && creature.attacks.length > 0 && (
+					<div className="mb-4">
+						<h4 className="text-xs text-stone uppercase tracking-wider mb-2">
+							Attacks
+						</h4>
+						<div className="space-y-1">
+							{creature.attacks.map((attack) => (
+								<div
+									key={attack._key}
+									className="flex items-center gap-2 text-sm"
+								>
+									<Icon path={mdiSword} size={0.5} className="text-bronze" />
+									<span className="font-semibold">{attack.name}</span>
+									{attack.damage && (
+										<span className="text-stone">({attack.damage})</span>
+									)}
+								</div>
+							))}
+						</div>
+					</div>
+				)}
 
 				{/* Special abilities */}
 				{creature.specialAbilities && creature.specialAbilities.length > 0 && (
