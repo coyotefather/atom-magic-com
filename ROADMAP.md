@@ -15,7 +15,7 @@ Feature ideas and improvements for the Atom Magic website.
 ## New Utility Tools
 
 ### For players
-- [ ] **Dice roller** - Quick dice roller with presets for common rolls (d20, 2d6, etc.) - useful during play
+- [x] **Dice roller** - Quick dice roller with presets for common rolls (d20, 2d6, etc.) - useful during play
 - [ ] **Quick reference panel** - Collapsible sidebar with commonly-needed rules (combat flow, damage types, etc.)
 
 ### For GMs (Dominus Ludi)
@@ -43,3 +43,4 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] Creature roller with filtering
 - [x] Unified entry system (creatures, disciplines, techniques, paths in Codex)
 - [x] Print stylesheet for character sheet
+- [x] Dice roller with animation and history
