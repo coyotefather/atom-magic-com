@@ -17,8 +17,14 @@ const Footer = () => {
 	const mainLinks = [
 		{ href: '/codex', name: 'Codex' },
 		{ href: '/character', name: 'Character Manager' },
-		{ href: '/creatures', name: 'Creature Roller' },
 		{ href: '/vorago', name: 'Vorago' },
+	];
+
+	const toolLinks = [
+		{ href: '/tools', name: 'All Tools' },
+		{ href: '/dice', name: 'Dice Roller' },
+		{ href: '/creatures', name: 'Creature Roller' },
+		{ href: '/quick-reference', name: 'Quick Reference' },
 	];
 
 	const resourceLinks = [
@@ -43,7 +49,7 @@ const Footer = () => {
 			<div className="h-1 bg-gold" />
 
 			<div className="container px-6 md:px-8 py-12">
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
 					{/* Brand column */}
 					<div className="lg:col-span-1">
 						<Link href="/" className="inline-block mb-4">
@@ -83,6 +89,30 @@ const Footer = () => {
 						</h3>
 						<ul className="space-y-2">
 							{mainLinks.map((link) => (
+								<li key={link.href}>
+									<Link
+										href={link.href}
+										className={`text-sm transition-colors no-underline ${
+											isActive(link.href)
+												? 'text-gold'
+												: 'text-stone-light hover:text-gold'
+										}`}
+										aria-current={isActive(link.href) ? 'page' : undefined}
+									>
+										{link.name}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</nav>
+
+					{/* Tool links */}
+					<nav aria-label="Tools">
+						<h3 className="marcellus text-sm uppercase tracking-wider text-gold mb-4">
+							Tools
+						</h3>
+						<ul className="space-y-2">
+							{toolLinks.map((link) => (
 								<li key={link.href}>
 									<Link
 										href={link.href}
