@@ -7,10 +7,12 @@ Feature ideas and improvements for the Atom Magic website.
 ### Quick wins
 - [x] **Print stylesheet** - A dedicated print layout that formats the character as a proper character sheet
 - [x] **Multiple characters** - Let users save/manage multiple characters in browser storage, not just one
-- [ ] **Character summary card** - A compact view showing key stats at a glance
+- [x] **Character summary card** - A compact view showing key stats at a glance (shields, armor, disciplines)
 
 ### Bigger features
-- [ ] **Character generator** - Randomly generate a complete character with directed options:
+- [ ] **Character generator** - Randomly generate characters with easy/advanced modes:
+  - **Easy mode** (NPC generator): Quick random generation for throwaway NPCs
+  - **Advanced mode**: Full control with lock/randomize options for each choice
   - Lock specific choices (e.g., "I want a Theurgist" or "I want Spiranos culture") and randomize the rest
   - Presets for common archetypes (battle mage, healer, rogue, etc.)
   - Option to generate backstory hooks based on culture/path/patronage
@@ -26,7 +28,6 @@ Feature ideas and improvements for the Atom Magic website.
 
 ### For GMs (Dominus Ludi)
 - [ ] **Encounter builder** - Select creatures from the creature roller, set quantities, calculate total threat
-- [ ] **NPC quick generator** - Lightweight version of character manager for throwaway NPCs
 - [x] **Loot/treasure roller** - Random item generation tables
 
 ### Session Tools
@@ -39,7 +40,7 @@ Feature ideas and improvements for the Atom Magic website.
 
 ## Site-wide
 
-- [ ] **Dark mode toggle** - The color palette would work well inverted (parchment to dark, etc.)
+- [x] **Dark mode toggle** - The color palette inverted for comfortable nighttime use
 - [ ] **PWA support** - Offline access to Codex entries would be valuable for sessions without reliable internet
 - [ ] **Bookmarks** - Let users save favorite Codex entries
 
@@ -62,3 +63,5 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] Tools hub page and navigation updates
 - [x] Loot/treasure roller with weapons, armor, items, and coins
 - [x] Multiple characters support with roster management
+- [x] Character summary cards with shield/armor/discipline stats in roster view
+- [x] Dark mode toggle with theme persistence

@@ -12,6 +12,13 @@ export interface CharacterSummary {
 	name: string;
 	culture: string;
 	path: string;
+	patronage: string;
+	physicalShield: number;
+	psychicShield: number;
+	armorCapacity: number;
+	disciplineCount: number;
+	techniqueCount: number;
+	isComplete: boolean;
 	lastModified: string;
 }
 
@@ -114,6 +121,33 @@ export const saveCharacterById = (id: string, character: CharacterState): void =
 	try {
 		localStorage.setItem(CHARACTER_PREFIX + id, JSON.stringify(character));
 
+		// Calculate shield values
+		const physicalScore = character.scores.find(s => s.title === 'Physical');
+		const psycheScore = character.scores.find(s => s.title === 'Psyche');
+		const physicalAvg = physicalScore?.subscores?.length
+			? Math.round(physicalScore.subscores.reduce((sum, sub) => sum + (sub.value || 0), 0) / physicalScore.subscores.length)
+			: 0;
+		const psycheAvg = psycheScore?.subscores?.length
+			? Math.round(psycheScore.subscores.reduce((sum, sub) => sum + (sub.value || 0), 0) / psycheScore.subscores.length)
+			: 0;
+
+		// Get gear bonuses
+		const armor = character.gear.find(g => g.type === 'armor');
+		const enhancement = armor?.enhancement;
+		const physicalShieldBonus = (armor?.physicalShieldBonus || 0) + (enhancement?.physicalShieldBonus || 0);
+		const psychicShieldBonus = (armor?.psychicShieldBonus || 0) + (enhancement?.psychicShieldBonus || 0);
+
+		// Check if character is complete (has all major sections filled)
+		const isComplete = Boolean(
+			character.name &&
+			character.culture &&
+			character.path &&
+			character.patronage &&
+			character.disciplines.length > 0 &&
+			character.gear.length > 0 &&
+			character.wealth.silver > 0
+		);
+
 		// Update roster summary
 		const roster = getRoster();
 		const summaryIndex = roster.characters.findIndex((c) => c.id === id);
@@ -122,6 +156,13 @@ export const saveCharacterById = (id: string, character: CharacterState): void =
 			name: character.name || 'Unnamed',
 			culture: character.culture || '',
 			path: character.path || '',
+			patronage: character.patronage || '',
+			physicalShield: physicalAvg + physicalShieldBonus,
+			psychicShield: psycheAvg + psychicShieldBonus,
+			armorCapacity: armor?.capacity || 0,
+			disciplineCount: character.disciplines.length,
+			techniqueCount: character.techniques.length,
+			isComplete,
 			lastModified: new Date().toISOString(),
 		};
 

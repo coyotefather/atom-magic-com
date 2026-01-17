@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Nav from '@/app/components/common/Nav';
+import ThemeToggle from '@/app/components/common/ThemeToggle';
 import { NAVIGATION_LINKS } from '@/lib/global-data';
 
 const NavBar = () => {
@@ -16,10 +17,13 @@ const NavBar = () => {
 					priority
 					/>
 			</Link>
-			<Nav
-				items={NAVIGATION_LINKS}
-				extended={false}
-				navClasses="inline-block pl-2 pr-2" />
+			<div className="flex items-center">
+				<Nav
+					items={NAVIGATION_LINKS}
+					extended={false}
+					navClasses="inline-block pl-2 pr-2" />
+				<ThemeToggle />
+			</div>
 		</header>
 	);
 };
