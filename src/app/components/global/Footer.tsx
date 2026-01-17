@@ -24,6 +24,7 @@ const Footer = () => {
 		{ href: '/tools', name: 'All Tools' },
 		{ href: '/dice', name: 'Dice Roller' },
 		{ href: '/creatures', name: 'Creature Roller' },
+		{ href: '/loot', name: 'Loot Roller' },
 		{ href: '/quick-reference', name: 'Quick Reference' },
 	];
 

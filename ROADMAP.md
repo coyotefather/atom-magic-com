@@ -6,7 +6,7 @@ Feature ideas and improvements for the Atom Magic website.
 
 ### Quick wins
 - [x] **Print stylesheet** - A dedicated print layout that formats the character as a proper character sheet
-- [ ] **Multiple characters** - Let users save/manage multiple characters in browser storage, not just one
+- [x] **Multiple characters** - Let users save/manage multiple characters in browser storage, not just one
 - [ ] **Character summary card** - A compact view showing key stats at a glance
 
 ### Bigger features
@@ -21,7 +21,7 @@ Feature ideas and improvements for the Atom Magic website.
 ### For GMs (Dominus Ludi)
 - [ ] **Encounter builder** - Select creatures from the creature roller, set quantities, calculate total threat
 - [ ] **NPC quick generator** - Lightweight version of character manager for throwaway NPCs
-- [ ] **Loot/treasure roller** - Random item generation tables
+- [x] **Loot/treasure roller** - Random item generation tables
 
 ### Session Tools
 - [ ] **Adventure log** - Track rolls, character actions, and story events during play. Could include:
@@ -54,3 +54,5 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] Dice roller with animation and history
 - [x] Quick reference panel with accordion sections
 - [x] Tools hub page and navigation updates
+- [x] Loot/treasure roller with weapons, armor, items, and coins
+- [x] Multiple characters support with roster management

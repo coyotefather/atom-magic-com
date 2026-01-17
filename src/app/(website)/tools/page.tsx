@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Icon from '@mdi/react';
-import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiArrowRight } from '@mdi/js';
+import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiArrowRight } from '@mdi/js';
 
 export const metadata = {
 	title: 'Tools | Atom Magic',
@@ -21,6 +21,13 @@ const tools = [
 		href: '/creatures',
 		icon: mdiDiceMultiple,
 		color: 'oxblood',
+	},
+	{
+		name: 'Loot Roller',
+		description: 'Generate random treasure for your sessions. Roll for weapons, armor, coins, and miscellaneous items.',
+		href: '/loot',
+		icon: mdiTreasureChest,
+		color: 'bronze',
 	},
 	{
 		name: 'Quick Reference',
@@ -46,6 +53,11 @@ const colorClasses: Record<string, { bg: string; border: string; icon: string }>
 		bg: 'bg-laurel/10',
 		border: 'border-laurel',
 		icon: 'text-laurel',
+	},
+	bronze: {
+		bg: 'bg-bronze/10',
+		border: 'border-bronze',
+		icon: 'text-bronze',
 	},
 };
 
