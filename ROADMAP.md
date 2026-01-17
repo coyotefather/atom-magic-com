@@ -10,13 +10,11 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Character summary card** - A compact view showing key stats at a glance (shields, armor, disciplines)
 
 ### Bigger features
-- [ ] **Character generator** - Randomly generate characters with easy/advanced modes:
+- [x] **Character generator** - Randomly generate characters with easy/advanced modes:
   - **Easy mode** (NPC generator): Quick random generation for throwaway NPCs
   - **Advanced mode**: Full control with lock/randomize options for each choice
   - Lock specific choices (e.g., "I want a Theurgist" or "I want Spiranos culture") and randomize the rest
   - Presets for common archetypes (battle mage, healer, rogue, etc.)
-  - Option to generate backstory hooks based on culture/path/patronage
-  - "Surprise me" mode for fully random generation
   - Review and tweak results before saving
 - [ ] **Shareable characters** - Generate a URL or QR code to share a character (could encode in URL params or use a simple backend)
 
@@ -65,3 +63,4 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] Multiple characters support with roster management
 - [x] Character summary cards with shield/armor/discipline stats in roster view
 - [x] Dark mode toggle with theme persistence
+- [x] Character generator with easy/advanced modes and archetype presets
