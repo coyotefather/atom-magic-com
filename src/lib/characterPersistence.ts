@@ -1,8 +1,24 @@
 import { CharacterState } from './slices/characterSlice';
 
 const STORAGE_KEY = 'atom-magic-character';
+const ROSTER_KEY = 'atom-magic-roster';
+const CHARACTER_PREFIX = 'atom-magic-character-';
 const FILE_EXTENSION = '.solum';
 const FILE_VERSION = 1;
+
+// Roster types
+export interface CharacterSummary {
+	id: string;
+	name: string;
+	culture: string;
+	path: string;
+	lastModified: string;
+}
+
+export interface CharacterRoster {
+	activeCharacterId: string | null;
+	characters: CharacterSummary[];
+}
 
 export const saveCharacterToStorage = (character: CharacterState): void => {
 	if (typeof window === 'undefined') return;
@@ -45,6 +61,149 @@ export const hasStoredCharacter = (): boolean => {
 		return localStorage.getItem(STORAGE_KEY) !== null;
 	} catch {
 		return false;
+	}
+};
+
+// ============================================
+// Multi-Character Roster Functions
+// ============================================
+
+export const getRoster = (): CharacterRoster => {
+	if (typeof window === 'undefined') {
+		return { activeCharacterId: null, characters: [] };
+	}
+
+	try {
+		const serialized = localStorage.getItem(ROSTER_KEY);
+		if (!serialized) {
+			return { activeCharacterId: null, characters: [] };
+		}
+		return JSON.parse(serialized) as CharacterRoster;
+	} catch (err) {
+		console.error('Failed to load roster from localStorage:', err);
+		return { activeCharacterId: null, characters: [] };
+	}
+};
+
+export const saveRoster = (roster: CharacterRoster): void => {
+	if (typeof window === 'undefined') return;
+
+	try {
+		localStorage.setItem(ROSTER_KEY, JSON.stringify(roster));
+	} catch (err) {
+		console.error('Failed to save roster to localStorage:', err);
+	}
+};
+
+export const getCharacterById = (id: string): CharacterState | null => {
+	if (typeof window === 'undefined') return null;
+
+	try {
+		const serialized = localStorage.getItem(CHARACTER_PREFIX + id);
+		if (!serialized) return null;
+		return JSON.parse(serialized) as CharacterState;
+	} catch (err) {
+		console.error('Failed to load character from localStorage:', err);
+		return null;
+	}
+};
+
+export const saveCharacterById = (id: string, character: CharacterState): void => {
+	if (typeof window === 'undefined') return;
+
+	try {
+		localStorage.setItem(CHARACTER_PREFIX + id, JSON.stringify(character));
+
+		// Update roster summary
+		const roster = getRoster();
+		const summaryIndex = roster.characters.findIndex((c) => c.id === id);
+		const summary: CharacterSummary = {
+			id,
+			name: character.name || 'Unnamed',
+			culture: character.culture || '',
+			path: character.path || '',
+			lastModified: new Date().toISOString(),
+		};
+
+		if (summaryIndex >= 0) {
+			roster.characters[summaryIndex] = summary;
+		} else {
+			roster.characters.push(summary);
+		}
+
+		saveRoster(roster);
+	} catch (err) {
+		console.error('Failed to save character to localStorage:', err);
+	}
+};
+
+export const deleteCharacterById = (id: string): void => {
+	if (typeof window === 'undefined') return;
+
+	try {
+		localStorage.removeItem(CHARACTER_PREFIX + id);
+
+		// Update roster
+		const roster = getRoster();
+		roster.characters = roster.characters.filter((c) => c.id !== id);
+
+		// If this was the active character, clear it
+		if (roster.activeCharacterId === id) {
+			roster.activeCharacterId = null;
+		}
+
+		saveRoster(roster);
+	} catch (err) {
+		console.error('Failed to delete character from localStorage:', err);
+	}
+};
+
+export const setActiveCharacter = (id: string | null): void => {
+	if (typeof window === 'undefined') return;
+
+	try {
+		const roster = getRoster();
+		roster.activeCharacterId = id;
+		saveRoster(roster);
+	} catch (err) {
+		console.error('Failed to set active character:', err);
+	}
+};
+
+export const createNewCharacterId = (): string => {
+	return crypto.randomUUID();
+};
+
+/**
+ * Migrate from old single-character storage to multi-character roster
+ */
+export const migrateToMultiCharacter = (): string | null => {
+	if (typeof window === 'undefined') return null;
+
+	try {
+		// Check if already migrated
+		const roster = getRoster();
+		if (roster.characters.length > 0) {
+			return roster.activeCharacterId;
+		}
+
+		// Check for old single-character storage
+		const oldCharacter = loadCharacterFromStorage();
+		if (oldCharacter && oldCharacter.name) {
+			const id = createNewCharacterId();
+			saveCharacterById(id, oldCharacter);
+			setActiveCharacter(id);
+
+			// Optionally clear old storage (keeping for now for safety)
+			// clearCharacterFromStorage();
+
+			return id;
+		}
+
+		return null;
+	} catch (err) {
+		console.error('Failed to migrate to multi-character:', err);
+		return null;
 	}
 };
 

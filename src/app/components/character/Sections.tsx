@@ -17,6 +17,7 @@ import WrapUp from '@/app/components/character/sections/WrapUp';
 import ProgressIndicator from '@/app/components/character/ProgressIndicator';
 import CharacterHero from '@/app/components/character/CharacterHero';
 import CharacterSheet from '@/app/components/character/CharacterSheet';
+import CharacterRoster from '@/app/components/character/CharacterRoster';
 import { useAppSelector } from '@/lib/hooks';
 import { useCharacterPersistence } from '@/lib/hooks/useCharacterPersistence';
 import { useCharacterValidation } from '@/lib/hooks/useCharacterValidation';
@@ -60,7 +61,15 @@ const Sections = ({
 		gear: GEAR_QUERY_RESULT,
 	}) => {
 	const character = useAppSelector(state => state.character);
-	const { showResumePrompt, resumeCharacter, startFresh } = useCharacterPersistence();
+	const {
+		showResumePrompt,
+		resumeCharacter,
+		startFresh,
+		showRoster,
+		selectCharacter,
+		createNewCharacter,
+		showCharacterRoster,
+	} = useCharacterPersistence();
 	const {
 		basicsIncomplete,
 		cultureIncomplete,
@@ -173,7 +182,7 @@ const Sections = ({
 				/>
 			)}
 
-			{/* Resume dialog */}
+			{/* Legacy resume dialog for old single-character storage migration */}
 			{showResumePrompt && (
 				<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 					<div className="bg-white border-2 border-stone max-w-md mx-4">
@@ -205,7 +214,29 @@ const Sections = ({
 				</div>
 			)}
 
-			<Section
+			{/* Character Roster - shows when selecting/managing characters */}
+			{showRoster && !showResumePrompt && (
+				<div className="container px-6 md:px-8 py-8">
+					<CharacterRoster
+						onCharacterSelected={selectCharacter}
+						onNewCharacter={createNewCharacter}
+					/>
+				</div>
+			)}
+
+			{/* Character Editor - shows when editing a character */}
+			{!showRoster && (
+				<>
+					{/* Back to roster button */}
+					<div className="container px-6 md:px-8 pt-4">
+						<button
+							onClick={showCharacterRoster}
+							className="text-sm text-stone hover:text-gold transition-colors marcellus flex items-center gap-1"
+						>
+							← Back to Characters
+						</button>
+					</div>
+					<Section
 				expanded={true}
 				nextExpanded={true}
 				incomplete={""}
@@ -348,6 +379,8 @@ const Sections = ({
 				expandFunction={() => { return; }}>
 				<WrapUp />
 			</Section>
+				</>
+			)}
 
 			{/* Print-only character sheet */}
 			<CharacterSheet
