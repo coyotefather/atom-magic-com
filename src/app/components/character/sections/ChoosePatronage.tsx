@@ -8,7 +8,7 @@ import {Select, SelectItem} from "@heroui/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import {
 	PATRONAGES_QUERY_RESULT,
@@ -23,6 +23,7 @@ const ChoosePatronage = ({
 	}) => {
 	const detailsRef = useRef(null);
 	const dispatch = useAppDispatch();
+	const currentPatronage = useAppSelector(state => state.character.patronage);
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 	const [details, setDetails] = useState(
 		<SelectDetailExpanded
@@ -34,55 +35,68 @@ const ChoosePatronage = ({
 		</SelectDetailExpanded>
 	);
 
+	// Update details panel for a given patronage ID
+	const updateDetailsForPatronage = useCallback((patronageId: string) => {
+		if (!patronageId) return;
+
+		const cardinal = patronages.find((c) => c._id === patronageId);
+		if (cardinal != undefined && cardinal.effects) {
+			const patronageEffects = (
+				<Table
+					removeWrapper
+					aria-label={`${cardinal.title} Patronage Effects`}
+					className="mt-8">
+					<TableHeader>
+						{["Name","Description"].map((tc) => (
+							<TableColumn
+								key={tc}
+								className="bg-transparent border-b-2 pl-0">
+								{tc}
+							</TableColumn>
+						))}
+					</TableHeader>
+					<TableBody>
+						{(cardinal.effects).map((effect, index) => (
+							<TableRow key={`effect-${index}`}>
+								<TableCell className="align-top w-1/3 pl-0">
+									{effect.entry && effect.entry.slug ? <ExternalLink
+									href={`https://atom-magic.com/codex/entries/${effect.entry.slug.current}`} name={effect.title ? effect.title :""} />:effect.title}
+								</TableCell>
+								<TableCell className="pl-0 prose prose-sm">
+									<Markdown remarkPlugins={[remarkGfm]}>
+										{effect?.description ?? ""}
+									</Markdown>
+								</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+				</Table>
+			);
+			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
+			setDetails(
+				<SelectDetailExpanded
+					imagePath={""}
+					name={`${cardinal.title}, ${cardinal.epithet}`}
+					description={cardinal.description ? cardinal.description : ""}
+					disabled={false}>
+					{patronageEffects}
+				</SelectDetailExpanded>
+			);
+		}
+	}, [patronages]);
+
+	// Update details when currentPatronage changes (e.g., when loading a character)
+	useEffect(() => {
+		if (currentPatronage) {
+			updateDetailsForPatronage(currentPatronage);
+		}
+	}, [currentPatronage, updateDetailsForPatronage]);
+
 	const handleSelectChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
-		let patronageEffects = (<></>);
 		if(val !== "") {
 			dispatch(setPatronage(val));
-			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
-			let cardinal = patronages.find((cardinal) => cardinal._id === val);
-			if(cardinal != undefined && cardinal.effects) {
-				patronageEffects = (
-					<Table
-						removeWrapper
-						aria-label={`${cardinal.title} Patronage Effects`}
-						className="mt-8">
-						<TableHeader>
-							{["Name","Description"].map((tc) => (
-								<TableColumn
-									key={tc}
-									className="bg-transparent border-b-2 pl-0">
-									{tc}
-								</TableColumn>
-							))}
-						</TableHeader>
-						<TableBody>
-							{(cardinal.effects).map((effect, index) => (
-								<TableRow key={`effect-${index}`}>
-									<TableCell className="align-top w-1/3 pl-0">
-										{effect.entry && effect.entry.slug ? <ExternalLink
-										href={`https://atom-magic.com/codex/entries/${effect.entry.slug.current}`} name={effect.title ? effect.title :""} />:effect.title}
-									</TableCell>
-									<TableCell className="pl-0 prose prose-sm">
-										<Markdown remarkPlugins={[remarkGfm]}>
-											{effect?.description ?? ""}
-										</Markdown>
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				);
-				setDetails(
-					<SelectDetailExpanded
-						imagePath={""}
-						name={`${cardinal.title}, ${cardinal.epithet}`}
-						description={cardinal.description ? cardinal.description : ""}
-						disabled={false}>
-						{patronageEffects}
-					</SelectDetailExpanded>
-				);
-			}
+			updateDetailsForPatronage(val);
 		}
 	};
 
@@ -107,6 +121,7 @@ const ChoosePatronage = ({
 							label="Patronage"
 							placeholder="Select a Patron"
 							className="w-96 mt-8"
+							selectedKeys={currentPatronage ? [currentPatronage] : []}
 							onChange={(event) => handleSelectChange(event)}>
 							{patronages.map((patron) => (
 						  		<SelectItem key={patron._id}>

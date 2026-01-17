@@ -1,13 +1,13 @@
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
-import { useAppDispatch } from '@/lib/hooks'
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setCulture } from "@/lib/slices/characterSlice";
 import {Select, SelectItem} from "@heroui/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/react";
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import {
 	CULTURES_QUERY_RESULT,
@@ -21,15 +21,9 @@ const ChooseCulture = ({
 		incompleteFields: string
 	}) => {
 
-	// const cultures = await sanityFetch<CULTURES_QUERY_RESULT>({
-	// 	query: CULTURES_QUERY,
-	// });
-	// if (!cultures) {
-	// 	return notFound();
-	// }
-
 	const detailsRef = useRef(null);
 	const dispatch = useAppDispatch();
+	const currentCulture = useAppSelector(state => state.character.culture);
 
 	const [details, setDetails] = useState(
 		<SelectDetailExpanded
@@ -42,56 +36,69 @@ const ChooseCulture = ({
 	);
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 
+	// Update details panel for a given culture ID
+	const updateDetailsForCulture = useCallback((cultureId: string) => {
+		if (!cultureId) return;
+
+		const chosenCulture = cultures.find((c) => c._id === cultureId);
+		if (chosenCulture != undefined && chosenCulture.aspects !== null) {
+			const aspects = (
+				<Table
+					isCompact
+					removeWrapper
+					aria-label={`${chosenCulture.title}`}
+					className="mt-8">
+					<TableHeader>
+						{["Aspect","Description"].map((tc) => (
+							<TableColumn
+								key={tc}
+								className="bg-transparent border-b-2 pl-0">
+								{tc}
+							</TableColumn>
+						))}
+					</TableHeader>
+					<TableBody>
+						{chosenCulture.aspects.map((aspect) => (
+							<TableRow key={aspect.aspectId}>
+								<TableCell className="align-top min-w-44 pl-0">
+									<ExternalLink
+									href={`https://atom-magic.com/codex/${aspect.aspectContentSlug}`} name={aspect.aspectName ? aspect.aspectName : ""} />
+								</TableCell>
+								<TableCell className="pl-0 prose prose-sm">
+									<Markdown remarkPlugins={[remarkGfm]}>
+										{aspect.aspectDescription}
+									</Markdown>
+								</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+				</Table>
+			);
+			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
+			setDetails(
+				<SelectDetailExpanded
+					imagePath="/atom-magic-circle-black.png"
+					name={chosenCulture.title ? chosenCulture.title : ""}
+					description={chosenCulture.description ? chosenCulture.description : ""}
+					disabled={false}>
+					{aspects}
+				</SelectDetailExpanded>
+			);
+		}
+	}, [cultures]);
+
+	// Update details when currentCulture changes (e.g., when loading a character)
+	useEffect(() => {
+		if (currentCulture) {
+			updateDetailsForCulture(currentCulture);
+		}
+	}, [currentCulture, updateDetailsForCulture]);
+
 	const handleSelectChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
-		let aspects = (<></>);
 		if(val !== "") {
 			dispatch(setCulture(val));
-			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
-			let chosenCulture = cultures.find((c) => c._id === val);
-			if(chosenCulture != undefined && chosenCulture.aspects !== null) {
-				aspects = (
-					<Table
-						isCompact
-						removeWrapper
-						aria-label={`${chosenCulture.title}`}
-						className="mt-8">
-						<TableHeader>
-							{["Aspect","Description"].map((tc) => (
-								<TableColumn
-									key={tc}
-									className="bg-transparent border-b-2 pl-0">
-									{tc}
-								</TableColumn>
-							))}
-						</TableHeader>
-						<TableBody>
-							{chosenCulture.aspects.map((aspect) => (
-								<TableRow key={aspect.aspectId}>
-									<TableCell className="align-top min-w-44 pl-0">
-										<ExternalLink
-										href={`https://atom-magic.com/codex/${aspect.aspectContentSlug}`} name={aspect.aspectName ? aspect.aspectName : ""} />
-									</TableCell>
-									<TableCell className="pl-0 prose prose-sm">
-										<Markdown remarkPlugins={[remarkGfm]}>
-											{aspect.aspectDescription}
-										</Markdown>
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				);
-				setDetails(
-					<SelectDetailExpanded
-						imagePath="/atom-magic-circle-black.png"
-						name={chosenCulture.title ? chosenCulture.title : ""}
-						description={chosenCulture.description ? chosenCulture.description : ""}
-						disabled={false}>
-						{aspects}
-					</SelectDetailExpanded>
-				);
-			}
+			updateDetailsForCulture(val);
 		}
 	};
 
@@ -116,6 +123,7 @@ const ChooseCulture = ({
 							label="Culture"
 							placeholder="Select a Culture"
 							className="w-96 mt-8"
+							selectedKeys={currentCulture ? [currentCulture] : []}
 							onChange={(event) => handleSelectChange(event)}
 					  	>
 							{cultures.map((culture) => (
