@@ -35,15 +35,15 @@ const CharacterSheet = ({
 		.map(id => disciplines.find(d => d._id === id)?.title)
 		.filter(Boolean);
 
-	const techniqueNames = character.techniques
+	const techniqueData = character.techniques
 		.map(id => {
 			for (const disc of disciplines) {
 				const tech = disc.techniques?.find(t => t._id === id);
-				if (tech) return tech.title;
+				if (tech) return { title: tech.title, latin: tech.latin };
 			}
 			return null;
 		})
-		.filter(Boolean);
+		.filter(Boolean) as { title: string | null; latin: string | null }[];
 
 	// Calculate score averages and find shield values
 	const getScoreAverage = (scoreId: string) => {
@@ -185,12 +185,17 @@ const CharacterSheet = ({
 					<h2 className="text-lg font-bold border-b-2 border-black mb-3 pb-1" style={{ fontFamily: 'var(--font-marcellus)' }}>
 						Techniques
 					</h2>
-					{techniqueNames.length > 0 ? (
-						<ul className="text-sm space-y-1">
-							{techniqueNames.map((name, i) => (
-								<li key={i} className="flex items-center gap-2">
-									<span className="w-2 h-2 bg-black" />
-									{name}
+					{techniqueData.length > 0 ? (
+						<ul className="text-sm space-y-2">
+							{techniqueData.map((tech, i) => (
+								<li key={i} className="flex items-start gap-2">
+									<span className="w-2 h-2 bg-black mt-1.5 shrink-0" />
+									<div>
+										<div>{tech.title}</div>
+										{tech.latin && (
+											<div className="text-xs text-gray-500 uppercase tracking-wider" style={{ fontFamily: 'var(--font-lapideum), monospace' }}>{tech.latin}</div>
+										)}
+									</div>
 								</li>
 							))}
 						</ul>
