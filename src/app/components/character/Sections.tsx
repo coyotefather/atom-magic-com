@@ -106,19 +106,20 @@ const Sections = ({
 	};
 
 	// Expand sections when a character is loaded from storage
+	// For existing characters, show all sections so users can edit any part directly
 	useEffect(() => {
 		if (character.loaded) {
-			// Expand sections based on character progress
-			if (character.name) setShowChooseCulture(true);
-			if (character.culture) setShowChoosePath(true);
-			if (character.path) setShowChoosePatronage(true);
-			if (character.patronage) setShowAdjustScoresAndScores(true);
-			if (character.scores.length > 0) setShowDisciplinesAndTechniques(true);
-			if (character.disciplines.length > 0) setShowManageGear(true);
-			if (character.gear.length > 0) setShowManageWealth(true);
-			if (character.wealth.silver > 0) setShowChooseAnimalCompanion(true);
-			// Show wrap-up if character is substantially complete
-			if (character.gear.length > 0 && character.wealth.silver > 0) {
+			// If character has any progress, expand all sections for easy editing
+			const hasProgress = character.name || character.culture || character.path;
+			if (hasProgress) {
+				setShowChooseCulture(true);
+				setShowChoosePath(true);
+				setShowChoosePatronage(true);
+				setShowAdjustScoresAndScores(true);
+				setShowDisciplinesAndTechniques(true);
+				setShowManageGear(true);
+				setShowManageWealth(true);
+				setShowChooseAnimalCompanion(true);
 				setShowWrapUp(true);
 			}
 		}
@@ -139,18 +140,19 @@ const Sections = ({
 	// The old Sanity-based gear modifier system has been replaced
 
 	// Calculate progress for the progress indicator
+	// Scores require the section to be visible to count as complete
 	const completedSteps = useMemo(() => [
-		character.name !== '',                    // Basics
-		character.culture !== '',                 // Culture
-		character.path !== '',                    // Path
-		character.patronage !== '',               // Patronage
-		character.scores.length > 0,              // Scores
-		character.disciplines.length > 0,         // Disciplines
-		character.gear.length > 0,                // Gear
-		character.wealth.silver > 0,              // Wealth
-		character.animalCompanion.id !== '',      // Companion
-		showWrapUp                                // Finish (reached wrap up)
-	], [character, showWrapUp]);
+		character.name !== '',                                        // Basics
+		character.culture !== '',                                     // Culture
+		character.path !== '',                                        // Path
+		character.patronage !== '',                                   // Patronage
+		character.scores.length > 0 && showAdjustScoresAndScores,     // Scores (must be displayed)
+		character.disciplines.length > 0,                             // Disciplines
+		character.gear.length > 0,                                    // Gear
+		character.wealth.silver > 0,                                  // Wealth
+		character.animalCompanion.id !== '',                          // Companion
+		showWrapUp                                                    // Finish (reached wrap up)
+	], [character, showWrapUp, showAdjustScoresAndScores]);
 
 	const currentStep = useMemo(() => {
 		if (showWrapUp) return 9;
