@@ -16,12 +16,20 @@ Feature ideas and improvements for the Atom Magic website.
 
 ### For players
 - [x] **Dice roller** - Quick dice roller with presets for common rolls (d20, 2d6, etc.) - useful during play
-- [ ] **Quick reference panel** - Collapsible sidebar with commonly-needed rules (combat flow, damage types, etc.)
+- [x] **Quick reference panel** - Collapsible sidebar with commonly-needed rules (combat flow, damage types, etc.)
 
 ### For GMs (Dominus Ludi)
 - [ ] **Encounter builder** - Select creatures from the creature roller, set quantities, calculate total threat
 - [ ] **NPC quick generator** - Lightweight version of character manager for throwaway NPCs
 - [ ] **Loot/treasure roller** - Random item generation tables
+
+### Session Tools
+- [ ] **Adventure log** - Track rolls, character actions, and story events during play. Could include:
+  - Roll history with context (what the roll was for, who rolled)
+  - Character action entries ("Varro picked the lock", "Livia cast Thermal Surge")
+  - GM notes for story beats, NPC encounters, discoveries
+  - Timestamps for pacing analysis
+  - Export to session summary / "Previously on..." recap
 
 ## Site-wide
 
@@ -44,3 +52,5 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] Unified entry system (creatures, disciplines, techniques, paths in Codex)
 - [x] Print stylesheet for character sheet
 - [x] Dice roller with animation and history
+- [x] Quick reference panel with accordion sections
+- [x] Tools hub page and navigation updates
