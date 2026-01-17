@@ -22,6 +22,7 @@ const Footer = () => {
 
 	const toolLinks = [
 		{ href: '/tools', name: 'All Tools' },
+		{ href: '/generator', name: 'Character Generator' },
 		{ href: '/dice', name: 'Dice Roller' },
 		{ href: '/creatures', name: 'Creature Roller' },
 		{ href: '/loot', name: 'Loot Roller' },

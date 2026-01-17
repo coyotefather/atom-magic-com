@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Icon from '@mdi/react';
-import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiArrowRight } from '@mdi/js';
+import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight } from '@mdi/js';
 
 export const metadata = {
 	title: 'Tools | Atom Magic',
@@ -8,6 +8,13 @@ export const metadata = {
 };
 
 const tools = [
+	{
+		name: 'Character Generator',
+		description: 'Quickly generate NPCs or starting characters. Choose an archetype or lock specific choices and randomize the rest.',
+		href: '/generator',
+		icon: mdiAccountCog,
+		color: 'oxblood',
+	},
 	{
 		name: 'Dice Roller',
 		description: 'Roll dice for your sessions with support for all standard dice types, modifiers, and roll history.',
@@ -20,7 +27,7 @@ const tools = [
 		description: 'Browse and filter creatures by type, challenge level, and environment. Perfect for encounter planning.',
 		href: '/creatures',
 		icon: mdiDiceMultiple,
-		color: 'oxblood',
+		color: 'laurel',
 	},
 	{
 		name: 'Loot Roller',
@@ -34,7 +41,7 @@ const tools = [
 		description: 'Essential rules at a glance. Combat flow, damage types, conditions, and commonly-needed mechanics.',
 		href: '/quick-reference',
 		icon: mdiBookOpenPageVariant,
-		color: 'laurel',
+		color: 'stone',
 	},
 ];
 
@@ -58,6 +65,11 @@ const colorClasses: Record<string, { bg: string; border: string; icon: string }>
 		bg: 'bg-bronze/10',
 		border: 'border-bronze',
 		icon: 'text-bronze',
+	},
+	stone: {
+		bg: 'bg-stone/10',
+		border: 'border-stone',
+		icon: 'text-stone',
 	},
 };
 
