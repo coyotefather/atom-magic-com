@@ -106,6 +106,36 @@
   --color-parchment-dark: #E8E0CC;
 }
 
+/* Dark mode theme variables */
+:root {
+  /* Light mode defaults */
+  --theme-bg: #F5F0E1;
+  --theme-bg-alt: #E8E0CC;
+  --theme-bg-elevated: #FFFFF0;
+  --theme-text: #231F20;
+  --theme-text-muted: #6B6B62;
+  --theme-border: #9A9A8E;
+  --theme-border-subtle: rgba(154, 154, 142, 0.3);
+}
+
+.dark {
+  /* Dark mode overrides */
+  --theme-bg: #1A1816;
+  --theme-bg-alt: #252220;
+  --theme-bg-elevated: #2E2A27;
+  --theme-text: #E8E0CC;
+  --theme-text-muted: #9A9A8E;
+  --theme-border: #4A4642;
+  --theme-border-subtle: rgba(74, 70, 66, 0.5);
+
+  /* Adjust accent colors for dark mode visibility */
+  --color-gold: #D4AF37;
+  --color-gold-dark: #E2B944;
+  --color-brightgold: #F0CC5B;
+  --color-parchment: #2E2A27;
+  --color-parchment-dark: #252220;
+}
+
 @layer base {
   *,
   ::after,
@@ -349,13 +379,55 @@
   }
 
   body {
-    color: rgb(var(--foreground-rgb));
-    background: linear-gradient(
-        to bottom,
-        transparent,
-        rgb(var(--background-end-rgb))
-      )
-      rgb(var(--background-start-rgb));
+    color: var(--theme-text);
+    background: var(--theme-bg);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Dark mode specific overrides */
+  .dark body {
+    color: var(--theme-text);
+    background: var(--theme-bg);
+  }
+
+  .dark .bg-white {
+    background-color: var(--theme-bg-elevated);
+  }
+
+  .dark .bg-gradient {
+    background: var(--theme-bg);
+  }
+
+  .dark .bg-parchment {
+    background-color: var(--theme-bg);
+  }
+
+  .dark .bg-black {
+    background-color: var(--theme-bg-alt);
+  }
+
+  .dark .text-black {
+    color: var(--theme-text);
+  }
+
+  .dark .text-stone {
+    color: var(--theme-text-muted);
+  }
+
+  .dark .border-stone {
+    border-color: var(--theme-border);
+  }
+
+  .dark .border-stone\/30 {
+    border-color: var(--theme-border-subtle);
+  }
+
+  .dark main a {
+    color: var(--color-gold);
+  }
+
+  .dark main a:hover {
+    color: var(--color-brightgold);
   }
 
   button.gradient {

@@ -7,7 +7,6 @@ import {
 	mdiAccountEdit,
 	mdiDelete,
 	mdiFileImport,
-	mdiClockOutline,
 } from '@mdi/js';
 import {
 	getRoster,
@@ -22,6 +21,7 @@ import {
 } from '@/lib/characterPersistence';
 import { useAppDispatch } from '@/lib/hooks';
 import { loadCharacter, clearCharacter } from '@/lib/slices/characterSlice';
+import CharacterSummaryCard from './CharacterSummaryCard';
 
 interface CharacterRosterProps {
 	onCharacterSelected: (characterId: string) => void;
@@ -107,15 +107,6 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 		e.target.value = '';
 	};
 
-	const formatDate = (isoString: string) => {
-		const date = new Date(isoString);
-		return date.toLocaleDateString(undefined, {
-			month: 'short',
-			day: 'numeric',
-			year: 'numeric',
-		});
-	};
-
 	if (isLoading) {
 		return (
 			<div className="p-8 text-center">
@@ -161,41 +152,22 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 					</p>
 				</div>
 			) : (
-				<div className="space-y-2">
+				<div className="space-y-3">
 					{characters.map((char) => (
-						<div
-							key={char.id}
-							className={`flex items-center justify-between p-4 border-2 transition-colors ${
-								activeId === char.id
-									? 'border-gold bg-gold/5'
-									: 'border-stone/30 hover:border-stone'
-							}`}
-						>
-							<div className="flex-1 min-w-0">
-								<div className="flex items-center gap-3">
-									<h3 className="marcellus text-lg truncate">
-										{char.name || 'Unnamed Character'}
-									</h3>
-									{activeId === char.id && (
-										<span className="px-2 py-0.5 text-xs bg-gold/20 text-gold marcellus uppercase">
-											Active
-										</span>
-									)}
-								</div>
-								<div className="flex items-center gap-4 text-sm text-stone mt-1">
-									{char.path && <span>{char.path}</span>}
-									{char.culture && <span>{char.culture}</span>}
-									<span className="flex items-center gap-1 text-stone/60">
-										<Icon path={mdiClockOutline} size={0.5} />
-										{formatDate(char.lastModified)}
-									</span>
-								</div>
-							</div>
-
-							<div className="flex items-center gap-2 ml-4">
+						<div key={char.id} className="relative">
+							<CharacterSummaryCard
+								character={char}
+								isActive={activeId === char.id}
+								onClick={() => handleSelectCharacter(char.id)}
+							/>
+							{/* Action buttons overlay */}
+							<div className="absolute top-4 right-4 flex items-center gap-2">
 								{activeId !== char.id && (
 									<button
-										onClick={() => handleSelectCharacter(char.id)}
+										onClick={(e) => {
+											e.stopPropagation();
+											handleSelectCharacter(char.id);
+										}}
 										className="inline-flex items-center gap-1 px-3 py-1.5 border-2 border-gold text-gold hover:bg-gold hover:text-black transition-colors text-sm marcellus"
 									>
 										<Icon path={mdiAccountEdit} size={0.625} />
@@ -205,13 +177,19 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 								{deleteConfirm === char.id ? (
 									<div className="flex items-center gap-2">
 										<button
-											onClick={() => handleDeleteCharacter(char.id)}
+											onClick={(e) => {
+												e.stopPropagation();
+												handleDeleteCharacter(char.id);
+											}}
 											className="px-3 py-1.5 bg-oxblood text-white text-sm marcellus"
 										>
 											Confirm
 										</button>
 										<button
-											onClick={() => setDeleteConfirm(null)}
+											onClick={(e) => {
+												e.stopPropagation();
+												setDeleteConfirm(null);
+											}}
 											className="px-3 py-1.5 border-2 border-stone text-stone text-sm marcellus"
 										>
 											Cancel
@@ -219,7 +197,10 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 									</div>
 								) : (
 									<button
-										onClick={() => setDeleteConfirm(char.id)}
+										onClick={(e) => {
+											e.stopPropagation();
+											setDeleteConfirm(char.id);
+										}}
 										className="p-1.5 text-stone hover:text-oxblood transition-colors"
 										title="Delete character"
 									>
