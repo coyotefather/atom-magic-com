@@ -31,6 +31,7 @@ const ManageGear = ({
 	const characterTechniques = useAppSelector(state => state.character.techniques);
 	const path = useAppSelector(state => state.character.path);
 	const [pathLocal, setPathLocal] = useState("");
+	const isInitialMount = useRef(true);
 	const dispatch = useAppDispatch();
 	const [disciplinesAndTechniques, setDisciplinesAndTechniques] = useState(<></>);
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
@@ -223,6 +224,7 @@ const ManageGear = ({
 								{characterDisciplines.includes(d._id) && d.techniques && d.techniques.map( (t) => (
 									<Checkbox
 										key={t._id}
+										isSelected={characterTechniques.includes(t._id)}
 										isDisabled={characterTechniques.length >= 4 && !characterTechniques.includes(t._id)}
 										color="default"
 										className="items-start w-full"
@@ -261,7 +263,14 @@ const ManageGear = ({
 	},[characterDisciplines, characterTechniques, disciplines, pathLocal, path, dispatch]);
 
 	useEffect(() => {
-		// Update checkboxes when discipline is checked or unchecked
+		// Clear disciplines when path changes, but only after initial mount
+		// (don't clear when loading a character that already has a path set)
+		if (isInitialMount.current) {
+			isInitialMount.current = false;
+			setPathLocal(path);
+			return;
+		}
+
 		if(pathLocal != path) {
 			dispatch(setTechniques([]));
 			dispatch(setDisciplines([]));
