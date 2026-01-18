@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Icon from '@mdi/react';
-import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight } from '@mdi/js';
+import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight, mdiSwordCross } from '@mdi/js';
 
 export const metadata = {
 	title: 'Tools | Atom Magic',
@@ -28,6 +28,13 @@ const tools = [
 		href: '/creatures',
 		icon: mdiDiceMultiple,
 		color: 'laurel',
+	},
+	{
+		name: 'Encounter Builder',
+		description: 'Build and balance encounters. Select creatures, adjust quantities, and calculate threat levels for your party.',
+		href: '/encounters',
+		icon: mdiSwordCross,
+		color: 'oxblood',
 	},
 	{
 		name: 'Loot Roller',
