@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setGear } from "@/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
@@ -31,6 +31,75 @@ const ManageGear = ({
 	const [rollingOptions, setRollingOptions] = useState<GearRollingOptionsType>(DEFAULT_ROLLING_OPTIONS);
 	const [rolledGear, setRolledGear] = useState<RolledGear | null>(null);
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
+
+	// Reconstruct rolledGear display from characterGear when loading a character
+	useEffect(() => {
+		if (characterGear.length > 0 && !rolledGear) {
+			const reconstructed: RolledGear = {
+				weapon: undefined,
+				armor: undefined,
+				weaponEnhancement: undefined,
+				armorEnhancement: undefined,
+			};
+
+			const weaponItem = characterGear.find(g => g.type === 'weapon');
+			if (weaponItem) {
+				reconstructed.weapon = {
+					name: weaponItem.name,
+					category: weaponItem.category as 'light' | 'medium' | 'heavy',
+					type: 'melee', // Default, not stored in CharacterGearItem
+					tier: weaponItem.tier,
+					damage: weaponItem.damage || '',
+					description: weaponItem.description || '',
+					isExotic: weaponItem.isExotic || false,
+				};
+				if (weaponItem.enhancement) {
+					reconstructed.weaponEnhancement = {
+						name: weaponItem.enhancement.name,
+						discipline: '', // Not stored in CharacterGearItem
+						type: 'weapon',
+						description: weaponItem.enhancement.description || '',
+						isPermanent: true,
+						isTemporary: false,
+						physicalShieldBonus: weaponItem.enhancement.physicalShieldBonus || 0,
+						psychicShieldBonus: weaponItem.enhancement.psychicShieldBonus || 0,
+					};
+				}
+			}
+
+			const armorItem = characterGear.find(g => g.type === 'armor');
+			if (armorItem) {
+				reconstructed.armor = {
+					name: armorItem.name,
+					category: armorItem.category as 'light' | 'medium' | 'heavy',
+					tier: armorItem.tier,
+					capacity: armorItem.capacity || 0,
+					penalties: armorItem.penalties || '',
+					description: armorItem.description || '',
+					isExotic: armorItem.isExotic || false,
+					physicalShieldBonus: armorItem.physicalShieldBonus || 0,
+					psychicShieldBonus: armorItem.psychicShieldBonus || 0,
+				};
+				if (armorItem.enhancement) {
+					reconstructed.armorEnhancement = {
+						name: armorItem.enhancement.name,
+						discipline: '', // Not stored in CharacterGearItem
+						type: 'armor',
+						description: armorItem.enhancement.description || '',
+						isPermanent: true,
+						isTemporary: false,
+						physicalShieldBonus: armorItem.enhancement.physicalShieldBonus || 0,
+						psychicShieldBonus: armorItem.enhancement.psychicShieldBonus || 0,
+					};
+				}
+			}
+
+			if (reconstructed.weapon || reconstructed.armor) {
+				setRolledGear(reconstructed);
+				setDetailsUpdated(d => !d);
+			}
+		}
+	}, [characterGear, rolledGear]);
 
 	const hasValidOptions = () => {
 		return (

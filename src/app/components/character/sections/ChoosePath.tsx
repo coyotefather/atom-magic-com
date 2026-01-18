@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setPath } from "@/lib/slices/characterSlice";
 import {Select, SelectItem} from "@heroui/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import {
@@ -22,6 +22,7 @@ const ChoosePath = ({
 	}) => {
 	const detailsRef = useRef(null);
 	const dispatch = useAppDispatch();
+	const currentPath = useAppSelector(state => state.character.path);
 
 	const [details, setDetails] = useState(
 		<SelectDetailExpanded
@@ -34,83 +35,74 @@ const ChoosePath = ({
 	);
 	const [detailsUpdated, setDetailsUpdated] = useState(false);
 
+	// Update details panel for a given path ID
+	const updateDetailsForPath = useCallback((pathId: string) => {
+		if (!pathId) return;
+
+		const chosenPath = paths.find((p) => p._id === pathId);
+		if (chosenPath && chosenPath.modifiers !== null) {
+			const modifiers = (
+				<Table isCompact removeWrapper aria-label={`${chosenPath.title} Modifiers`} className="mt-8">
+					<TableHeader>
+						{["Score", "Subscore","Modifier"].map((tc) => (
+							<TableColumn
+								key={tc}
+								className="bg-transparent border-b-2 pl-0">
+								{tc}
+							</TableColumn>
+						))}
+					</TableHeader>
+					<TableBody>
+						{chosenPath.modifiers.map((m, index) => (
+							<TableRow key={`path-modifier-${index}`} >
+								<TableCell className="text-base pl-0">
+									{m.modifierSubscore && m.modifierSubscore.score ? m.modifierSubscore.score.title : ""}
+								</TableCell>
+								<TableCell className="text-base pl-0">
+									{m.modifierSubscore && m.modifierSubscore.title ? m.modifierSubscore.title : ""}
+								</TableCell>
+								<TableCell className={clsx(
+									'pl-0 font-bold',
+									{
+										'text-oxblood': m.modifierValue && m.modifierValue < 0
+									},
+									{
+										'text-laurel': m.modifierValue && m.modifierValue > 0
+									},
+								)}>
+									{m.modifierValue && m.modifierValue > 0 ? "+" : ""}
+									{m.modifierValue ? m.modifierValue : ""}
+								</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+				</Table>
+			);
+			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
+			setDetails(
+				<SelectDetailExpanded
+					imagePath="/atom-magic-circle-black.png"
+					name={chosenPath.title ? chosenPath.title : ""}
+					description={chosenPath.description ? chosenPath.description : ""}
+					disabled={false}>
+					{modifiers}
+				</SelectDetailExpanded>
+			);
+		}
+	}, [paths]);
+
+	// Update details when currentPath changes (e.g., when loading a character)
+	useEffect(() => {
+		if (currentPath) {
+			updateDetailsForPath(currentPath);
+		}
+	}, [currentPath, updateDetailsForPath]);
+
 	const handleSelectChange = (event: React.ChangeEvent) => {
 		let val = (event.target as HTMLInputElement).value;
-		let modifiers = (<></>);
-		//let nameWithUnderscores = "";
 		if(val !== "") {
 			dispatch(setPath(val));
-			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
-			let chosenPath = paths.find((p) => p._id === val);
-			// let allModifiers: {
-			// 	parentName: string,
-			// 	page: string,
-			// 	id: string,
-			// 	name: string,
-			// 	parentId: string,
-			// 	value: number
-			// }[] = [];
-			if(chosenPath && chosenPath.modifiers !== null) {
-				// chosenPath.modifiers.map((subscore) => {
-				// 	subscore.modifier.map((m) => {
-				// 		if(m.value != 0) {
-				// 			nameWithUnderscores = m.name.replace(/ /g,"_");
-				// 			allModifiers.push({
-				// 				parentName: subscore.name,
-				// 				page: `${subscore.name}#${nameWithUnderscores}`,
-				// 				...m
-				// 			});
-				// 		}
-				// 	});
-				// });
-
-				modifiers = (
-					<Table isCompact removeWrapper aria-label={`${chosenPath.title} Modifiers`} className="mt-8">
-						<TableHeader>
-							{["Score", "Subscore","Modifier"].map((tc) => (
-								<TableColumn
-									key={tc}
-									className="bg-transparent border-b-2 pl-0">
-									{tc}
-								</TableColumn>
-							))}
-						</TableHeader>
-						<TableBody>
-							{chosenPath.modifiers.map((m, index) => (
-								<TableRow key={`path-modifier-${index}`} >
-									<TableCell className="text-base pl-0">
-										{m.modifierSubscore && m.modifierSubscore.score ? m.modifierSubscore.score.title : ""}
-									</TableCell>
-									<TableCell className="text-base pl-0">
-										{m.modifierSubscore && m.modifierSubscore.title ? m.modifierSubscore.title : ""}
-									</TableCell>
-									<TableCell className={clsx(
-										'pl-0 font-bold',
-										{
-											'text-oxblood': m.modifierValue && m.modifierValue < 0
-										},
-										{
-											'text-laurel': m.modifierValue && m.modifierValue > 0
-										},
-									)}>
-										{m.modifierValue && m.modifierValue > 0 ? "+" : ""}
-										{m.modifierValue ? m.modifierValue : ""}
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				);
-				setDetails(
-					<SelectDetailExpanded
-						imagePath="/atom-magic-circle-black.png"
-						name={chosenPath.title ? chosenPath.title : ""}
-						description={chosenPath.description ? chosenPath.description : ""}
-						disabled={false}>
-						{modifiers}
-					</SelectDetailExpanded>
-				);
-			}
+			updateDetailsForPath(val);
 		}
 	};
 
@@ -135,6 +127,7 @@ const ChoosePath = ({
 							label="Path"
 							placeholder="Select a Path"
 							className="w-96 mt-8"
+							selectedKeys={currentPath ? [currentPath] : []}
 							onChange={(event) => handleSelectChange(event)}
 					  	>
 							{paths.map((path) => (
