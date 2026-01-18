@@ -224,6 +224,7 @@ const ManageGear = ({
 								{characterDisciplines.includes(d._id) && d.techniques && d.techniques.map( (t) => (
 									<Checkbox
 										key={t._id}
+										isSelected={characterTechniques.includes(t._id)}
 										isDisabled={characterTechniques.length >= 4 && !characterTechniques.includes(t._id)}
 										color="default"
 										className="items-start w-full"
