@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Icon from '@mdi/react';
-import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight, mdiSwordCross } from '@mdi/js';
+import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight, mdiSwordCross, mdiBookOpenPageVariantOutline } from '@mdi/js';
 
 export const metadata = {
 	title: 'Tools | Atom Magic',
@@ -35,6 +35,13 @@ const tools = [
 		href: '/encounters',
 		icon: mdiSwordCross,
 		color: 'oxblood',
+	},
+	{
+		name: 'Adventure Log',
+		description: 'Track rolls, character actions, and story events during sessions. Export key moments for recaps.',
+		href: '/adventure-log',
+		icon: mdiBookOpenPageVariantOutline,
+		color: 'laurel',
 	},
 	{
 		name: 'Loot Roller',

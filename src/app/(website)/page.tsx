@@ -22,9 +22,15 @@ export default async function Home() {
 	let total = await sanityFetch<ENTRIES_COUNT_QUERY_RESULT>({
 		query: ENTRIES_COUNT_QUERY,
 	});
+
+	// Fallback if Sanity fetch fails - show page without Daily Discovery
 	if (!total) {
-		total = 5;
-		return notFound();
+		return (
+			<main className="notoserif">
+				<Hero />
+				<FeatureCards />
+			</main>
+		);
 	}
 
 	// Generate a stable random number based on the current date
@@ -39,8 +45,15 @@ export default async function Home() {
 			title, description, slug
 		}`
 	});
+
+	// If entry fetch fails, show page without Daily Discovery
 	if (!entry) {
-		return notFound();
+		return (
+			<main className="notoserif">
+				<Hero />
+				<FeatureCards />
+			</main>
+		);
 	}
 
 	return (
