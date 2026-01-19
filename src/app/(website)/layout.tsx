@@ -5,6 +5,7 @@ import "../globals.css";
 import StoreProvider from "@/app/StoreProvider";
 import HeroProvider from "@/app/HeroProvider";
 import { ThemeProvider } from "@/lib/ThemeContext";
+import { RollProvider } from "@/lib/RollContext";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import NavBar from '@/app/components/global/NavBar';
@@ -40,15 +41,17 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${marcellus.variable} ${lapideum.variable} ${noto_serif.variable} flex flex-col h-screen`}>
         <ThemeProvider>
-          <NavBar />
-          <div className="grow">
-            <ErrorBoundary>
-              <HeroProvider>
-                <StoreProvider>{children}</StoreProvider>
-              </HeroProvider>
-            </ErrorBoundary>
-          </div>
-          <Footer />
+          <RollProvider>
+            <NavBar />
+            <div className="grow">
+              <ErrorBoundary>
+                <HeroProvider>
+                  <StoreProvider>{children}</StoreProvider>
+                </HeroProvider>
+              </ErrorBoundary>
+            </div>
+            <Footer />
+          </RollProvider>
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />

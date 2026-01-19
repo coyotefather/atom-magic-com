@@ -5,6 +5,7 @@ import Icon from '@mdi/react';
 import { mdiDice6, mdiHistory, mdiLightningBolt } from '@mdi/js';
 import DiceDisplay from './DiceDisplay';
 import DiceHistory from './DiceHistory';
+import { useOptionalRollContext } from '@/lib/RollContext';
 
 export type DieType = 'd4' | 'd6' | 'd8' | 'd10' | 'd12' | 'd20' | 'd100';
 
@@ -44,6 +45,7 @@ const DiceRoller = () => {
 	const [isRolling, setIsRolling] = useState(false);
 	const [currentResult, setCurrentResult] = useState<RollResult | null>(null);
 	const [history, setHistory] = useState<RollResult[]>([]);
+	const rollContext = useOptionalRollContext();
 
 	const rollDice = useCallback((dieType: DieType, count: number, mod: number) => {
 		setIsRolling(true);
@@ -72,8 +74,13 @@ const DiceRoller = () => {
 			setCurrentResult(result);
 			setHistory(prev => [result, ...prev].slice(0, 20));
 			setIsRolling(false);
+
+			// Broadcast roll to Adventure Log if context available
+			if (rollContext) {
+				rollContext.broadcastRoll(result);
+			}
 		}, 600);
-	}, []);
+	}, [rollContext]);
 
 	const handleRoll = () => {
 		rollDice(selectedDie, numDice, modifier);
