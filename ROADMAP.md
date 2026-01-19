@@ -25,11 +25,11 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Quick reference panel** - Collapsible sidebar with commonly-needed rules (combat flow, damage types, etc.)
 
 ### For GMs (Dominus Ludi)
-- [ ] **Encounter builder** - Select creatures from the creature roller, set quantities, calculate total threat
+- [x] **Encounter builder** - Select creatures from the creature roller, set quantities, calculate total threat
 - [x] **Loot/treasure roller** - Random item generation tables
 
 ### Session Tools
-- [ ] **Adventure log** - Track rolls, character actions, and story events during play. Could include:
+- [x] **Adventure log** - Track rolls, character actions, and story events during play. Could include:
   - Roll history with context (what the roll was for, who rolled)
   - Character action entries ("Varro picked the lock", "Livia cast Thermal Surge")
   - GM notes for story beats, NPC encounters, discoveries
@@ -64,3 +64,5 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] Character summary cards with shield/armor/discipline stats in roster view
 - [x] Dark mode toggle with theme persistence
 - [x] Character generator with easy/advanced modes and archetype presets
+- [x] Encounter builder with threat calculation and party-relative difficulty
+- [x] Adventure log with roll capture, action/note entries, key events, and session export
