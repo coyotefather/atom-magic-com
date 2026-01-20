@@ -76,7 +76,7 @@ export const ENTRIES_QUERY = groq`*[_type in ["entry", "creature", "discipline",
   description
 }`;
 
-export const ENTRIES_COUNT_QUERY = groq`count(*[_type in ["entry", "creature", "discipline", "technique", "path"] && defined(slug.current)])`;
+export const ENTRIES_COUNT_QUERY = groq`count(*[_type == "entry" && defined(slug.current)])`;
 
 // Legacy entry query for regular entries
 export const ENTRY_QUERY = groq`*[_type == "entry" && slug.current == $slug][0]{

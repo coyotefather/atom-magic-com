@@ -38,7 +38,7 @@ export default async function Home() {
 		.update(String(new Date().getDate().toString()))
 		.digest()
 		.readUInt32BE();
-	const random = new Srand(seed).intInRange(1, total - 1);
+	const random = new Srand(seed).intInRange(0, total - 1);
 
 	const entry = await sanityFetch<EntryById>({
 		query: groq`*[_type == "entry"][${random}]{
