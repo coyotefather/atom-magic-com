@@ -105,7 +105,7 @@
   --color-parchment: #F5F0E1;
   --color-parchment-dark: #E8E0CC;
 
-  --font-size-tiny: 0.5rem;  /* Tiny class for Lapideum */
+  --font-size-xxs: 0.5rem;  /* Tiny class for Lapideum */
 }
 
 /* Dark mode theme variables */
@@ -174,8 +174,8 @@
   .text-brightgold {
     color: rgb(var(--brightgold));
   }
-  .text-tiny {
-    font-size: var(----font-size-tiny);
+  .text-xxs {
+    font-size: var(----font-size-xxs);
   }
 }
 
