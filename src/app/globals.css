@@ -106,6 +106,7 @@
   --color-parchment-dark: #E8E0CC;
 
   --font-size-xxs: 0.5rem;  /* Tiny class for Lapideum */
+  --font-size-xxxs: 0.4rem;
 }
 
 /* Dark mode theme variables */
@@ -176,6 +177,9 @@
   }
   .text-xxs {
     font-size: var(--font-size-xxs);
+  }
+  .text-xxxs {
+    font-size: var(--font-size-xxxs);
   }
 }
 
