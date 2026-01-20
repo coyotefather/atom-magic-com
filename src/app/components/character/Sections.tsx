@@ -233,7 +233,7 @@ const Sections = ({
 					<div className="container px-6 md:px-8 pt-4">
 						<button
 							onClick={showCharacterRoster}
-							className="text-sm text-stone hover:text-gold transition-colors marcellus flex items-center gap-1"
+							className="py-3 px-6 bg-gold text-black marcellus uppercase tracking-widest text-sm font-bold hover:bg-brightgold transition-colors flex items-center gap-1"
 						>
 							← Back to Characters
 						</button>
