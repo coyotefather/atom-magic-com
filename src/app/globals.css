@@ -175,7 +175,7 @@
     color: rgb(var(--brightgold));
   }
   .text-xxs {
-    font-size: var(----font-size-xxs);
+    font-size: var(--font-size-xxs);
   }
 }
 
