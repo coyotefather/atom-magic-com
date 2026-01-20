@@ -104,6 +104,8 @@
   --color-bronze-light: #A69066;
   --color-parchment: #F5F0E1;
   --color-parchment-dark: #E8E0CC;
+
+  --font-size-tiny: 0.5rem;  /* Tiny class for Lapideum */
 }
 
 /* Dark mode theme variables */
@@ -147,82 +149,6 @@
   button, [role="button"] {
     cursor: pointer;
   }
-  /* h1, h2, h3 {
-    @apply font-extrabold mb-3 mt-3;
-    font-family: var(--font-marcellus);
-  }
-  h1, h2 {
-    @apply p-2;
-    position: relative;
-    background: var(--color-ivory-black);
-    color: var(--color-ivory);
-    z-index: 1;
-  }
-  h1::after, h2::after {
-    background: inherit;
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 100%;
-    transform-origin: top left;
-    height: 40px;
-    transform: skewY(0.5deg);
-    z-index: -1;
-  }
-  h1::after, h2::after {
-    transform: skewY(0.5deg);
-    bottom: 0px;
-  }
-  h2:nth-child(odd)::after {
-    transform: skewY(-0.5deg);
-    top: 20px;
-  }
-  h4, h5, h6 {
-    @apply font-extrabold mb-2 mt-2;
-    font-family: var(--font-marcellus);
-  }
-  .h0 {
-    @apply text-3xl md:text-5xl;
-  }
-
-  h1,
-  .h1 {
-    @apply text-2xl md:text-4xl;
-  }
-
-  h2,
-  .h2 {
-    @apply text-xl md:text-3xl;
-  }
-
-  h3,
-  .h3 {
-    @apply text-lg md:text-2xl;
-  }
-
-  h4,
-  .h4 {
-    @apply text-base md:text-lg;
-  }
-
-  body,
-  .p {
-    @apply text-sm md:text-base;
-  }
-
-  article {
-    p {
-      @apply mb-2;
-    }
-
-    ul {
-      @apply list-disc pl-2 mb-2;
-    }
-
-    li {
-      @apply ml-2;
-    }
-  } */
 
   main a {
     @apply underline font-semibold transition duration-200 ease-in-out text-gold-dark hover:text-gold hover:contrast-100 hover:saturate-150;
@@ -247,6 +173,9 @@
   }
   .text-brightgold {
     color: rgb(var(--brightgold));
+  }
+  .text-tiny {
+    font-size: var(----font-size-tiny);
   }
 }
 
@@ -360,8 +289,8 @@
 
   .lapideum {
     font-family: var(--font-lapideum), monospace;
-    letter-spacing: 0.15em;
-    word-spacing: 0.5em;
+    letter-spacing: 0.35em;
+    word-spacing: 0.75em;
   }
 
   input[type='search']::-webkit-search-decoration,

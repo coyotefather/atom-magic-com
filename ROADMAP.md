@@ -47,6 +47,13 @@ Feature ideas and improvements for the Atom Magic website.
 - [ ] **Save/resume games** - Similar to character persistence
 - [ ] **Game replay** - Step through a completed game move-by-move
 
+## Polish & Optimization
+
+- [ ] **Component optimization** - Identify repeated UI patterns and extract into reusable components. Look for other performance optimizations.
+- [ ] **UX & styling finalization** - Review and refine the user experience and visual consistency across all pages.
+- [ ] **Algolia API optimization** - Review search implementation to minimize API calls and stay within plan limits.
+- [ ] **Sanity API optimization** - Review CMS queries and caching to minimize API usage and stay within plan limits.
+
 ---
 
 ## Completed
