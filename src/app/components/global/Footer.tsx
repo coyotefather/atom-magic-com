@@ -68,7 +68,7 @@ const Footer = () => {
 						<p className="lapideum tracking-[0.4em] leading-6 text-xxs text-stone-light mb-4">
 							THEURGIA ATOMI
 							<br />
-							<span className="text-[10px]">
+							<span className="text-xxxs">
 								SŌLITŪDINEM FACIUNT
 								<br />
 								PĀCEM APPELLANT
