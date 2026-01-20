@@ -104,6 +104,11 @@
   --color-bronze-light: #A69066;
   --color-parchment: #F5F0E1;
   --color-parchment-dark: #E8E0CC;
+
+  fontSize: {
+    // Adds a 'tiny' size, e.g., text-tiny
+    tiny: '0.5rem',
+  }
 }
 
 /* Dark mode theme variables */
