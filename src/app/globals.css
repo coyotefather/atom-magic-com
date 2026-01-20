@@ -284,8 +284,8 @@
 
   .lapideum {
     font-family: var(--font-lapideum), monospace;
-    letter-spacing: 0.15em;
-    word-spacing: 0.5em;
+    letter-spacing: 0.35em;
+    word-spacing: 0.75em;
   }
 
   input[type='search']::-webkit-search-decoration,
