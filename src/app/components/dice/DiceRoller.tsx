@@ -5,19 +5,10 @@ import Icon from '@mdi/react';
 import { mdiDice6, mdiHistory, mdiLightningBolt } from '@mdi/js';
 import DiceDisplay from './DiceDisplay';
 import DiceHistory from './DiceHistory';
-import { useOptionalRollContext } from '@/lib/RollContext';
+import { useOptionalRollContext, DieType, RollResult } from '@/lib/RollContext';
 
-export type DieType = 'd4' | 'd6' | 'd8' | 'd10' | 'd12' | 'd20' | 'd100';
-
-export interface RollResult {
-	id: string;
-	dieType: DieType;
-	numDice: number;
-	modifier: number;
-	rolls: number[];
-	total: number;
-	timestamp: Date;
-}
+// Re-export types for backwards compatibility
+export type { DieType, RollResult } from '@/lib/RollContext';
 
 const DICE_TYPES: { type: DieType; max: number; label: string }[] = [
 	{ type: 'd4', max: 4, label: 'D4' },

@@ -1,7 +1,18 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback, useRef, ReactNode } from 'react';
-import { RollResult } from '@/app/components/dice/DiceRoller';
+
+export type DieType = 'd4' | 'd6' | 'd8' | 'd10' | 'd12' | 'd20' | 'd100';
+
+export interface RollResult {
+	id: string;
+	dieType: DieType;
+	numDice: number;
+	modifier: number;
+	rolls: number[];
+	total: number;
+	timestamp: Date;
+}
 
 export interface RollContextType {
 	// Latest roll (for checking)
