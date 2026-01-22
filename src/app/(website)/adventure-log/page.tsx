@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
-import AdventureLogHero from '@/app/components/adventure-log/AdventureLogHero';
+import PageHero from '@/app/components/common/PageHero';
+import { mdiBookOpenPageVariantOutline } from '@mdi/js';
 import AdventureLogBuilder from '@/app/components/adventure-log/AdventureLogBuilder';
 
 export const metadata: Metadata = {
@@ -10,8 +11,13 @@ export const metadata: Metadata = {
 
 const Page = () => {
 	return (
-		<main>
-			<AdventureLogHero />
+		<main className="min-h-screen bg-parchment">
+			<PageHero
+				title="Adventure Log"
+				description="Track rolls, character actions, and story events during your sessions. Mark key moments for 'Previously on...' recaps and export your session notes."
+				icon={mdiBookOpenPageVariantOutline}
+				accentColor="bronze"
+			/>
 			<section className="container px-6 md:px-8 py-12">
 				<AdventureLogBuilder />
 			</section>

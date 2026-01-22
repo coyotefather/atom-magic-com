@@ -8,7 +8,8 @@ import {
 	CREATURES_QUERY_RESULT,
 	CREATURE_FILTERS_QUERY_RESULT,
 } from '../../../../sanity.types';
-import EncounterHero from '@/app/components/encounters/EncounterHero';
+import PageHero from '@/app/components/common/PageHero';
+import { mdiSwordCross } from '@mdi/js';
 import EncounterBuilder from '@/app/components/encounters/EncounterBuilder';
 
 export const metadata: Metadata = {
@@ -24,8 +25,13 @@ const Page = async () => {
 	]);
 
 	return (
-		<main>
-			<EncounterHero />
+		<main className="min-h-screen bg-parchment">
+			<PageHero
+				title="Encounter Builder"
+				description="Build and balance encounters for your campaigns. Select creatures, adjust quantities, and see threat calculations in real-time. Save encounters for later use or export them for your session notes."
+				icon={mdiSwordCross}
+				accentColor="bronze"
+			/>
 			<section className="container px-6 md:px-8 py-12">
 				<EncounterBuilder creatures={creatures} filters={filters} />
 			</section>

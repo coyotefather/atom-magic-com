@@ -1,7 +1,7 @@
-import CodexHero from '@/app/components/codex/CodexHero';
+import PageHero from '@/app/components/common/PageHero';
 import ContentCard from '@/app/components/common/ContentCard';
 import { Search } from '@/app/components/global/search/Search';
-import { mdiSword, mdiBookOpenVariant, mdiCalendarClock } from '@mdi/js';
+import { mdiSword, mdiBookOpenVariant, mdiCalendarClock, mdiBookOpenPageVariant } from '@mdi/js';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,7 +35,13 @@ const Page = async () => {
 
 	return (
 		<main className="notoserif">
-			<CodexHero />
+			<PageHero
+				title="The Codex"
+				description="Your guide to the world of Solum. Explore the lore, master the disciplines, and learn the rules that govern practitioners of atomic manipulation."
+				icon={mdiBookOpenPageVariant}
+				accentColor="gold"
+				theme="light"
+			/>
 
 			{/* Categories Section */}
 			<section className="bg-white py-12 md:py-16">

@@ -38,7 +38,7 @@ const FunctionButton = ({
 			startContent={icon}
 			disableRipple={true}
 			className={clsx(
-				'marcellus uppercase tracking-widest text-sm font-bold transition-colors px-6 py-3',
+				'marcellus uppercase tracking-widest text-sm font-bold transition-colors px-8 py-3',
 				{
 					'bg-gold text-black hover:bg-brightgold border-0': variant === 'primary',
 					'border-2 border-gold text-gold bg-transparent hover:bg-gold/10': variant === 'secondary',

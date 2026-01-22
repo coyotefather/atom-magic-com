@@ -3,7 +3,8 @@ import { TIMELINE_QUERY } from '@/sanity/lib/queries';
 import { sanityFetch } from '@/sanity/lib/client';
 import { TIMELINE_QUERY_RESULT } from '../../../../../sanity.types';
 import Timeline from '@/app/components/codex/Timeline';
-import TimelineHero from '@/app/components/codex/TimelineHero';
+import PageHero from '@/app/components/common/PageHero';
+import { mdiCalendarClock } from '@mdi/js';
 import Link from 'next/link';
 import Icon from '@mdi/react';
 import { mdiArrowLeft } from '@mdi/js';
@@ -18,7 +19,13 @@ export default async function Page() {
 
 	return (
 		<main className="notoserif bg-white">
-			<TimelineHero />
+			<PageHero
+				title="Timeline of Solum"
+				description="A chronological journey through the ages, from the dawn of the Autogena to the present day. Dates are measured in years before (A.R.) or after (P.R.) the Rubicon Event."
+				icon={mdiCalendarClock}
+				accentColor="laurel"
+				theme="light"
+			/>
 			<Timeline timeline={timeline} />
 
 			{/* Footer */}
