@@ -30,6 +30,7 @@ const DISCIPLINES_PRE_QUERY = `*[_type == "discipline"]| order(title asc){
   _id, title, slug, paths[]->{_id, title }, techniques[]->{_id, title, latin, cooldown, description }, description
 }`;
 
+// Used internally by CHARACTER_MANAGER_QUERY
 const GEAR_PRE_QUERY = `*[_type == "gear"]{
   _id, title, latin, type, value, damageBonus, shieldBonus, entry, mainImage, paths[]->{ _id }, modifiers[]{ modifierSubscore->{ _id, title, score->{ _id, title } }, modifierValue}, description
 }`;
@@ -45,7 +46,6 @@ export const ADDITIONAL_SCORES_QUERY = groq`${ADDITIONAL_SCORES_PRE_QUERY}`;
 export const PATHS_QUERY = groq`${PATHS_PRE_QUERY}`;
 export const PATRONAGES_QUERY = groq`${PATRONAGES_PRE_QUERY}`;
 export const DISCIPLINES_QUERY = groq`${DISCIPLINES_PRE_QUERY}`;
-export const GEAR_QUERY = groq`${GEAR_PRE_QUERY}`;
 export const GEAR_PAGE_QUERY = groq`${GEAR_PAGE_PRE_QUERY}`;
 
 export const CHARACTER_MANAGER_QUERY = groq`{

@@ -1,16 +1,7 @@
 import { Metadata } from 'next';
-import { sanityFetch } from '@/sanity/lib/client';
-import {
-	CREATURES_QUERY,
-	CREATURE_FILTERS_QUERY,
-} from '@/sanity/lib/queries';
-import {
-	CREATURES_QUERY_RESULT,
-	CREATURE_FILTERS_QUERY_RESULT,
-} from '../../../../sanity.types';
 import PageHero from '@/app/components/common/PageHero';
 import { mdiSwordCross } from '@mdi/js';
-import EncounterBuilder from '@/app/components/encounters/EncounterBuilder';
+import EncounterBuilderWrapper from './EncounterBuilderWrapper';
 
 export const metadata: Metadata = {
 	title: 'Encounter Builder | Atom Magic',
@@ -18,12 +9,7 @@ export const metadata: Metadata = {
 		'Build and balance encounters for your Atom Magic campaigns. Select creatures, adjust quantities, and calculate threat levels.',
 };
 
-const Page = async () => {
-	const [creatures, filters] = await Promise.all([
-		sanityFetch<CREATURES_QUERY_RESULT>({ query: CREATURES_QUERY }),
-		sanityFetch<CREATURE_FILTERS_QUERY_RESULT>({ query: CREATURE_FILTERS_QUERY }),
-	]);
-
+export default function Page() {
 	return (
 		<main className="min-h-screen bg-parchment">
 			<PageHero
@@ -33,10 +19,8 @@ const Page = async () => {
 				accentColor="bronze"
 			/>
 			<section className="container px-6 md:px-8 py-12">
-				<EncounterBuilder creatures={creatures} filters={filters} />
+				<EncounterBuilderWrapper />
 			</section>
 		</main>
 	);
-};
-
-export default Page;
+}
