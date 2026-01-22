@@ -1,24 +1,28 @@
 import Link from 'next/link';
+import clsx from 'clsx';
 
 const LinkButton = ({
-		href = "",
-		variant = "primary",
-		children
-	}: {
-		href: string,
-		variant: string,
-		children: React.ReactNode
-	}) => {
-	let buttonColor = "";
-	if(variant == "primary") { buttonColor = "bg-gold hover:bg-brightgold"; }
-	if(variant == "secondary") { buttonColor = "bg-black hover:bg-brightgold text-white" }
-	if(variant == "gradient") { buttonColor = "gradient hover:bg-brightgold"; }
+	href = '',
+	variant = 'primary',
+	children,
+}: {
+	href: string;
+	variant?: 'primary' | 'secondary';
+	children: React.ReactNode;
+}) => {
 	return (
-		<Link href={href}>
-			<button
-				className={`${buttonColor} marcellus uppercase tracking-widest p-2 pl-4 pr-4 rounded-full`}>
-				<strong>{children}</strong>
-			</button>
+		<Link
+			href={href}
+			className={clsx(
+				'inline-block px-8 py-3 marcellus uppercase tracking-widest text-sm font-bold transition-colors no-underline',
+				{
+					'bg-gold text-black hover:bg-brightgold': variant === 'primary',
+					'border-2 border-gold text-gold bg-transparent hover:bg-gold/10':
+						variant === 'secondary',
+				}
+			)}
+		>
+			{children}
 		</Link>
 	);
 };

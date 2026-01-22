@@ -13,7 +13,7 @@ const Card = ({
 		},
 		button: {
 			href: string,
-			variant: string,
+			variant: 'primary' | 'secondary',
 			text: string
 		},
 		title: string,

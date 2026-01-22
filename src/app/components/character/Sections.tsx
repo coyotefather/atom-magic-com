@@ -15,7 +15,8 @@ import ManageWealth from '@/app/components/character/sections/ManageWealth';
 import ChooseAnimalCompanion from '@/app/components/character/sections/ChooseAnimalCompanion';
 import WrapUp from '@/app/components/character/sections/WrapUp';
 import ProgressIndicator from '@/app/components/character/ProgressIndicator';
-import CharacterHero from '@/app/components/character/CharacterHero';
+import PageHero from '@/app/components/common/PageHero';
+import { mdiAccountEdit } from '@mdi/js';
 import CharacterSheet from '@/app/components/character/CharacterSheet';
 import CharacterRoster from '@/app/components/character/CharacterRoster';
 import { useAppSelector } from '@/lib/hooks';
@@ -174,7 +175,13 @@ const Sections = ({
 	return (
 		<div className="notoserif">
 			{/* Hero - full or compact based on whether user has started */}
-			<CharacterHero compact={hasStarted} />
+			<PageHero
+				title="Character Manager"
+				description="Create your practitioner and begin your journey across the world of Solum. Choose your culture, path, and disciplines, then equip yourself for adventure."
+				icon={mdiAccountEdit}
+				accentColor="oxblood"
+				variant={hasStarted ? 'compact' : 'full'}
+			/>
 
 			{/* Progress indicator */}
 			{showProgress && (

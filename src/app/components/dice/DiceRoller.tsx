@@ -6,6 +6,7 @@ import { mdiDice6, mdiHistory, mdiLightningBolt } from '@mdi/js';
 import DiceDisplay from './DiceDisplay';
 import DiceHistory from './DiceHistory';
 import { useOptionalRollContext, DieType, RollResult } from '@/lib/RollContext';
+import PageHero from '@/app/components/common/PageHero';
 
 // Re-export types for backwards compatibility
 export type { DieType, RollResult } from '@/lib/RollContext';
@@ -97,20 +98,13 @@ const DiceRoller = () => {
 
 	return (
 		<div className="min-h-screen bg-parchment">
-			{/* Hero */}
-			<section className="bg-black border-b-2 border-gold">
-				<div className="container px-6 md:px-8 py-8 md:py-12">
-					<div className="flex items-center gap-4">
-						<div className="w-12 h-12 flex items-center justify-center border-2 border-gold">
-							<Icon path={mdiDice6} size={1.25} className="text-gold" />
-						</div>
-						<div>
-							<h1 className="marcellus text-3xl md:text-4xl text-white">Dice Roller</h1>
-							<p className="text-stone-light text-sm mt-1">Roll dice for your Atom Magic sessions</p>
-						</div>
-					</div>
-				</div>
-			</section>
+			<PageHero
+				title="Dice Roller"
+				description="Roll dice for your Atom Magic sessions"
+				icon={mdiDice6}
+				accentColor="gold"
+				variant="inline"
+			/>
 
 			<div className="container px-6 md:px-8 py-8 md:py-12">
 				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

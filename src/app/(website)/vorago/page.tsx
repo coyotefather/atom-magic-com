@@ -1,6 +1,7 @@
 'use client';
 
-import VoragoHero from '@/app/components/vorago/VoragoHero';
+import PageHero from '@/app/components/common/PageHero';
+import { mdiChessRook } from '@mdi/js';
 import VoragoBoard from '@/app/components/vorago/VoragoBoard';
 import CoinSelector from '@/app/components/vorago/CoinSelector';
 import GameStatus from '@/app/components/vorago/GameStatus';
@@ -33,7 +34,13 @@ const Page = () => {
 
 	return (
 		<main className="notoserif min-h-screen bg-parchment">
-			<VoragoHero compact={gameStarted && !gameWin} />
+			<PageHero
+				title="Vorago"
+				description="A strategic board game of movement and manipulation. Race to move your three stones to the center while wielding the power of the Cardinal coins."
+				icon={mdiChessRook}
+				accentColor="laurel"
+				variant={gameStarted && !gameWin ? 'compact' : 'full'}
+			/>
 
 			<div className="container mx-auto py-8 md:py-12 px-6 md:px-8">
 				{!gameStarted ? (

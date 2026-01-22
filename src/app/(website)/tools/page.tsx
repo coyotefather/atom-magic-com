@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Icon from '@mdi/react';
-import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight, mdiSwordCross, mdiBookOpenPageVariantOutline } from '@mdi/js';
+import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight, mdiSwordCross, mdiBookOpenPageVariantOutline, mdiTools } from '@mdi/js';
+import PageHero from '@/app/components/common/PageHero';
 
 export const metadata = {
 	title: 'Tools | Atom Magic',
@@ -90,15 +91,13 @@ const colorClasses: Record<string, { bg: string; border: string; icon: string }>
 export default function ToolsPage() {
 	return (
 		<main className="notoserif min-h-screen bg-parchment">
-			{/* Hero */}
-			<section className="bg-black border-b-2 border-gold">
-				<div className="container px-6 md:px-8 py-8 md:py-12">
-					<h1 className="marcellus text-3xl md:text-4xl text-white mb-2">Tools</h1>
-					<p className="text-stone-light">
-						Utility tools for your Atom Magic tabletop sessions
-					</p>
-				</div>
-			</section>
+			<PageHero
+				title="Tools"
+				description="Utility tools for your Atom Magic tabletop sessions"
+				icon={mdiTools}
+				accentColor="gold"
+				variant="inline"
+			/>
 
 			<div className="container px-6 md:px-8 py-8 md:py-12">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
