@@ -1,14 +1,14 @@
 'use client';
 
-import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { Hits, Stats } from 'react-instantsearch';
 import { InstantSearchNext } from 'react-instantsearch-nextjs';
 import Hit from '@/app/components/global/search/Hit';
 import CustomSearchBox from '@/app/components/global/search/CustomSearchBox';
 import CustomPagination from '@/app/components/global/search/CustomPagination';
 import CustomHitsPerPage from '@/app/components/global/search/CustomHitsPerPage';
+import { createCachedSearchClient } from '@/app/components/global/search/cachedSearchClient';
 
-const searchClient = algoliasearch(
+const searchClient = createCachedSearchClient(
 	process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!,
 	process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY!
 );
