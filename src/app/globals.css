@@ -343,6 +343,14 @@
     color: var(--theme-text);
   }
 
+  /* Preserve dark text on gold/bright backgrounds for readability */
+  .dark .bg-gold .text-black,
+  .dark .bg-brightgold .text-black,
+  .dark .bg-gold.text-black,
+  .dark .bg-brightgold.text-black {
+    color: #231F20;
+  }
+
   .dark .text-stone {
     color: var(--theme-text-muted);
   }
