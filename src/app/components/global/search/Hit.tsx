@@ -1,10 +1,9 @@
+import { memo } from 'react';
 import Link from 'next/link';
 import Icon from '@mdi/react';
 import { mdiFolderText, mdiFileDocument } from '@mdi/js';
 
-const Hit = ({
-	hit,
-}: {
+interface HitProps {
 	hit: {
 		type: string;
 		rev: string;
@@ -12,7 +11,9 @@ const Hit = ({
 		path: string;
 		description: string;
 	};
-}) => {
+}
+
+const Hit = memo(function Hit({ hit }: HitProps) {
 	const isCategory = hit.type === 'category';
 	const href = isCategory
 		? `/codex/categories/${hit.path}`
@@ -46,6 +47,6 @@ const Hit = ({
 			</article>
 		</Link>
 	);
-};
+});
 
 export default Hit;
