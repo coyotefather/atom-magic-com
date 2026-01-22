@@ -23,7 +23,7 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 
 	const debounced = useDebouncedCallback((value: string) => {
 		refine(value);
-	}, 1500);
+	}, 2000);
 
 	return (
 		<div className="w-full">
