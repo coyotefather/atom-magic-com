@@ -160,7 +160,7 @@ const ManageGear = ({
 										<div>
 											<div>{t.title}</div>
 											{t.latin && (
-												<div className="lapideum text-xs text-stone uppercase">{t.latin}</div>
+												<div className="lapideum text-xxs text-stone uppercase mb-1">{t.latin}</div>
 											)}
 											<div className="text-sm w-full">
 												<div>
