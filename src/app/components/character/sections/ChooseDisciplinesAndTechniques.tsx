@@ -45,83 +45,6 @@ const ManageGear = ({
 		</SelectDetailExpanded>
 	);
 
-// 	const setCheckboxes = () => {
-// 		let element = (<></>);
-// 		if (!path) {
-// 			element = (
-// 				<div>
-// 					Please first choose a path above before selecting disciplines and techniques.
-// 				</div>
-// 			);
-// 		} else {
-// 			// construct array of disciplines filtered by path, and uncheck any disciplines or techniques that were checked
-// 			let localDisciplines:DISCIPLINES_QUERY_RESULT = disciplines.filter( d => {
-// 				let check = false;
-// 				d.paths?.forEach( p => {
-// 					if(p._id === path){
-// 						check = true;
-// 					}
-// 				});
-// 				return check;
-// 			});
-//
-// 			element = (
-// 			<div>
-// 				{localDisciplines.map(d => (
-// 					<div
-// 						key={d._id}
-// 						className="mb-2">
-// 						<Checkbox
-// 							color="default"
-// 							className="mb-1"
-// 							isSelected={characterDisciplines.includes(d._id)}
-// 							isDisabled={characterDisciplines.length >= 2 && !characterDisciplines.includes(d._id)}
-// 							onChange={(event) => handleDisciplineCheck(
-// 								{
-// 									value: d._id,
-// 									eventState: event.target.checked,
-// 								 }
-// 							)}>
-// 							{d.title}
-// 						</Checkbox>
-// 						<div className={clsx(
-// 							'ml-8 mb-1 flex flex-col gap-2 w-full',
-// 							{'hidden': !characterDisciplines.includes(d._id)},
-// 						)}>
-// 							{characterDisciplines.includes(d._id) && d.techniques && d.techniques.map( (t) => (
-// 								<Checkbox
-// 									key={t._id}
-// 									isDisabled={characterTechniques.length >= 4 && !characterTechniques.includes(t._id)}
-// 									color="default"
-// 									className="items-start w-full"
-//
-// 									onChange={(event) => handleTechniqueCheck(
-// 									{
-// 										value: t._id,
-// 										eventState: event.target.checked,
-// 									})}>
-// 									<div>
-// 										<div>{t.title}</div>
-// 										<div className="text-sm w-full">
-// 											<div>
-// 												Cooldown: {t.cooldown} rounds.
-// 											</div>
-// 											<div>
-// 												{t.description}
-// 											</div>
-// 										</div>
-// 									</div>
-// 								</Checkbox>
-// 							))}
-// 						</div>
-// 					</div>
-// 				))}
-// 			</div>);
-// 		}
-//
-// 		setDisciplinesAndTechniques(element);
-// 	};
-
 	useEffect(() => {
 		// Update checkboxes when discipline is checked or unchecked
 		const handleDisciplineCheck = ({
@@ -237,12 +160,9 @@ const ManageGear = ({
 										<div>
 											<div>{t.title}</div>
 											{t.latin && (
-												<div className="lapideum text-xs text-stone uppercase">{t.latin}</div>
+												<div className="lapideum text-xxs text-stone uppercase mb-1">{t.latin}</div>
 											)}
 											<div className="text-sm w-full">
-												<div>
-													Cooldown: {t.cooldown} rounds.
-												</div>
 												<div>
 													{t.description}
 												</div>
@@ -320,12 +240,9 @@ const ManageGear = ({
 										className="text-sm mb-1">
 										<div className="font-semibold">{t.title}</div>
 										{t.latin && (
-											<div className="lapideum text-xs text-stone uppercase">{t.latin}</div>
+											<div className="lapideum text-xxs text-stone uppercase mb-2">{t.latin}</div>
 										)}
 										<div className="text-sm w-full">
-											<div>
-												Cooldown: {t.cooldown} rounds.
-											</div>
 											<div>
 												{t.description}
 											</div>
