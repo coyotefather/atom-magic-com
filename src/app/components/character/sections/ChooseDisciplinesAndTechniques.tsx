@@ -164,9 +164,6 @@ const ManageGear = ({
 											)}
 											<div className="text-sm w-full">
 												<div>
-													Cooldown: {t.cooldown} rounds.
-												</div>
-												<div>
 													{t.description}
 												</div>
 											</div>
