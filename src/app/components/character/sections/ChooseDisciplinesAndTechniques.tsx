@@ -240,12 +240,9 @@ const ManageGear = ({
 										className="text-sm mb-1">
 										<div className="font-semibold">{t.title}</div>
 										{t.latin && (
-											<div className="lapideum text-xs text-stone uppercase">{t.latin}</div>
+											<div className="lapideum text-xxs text-stone uppercase mb-2">{t.latin}</div>
 										)}
 										<div className="text-sm w-full">
-											<div>
-												Cooldown: {t.cooldown} rounds.
-											</div>
 											<div>
 												{t.description}
 											</div>
