@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
 
 		// Send email via Resend
 		const { error } = await resend.emails.send({
-			from: 'Atom Magic Contact <onboarding@resend.dev>', // Use your verified domain in production
+			from: 'Atom Magic Contact <form@contact.atom-magic.com>', // Use your verified domain in production
 			to: recipientEmail,
 			replyTo: email,
 			subject: `[Contact Form] ${sanitizedSubject}`,
