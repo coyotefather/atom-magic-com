@@ -47,6 +47,11 @@ Feature ideas and improvements for the Atom Magic website.
 - [ ] **Save/resume games** - Similar to character persistence
 - [ ] **Game replay** - Step through a completed game move-by-move
 
+## Content & Documentation
+
+- [x] **Quick Reference audit** - Review Quick Reference page against markdown rules files to ensure accuracy and completeness
+- [ ] **Contact form** - Build functional contact form with spam prevention (honeypot, rate limiting), privacy compliance, and email delivery
+
 ## Polish & Optimization
 
 - [x] **Component optimization** - Identify repeated UI patterns and extract into reusable components. Look for other performance optimizations.
