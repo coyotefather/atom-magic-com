@@ -50,7 +50,7 @@ Feature ideas and improvements for the Atom Magic website.
 ## Content & Documentation
 
 - [x] **Quick Reference audit** - Review Quick Reference page against markdown rules files to ensure accuracy and completeness
-- [ ] **Contact form** - Build functional contact form with spam prevention (honeypot, rate limiting), privacy compliance, and email delivery
+- [x] **Contact form** - Build functional contact form with spam prevention (honeypot, rate limiting), privacy compliance, and email delivery
 
 ## Polish & Optimization
 
@@ -78,3 +78,4 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] Character generator with easy/advanced modes and archetype presets
 - [x] Encounter builder with threat calculation and party-relative difficulty
 - [x] Adventure log with roll capture, action/note entries, key events, and session export
+- [x] Contact form with Resend, honeypot spam prevention, rate limiting, and privacy consent

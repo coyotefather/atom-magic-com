@@ -43,6 +43,7 @@
     "remark-extended-table": "^2.0.3",
     "remark-gfm": "^4.0.0",
     "remark-heading-id": "^1.0.1",
+    "resend": "^6.9.1",
     "sanity": "5.7.0",
     "sanity-plugin-markdown": "^8.0.4",
     "seeded-rand": "^4.0.0",
