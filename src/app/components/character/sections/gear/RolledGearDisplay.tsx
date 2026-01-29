@@ -4,6 +4,7 @@ import { Accordion, AccordionItem } from "@heroui/react";
 import { Chip } from "@heroui/react";
 import Icon from '@mdi/react';
 import { mdiChevronLeftCircle, mdiSword, mdiShield, mdiStar } from '@mdi/js';
+import IconLabel from '@/app/components/common/IconLabel';
 import clsx from 'clsx';
 import { RolledGear, Weapon, Armor, Enhancement } from '@/lib/gear-data';
 
@@ -14,10 +15,9 @@ interface RolledGearDisplayProps {
 const WeaponDisplay = ({ weapon, enhancement }: { weapon: Weapon; enhancement?: Enhancement }) => {
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-2 mb-2">
-        <Icon path={mdiSword} size={1} className="text-stone" />
-        <h4 className="marcellus text-lg font-semibold">{weapon.name}</h4>
-      </div>
+      <IconLabel icon={mdiSword} size="lg" iconColor="text-stone" gap="gap-2" className="mb-2">
+        <span className="marcellus font-semibold">{weapon.name}</span>
+      </IconLabel>
       <div className="flex gap-2 mb-2">
         <Chip
           size="sm"
@@ -71,10 +71,9 @@ const WeaponDisplay = ({ weapon, enhancement }: { weapon: Weapon; enhancement?: 
       )}
       {enhancement && (
         <div className="mt-3 p-2 bg-parchment border border-brightgold">
-          <div className="flex items-center gap-1 text-sm font-semibold text-gold">
-            <Icon path={mdiStar} size={0.6} />
-            Enhancement: {enhancement.name}
-          </div>
+          <IconLabel icon={mdiStar} iconColor="text-gold" label="Enhancement" className="font-semibold text-gold">
+            {enhancement.name}
+          </IconLabel>
           <div className="text-sm">{enhancement.description}</div>
         </div>
       )}
@@ -85,10 +84,9 @@ const WeaponDisplay = ({ weapon, enhancement }: { weapon: Weapon; enhancement?: 
 const ArmorDisplay = ({ armor, enhancement }: { armor: Armor; enhancement?: Enhancement }) => {
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-2 mb-2">
-        <Icon path={mdiShield} size={1} className="text-stone" />
-        <h4 className="marcellus text-lg font-semibold">{armor.name}</h4>
-      </div>
+      <IconLabel icon={mdiShield} size="lg" iconColor="text-stone" gap="gap-2" className="mb-2">
+        <span className="marcellus font-semibold">{armor.name}</span>
+      </IconLabel>
       <div className="flex gap-2 mb-2">
         <Chip
           size="sm"
@@ -136,10 +134,9 @@ const ArmorDisplay = ({ armor, enhancement }: { armor: Armor; enhancement?: Enha
       )}
       {enhancement && (
         <div className="mt-3 p-2 bg-parchment border border-brightgold">
-          <div className="flex items-center gap-1 text-sm font-semibold text-gold">
-            <Icon path={mdiStar} size={0.6} />
-            Enhancement: {enhancement.name}
-          </div>
+          <IconLabel icon={mdiStar} iconColor="text-gold" label="Enhancement" className="font-semibold text-gold">
+            {enhancement.name}
+          </IconLabel>
           <div className="text-sm">{enhancement.description}</div>
         </div>
       )}

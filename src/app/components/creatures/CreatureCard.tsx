@@ -5,6 +5,7 @@ import { urlFor } from '@/sanity/lib/image';
 import { CREATURES_QUERY_RESULT } from '../../../../sanity.types';
 import Icon from '@mdi/react';
 import { mdiShield, mdiShieldOutline, mdiSword, mdiOpenInNew, mdiHeart } from '@mdi/js';
+import IconLabel from '@/app/components/common/IconLabel';
 
 type Creature = CREATURES_QUERY_RESULT[number];
 
@@ -117,26 +118,19 @@ const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
 				{/* Combat stats */}
 				<div className="flex flex-wrap items-center gap-4 text-sm text-stone mb-4">
 					{creature.health != null && (
-						<div className="flex items-center gap-1">
-							<Icon path={mdiHeart} size={0.625} className="text-oxblood" />
-							<span>{creature.health}</span>
-						</div>
+						<IconLabel icon={mdiHeart} iconColor="text-oxblood">
+							{creature.health}
+						</IconLabel>
 					)}
 					{creature.physicalShield != null && creature.physicalShield > 0 && (
-						<div className="flex items-center gap-1">
-							<Icon path={mdiShield} size={0.625} className="text-stone" />
-							<span>{creature.physicalShield}</span>
-						</div>
+						<IconLabel icon={mdiShield} iconColor="text-stone">
+							{creature.physicalShield}
+						</IconLabel>
 					)}
 					{creature.psychicShield != null && creature.psychicShield > 0 && (
-						<div className="flex items-center gap-1">
-							<Icon
-								path={mdiShieldOutline}
-								size={0.625}
-								className="text-laurel"
-							/>
-							<span>{creature.psychicShield}</span>
-						</div>
+						<IconLabel icon={mdiShieldOutline} iconColor="text-laurel">
+							{creature.psychicShield}
+						</IconLabel>
 					)}
 					{creature.armorCapacity != null && creature.armorCapacity > 0 && (
 						<div className="flex items-center gap-1">
