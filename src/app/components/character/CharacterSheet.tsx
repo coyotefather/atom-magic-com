@@ -7,6 +7,7 @@ import {
 	PATRONAGES_QUERY_RESULT,
 	DISCIPLINES_QUERY_RESULT,
 } from '../../../../sanity.types';
+import { calculateGearShieldBonuses } from '@/lib/utils/shield';
 
 interface CharacterSheetProps {
 	cultures: CULTURES_QUERY_RESULT;
@@ -63,14 +64,13 @@ const CharacterSheet = ({
 		psycheScore.subscores.reduce((sum, sub) => sum + (sub.value || 0), 0) / psycheScore.subscores.length
 	) : 0;
 
-	// Get gear bonuses
+	// Get gear
 	const armor = character.gear.find(g => g.type === 'armor');
 	const weapons = character.gear.filter(g => g.type === 'weapon');
-
-	// Enhancement bonuses come from armor's nested enhancement property
 	const enhancementBonus = armor?.enhancement;
-	const physicalShieldBonus = (armor?.physicalShieldBonus || 0) + (enhancementBonus?.physicalShieldBonus || 0);
-	const psychicShieldBonus = (armor?.psychicShieldBonus || 0) + (enhancementBonus?.psychicShieldBonus || 0);
+
+	// Get shield bonuses from gear
+	const { physicalShieldBonus, psychicShieldBonus } = calculateGearShieldBonuses(character.gear);
 
 	return (
 		<div className="character-sheet hidden print:block bg-white text-black p-8 max-w-[8.5in] mx-auto">

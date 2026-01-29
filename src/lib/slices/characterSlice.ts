@@ -40,11 +40,6 @@ interface Score {
 	value: number | null
 };
 
-// interface ScoreUpdate {
-// 	_id: string,
-// 	value: number,
-// };
-
 interface SubscoreUpdate {
 	_id: string,
 	parent_id: string,

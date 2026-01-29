@@ -17,6 +17,7 @@ import {
 	setActiveCharacter,
 	CharacterSummary,
 } from '@/lib/characterPersistence';
+import { calculateGearShieldBonuses, getArmorCapacity } from '@/lib/utils/shield';
 import { CharacterState } from '@/lib/slices/characterSlice';
 import CharacterSummaryCard from './CharacterSummaryCard';
 import Icon from '@mdi/react';
@@ -99,10 +100,8 @@ const CharacterGenerator = ({
 			: 0;
 
 		// Get gear bonuses
-		const armor = generatedCharacter.gear.find(g => g.type === 'armor');
-		const enhancement = armor?.enhancement;
-		const physicalShieldBonus = (armor?.physicalShieldBonus || 0) + (enhancement?.physicalShieldBonus || 0);
-		const psychicShieldBonus = (armor?.psychicShieldBonus || 0) + (enhancement?.psychicShieldBonus || 0);
+		const { physicalShieldBonus, psychicShieldBonus } = calculateGearShieldBonuses(generatedCharacter.gear);
+		const armorCapacity = getArmorCapacity(generatedCharacter.gear);
 
 		// Resolve IDs to names for display
 		const cultureName = cultures.find(c => c._id === generatedCharacter.culture)?.title || '';
@@ -117,7 +116,7 @@ const CharacterGenerator = ({
 			patronage: patronageName,
 			physicalShield: physicalAvg + physicalShieldBonus,
 			psychicShield: psycheAvg + psychicShieldBonus,
-			armorCapacity: armor?.capacity || 0,
+			armorCapacity,
 			disciplineCount: generatedCharacter.disciplines.length,
 			techniqueCount: generatedCharacter.techniques.length,
 			isComplete: true,

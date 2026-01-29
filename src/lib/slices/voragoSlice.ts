@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { selectRandomElement, randomDirection } from '../utils/random';
 
 // Types
 interface Stone {
@@ -337,13 +338,13 @@ export const executeAITurn = createAsyncThunk(
 		// Helper to get a random unlocked ring
 		const getRandomUnlockedRing = (): number => {
 		  const unlocked = lockedRings.map((locked, i) => locked ? -1 : i).filter(i => i >= 0);
-		  return unlocked.length > 0 ? unlocked[Math.floor(Math.random() * unlocked.length)] : 0;
+		  return selectRandomElement(unlocked) ?? 0;
 		};
 
 		// Helper to get a random locked ring
 		const getRandomLockedRing = (): number | null => {
 		  const locked = lockedRings.map((isLocked, i) => isLocked ? i : -1).filter(i => i >= 0);
-		  return locked.length > 0 ? locked[Math.floor(Math.random() * locked.length)] : null;
+		  return selectRandomElement(locked) ?? null;
 		};
 
 		// Helper to get a random empty cell (no wall, no bridge, no stone)
@@ -354,14 +355,14 @@ export const executeAITurn = createAsyncThunk(
 			  emptyCells.push({ ring: cell.ring, cell: cell.cell });
 			}
 		  });
-		  return emptyCells.length > 0 ? emptyCells[Math.floor(Math.random() * emptyCells.length)] : null;
+		  return selectRandomElement(emptyCells) ?? null;
 		};
 
 		// Handle coin-specific actions with fallbacks
 		switch (aiMove.coinAction.action) {
 		  case 'spinRing': {
 			const ring = aiMove.coinAction.ring ?? getRandomUnlockedRing();
-			const direction = aiMove.coinAction.direction ?? (Math.random() > 0.5 ? 'cw' : 'ccw');
+			const direction = aiMove.coinAction.direction ?? randomDirection();
 			console.log('    ↻ Spinning ring', ring, direction);
 			dispatch(voragoSlice.actions.spinRing({ ring, direction }));
 			dispatch(voragoSlice.actions.completeCoinAction());
@@ -406,7 +407,7 @@ export const executeAITurn = createAsyncThunk(
 			const wallCells = Object.values(cells).filter(c => c.hasWall);
 			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
 			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
-			  : wallCells.length > 0 ? wallCells[Math.floor(Math.random() * wallCells.length)] : null;
+			  : selectRandomElement(wallCells) ?? null;
 			if (target) {
 			  console.log('    💥 Removing wall at', target.ring, target.cell);
 			  dispatch(voragoSlice.actions.removeWall({ ring: target.ring, cell: target.cell }));
@@ -430,7 +431,7 @@ export const executeAITurn = createAsyncThunk(
 			const bridgeCells = Object.values(cells).filter(c => c.hasBridge);
 			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
 			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
-			  : bridgeCells.length > 0 ? bridgeCells[Math.floor(Math.random() * bridgeCells.length)] : null;
+			  : selectRandomElement(bridgeCells) ?? null;
 			if (target) {
 			  console.log('    🔥 Removing bridge at', target.ring, target.cell);
 			  dispatch(voragoSlice.actions.removeBridge({ ring: target.ring, cell: target.cell }));
@@ -443,7 +444,7 @@ export const executeAITurn = createAsyncThunk(
 			const wallBridgeCells = Object.values(cells).filter(c => c.hasWall || c.hasBridge);
 			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
 			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
-			  : wallBridgeCells.length > 0 ? wallBridgeCells[Math.floor(Math.random() * wallBridgeCells.length)] : null;
+			  : selectRandomElement(wallBridgeCells) ?? null;
 			if (target) {
 			  console.log('    🔄 Transforming wall/bridge at', target.ring, target.cell);
 			  dispatch(voragoSlice.actions.transformWallBridge({ ring: target.ring, cell: target.cell }));
@@ -472,7 +473,7 @@ export const executeAITurn = createAsyncThunk(
 			if (wallBridgeCells2.length > 0) {
 			  const source = (aiMove.coinAction.fromRing !== undefined && aiMove.coinAction.fromCell !== undefined)
 				? { ring: aiMove.coinAction.fromRing, cell: aiMove.coinAction.fromCell }
-				: wallBridgeCells2[Math.floor(Math.random() * wallBridgeCells2.length)];
+				: selectRandomElement(wallBridgeCells2)!;
 			  // Simple: move to next cell in same ring
 			  const ringCellCounts = [32, 16, 16, 8, 4];
 			  const destCell = (source.cell + 1) % ringCellCounts[source.ring];
