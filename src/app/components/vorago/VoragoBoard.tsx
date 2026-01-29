@@ -141,8 +141,8 @@ function getLogicalCell(ringIndex: number, visualCell: number, rotation: number)
   return logicalCell;
 }
 
-// Debug mode - set to true to show cell/ring indices
-const DEBUG_MODE = false;
+// Debug mode - controlled via NEXT_PUBLIC_VORAGO_DEBUG env variable
+const DEBUG_MODE = process.env.NEXT_PUBLIC_VORAGO_DEBUG === 'true';
 
 const VoragoBoard = () => {
   const dispatch = useAppDispatch();

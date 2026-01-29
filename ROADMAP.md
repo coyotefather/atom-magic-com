@@ -59,6 +59,29 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Algolia API optimization** - Review search implementation to minimize API calls and stay within plan limits.
 - [x] **Sanity API optimization** - Review CMS queries and caching to minimize API usage and stay within plan limits.
 
+## Code Quality & Technical Debt
+
+### Quick wins
+- [x] **DEBUG_MODE to env variable** - Move hardcoded `DEBUG_MODE` in `VoragoBoard.tsx` to environment variable
+- [x] **Extract shield calculation utility** - Duplicate shield calc logic in `CharacterGenerator.tsx` and `CharacterSheet.tsx`
+- [x] **Extract random selection utility** - Create `selectRandomElement<T>()` to replace 8 repeated patterns in `voragoSlice.ts`
+- [x] **Remove dead commented code** - Clean up `ScoreUpdate` interface in `characterSlice.ts` and other commented blocks
+
+### High priority
+- [x] **Vorago AI logging cleanup** - Replace 40+ console.logs in `voragoSlice.ts:269-514` with proper logging or remove
+- [x] **Type safety in vorago-ai route** - Replace multiple `any` types in `vorago-ai/route.ts` with proper TypeScript types
+- [x] **Fix CategoryChip typing** - Replace `chipColor: any` in `CategoryChip.tsx` with proper color type
+
+### Medium priority
+- [ ] **Extract Vorago AI helpers** - Split `voragoSlice.ts` (882 lines) by extracting AI logic to separate file
+- [ ] **ContactForm error state** - Add user-visible error UI when form submission fails
+- [ ] **Clean up Refactor suffix components** - Clarify or rename `ScoreRefactor.tsx` and `SubScoreRefactor.tsx`
+- [ ] **Extract section visibility hook** - Move 9+ useState hooks from `Sections.tsx` to custom hook
+
+### Documentation
+- [ ] **Document state management patterns** - When to use Redux vs Context API
+- [ ] **Document component naming conventions** - Clarify naming patterns and suffixes
+
 ---
 
 ## Completed

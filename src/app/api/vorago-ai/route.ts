@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { selectRandomElement, randomDirection } from '@/lib/utils/random';
 
 interface Stone {
   player: 1 | 2;
@@ -6,8 +7,36 @@ interface Stone {
   cell: number;
 }
 
+interface Cell {
+  ring: number;
+  cell: number;
+  hasWall: boolean;
+  hasBridge: boolean;
+  stone: Stone | null;
+}
+
+interface StoneMove {
+  stone: Stone;
+  toRing: number;
+  toCell: number;
+}
+
+interface CoinAction {
+  coinTitle: string;
+  action: string;
+  ring?: number;
+  cell?: number;
+  direction?: 'cw' | 'ccw';
+  targetCoin?: string;
+  fromRing?: number;
+  fromCell?: number;
+  toRing?: number;
+  toCell?: number;
+  copiedCoin?: string;
+}
+
 interface GameState {
-  cells: Record<string, any>;
+  cells: Record<string, Cell>;
   stones: {
 	player1: Stone[];
 	player2: Stone[];
@@ -90,7 +119,7 @@ function makeAIMove(gameState: GameState, difficulty: string) {
   };
 }
 
-function chooseStoneMove(gameState: GameState): any {
+function chooseStoneMove(gameState: GameState): StoneMove | null {
   const aiStones = gameState.stones.player2;
 
   // Find unplaced stones first
@@ -152,8 +181,8 @@ function getInapplicableCoins(gameState: GameState): Set<string> {
   const inapplicable = new Set<string>();
 
   // Check board state
-  const hasWalls = Object.values(gameState.cells).some((cell: any) => cell.hasWall);
-  const hasBridges = Object.values(gameState.cells).some((cell: any) => cell.hasBridge);
+  const hasWalls = Object.values(gameState.cells).some(cell => cell.hasWall);
+  const hasBridges = Object.values(gameState.cells).some(cell => cell.hasBridge);
   const hasWallsOrBridges = hasWalls || hasBridges;
   const allRingsLocked = gameState.lockedRings.every(locked => locked);
   const anyRingLocked = gameState.lockedRings.some(locked => locked);
@@ -232,7 +261,7 @@ function getInapplicableCoins(gameState: GameState): Set<string> {
   return inapplicable;
 }
 
-function chooseCoinAction(gameState: GameState): any {
+function chooseCoinAction(gameState: GameState): CoinAction | null {
   // Get inapplicable coins based on game state
   const inapplicableCoins = getInapplicableCoins(gameState);
 
@@ -246,10 +275,11 @@ function chooseCoinAction(gameState: GameState): any {
   }
 
   // Pick a random available coin
-  const coin = availableCoins[Math.floor(Math.random() * availableCoins.length)];
+  const coin = selectRandomElement(availableCoins);
+  if (!coin) return null;
 
   // Handle different coin actions
-  const coinAction: any = {
+  const coinAction: CoinAction = {
 	coinTitle: coin.title,
 	action: coin.action
   };
@@ -262,9 +292,10 @@ function chooseCoinAction(gameState: GameState): any {
 		.map((_, idx) => idx)
 		.filter(idx => !gameState.lockedRings[idx]);
 
-	  if (unlockedRings.length > 0) {
-		coinAction.ring = unlockedRings[Math.floor(Math.random() * unlockedRings.length)];
-		coinAction.direction = Math.random() > 0.5 ? 'cw' : 'ccw';
+	  const selectedRing = selectRandomElement(unlockedRings);
+	  if (selectedRing !== undefined) {
+		coinAction.ring = selectedRing;
+		coinAction.direction = randomDirection();
 	  }
 	  break;
 	}
@@ -275,8 +306,9 @@ function chooseCoinAction(gameState: GameState): any {
 		.map((deg, idx) => ({ idx, deg }))
 		.filter(r => r.deg !== 0 && !gameState.lockedRings[r.idx]);
 
-	  if (rotatedRings.length > 0) {
-		coinAction.ring = rotatedRings[Math.floor(Math.random() * rotatedRings.length)].idx;
+	  const selected = selectRandomElement(rotatedRings);
+	  if (selected) {
+		coinAction.ring = selected.idx;
 	  }
 	  break;
 	}
@@ -286,8 +318,9 @@ function chooseCoinAction(gameState: GameState): any {
 	  const unlocked = gameState.lockedRings
 		.map((locked, idx) => locked ? -1 : idx)
 		.filter(idx => idx >= 0);
-	  if (unlocked.length > 0) {
-		coinAction.ring = unlocked[Math.floor(Math.random() * unlocked.length)];
+	  const selectedUnlocked = selectRandomElement(unlocked);
+	  if (selectedUnlocked !== undefined && selectedUnlocked >= 0) {
+		coinAction.ring = selectedUnlocked;
 	  }
 	  break;
 	}
@@ -297,8 +330,9 @@ function chooseCoinAction(gameState: GameState): any {
 	  const locked = gameState.lockedRings
 		.map((isLocked, idx) => isLocked ? idx : -1)
 		.filter(idx => idx >= 0);
-	  if (locked.length > 0) {
-		coinAction.ring = locked[Math.floor(Math.random() * locked.length)];
+	  const selectedLocked = selectRandomElement(locked);
+	  if (selectedLocked !== undefined && selectedLocked >= 0) {
+		coinAction.ring = selectedLocked;
 	  }
 	  break;
 	}
@@ -306,14 +340,11 @@ function chooseCoinAction(gameState: GameState): any {
 	case 'placeWall':
 	case 'placeBridge': {
 	  // Pick a random empty cell
-	  const emptyCells: { ring: number; cell: number }[] = [];
-	  Object.values(gameState.cells).forEach((cell: any) => {
-		if (!cell.hasWall && !cell.hasBridge && !cell.stone) {
-		  emptyCells.push({ ring: cell.ring, cell: cell.cell });
-		}
-	  });
-	  if (emptyCells.length > 0) {
-		const target = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+	  const emptyCells = Object.values(gameState.cells)
+		.filter(cell => !cell.hasWall && !cell.hasBridge && !cell.stone)
+		.map(cell => ({ ring: cell.ring, cell: cell.cell }));
+	  const target = selectRandomElement(emptyCells);
+	  if (target) {
 		coinAction.ring = target.ring;
 		coinAction.cell = target.cell;
 	  }
@@ -322,9 +353,9 @@ function chooseCoinAction(gameState: GameState): any {
 
 	case 'removeWall': {
 	  // Find a cell with a wall
-	  const wallCells = Object.values(gameState.cells).filter((c: any) => c.hasWall);
-	  if (wallCells.length > 0) {
-		const target = wallCells[Math.floor(Math.random() * wallCells.length)] as any;
+	  const wallCells = Object.values(gameState.cells).filter(c => c.hasWall);
+	  const target = selectRandomElement(wallCells);
+	  if (target) {
 		coinAction.ring = target.ring;
 		coinAction.cell = target.cell;
 	  }
@@ -333,9 +364,9 @@ function chooseCoinAction(gameState: GameState): any {
 
 	case 'removeBridge': {
 	  // Find a cell with a bridge
-	  const bridgeCells = Object.values(gameState.cells).filter((c: any) => c.hasBridge);
-	  if (bridgeCells.length > 0) {
-		const target = bridgeCells[Math.floor(Math.random() * bridgeCells.length)] as any;
+	  const bridgeCells = Object.values(gameState.cells).filter(c => c.hasBridge);
+	  const target = selectRandomElement(bridgeCells);
+	  if (target) {
 		coinAction.ring = target.ring;
 		coinAction.cell = target.cell;
 	  }
@@ -344,9 +375,9 @@ function chooseCoinAction(gameState: GameState): any {
 
 	case 'transformWallBridge': {
 	  // Find a cell with a wall or bridge
-	  const wallBridgeCells = Object.values(gameState.cells).filter((c: any) => c.hasWall || c.hasBridge);
-	  if (wallBridgeCells.length > 0) {
-		const target = wallBridgeCells[Math.floor(Math.random() * wallBridgeCells.length)] as any;
+	  const wallBridgeCells = Object.values(gameState.cells).filter(c => c.hasWall || c.hasBridge);
+	  const target = selectRandomElement(wallBridgeCells);
+	  if (target) {
 		coinAction.ring = target.ring;
 		coinAction.cell = target.cell;
 	  }
@@ -361,16 +392,18 @@ function chooseCoinAction(gameState: GameState): any {
 	case 'disableCoin': {
 	  // Pick a random coin to disable (exclude coins already on cooldown for simplicity)
 	  const allCoins = gameState.availableCoins.map(c => c.title);
-	  const randomCoin = allCoins[Math.floor(Math.random() * allCoins.length)];
-	  coinAction.targetCoin = randomCoin;
+	  const randomCoin = selectRandomElement(allCoins);
+	  if (randomCoin) {
+		coinAction.targetCoin = randomCoin;
+	  }
 	  break;
 	}
 
 	case 'moveWallBridge': {
 	  // Find a wall or bridge and an adjacent empty cell
-	  const wallBridgeCells = Object.values(gameState.cells).filter((c: any) => c.hasWall || c.hasBridge) as any[];
-	  if (wallBridgeCells.length > 0) {
-		const source = wallBridgeCells[Math.floor(Math.random() * wallBridgeCells.length)];
+	  const wallBridgeCells = Object.values(gameState.cells).filter(c => c.hasWall || c.hasBridge);
+	  const source = selectRandomElement(wallBridgeCells);
+	  if (source) {
 		coinAction.fromRing = source.ring;
 		coinAction.fromCell = source.cell;
 		// Find an adjacent empty cell (simplified - just pick same ring +1 cell)
