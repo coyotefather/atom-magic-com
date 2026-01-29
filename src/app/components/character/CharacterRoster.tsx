@@ -8,6 +8,7 @@ import {
 	mdiDelete,
 	mdiFileImport,
 } from '@mdi/js';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import {
 	getRoster,
 	getCharacterById,
@@ -120,20 +121,23 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 			<div className="flex items-center justify-between mb-6">
 				<h2 className="marcellus text-xl">Your Characters</h2>
 				<div className="flex gap-2">
-					<button
+					<FunctionButton
+						variant="secondary"
+						size="sm"
 						onClick={handleImportClick}
-						className="inline-flex items-center gap-2 px-4 py-2 border-2 border-stone text-stone hover:border-gold hover:text-gold transition-colors marcellus text-sm uppercase tracking-wider"
+						icon={mdiFileImport}
+						className="border-stone text-stone hover:border-gold hover:text-gold"
 					>
-						<Icon path={mdiFileImport} size={0.75} />
 						Import
-					</button>
-					<button
+					</FunctionButton>
+					<FunctionButton
+						variant="primary"
+						size="sm"
 						onClick={handleNewCharacter}
-						className="inline-flex items-center gap-2 px-4 py-2 bg-gold text-black hover:bg-brightgold transition-colors marcellus text-sm uppercase tracking-wider"
+						icon={mdiAccountPlus}
 					>
-						<Icon path={mdiAccountPlus} size={0.75} />
 						New Character
-					</button>
+					</FunctionButton>
 					<input
 						ref={fileInputRef}
 						type="file"
@@ -163,49 +167,54 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 							{/* Action buttons overlay */}
 							<div className="absolute top-4 right-4 flex items-center gap-2">
 								{activeId !== char.id && (
-									<button
+									<FunctionButton
+										variant="secondary"
+										size="sm"
 										onClick={(e) => {
-											e.stopPropagation();
+											e?.stopPropagation();
 											handleSelectCharacter(char.id);
 										}}
-										className="inline-flex items-center gap-1 px-3 py-1.5 border-2 border-gold text-gold hover:bg-gold hover:text-black transition-colors text-sm marcellus"
+										icon={mdiAccountEdit}
 									>
-										<Icon path={mdiAccountEdit} size={0.625} />
 										Edit
-									</button>
+									</FunctionButton>
 								)}
 								{deleteConfirm === char.id ? (
 									<div className="flex items-center gap-2">
-										<button
+										<FunctionButton
+											variant="danger"
+											size="sm"
 											onClick={(e) => {
-												e.stopPropagation();
+												e?.stopPropagation();
 												handleDeleteCharacter(char.id);
 											}}
-											className="px-3 py-1.5 bg-oxblood text-white text-sm marcellus"
 										>
 											Confirm
-										</button>
-										<button
+										</FunctionButton>
+										<FunctionButton
+											variant="secondary"
+											size="sm"
 											onClick={(e) => {
-												e.stopPropagation();
+												e?.stopPropagation();
 												setDeleteConfirm(null);
 											}}
-											className="px-3 py-1.5 border-2 border-stone text-stone text-sm marcellus"
+											className="border-stone text-stone"
 										>
 											Cancel
-										</button>
+										</FunctionButton>
 									</div>
 								) : (
-									<button
+									<FunctionButton
+										variant="ghost"
+										size="sm"
 										onClick={(e) => {
-											e.stopPropagation();
+											e?.stopPropagation();
 											setDeleteConfirm(char.id);
 										}}
-										className="p-1.5 text-stone hover:text-oxblood transition-colors"
+										icon={mdiDelete}
 										title="Delete character"
-									>
-										<Icon path={mdiDelete} size={0.75} />
-									</button>
+										className="hover:text-oxblood"
+									/>
 								)}
 							</div>
 						</div>

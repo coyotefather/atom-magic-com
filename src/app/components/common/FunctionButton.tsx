@@ -7,8 +7,8 @@ type Variant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'chip' | 'tab' | '
 type Size = 'sm' | 'md' | 'lg';
 
 interface FunctionButtonProps {
-  /** Click handler */
-  onClick?: () => void;
+  /** Click handler (event parameter optional for stopPropagation etc.) */
+  onClick?: (e?: React.MouseEvent) => void;
   /** MDI icon path (optional) */
   icon?: string;
   /** Visual style variant */
@@ -234,7 +234,7 @@ const FunctionButton = ({
     <Button
       type={type}
       isDisabled={isDisabled}
-      onPress={onClick}
+      onPress={() => onClick?.()}
       radius="none"
       isIconOnly={isIconOnly}
       startContent={!isIconOnly ? iconElement : undefined}
