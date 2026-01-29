@@ -2,7 +2,7 @@
 import Icon from '@mdi/react';
 import { mdiPlus, mdiMinus } from '@mdi/js';
 import { PATHS } from '@/lib/global-data';
-import SubScoreRefactor from '@/app/components/character/sections/scores/SubScoreRefactor';
+import SubScore from '@/app/components/character/sections/scores/SubScore';
 
 interface Modifier {
 	_id: string,
@@ -41,7 +41,7 @@ const Score = ({
 				<span className="float-right font-bold">{scoreValue}</span>
 			</h3>
 			{score.subscores.map((subscore) => (
-				<SubScoreRefactor
+				<SubScore
 					subscore={subscore.title}
 					value={subscore.value}
 					subscore_id={subscore._id}
