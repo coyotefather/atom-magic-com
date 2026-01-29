@@ -20,12 +20,12 @@ import {
 import { calculateGearShieldBonuses, getArmorCapacity } from '@/lib/utils/shield';
 import { CharacterState } from '@/lib/slices/characterSlice';
 import CharacterSummaryCard from './CharacterSummaryCard';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import Icon from '@mdi/react';
 import {
 	mdiDice6,
 	mdiLock,
 	mdiLockOpen,
-	mdiRefresh,
 	mdiContentSave,
 	mdiPencil,
 	mdiShuffle,
@@ -222,32 +222,20 @@ const CharacterGenerator = ({
 
 			{/* Mode Toggle */}
 			<div className="flex gap-4 mb-8">
-				<button
+				<FunctionButton
+					variant="tab"
+					isActive={mode === 'easy'}
 					onClick={() => setMode('easy')}
-					className={`
-						px-6 py-3 marcellus uppercase tracking-wider text-sm
-						transition-all border-2
-						${mode === 'easy'
-							? 'bg-gold text-white border-gold'
-							: 'border-stone/30 text-stone hover:border-stone dark:border-stone-dark dark:text-stone-light dark:hover:border-stone-light'
-						}
-					`}
 				>
 					Easy Mode
-				</button>
-				<button
+				</FunctionButton>
+				<FunctionButton
+					variant="tab"
+					isActive={mode === 'advanced'}
 					onClick={() => setMode('advanced')}
-					className={`
-						px-6 py-3 marcellus uppercase tracking-wider text-sm
-						transition-all border-2
-						${mode === 'advanced'
-							? 'bg-gold text-white border-gold'
-							: 'border-stone/30 text-stone hover:border-stone dark:border-stone-dark dark:text-stone-light dark:hover:border-stone-light'
-						}
-					`}
 				>
 					Advanced Mode
-				</button>
+				</FunctionButton>
 			</div>
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -313,17 +301,13 @@ const CharacterGenerator = ({
 
 							{/* Culture Lock */}
 							<div className="flex items-center gap-3">
-								<button
+								<FunctionButton
+									variant="toggle"
+									isActive={isCultureLocked}
 									onClick={() => setIsCultureLocked(!isCultureLocked)}
-									className={`p-2 border-2 transition-colors ${
-										isCultureLocked
-											? 'border-gold bg-gold/10 text-gold'
-											: 'border-stone/30 text-stone hover:border-stone dark:border-stone-dark dark:text-stone-light'
-									}`}
+									icon={isCultureLocked ? mdiLock : mdiLockOpen}
 									title={isCultureLocked ? 'Unlock culture' : 'Lock culture'}
-								>
-									<Icon path={isCultureLocked ? mdiLock : mdiLockOpen} size={0.875} />
-								</button>
+								/>
 								<div className="flex-1">
 									<label className="block text-sm font-medium text-stone-dark dark:text-stone-light mb-1">
 										Culture
@@ -348,17 +332,13 @@ const CharacterGenerator = ({
 
 							{/* Path Lock */}
 							<div className="flex items-center gap-3">
-								<button
+								<FunctionButton
+									variant="toggle"
+									isActive={isPathLocked}
 									onClick={() => setIsPathLocked(!isPathLocked)}
-									className={`p-2 border-2 transition-colors ${
-										isPathLocked
-											? 'border-gold bg-gold/10 text-gold'
-											: 'border-stone/30 text-stone hover:border-stone dark:border-stone-dark dark:text-stone-light'
-									}`}
+									icon={isPathLocked ? mdiLock : mdiLockOpen}
 									title={isPathLocked ? 'Unlock path' : 'Lock path'}
-								>
-									<Icon path={isPathLocked ? mdiLock : mdiLockOpen} size={0.875} />
-								</button>
+								/>
 								<div className="flex-1">
 									<label className="block text-sm font-medium text-stone-dark dark:text-stone-light mb-1">
 										Path
@@ -383,17 +363,13 @@ const CharacterGenerator = ({
 
 							{/* Patronage Lock */}
 							<div className="flex items-center gap-3">
-								<button
+								<FunctionButton
+									variant="toggle"
+									isActive={isPatronageLocked}
 									onClick={() => setIsPatronageLocked(!isPatronageLocked)}
-									className={`p-2 border-2 transition-colors ${
-										isPatronageLocked
-											? 'border-gold bg-gold/10 text-gold'
-											: 'border-stone/30 text-stone hover:border-stone dark:border-stone-dark dark:text-stone-light'
-									}`}
+									icon={isPatronageLocked ? mdiLock : mdiLockOpen}
 									title={isPatronageLocked ? 'Unlock patronage' : 'Lock patronage'}
-								>
-									<Icon path={isPatronageLocked ? mdiLock : mdiLockOpen} size={0.875} />
-								</button>
+								/>
 								<div className="flex-1">
 									<label className="block text-sm font-medium text-stone-dark dark:text-stone-light mb-1">
 										Patronage
@@ -440,13 +416,16 @@ const CharacterGenerator = ({
 					)}
 
 					{/* Generate Button */}
-					<button
+					<FunctionButton
+						variant="danger"
+						size="lg"
+						fullWidth
 						onClick={handleGenerate}
-						className="w-full mt-6 px-6 py-4 bg-oxblood hover:bg-oxblood-dark text-white marcellus uppercase tracking-wider text-sm transition-colors flex items-center justify-center gap-2"
+						icon={mdiShuffle}
+						className="mt-6"
 					>
-						<Icon path={mdiShuffle} size={0.875} />
 						{generatedCharacter ? 'Generate Again' : 'Generate Character'}
-					</button>
+					</FunctionButton>
 				</div>
 
 				{/* Preview Panel */}
@@ -534,25 +513,23 @@ const CharacterGenerator = ({
 
 							{/* Actions */}
 							<div className="flex gap-4 pt-4 border-t border-stone/20 dark:border-stone-dark">
-								<button
+								<FunctionButton
+									variant={isSaved ? 'secondary' : 'primary'}
 									onClick={handleSave}
-									disabled={isSaved}
-									className={`flex-1 px-4 py-3 marcellus uppercase tracking-wider text-sm transition-colors flex items-center justify-center gap-2 ${
-										isSaved
-											? 'bg-laurel/20 text-laurel border-2 border-laurel cursor-default'
-											: 'bg-gold hover:bg-gold-dark text-white'
-									}`}
+									isDisabled={isSaved}
+									icon={mdiContentSave}
+									className={`flex-1 ${isSaved ? 'bg-laurel/20 text-laurel border-laurel hover:bg-laurel/20' : ''}`}
 								>
-									<Icon path={mdiContentSave} size={0.875} />
 									{isSaved ? 'Saved!' : 'Save to Roster'}
-								</button>
-								<button
+								</FunctionButton>
+								<FunctionButton
+									variant="secondary"
 									onClick={handleEdit}
-									className="flex-1 px-4 py-3 border-2 border-stone text-stone hover:border-gold hover:text-gold dark:border-stone-light dark:text-stone-light dark:hover:border-gold dark:hover:text-gold marcellus uppercase tracking-wider text-sm transition-colors flex items-center justify-center gap-2"
+									icon={mdiPencil}
+									className="flex-1 border-stone text-stone hover:border-gold hover:text-gold dark:border-stone-light dark:text-stone-light"
 								>
-									<Icon path={mdiPencil} size={0.875} />
 									Edit in Manager
-								</button>
+								</FunctionButton>
 							</div>
 						</div>
 					) : (

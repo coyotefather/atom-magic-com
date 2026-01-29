@@ -3,7 +3,7 @@ import { Button } from "@heroui/react";
 import clsx from 'clsx';
 import Icon from '@mdi/react';
 
-type Variant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'chip';
+type Variant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'chip' | 'tab' | 'toggle';
 type Size = 'sm' | 'md' | 'lg';
 
 interface FunctionButtonProps {
@@ -65,6 +65,16 @@ const variantConfig: Record<Variant, { base: string; active: string; inactive: s
     active: 'bg-bronze text-white border-bronze',
     inactive: 'bg-white dark:bg-black/20 text-stone border-stone hover:border-bronze hover:text-bronze dark:text-stone-light dark:border-stone-dark',
   },
+  tab: {
+    base: 'border-2 transition-all marcellus uppercase tracking-wider',
+    active: 'bg-gold text-white border-gold',
+    inactive: 'border-stone/30 text-stone hover:border-stone dark:border-stone-dark dark:text-stone-light dark:hover:border-stone-light',
+  },
+  toggle: {
+    base: 'p-2 border-2 transition-colors',
+    active: 'border-gold bg-gold/10 text-gold',
+    inactive: 'border-stone/30 text-stone hover:border-stone dark:border-stone-dark dark:text-stone-light',
+  },
 };
 
 /**
@@ -89,8 +99,20 @@ const variantConfig: Record<Variant, { base: string; active: string; inactive: s
  * </FunctionButton>
  *
  * @example
- * // Icon-only toggle
- * <FunctionButton variant="ghost" isIconOnly isActive={isLocked} icon={mdiLock} onClick={toggleLock} />
+ * // Tab toggle (mode selection)
+ * <FunctionButton variant="tab" isActive={mode === 'easy'} onClick={() => setMode('easy')}>
+ *   Easy Mode
+ * </FunctionButton>
+ *
+ * @example
+ * // Icon toggle (lock/unlock)
+ * <FunctionButton
+ *   variant="toggle"
+ *   isActive={isLocked}
+ *   icon={isLocked ? mdiLock : mdiLockOpen}
+ *   onClick={() => setIsLocked(!isLocked)}
+ *   title={isLocked ? 'Unlock' : 'Lock'}
+ * />
  */
 const FunctionButton = ({
   onClick = () => {},
@@ -109,8 +131,8 @@ const FunctionButton = ({
   const { padding, text, iconSize } = sizeConfig[size];
   const { base, active, inactive } = variantConfig[variant];
 
-  // For variants with active states (ghost, chip), apply active/inactive styles
-  const hasActiveState = variant === 'ghost' || variant === 'chip';
+  // For variants with active states, apply active/inactive styles
+  const hasActiveState = variant === 'ghost' || variant === 'chip' || variant === 'tab' || variant === 'toggle';
   const stateStyles = hasActiveState ? (isActive ? active : inactive) : '';
 
   // Ghost buttons don't use HeroUI styling, render as plain button
@@ -155,6 +177,51 @@ const FunctionButton = ({
         )}
       >
         {icon && <Icon path={icon} size={iconSize} className={children ? 'mr-1.5 inline-block' : ''} />}
+        {children}
+      </button>
+    );
+  }
+
+  // Tab variant - mode toggle buttons
+  if (variant === 'tab') {
+    return (
+      <button
+        type={type}
+        onClick={onClick}
+        disabled={isDisabled}
+        title={title}
+        className={clsx(
+          padding,
+          text,
+          base,
+          stateStyles,
+          { 'opacity-50 cursor-not-allowed': isDisabled },
+          { 'w-full': fullWidth },
+          className
+        )}
+      >
+        {icon && <Icon path={icon} size={iconSize} className={children ? 'mr-1.5 inline-block' : ''} />}
+        {children}
+      </button>
+    );
+  }
+
+  // Toggle variant - icon-only toggle buttons (lock/unlock)
+  if (variant === 'toggle') {
+    return (
+      <button
+        type={type}
+        onClick={onClick}
+        disabled={isDisabled}
+        title={title}
+        className={clsx(
+          base,
+          stateStyles,
+          { 'opacity-50 cursor-not-allowed': isDisabled },
+          className
+        )}
+      >
+        {icon && <Icon path={icon} size={iconSize} />}
         {children}
       </button>
     );
