@@ -5,6 +5,7 @@ import Icon from '@mdi/react';
 import { mdiDice6, mdiHistory, mdiLightningBolt } from '@mdi/js';
 import DiceDisplay from './DiceDisplay';
 import DiceHistory from './DiceHistory';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import { useOptionalRollContext, DieType, RollResult } from '@/lib/RollContext';
 import PageHero from '@/app/components/common/PageHero';
 
@@ -128,17 +129,16 @@ const DiceRoller = () => {
 							{/* Die type buttons */}
 							<div className="grid grid-cols-7 gap-2 mb-6">
 								{DICE_TYPES.map(die => (
-									<button
+									<FunctionButton
 										key={die.type}
+										variant="tab"
+										size="sm"
+										isActive={selectedDie === die.type}
 										onClick={() => setSelectedDie(die.type)}
-										className={`py-3 px-2 marcellus text-sm font-bold uppercase tracking-wider transition-colors ${
-											selectedDie === die.type
-												? 'bg-gold text-black'
-												: 'bg-parchment border-2 border-stone text-stone-dark hover:border-gold hover:text-gold'
-										}`}
+										className="py-3"
 									>
 										{die.label}
-									</button>
+									</FunctionButton>
 								))}
 							</div>
 
@@ -149,12 +149,14 @@ const DiceRoller = () => {
 										Number of Dice
 									</label>
 									<div className="flex items-center gap-2">
-										<button
+										<FunctionButton
+											variant="secondary"
+											size="sm"
 											onClick={() => setNumDice(Math.max(1, numDice - 1))}
-											className="w-10 h-10 bg-parchment border-2 border-stone text-stone-dark hover:border-gold hover:text-gold transition-colors marcellus text-lg font-bold"
+											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-gold hover:text-gold"
 										>
 											-
-										</button>
+										</FunctionButton>
 										<input
 											type="number"
 											min="1"
@@ -163,12 +165,14 @@ const DiceRoller = () => {
 											onChange={e => setNumDice(Math.max(1, Math.min(20, parseInt(e.target.value) || 1)))}
 											className="w-16 h-10 text-center border-2 border-stone bg-white marcellus text-lg font-bold"
 										/>
-										<button
+										<FunctionButton
+											variant="secondary"
+											size="sm"
 											onClick={() => setNumDice(Math.min(20, numDice + 1))}
-											className="w-10 h-10 bg-parchment border-2 border-stone text-stone-dark hover:border-gold hover:text-gold transition-colors marcellus text-lg font-bold"
+											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-gold hover:text-gold"
 										>
 											+
-										</button>
+										</FunctionButton>
 									</div>
 								</div>
 
@@ -177,40 +181,43 @@ const DiceRoller = () => {
 										Modifier
 									</label>
 									<div className="flex items-center gap-2">
-										<button
+										<FunctionButton
+											variant="secondary"
+											size="sm"
 											onClick={() => setModifier(modifier - 1)}
-											className="w-10 h-10 bg-parchment border-2 border-stone text-stone-dark hover:border-gold hover:text-gold transition-colors marcellus text-lg font-bold"
+											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-gold hover:text-gold"
 										>
 											-
-										</button>
+										</FunctionButton>
 										<input
 											type="number"
 											value={modifier}
 											onChange={e => setModifier(parseInt(e.target.value) || 0)}
 											className="w-16 h-10 text-center border-2 border-stone bg-white marcellus text-lg font-bold"
 										/>
-										<button
+										<FunctionButton
+											variant="secondary"
+											size="sm"
 											onClick={() => setModifier(modifier + 1)}
-											className="w-10 h-10 bg-parchment border-2 border-stone text-stone-dark hover:border-gold hover:text-gold transition-colors marcellus text-lg font-bold"
+											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-gold hover:text-gold"
 										>
 											+
-										</button>
+										</FunctionButton>
 									</div>
 								</div>
 							</div>
 
 							{/* Roll button */}
-							<button
+							<FunctionButton
+								variant="primary"
+								size="lg"
+								fullWidth
 								onClick={handleRoll}
-								disabled={isRolling}
-								className={`w-full py-4 marcellus uppercase tracking-widest text-lg font-bold transition-colors ${
-									isRolling
-										? 'bg-stone text-white cursor-not-allowed'
-										: 'bg-gold text-black hover:bg-brightgold'
-								}`}
+								isDisabled={isRolling}
+								className={isRolling ? 'bg-stone cursor-not-allowed' : ''}
 							>
 								{isRolling ? 'Rolling...' : `Roll ${formatRollNotation(selectedDie, numDice, modifier)}`}
-							</button>
+							</FunctionButton>
 						</div>
 
 						{/* Quick presets */}
@@ -221,14 +228,16 @@ const DiceRoller = () => {
 							</h2>
 							<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
 								{PRESETS.map(preset => (
-									<button
+									<FunctionButton
 										key={preset.label}
+										variant="chip"
+										size="sm"
 										onClick={() => handlePreset(preset)}
-										disabled={isRolling}
-										className="py-2 px-3 bg-parchment border-2 border-stone text-sm marcellus hover:border-gold hover:text-gold transition-colors disabled:opacity-50"
+										isDisabled={isRolling}
+										className="bg-parchment"
 									>
 										{preset.label}
-									</button>
+									</FunctionButton>
 								))}
 							</div>
 						</div>
@@ -243,12 +252,14 @@ const DiceRoller = () => {
 									History
 								</h2>
 								{history.length > 0 && (
-									<button
+									<FunctionButton
+										variant="ghost"
+										size="sm"
 										onClick={clearHistory}
-										className="text-xs text-stone hover:text-oxblood transition-colors"
+										className="hover:text-oxblood"
 									>
 										Clear
-									</button>
+									</FunctionButton>
 								)}
 							</div>
 							<DiceHistory history={history} />

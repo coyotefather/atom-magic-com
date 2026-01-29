@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiContentCopy, mdiDelete, mdiMinus } from '@mdi/js';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import EncounterRoster from './EncounterRoster';
 import CreatureSelector from './CreatureSelector';
 import EncounterCreatureList from './EncounterCreatureList';
@@ -254,23 +255,27 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 										Party Size
 									</label>
 									<div className="flex items-center gap-2">
-										<button
+										<FunctionButton
+											variant="secondary"
+											size="sm"
 											onClick={() => handlePartySizeChange(-1)}
-											disabled={currentEncounter.partySize <= 1}
-											className="w-10 h-10 border-2 border-stone bg-white hover:bg-parchment disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
-										>
-											<Icon path={mdiMinus} size={0.75} />
-										</button>
+											isDisabled={currentEncounter.partySize <= 1}
+											icon={mdiMinus}
+											isIconOnly
+											className="w-10 h-10 px-0 border-stone"
+										/>
 										<span className="w-10 text-center marcellus text-xl">
 											{currentEncounter.partySize}
 										</span>
-										<button
+										<FunctionButton
+											variant="secondary"
+											size="sm"
 											onClick={() => handlePartySizeChange(1)}
-											disabled={currentEncounter.partySize >= 12}
-											className="w-10 h-10 border-2 border-stone bg-white hover:bg-parchment disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
-										>
-											<Icon path={mdiPlus} size={0.75} />
-										</button>
+											isDisabled={currentEncounter.partySize >= 12}
+											icon={mdiPlus}
+											isIconOnly
+											className="w-10 h-10 px-0 border-stone"
+										/>
 									</div>
 								</div>
 							</div>
@@ -309,22 +314,26 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 								</div>
 								<div className="flex gap-2">
 									{currentEncounter.creatures.length > 0 && (
-										<button
+										<FunctionButton
+											variant="ghost"
+											size="sm"
 											onClick={handleClearAll}
-											className="px-4 py-2 border border-stone-light text-stone-light hover:border-oxblood hover:text-oxblood transition-colors text-sm flex items-center gap-1"
+											icon={mdiDelete}
+											className="border border-stone-light text-stone-light hover:border-oxblood hover:text-oxblood"
 										>
-											<Icon path={mdiDelete} size={0.625} />
 											Clear All
-										</button>
+										</FunctionButton>
 									)}
-									<button
+									<FunctionButton
+										variant="primary"
+										size="sm"
 										onClick={handleCopySummary}
-										disabled={currentEncounter.creatures.length === 0}
-										className="px-4 py-2 bg-bronze text-white hover:bg-gold disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm flex items-center gap-1"
+										isDisabled={currentEncounter.creatures.length === 0}
+										icon={mdiContentCopy}
+										className="bg-bronze hover:bg-gold"
 									>
-										<Icon path={mdiContentCopy} size={0.625} />
 										{copySuccess ? 'Copied!' : 'Copy Summary'}
-									</button>
+									</FunctionButton>
 								</div>
 							</div>
 						</div>
@@ -339,12 +348,13 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 						<p className="text-stone mb-4">
 							Select an existing encounter or create a new one to get started.
 						</p>
-						<button
+						<FunctionButton
+							variant="primary"
 							onClick={handleNewEncounter}
-							className="px-6 py-3 bg-bronze text-white marcellus uppercase tracking-wider hover:bg-gold transition-colors"
+							className="bg-bronze hover:bg-gold"
 						>
 							New Encounter
-						</button>
+						</FunctionButton>
 					</div>
 				)}
 			</main>
