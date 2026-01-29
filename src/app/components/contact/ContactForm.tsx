@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { mdiSend, mdiCheckCircle, mdiAlertCircle } from '@mdi/js';
+import { mdiSend } from '@mdi/js';
 import Icon from '@mdi/react';
+import StatusMessage from '@/app/components/common/StatusMessage';
 
 interface FormData {
 	name: string;
@@ -117,35 +118,39 @@ const ContactForm = ({ recipientEmail }: { recipientEmail?: string }) => {
 
 	if (status.type === 'success') {
 		return (
-			<div className="bg-laurel/10 border-2 border-laurel p-8 text-center">
-				<Icon path={mdiCheckCircle} size={2} className="text-laurel mx-auto mb-4" />
-				<h3 className="text-xl marcellus text-laurel mb-2">Message Sent</h3>
-				<p className="text-charcoal dark:text-parchment">{status.message}</p>
+			<StatusMessage
+				variant="success"
+				size="full"
+				title="Message Sent"
+				message={status.message || 'Your message has been sent!'}
+			>
 				<button
 					onClick={() => setStatus({ type: 'idle' })}
-					className="mt-4 text-gold hover:text-brightgold underline transition-colors"
+					className="text-gold hover:text-brightgold underline transition-colors"
 				>
 					Send another message
 				</button>
-			</div>
+			</StatusMessage>
 		);
 	}
 
 	if (status.type === 'rate-limit') {
 		return (
-			<div className="bg-bronze/10 border-2 border-bronze p-8 text-center">
-				<Icon path={mdiAlertCircle} size={2} className="text-bronze mx-auto mb-4" />
-				<h3 className="text-xl marcellus text-bronze mb-2">High Volume</h3>
-				<p className="text-charcoal dark:text-parchment">{status.message}</p>
+			<StatusMessage
+				variant="warning"
+				size="full"
+				title="High Volume"
+				message={status.message || "We're experiencing high volume. Please try again later."}
+			>
 				{recipientEmail && (
 					<a
 						href={`mailto:${recipientEmail}`}
-						className="mt-4 inline-block text-gold hover:text-brightgold underline transition-colors"
+						className="text-gold hover:text-brightgold underline transition-colors"
 					>
 						Email us directly
 					</a>
 				)}
-			</div>
+			</StatusMessage>
 		);
 	}
 
@@ -247,10 +252,7 @@ const ContactForm = ({ recipientEmail }: { recipientEmail?: string }) => {
 			</div>
 
 			{status.type === 'error' && (
-				<div className="bg-oxblood/10 border-2 border-oxblood p-4 flex items-center gap-3">
-					<Icon path={mdiAlertCircle} size={1} className="text-oxblood flex-shrink-0" />
-					<p className="text-oxblood">{status.message}</p>
-				</div>
+				<StatusMessage variant="error" message={status.message || 'An error occurred.'} />
 			)}
 
 			<div>
