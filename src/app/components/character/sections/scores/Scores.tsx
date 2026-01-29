@@ -1,5 +1,5 @@
 'use client';
-import ScoreRefactor from '@/app/components/character/sections/scores/ScoreRefactor';
+import Score from '@/app/components/character/sections/scores/Score';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { initScore } from "@/lib/slices/characterSlice";
 import {
@@ -53,7 +53,7 @@ const Scores = ({
 		<div className="container pt-16 pb-16">
 			<div className="grid grid-cols-2 gap-8 bg-white">
 				{score.map((s) => (
-					<ScoreRefactor
+					<Score
 						key={s._id}
 						score={s}
 						scoreValue={s.value}

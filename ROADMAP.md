@@ -74,9 +74,9 @@ Feature ideas and improvements for the Atom Magic website.
 
 ### Medium priority
 - [ ] **Extract Vorago AI helpers** - Split `voragoSlice.ts` (882 lines) by extracting AI logic to separate file
-- [ ] **ContactForm error state** - Add user-visible error UI when form submission fails
-- [ ] **Clean up Refactor suffix components** - Clarify or rename `ScoreRefactor.tsx` and `SubScoreRefactor.tsx`
-- [ ] **Extract section visibility hook** - Move 9+ useState hooks from `Sections.tsx` to custom hook
+- [x] **ContactForm error state** - Already has error UI (lines 249-254) showing errors to users
+- [x] **Clean up Refactor suffix components** - Renamed to `Score.tsx` and `SubScore.tsx`
+- [x] **Extract section visibility hook** - Created `useSectionVisibility` hook in `src/lib/hooks/`
 
 ### Documentation
 - [ ] **Document state management patterns** - When to use Redux vs Context API

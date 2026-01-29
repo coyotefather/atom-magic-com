@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import Section from '@/app/components/common/Section';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import CharacterOptions from '@/app/components/character/sections/CharacterOptions';
@@ -22,6 +22,7 @@ import CharacterRoster from '@/app/components/character/CharacterRoster';
 import { useAppSelector } from '@/lib/hooks';
 import { useCharacterPersistence } from '@/lib/hooks/useCharacterPersistence';
 import { useCharacterValidation } from '@/lib/hooks/useCharacterValidation';
+import { useSectionVisibility } from '@/lib/hooks/useSectionVisibility';
 
 import {
 	CULTURES_QUERY_RESULT,
@@ -84,47 +85,31 @@ const Sections = ({
 		setClickCheck,
 	} = useCharacterValidation();
 
-	const [showChooseCulture, setShowChooseCulture] = useState(false);
-	const [showChoosePath, setShowChoosePath] = useState(false);
-	const [showChoosePatronage, setShowChoosePatronage] = useState(false);
-	const [showChooseDisciplinesAndTechniques, setShowDisciplinesAndTechniques] = useState(false);
-	const [showAdjustScoresAndScores, setShowAdjustScoresAndScores] = useState(false);
-	const [showManageGear, setShowManageGear] = useState(false);
-	const [showManageWealth, setShowManageWealth] = useState(false);
-	const [showChooseAnimalCompanion, setShowChooseAnimalCompanion] = useState(false);
-	const [showWrapUp, setShowWrapUp] = useState(false);
+	// Section visibility state - auto-expands when character has progress
+	const characterHasProgress = Boolean(character.name || character.culture || character.path);
+	const {
+		showChooseCulture,
+		showChoosePath,
+		showChoosePatronage,
+		showChooseDisciplinesAndTechniques,
+		showAdjustScoresAndScores,
+		showManageGear,
+		showManageWealth,
+		showChooseAnimalCompanion,
+		showWrapUp,
+		setShowChooseCulture,
+		setShowChoosePath,
+		setShowChoosePatronage,
+		setShowDisciplinesAndTechniques,
+		setShowAdjustScoresAndScores,
+		setShowManageGear,
+		setShowManageWealth,
+		setShowChooseAnimalCompanion,
+		setShowWrapUp,
+		showAllSections,
+	} = useSectionVisibility(true, character.loaded, characterHasProgress);
 
-	const rollCharacter = () => {
-		setShowChooseCulture(true);
-		setShowChoosePath(true);
-		setShowChoosePatronage(true);
-		setShowAdjustScoresAndScores(true);
-		setShowDisciplinesAndTechniques(true);
-		setShowManageGear(true);
-		setShowManageWealth(true);
-		setShowChooseAnimalCompanion(true);
-		setShowWrapUp(true);
-	};
-
-	// Expand sections when a character is loaded from storage
-	// For existing characters, show all sections so users can edit any part directly
-	useEffect(() => {
-		if (character.loaded) {
-			// If character has any progress, expand all sections for easy editing
-			const hasProgress = character.name || character.culture || character.path;
-			if (hasProgress) {
-				setShowChooseCulture(true);
-				setShowChoosePath(true);
-				setShowChoosePatronage(true);
-				setShowAdjustScoresAndScores(true);
-				setShowDisciplinesAndTechniques(true);
-				setShowManageGear(true);
-				setShowManageWealth(true);
-				setShowChooseAnimalCompanion(true);
-				setShowWrapUp(true);
-			}
-		}
-	}, [character.loaded]);
+	const rollCharacter = showAllSections;
 
 	let modifiers: Modifiers | undefined = { path: [], gear: [] };
 	paths.map( (path) => {
