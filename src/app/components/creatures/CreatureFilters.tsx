@@ -1,5 +1,6 @@
 'use client';
 import { CREATURE_FILTERS_QUERY_RESULT } from '../../../../sanity.types';
+import FunctionButton from '@/app/components/common/FunctionButton';
 
 interface CreatureFiltersProps {
 	filters: CREATURE_FILTERS_QUERY_RESULT;
@@ -67,12 +68,14 @@ const CreatureFilters = ({
 			<div className="flex items-center justify-between mb-6">
 				<h2 className="marcellus text-lg text-black">Filter Creatures</h2>
 				{hasActiveFilters && (
-					<button
+					<FunctionButton
+						variant="ghost"
+						size="sm"
 						onClick={onClearAll}
-						className="text-sm text-stone hover:text-oxblood transition-colors"
+						className="hover:text-oxblood"
 					>
 						Clear All
-					</button>
+					</FunctionButton>
 				)}
 			</div>
 
@@ -84,17 +87,15 @@ const CreatureFilters = ({
 					</h3>
 					<div className="flex flex-wrap gap-2">
 						{filters.challengeLevels.map((level) => (
-							<button
+							<FunctionButton
 								key={level}
+								variant="chip"
+								size="sm"
+								isActive={selectedChallengeLevels.includes(level)}
 								onClick={() => handleChallengeLevelToggle(level)}
-								className={`px-3 py-1.5 text-sm border transition-colors ${
-									selectedChallengeLevels.includes(level)
-										? 'bg-bronze text-white border-bronze'
-										: 'bg-white text-stone border-stone hover:border-bronze hover:text-bronze'
-								}`}
 							>
 								{challengeLevelLabels[level] || level}
-							</button>
+							</FunctionButton>
 						))}
 					</div>
 				</div>
@@ -109,17 +110,15 @@ const CreatureFilters = ({
 							{filters.creatureTypes
 								.filter((type): type is string => type !== null)
 								.map((type) => (
-									<button
+									<FunctionButton
 										key={type}
+										variant="chip"
+										size="sm"
+										isActive={selectedTypes.includes(type)}
 										onClick={() => handleTypeToggle(type)}
-										className={`px-3 py-1.5 text-sm border transition-colors ${
-											selectedTypes.includes(type)
-												? 'bg-bronze text-white border-bronze'
-												: 'bg-white text-stone border-stone hover:border-bronze hover:text-bronze'
-										}`}
 									>
 										{type}
-									</button>
+									</FunctionButton>
 								))}
 						</div>
 					</div>
@@ -135,17 +134,15 @@ const CreatureFilters = ({
 							{filters.environments
 								.filter((env): env is string => env !== null)
 								.map((env) => (
-									<button
+									<FunctionButton
 										key={env}
+										variant="chip"
+										size="sm"
+										isActive={selectedEnvironments.includes(env)}
 										onClick={() => handleEnvironmentToggle(env)}
-										className={`px-3 py-1.5 text-sm border transition-colors ${
-											selectedEnvironments.includes(env)
-												? 'bg-bronze text-white border-bronze'
-												: 'bg-white text-stone border-stone hover:border-bronze hover:text-bronze'
-										}`}
 									>
 										{env}
-									</button>
+									</FunctionButton>
 								))}
 						</div>
 					</div>
