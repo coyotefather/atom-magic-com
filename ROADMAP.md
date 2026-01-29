@@ -68,9 +68,9 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Remove dead commented code** - Clean up `ScoreUpdate` interface in `characterSlice.ts` and other commented blocks
 
 ### High priority
-- [ ] **Vorago AI logging cleanup** - Replace 40+ console.logs in `voragoSlice.ts:269-514` with proper logging or remove
-- [ ] **Type safety in vorago-ai route** - Replace multiple `any` types in `vorago-ai/route.ts` with proper TypeScript types
-- [ ] **Fix CategoryChip typing** - Replace `chipColor: any` in `CategoryChip.tsx` with proper color type
+- [x] **Vorago AI logging cleanup** - Replace 40+ console.logs in `voragoSlice.ts:269-514` with proper logging or remove
+- [x] **Type safety in vorago-ai route** - Replace multiple `any` types in `vorago-ai/route.ts` with proper TypeScript types
+- [x] **Fix CategoryChip typing** - Replace `chipColor: any` in `CategoryChip.tsx` with proper color type
 
 ### Medium priority
 - [ ] **Extract Vorago AI helpers** - Split `voragoSlice.ts` (882 lines) by extracting AI logic to separate file
