@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiContentCopy, mdiChevronDown, mdiChevronUp } from '@mdi/js';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import { Session, generateSessionSummary, countKeyEvents } from '@/lib/adventure-log-data';
 import { copyToClipboard } from '@/lib/sessionPersistence';
 
@@ -61,13 +62,15 @@ const SessionExport = ({ session }: SessionExportProps) => {
 							</div>
 
 							{/* Copy button */}
-							<button
+							<FunctionButton
+								variant="primary"
+								fullWidth
 								onClick={handleCopy}
-								className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-bronze text-white marcellus uppercase tracking-wider hover:bg-gold transition-colors"
+								icon={mdiContentCopy}
+								className="bg-bronze hover:bg-gold"
 							>
-								<Icon path={mdiContentCopy} size={0.75} />
 								{copySuccess ? 'Copied!' : 'Copy to Clipboard'}
-							</button>
+							</FunctionButton>
 						</>
 					)}
 				</div>

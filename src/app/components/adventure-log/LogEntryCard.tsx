@@ -1,6 +1,7 @@
 'use client';
 import Icon from '@mdi/react';
 import { mdiDiceMultiple, mdiLightningBolt, mdiNoteText, mdiStar, mdiStarOutline, mdiClose } from '@mdi/js';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import {
 	LogEntry,
 	formatTimestamp,
@@ -116,24 +117,23 @@ const LogEntryCard = ({ entry, onToggleKeyEvent, onDelete }: LogEntryCardProps) 
 
 					{/* Actions */}
 					<div className="flex items-center gap-1">
-						<button
+						<FunctionButton
+							variant="toggle"
+							size="sm"
 							onClick={() => onToggleKeyEvent(entry.id)}
-							className={`p-1 transition-colors ${
-								entry.isKeyEvent
-									? 'text-gold'
-									: 'text-stone/50 hover:text-gold'
-							}`}
+							icon={entry.isKeyEvent ? mdiStar : mdiStarOutline}
+							isActive={entry.isKeyEvent}
 							title={entry.isKeyEvent ? 'Remove from key events' : 'Mark as key event'}
-						>
-							<Icon path={entry.isKeyEvent ? mdiStar : mdiStarOutline} size={0.75} />
-						</button>
-						<button
+							className={entry.isKeyEvent ? '' : 'border-0 text-stone/50 hover:text-gold'}
+						/>
+						<FunctionButton
+							variant="ghost"
+							size="sm"
 							onClick={() => onDelete(entry.id)}
-							className="p-1 text-stone/50 hover:text-oxblood transition-colors opacity-0 group-hover:opacity-100"
+							icon={mdiClose}
 							title="Delete entry"
-						>
-							<Icon path={mdiClose} size={0.75} />
-						</button>
+							className="text-stone/50 hover:text-oxblood opacity-0 group-hover:opacity-100"
+						/>
 					</div>
 				</div>
 			</div>
