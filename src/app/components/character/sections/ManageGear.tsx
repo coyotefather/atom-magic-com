@@ -195,10 +195,10 @@ const ManageGear = ({
 						)}>
 							<FunctionButton
 								isDisabled={!hasValidOptions()}
-								buttonFunction={handleRoll}
-								buttonIcon={mdiDiceMultiple}
-								iconOnly={false}
-								variant="primary">
+								onClick={handleRoll}
+								icon={mdiDiceMultiple}
+								variant="primary"
+							>
 								{rolledGear ? 'Roll Again' : 'Roll Gear'}
 							</FunctionButton>
 						</div>

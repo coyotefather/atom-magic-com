@@ -123,10 +123,12 @@ const ManageGear = ({
 						)}>
 							<FunctionButton
 								isDisabled={detailsUpdated}
-								buttonFunction={handleClick}
-								buttonIcon={mdiDiceMultiple}
-								iconOnly={false}
-								variant="primary">Roll Wealth</FunctionButton>
+								onClick={handleClick}
+								icon={mdiDiceMultiple}
+								variant="primary"
+							>
+								Roll Wealth
+							</FunctionButton>
 						</div>
 						<div className={clsx(
 							"text-tiny text-danger mt-2",
