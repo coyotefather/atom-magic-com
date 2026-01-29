@@ -4,6 +4,7 @@ import Icon from '@mdi/react';
 import { mdiDiceMultiple, mdiFormatListBulleted } from '@mdi/js';
 import CreatureFilters from './CreatureFilters';
 import CreatureCard from './CreatureCard';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import {
 	CREATURES_QUERY_RESULT,
 	CREATURE_FILTERS_QUERY_RESULT,
@@ -131,29 +132,27 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 			<main className="lg:col-span-3">
 				{/* Action buttons */}
 				<div className="flex flex-wrap gap-4 mb-8">
-					<button
+					<FunctionButton
+						variant="primary"
 						onClick={handleRoll}
-						disabled={filteredCreatures.length === 0 || isRolling}
-						className="flex items-center gap-2 px-6 py-3 bg-bronze text-white marcellus uppercase tracking-wider hover:bg-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+						isDisabled={filteredCreatures.length === 0 || isRolling}
+						icon={mdiDiceMultiple}
+						className={`bg-bronze hover:bg-gold ${isRolling ? '[&_svg]:animate-spin' : ''}`}
 					>
-						<Icon
-							path={mdiDiceMultiple}
-							size={1}
-							className={isRolling ? 'animate-spin' : ''}
-						/>
 						{isRolling ? 'Rolling...' : 'Roll Random Creature'}
-					</button>
+					</FunctionButton>
 
-					<button
+					<FunctionButton
+						variant="secondary"
 						onClick={() => {
 							setShowAll(!showAll);
 							if (!showAll) setRolledCreature(null);
 						}}
-						className="flex items-center gap-2 px-6 py-3 border-2 border-stone text-stone marcellus uppercase tracking-wider hover:border-bronze hover:text-bronze transition-colors"
+						icon={mdiFormatListBulleted}
+						className="border-stone text-stone hover:border-bronze hover:text-bronze"
 					>
-						<Icon path={mdiFormatListBulleted} size={1} />
 						{showAll ? 'Hide List' : 'Show All Matches'}
-					</button>
+					</FunctionButton>
 				</div>
 
 				{/* Empty state */}
@@ -162,12 +161,13 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 						<p className="text-stone mb-4">
 							No creatures match your current filters.
 						</p>
-						<button
+						<FunctionButton
+							variant="ghost"
 							onClick={handleClearAll}
-							className="text-bronze hover:text-gold transition-colors"
+							className="hover:text-gold"
 						>
 							Clear all filters
-						</button>
+						</FunctionButton>
 					</div>
 				)}
 

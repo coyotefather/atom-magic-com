@@ -1,6 +1,6 @@
 'use client';
-import Icon from '@mdi/react';
 import { mdiPlus, mdiDelete } from '@mdi/js';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import {
 	Encounter,
 	calculateTotalThreat,
@@ -76,16 +76,17 @@ const EncounterRoster = ({
 												</span>
 											</div>
 										</div>
-										<button
+										<FunctionButton
+											variant="ghost"
+											size="sm"
 											onClick={e => {
-												e.stopPropagation();
+												e?.stopPropagation();
 												onDelete(encounter.id);
 											}}
-											className="p-1 text-stone hover:text-oxblood opacity-0 group-hover:opacity-100 transition-all"
+											icon={mdiDelete}
 											title="Delete encounter"
-										>
-											<Icon path={mdiDelete} size={0.75} />
-										</button>
+											className="opacity-0 group-hover:opacity-100 hover:text-oxblood"
+										/>
 									</div>
 								</div>
 								{isActive && (
@@ -98,13 +99,15 @@ const EncounterRoster = ({
 			</div>
 
 			<div className="p-4 border-t-2 border-stone">
-				<button
+				<FunctionButton
+					variant="primary"
+					fullWidth
 					onClick={onNew}
-					className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-bronze text-white marcellus uppercase tracking-wider hover:bg-gold transition-colors"
+					icon={mdiPlus}
+					className="bg-bronze hover:bg-gold"
 				>
-					<Icon path={mdiPlus} size={0.75} />
 					New Encounter
-				</button>
+				</FunctionButton>
 			</div>
 		</div>
 	);

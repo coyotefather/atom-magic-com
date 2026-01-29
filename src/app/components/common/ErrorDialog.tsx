@@ -36,11 +36,12 @@ const ErrorDialog = ({
 					  </ModalBody>
 					  <ModalFooter>
 						<FunctionButton
-							isDisabled={false}
-							iconOnly={false}
-							buttonFunction={onClose}
-							buttonIcon={mdiCloseCircleOutline}
-							variant="secondary">{buttonText}</FunctionButton>
+							onClick={onClose}
+							icon={mdiCloseCircleOutline}
+							variant="secondary"
+						>
+							{buttonText}
+						</FunctionButton>
 					  </ModalFooter>
 					</>
 				  )}

@@ -35,19 +35,15 @@ const WrapUp = () => {
 						<div className="h-1 bg-gold -mt-6 -mx-6 mb-6" />
 						<div className="flex flex-col sm:flex-row justify-center gap-4">
 							<FunctionButton
-								isDisabled={false}
-								iconOnly={false}
-								buttonFunction={handlePrintClick}
-								buttonIcon={mdiPrinterOutline}
+								onClick={handlePrintClick}
+								icon={mdiPrinterOutline}
 								variant="secondary"
 							>
 								Print Character
 							</FunctionButton>
 							<FunctionButton
-								isDisabled={false}
-								iconOnly={false}
-								buttonFunction={handleDownloadClick}
-								buttonIcon={mdiFileDownloadOutline}
+								onClick={handleDownloadClick}
+								icon={mdiFileDownloadOutline}
 								variant="primary"
 							>
 								Download .solum

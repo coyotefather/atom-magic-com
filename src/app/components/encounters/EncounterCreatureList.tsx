@@ -1,6 +1,6 @@
 'use client';
-import Icon from '@mdi/react';
 import { mdiPlus, mdiMinus, mdiClose } from '@mdi/js';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import {
 	EncounterCreature,
 	getChallengeLevelColor,
@@ -75,23 +75,27 @@ const EncounterCreatureList = ({
 
 							{/* Quantity controls */}
 							<div className="flex items-center gap-2">
-								<button
+								<FunctionButton
+									variant="secondary"
+									size="sm"
 									onClick={() => onQuantityChange(creature.creatureId, -1)}
-									className="w-8 h-8 border border-stone bg-white hover:bg-parchment-dark transition-colors flex items-center justify-center"
+									icon={mdiMinus}
+									isIconOnly
 									title="Decrease quantity"
-								>
-									<Icon path={mdiMinus} size={0.625} />
-								</button>
+									className="w-8 h-8 px-0 border-stone"
+								/>
 								<span className="w-8 text-center marcellus text-lg">
 									{creature.quantity}
 								</span>
-								<button
+								<FunctionButton
+									variant="secondary"
+									size="sm"
 									onClick={() => onQuantityChange(creature.creatureId, 1)}
-									className="w-8 h-8 border border-stone bg-white hover:bg-parchment-dark transition-colors flex items-center justify-center"
+									icon={mdiPlus}
+									isIconOnly
 									title="Increase quantity"
-								>
-									<Icon path={mdiPlus} size={0.625} />
-								</button>
+									className="w-8 h-8 px-0 border-stone"
+								/>
 							</div>
 
 							{/* Total threat */}
@@ -101,13 +105,14 @@ const EncounterCreatureList = ({
 							</div>
 
 							{/* Remove button */}
-							<button
+							<FunctionButton
+								variant="ghost"
+								size="sm"
 								onClick={() => onRemove(creature.creatureId)}
-								className="p-2 text-stone hover:text-oxblood transition-colors"
+								icon={mdiClose}
 								title="Remove creature"
-							>
-								<Icon path={mdiClose} size={0.75} />
-							</button>
+								className="hover:text-oxblood"
+							/>
 						</div>
 					);
 				})}

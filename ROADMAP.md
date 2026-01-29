@@ -79,8 +79,8 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Extract section visibility hook** - Created `useSectionVisibility` hook in `src/lib/hooks/`
 
 ### Documentation
-- [ ] **Document state management patterns** - When to use Redux vs Context API
-- [ ] **Document component naming conventions** - Clarify naming patterns and suffixes
+- [x] **Document state management patterns** - When to use Redux vs Context API (added to CLAUDE.md)
+- [x] **Document component naming conventions** - Clarify naming patterns and suffixes (added to CLAUDE.md)
 
 ---
 

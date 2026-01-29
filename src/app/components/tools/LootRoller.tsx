@@ -10,6 +10,7 @@ import {
 	mdiPackageVariant,
 	mdiDelete,
 } from '@mdi/js';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import {
 	STANDARD_WEAPONS,
 	EXOTIC_WEAPONS,
@@ -326,18 +327,17 @@ const LootRoller = () => {
 				</div>
 
 				{/* Roll button */}
-				<button
+				<FunctionButton
+					variant="primary"
+					size="lg"
+					fullWidth
 					onClick={roll}
-					disabled={isRolling}
-					className={`w-full py-4 marcellus uppercase tracking-widest text-lg font-bold transition-colors flex items-center justify-center gap-3 ${
-						isRolling
-							? 'bg-stone text-white cursor-not-allowed'
-							: 'bg-gold text-black hover:bg-brightgold'
-					}`}
+					isDisabled={isRolling}
+					icon={mdiDiceMultiple}
+					className={isRolling ? 'bg-stone cursor-not-allowed' : ''}
 				>
-					<Icon path={mdiDiceMultiple} size={1.25} />
 					{isRolling ? 'Rolling...' : 'Roll for Loot'}
-				</button>
+				</FunctionButton>
 			</div>
 
 			{/* Results */}
@@ -346,13 +346,15 @@ const LootRoller = () => {
 					<div className="flex items-center justify-between mb-4">
 						<h2 className="marcellus text-lg">Results</h2>
 						{results.length > 0 && (
-							<button
+							<FunctionButton
+								variant="ghost"
+								size="sm"
 								onClick={clearResults}
-								className="text-xs text-stone hover:text-oxblood transition-colors flex items-center gap-1"
+								icon={mdiDelete}
+								className="hover:text-oxblood"
 							>
-								<Icon path={mdiDelete} size={0.5} />
 								Clear
-							</button>
+							</FunctionButton>
 						)}
 					</div>
 

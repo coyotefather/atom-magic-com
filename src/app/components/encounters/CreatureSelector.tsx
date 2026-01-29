@@ -2,6 +2,7 @@
 import { useState, useMemo } from 'react';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiChevronDown, mdiChevronUp } from '@mdi/js';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import { getChallengeLevelColor, THREAT_VALUES } from '@/lib/encounter-data';
 import {
 	CREATURES_QUERY_RESULT,
@@ -124,18 +125,23 @@ const CreatureSelector = ({
 									Challenge Level
 								</h4>
 								{hasActiveFilters && (
-									<button
+									<FunctionButton
+										variant="ghost"
+										size="sm"
 										onClick={handleClearAll}
-										className="text-xs text-stone hover:text-oxblood transition-colors"
+										className="hover:text-oxblood"
 									>
 										Clear All
-									</button>
+									</FunctionButton>
 								)}
 							</div>
 							<div className="flex flex-wrap gap-2">
 								{filters.challengeLevels.map(level => (
-									<button
+									<FunctionButton
 										key={level}
+										variant="chip"
+										size="sm"
+										isActive={selectedChallengeLevels.includes(level)}
 										onClick={() =>
 											toggleFilter(
 												level,
@@ -143,14 +149,9 @@ const CreatureSelector = ({
 												setSelectedChallengeLevels
 											)
 										}
-										className={`px-3 py-1.5 text-sm border transition-colors ${
-											selectedChallengeLevels.includes(level)
-												? 'bg-bronze text-white border-bronze'
-												: 'bg-white text-stone border-stone hover:border-bronze hover:text-bronze'
-										}`}
 									>
 										{challengeLevelLabels[level] || level}
-									</button>
+									</FunctionButton>
 								))}
 							</div>
 						</div>
@@ -165,19 +166,17 @@ const CreatureSelector = ({
 									{filters.creatureTypes
 										.filter((type): type is string => type !== null)
 										.map(type => (
-											<button
+											<FunctionButton
 												key={type}
+												variant="chip"
+												size="sm"
+												isActive={selectedTypes.includes(type)}
 												onClick={() =>
 													toggleFilter(type, selectedTypes, setSelectedTypes)
 												}
-												className={`px-3 py-1.5 text-sm border transition-colors ${
-													selectedTypes.includes(type)
-														? 'bg-bronze text-white border-bronze'
-														: 'bg-white text-stone border-stone hover:border-bronze hover:text-bronze'
-												}`}
 											>
 												{type}
-											</button>
+											</FunctionButton>
 										))}
 								</div>
 							</div>
@@ -193,8 +192,11 @@ const CreatureSelector = ({
 									{filters.environments
 										.filter((env): env is string => env !== null)
 										.map(env => (
-											<button
+											<FunctionButton
 												key={env}
+												variant="chip"
+												size="sm"
+												isActive={selectedEnvironments.includes(env)}
 												onClick={() =>
 													toggleFilter(
 														env,
@@ -202,14 +204,9 @@ const CreatureSelector = ({
 														setSelectedEnvironments
 													)
 												}
-												className={`px-3 py-1.5 text-sm border transition-colors ${
-													selectedEnvironments.includes(env)
-														? 'bg-bronze text-white border-bronze'
-														: 'bg-white text-stone border-stone hover:border-bronze hover:text-bronze'
-												}`}
 											>
 												{env}
-											</button>
+											</FunctionButton>
 										))}
 								</div>
 							</div>
@@ -271,14 +268,16 @@ const CreatureSelector = ({
 
 							{/* Show more/less */}
 							{filteredCreatures.length > 12 && (
-								<button
+								<FunctionButton
+									variant="ghost"
+									fullWidth
 									onClick={() => setShowAll(!showAll)}
-									className="w-full mt-4 py-2 text-sm text-bronze hover:text-gold transition-colors"
+									className="mt-4 text-bronze hover:text-gold"
 								>
 									{showAll
 										? 'Show Less'
 										: `Show All ${filteredCreatures.length} Creatures`}
-								</button>
+								</FunctionButton>
 							)}
 						</>
 					)}

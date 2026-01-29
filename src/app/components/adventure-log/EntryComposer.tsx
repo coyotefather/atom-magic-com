@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiDiceMultiple, mdiLightningBolt, mdiNoteText, mdiPlus } from '@mdi/js';
+import FunctionButton from '@/app/components/common/FunctionButton';
 import CharacterPicker from './CharacterPicker';
 import {
 	DieType,
@@ -116,18 +117,21 @@ const EntryComposer = ({
 			{/* Tab headers */}
 			<div className="flex border-b-2 border-stone">
 				{tabs.map(tab => (
-					<button
+					<FunctionButton
 						key={tab.type}
+						variant="tab"
+						size="sm"
 						onClick={() => setActiveTab(tab.type)}
-						className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm transition-colors ${
+						icon={tab.icon}
+						isActive={activeTab === tab.type}
+						className={`flex-1 border-0 ${
 							activeTab === tab.type
 								? 'bg-white text-black border-b-2 border-bronze -mb-[2px]'
 								: 'text-stone hover:text-black'
 						}`}
 					>
-						<Icon path={tab.icon} size={0.75} />
 						{tab.label}
-					</button>
+					</FunctionButton>
 				))}
 			</div>
 
@@ -210,13 +214,14 @@ const EntryComposer = ({
 							className="w-full px-3 py-2 border-2 border-stone bg-white text-sm focus:border-bronze focus:outline-none"
 						/>
 
-						<button
+						<FunctionButton
+							variant="primary"
+							fullWidth
 							onClick={handleAddRoll}
-							className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gold text-black marcellus uppercase tracking-wider hover:bg-brightgold transition-colors"
+							icon={mdiDiceMultiple}
 						>
-							<Icon path={mdiDiceMultiple} size={0.75} />
 							Roll & Add
-						</button>
+						</FunctionButton>
 					</div>
 				)}
 
@@ -237,14 +242,16 @@ const EntryComposer = ({
 							className="w-full px-3 py-2 border-2 border-stone bg-white text-sm focus:border-bronze focus:outline-none resize-none"
 						/>
 
-						<button
+						<FunctionButton
+							variant="primary"
+							fullWidth
 							onClick={handleAddAction}
-							disabled={!actionDescription.trim()}
-							className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-bronze text-white marcellus uppercase tracking-wider hover:bg-gold disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+							isDisabled={!actionDescription.trim()}
+							icon={mdiPlus}
+							className="bg-bronze hover:bg-gold"
 						>
-							<Icon path={mdiPlus} size={0.75} />
 							Add Action
-						</button>
+						</FunctionButton>
 					</div>
 				)}
 
@@ -273,14 +280,16 @@ const EntryComposer = ({
 							className="w-full px-3 py-2 border-2 border-stone bg-white text-sm focus:border-bronze focus:outline-none resize-none"
 						/>
 
-						<button
+						<FunctionButton
+							variant="primary"
+							fullWidth
 							onClick={handleAddNote}
-							disabled={!noteContent.trim()}
-							className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-laurel text-white marcellus uppercase tracking-wider hover:bg-laurel/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+							isDisabled={!noteContent.trim()}
+							icon={mdiPlus}
+							className="bg-laurel hover:bg-laurel/80"
 						>
-							<Icon path={mdiPlus} size={0.75} />
 							Add Note
-						</button>
+						</FunctionButton>
 					</div>
 				)}
 			</div>
