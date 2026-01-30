@@ -1,492 +1,19 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { selectRandomElement, randomDirection } from '../utils/random';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// Types
-interface Stone {
-  player: 1 | 2;
-  ring: number;  // -1 means unplaced
-  cell: number;  // -1 means unplaced
-}
+// Import types
+import type { Stone, VoragoState } from './voragoTypes';
 
-export interface Cell {
-  ring: number;
-  cell: number;
-  hasWall: boolean;
-  hasBridge: boolean;
-  stone: Stone | null;
-}
+// Import constants
+import { COINS, createCellMap, createInitialStones, initialState, RING_CELL_COUNTS } from './voragoConstants';
 
-export interface Coin {
-  title: string;
-  subtitle: string;
-  aspect: 'um' | 'os' | 'umos';
-  description: string;
-  action: string;
-}
+// Import and inject AI thunk
+import { executeAITurn, injectSliceActions } from './voragoAIThunk';
 
-export interface VoragoState {
-  // Game meta
-  round: number;
-  turn: 1 | 2;
-  gameWin: boolean;
-  winner: 1 | 2 | null;
+// Re-export types for consumers
+export type { Stone, Cell, Coin, VoragoState } from './voragoTypes';
 
-  // Players
-  player1Name: string;
-  player2Name: string;
-  isAI: boolean;
-  aiDifficulty: 'easy' | 'medium' | 'hard';
-
-  // Score
-  score: {
-	player1: number;
-	player2: number;
-  };
-
-  // Board state
-  cells: Record<string, Cell>; // key: "ring-cell"
-  degrees: number[]; // rotation for each ring [0,0,0,0,0]
-  lockedRings: boolean[]; // [false,false,false,false,false]
-
-  // Stones
-  stones: {
-	player1: Stone[];
-	player2: Stone[];
-  };
-
-  // Coins
-  availableCoins: Coin[];
-  disabledCoins: {
-	player1: string[];
-	player2: string[];
-  };
-  coinsUsedThisRound: {
-	player1: string[];
-	player2: string[];
-  };
-  magnaDisabledCoin: string | null; // Coin disabled by Magna for both players next round
-
-  // History tracking (for Mnemonic and Charlatan)
-  lastStoneMove: {
-	player1: { from: { ring: number; cell: number } | null; to: { ring: number; cell: number } | null } | null;
-	player2: { from: { ring: number; cell: number } | null; to: { ring: number; cell: number } | null } | null;
-  };
-  lastCoinUsed: {
-	player1: string | null;
-	player2: string | null;
-  };
-
-  // Turn state
-  hasMovedStone: boolean;
-  hasUsedCoin: boolean;
-  frozenRound: boolean;
-
-  // UI state
-  selectedStone: Stone | null;
-  selectedCoin: string | null;
-  showTurnDialog: boolean;
-  displayMessage: string;
-  isAIThinking: boolean;
-}
-
-const COINS: Coin[] = [
-  {
-	title: "Aura",
-	subtitle: "The Eternal Shadow of Umos",
-	aspect: "umos",
-	description: "Transform a wall into a bridge or a bridge into a wall.",
-	action: "transformWallBridge"
-  },
-  {
-	title: "Mnemonic",
-	subtitle: "The Memory of Umos",
-	aspect: "um",
-	description: "Return opponent's last moved stone to its previous position.",
-	action: "returnOpponentStone"
-  },
-  {
-	title: "Cadence",
-	subtitle: "The Steward of Time",
-	aspect: "um",
-	description: "Reset a ring to its original position.",
-	action: "resetRing"
-  },
-  {
-	title: "Anathema",
-	subtitle: "The Hammer of Umos",
-	aspect: "um",
-	description: "Lock a ring to prevent turning it.",
-	action: "lockRing"
-  },
-  {
-	title: "Gamma",
-	subtitle: "The Savage Destroyer",
-	aspect: "um",
-	description: "Remove a bridge from a cell.",
-	action: "removeBridge"
-  },
-  {
-	title: "Magna",
-	subtitle: "The Prime Ambassador",
-	aspect: "um",
-	description: "Choose any coin - neither player can use it next round.",
-	action: "disableCoin"
-  },
-  {
-	title: "Sovereign",
-	subtitle: "The Power of the State",
-	aspect: "um",
-	description: "Place a wall in a cell.",
-	action: "placeWall"
-  },
-  {
-	title: "Rubicon",
-	subtitle: "The Terror of Kings",
-	aspect: "os",
-	description: "Destroy a wall.",
-	action: "removeWall"
-  },
-  {
-	title: "Vertigo",
-	subtitle: "The Voice of Discord",
-	aspect: "os",
-	description: "Spin one ring clockwise or counter-clockwise.",
-	action: "spinRing"
-  },
-  {
-	title: "Arcadia",
-	subtitle: "The Sower of Life",
-	aspect: "os",
-	description: "Place a bridge in a cell.",
-	action: "placeBridge"
-  },
-  {
-	title: "Spectrum",
-	subtitle: "The Heart of Solum",
-	aspect: "os",
-	description: "Move a wall or bridge to an adjacent empty cell.",
-	action: "moveWallBridge"
-  },
-  {
-	title: "Polyphony",
-	subtitle: "The Chief Artist",
-	aspect: "os",
-	description: "Unlock a ring.",
-	action: "unlockRing"
-  },
-  {
-	title: "Charlatan",
-	subtitle: "The Master of Lies",
-	aspect: "os",
-	description: "Use the action of the last coin your opponent played.",
-	action: "copyOpponentCoin"
-  }
-];
-
-// Helper to create cell map
-function createCellMap(): Record<string, Cell> {
-  const cells: Record<string, Cell> = {};
-  const ringCellCounts = [32, 16, 16, 8, 4]; // Ring 1 same as Ring 2 (1:1 alignment)
-
-  ringCellCounts.forEach((count, ringIndex) => {
-	for (let cellIndex = 0; cellIndex < count; cellIndex++) {
-	  const key = `${ringIndex}-${cellIndex}`;
-	  cells[key] = {
-		ring: ringIndex,
-		cell: cellIndex,
-		hasWall: false,
-		hasBridge: false,
-		stone: null
-	  };
-	}
-  });
-
-  return cells;
-}
-
-const initialState: VoragoState = {
-  round: 1,
-  turn: 1,
-  gameWin: false,
-  winner: null,
-  player1Name: "Player 1",
-  player2Name: "AI Opponent",
-  isAI: true,
-  aiDifficulty: 'medium',
-  score: {
-	player1: 0,
-	player2: 0
-  },
-  cells: createCellMap(),
-  degrees: [0, 0, 0, 0, 0],
-  lockedRings: [false, false, false, false, false],
-  stones: {
-	  player1: [
-		{ player: 1, ring: -1, cell: -1 },
-		{ player: 1, ring: -1, cell: -1 },
-		{ player: 1, ring: -1, cell: -1 }
-	  ],
-	  player2: [
-		{ player: 2, ring: -1, cell: -1 },
-		{ player: 2, ring: -1, cell: -1 },
-		{ player: 2, ring: -1, cell: -1 }
-	  ]
-	},
-  availableCoins: COINS,
-  disabledCoins: {
-	player1: [],
-	player2: []
-  },
-  coinsUsedThisRound: {
-	player1: [],
-	player2: []
-  },
-  magnaDisabledCoin: null,
-  lastStoneMove: {
-	player1: null,
-	player2: null
-  },
-  lastCoinUsed: {
-	player1: null,
-	player2: null
-  },
-  hasMovedStone: false,
-  hasUsedCoin: false,
-  frozenRound: false,
-  selectedStone: null,
-  selectedCoin: null,
-  showTurnDialog: false,
-  displayMessage: "Move a stone or use a coin",
-  isAIThinking: false
-};
-
-// Async thunk for AI turn
-export const executeAITurn = createAsyncThunk(
-  'vorago/executeAITurn',
-  async (_, { getState, dispatch }) => {
-	const state = getState() as { vorago: VoragoState };
-	const { isAI, aiDifficulty, turn } = state.vorago;
-
-	if (!isAI || turn !== 2) {
-	  return;
-	}
-
-	// Set AI thinking state
-	dispatch(voragoSlice.actions.setAIThinking(true));
-	dispatch(voragoSlice.actions.setDisplayMessage('AI is thinking...'));
-
-	// Wait a bit for realism
-	await new Promise(resolve => setTimeout(resolve, 1000));
-
-	try {
-	  const response = await fetch('/api/vorago-ai', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({
-		  gameState: state.vorago,
-		  difficulty: aiDifficulty
-		})
-	  });
-
-	  if (!response.ok) {
-		throw new Error('AI request failed');
-	  }
-
-	  const aiMove = await response.json();
-
-	  // Execute the AI's stone move
-	  if (aiMove.stoneMove) {
-		dispatch(voragoSlice.actions.moveStone({
-		  stone: aiMove.stoneMove.stone,
-		  toRing: aiMove.stoneMove.toRing,
-		  toCell: aiMove.stoneMove.toCell
-		}));
-	  }
-
-	  // Wait a moment between actions
-	  await new Promise(resolve => setTimeout(resolve, 500));
-
-	  // Execute the AI's coin action
-	  if (aiMove.coinAction) {
-		dispatch(voragoSlice.actions.useCoin(aiMove.coinAction.coinTitle));
-
-		// Wait a bit then handle coin-specific actions
-		await new Promise(resolve => setTimeout(resolve, 300));
-
-		// Get current state for fallback logic
-		const currentState = (getState() as { vorago: VoragoState }).vorago;
-		const { lockedRings, cells } = currentState;
-
-		// Helper to get a random unlocked ring
-		const getRandomUnlockedRing = (): number => {
-		  const unlocked = lockedRings.map((locked, i) => locked ? -1 : i).filter(i => i >= 0);
-		  return selectRandomElement(unlocked) ?? 0;
-		};
-
-		// Helper to get a random locked ring
-		const getRandomLockedRing = (): number | null => {
-		  const locked = lockedRings.map((isLocked, i) => isLocked ? i : -1).filter(i => i >= 0);
-		  return selectRandomElement(locked) ?? null;
-		};
-
-		// Helper to get a random empty cell (no wall, no bridge, no stone)
-		const getRandomEmptyCell = (): { ring: number; cell: number } | null => {
-		  const emptyCells: { ring: number; cell: number }[] = [];
-		  Object.values(cells).forEach(cell => {
-			if (!cell.hasWall && !cell.hasBridge && !cell.stone) {
-			  emptyCells.push({ ring: cell.ring, cell: cell.cell });
-			}
-		  });
-		  return selectRandomElement(emptyCells) ?? null;
-		};
-
-		// Handle coin-specific actions with fallbacks
-		switch (aiMove.coinAction.action) {
-		  case 'spinRing': {
-			const ring = aiMove.coinAction.ring ?? getRandomUnlockedRing();
-			const direction = aiMove.coinAction.direction ?? randomDirection();
-			dispatch(voragoSlice.actions.spinRing({ ring, direction }));
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'resetRing': {
-			const ring = aiMove.coinAction.ring ?? getRandomUnlockedRing();
-			dispatch(voragoSlice.actions.resetRing(ring));
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'lockRing': {
-			const ring = aiMove.coinAction.ring ?? getRandomUnlockedRing();
-			dispatch(voragoSlice.actions.lockRing(ring));
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'unlockRing': {
-			const ring = aiMove.coinAction.ring ?? getRandomLockedRing();
-			if (ring !== null) {
-			  dispatch(voragoSlice.actions.unlockRing(ring));
-			}
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'placeWall': {
-			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
-			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
-			  : getRandomEmptyCell();
-			if (target) {
-			  dispatch(voragoSlice.actions.placeWall(target));
-			}
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'removeWall': {
-			// Find a cell with a wall
-			const wallCells = Object.values(cells).filter(c => c.hasWall);
-			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
-			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
-			  : selectRandomElement(wallCells) ?? null;
-			if (target) {
-			  dispatch(voragoSlice.actions.removeWall({ ring: target.ring, cell: target.cell }));
-			}
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'placeBridge': {
-			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
-			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
-			  : getRandomEmptyCell();
-			if (target) {
-			  dispatch(voragoSlice.actions.placeBridge(target));
-			}
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'removeBridge': {
-			// Find a cell with a bridge
-			const bridgeCells = Object.values(cells).filter(c => c.hasBridge);
-			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
-			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
-			  : selectRandomElement(bridgeCells) ?? null;
-			if (target) {
-			  dispatch(voragoSlice.actions.removeBridge({ ring: target.ring, cell: target.cell }));
-			}
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'transformWallBridge': {
-			// Aura: Transform wall to bridge or vice versa
-			const wallBridgeCells = Object.values(cells).filter(c => c.hasWall || c.hasBridge);
-			const target = (aiMove.coinAction.ring !== undefined && aiMove.coinAction.cell !== undefined)
-			  ? { ring: aiMove.coinAction.ring, cell: aiMove.coinAction.cell }
-			  : selectRandomElement(wallBridgeCells) ?? null;
-			if (target) {
-			  dispatch(voragoSlice.actions.transformWallBridge({ ring: target.ring, cell: target.cell }));
-			}
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'returnOpponentStone': {
-			// Mnemonic: Return opponent's last moved stone
-			dispatch(voragoSlice.actions.returnOpponentStone());
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'disableCoin': {
-			// Magna: Disable a coin for both players next round
-			const targetCoin = aiMove.coinAction.targetCoin ?? 'Vertigo';
-			dispatch(voragoSlice.actions.setMagnaDisabledCoin(targetCoin));
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'moveWallBridge': {
-			// Spectrum: Move wall/bridge to adjacent cell
-			const wallBridgeCells2 = Object.values(cells).filter(c => c.hasWall || c.hasBridge);
-			if (wallBridgeCells2.length > 0) {
-			  const source = (aiMove.coinAction.fromRing !== undefined && aiMove.coinAction.fromCell !== undefined)
-				? { ring: aiMove.coinAction.fromRing, cell: aiMove.coinAction.fromCell }
-				: selectRandomElement(wallBridgeCells2)!;
-			  // Simple: move to next cell in same ring
-			  const ringCellCounts = [32, 16, 16, 8, 4];
-			  const destCell = (source.cell + 1) % ringCellCounts[source.ring];
-			  dispatch(voragoSlice.actions.moveWallBridge({
-				from: { ring: source.ring, cell: source.cell },
-				to: { ring: source.ring, cell: destCell }
-			  }));
-			}
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  case 'copyOpponentCoin': {
-			// Charlatan: Copy opponent's last coin (simplified - just complete)
-			dispatch(voragoSlice.actions.completeCoinAction());
-			break;
-		  }
-		  default:
-			dispatch(voragoSlice.actions.completeCoinAction());
-		}
-	  }
-
-	  dispatch(voragoSlice.actions.setDisplayMessage('AI turn complete'));
-
-	  // Wait a moment then end turn
-	  await new Promise(resolve => setTimeout(resolve, 1000));
-
-	  // End the AI's turn
-	  dispatch(voragoSlice.actions.setAIThinking(false));
-	  dispatch(voragoSlice.actions.endTurn());
-
-	} catch (error) {
-	  console.error('Vorago AI turn error:', error);
-	  dispatch(voragoSlice.actions.setDisplayMessage('AI error - ending turn'));
-
-	  await new Promise(resolve => setTimeout(resolve, 1500));
-
-	  // End turn anyway to prevent getting stuck
-	  dispatch(voragoSlice.actions.setAIThinking(false));
-	  dispatch(voragoSlice.actions.endTurn());
-	}
-  }
-);
+// Re-export constants for consumers
+export { COINS, RING_CELL_COUNTS } from './voragoConstants';
 
 const voragoSlice = createSlice({
   name: 'vorago',
@@ -496,21 +23,12 @@ const voragoSlice = createSlice({
 	newGame: (state) => {
 	  const cellMap = createCellMap();
 
-	  // Initialize stones as unplaced (they start off the board)
-	  const player1Stones: Stone[] = [];
-	  const player2Stones: Stone[] = [];
-
-	  for (let i = 0; i < 3; i++) {
-		player1Stones.push({ player: 1, ring: -1, cell: -1 }); // -1 means unplaced
-		player2Stones.push({ player: 2, ring: -1, cell: -1 });
-	  }
-
 	  Object.assign(state, {
 		...initialState,
 		cells: cellMap,
 		stones: {
-		  player1: player1Stones,
-		  player2: player2Stones
+		  player1: createInitialStones(1),
+		  player2: createInitialStones(2)
 		},
 		player1Name: state.player1Name,
 		player2Name: state.player2Name,
@@ -631,12 +149,7 @@ const voragoSlice = createSlice({
 
 	spinRing: (state, action: PayloadAction<{ ring: number; direction: 'cw' | 'ccw' }>) => {
 	  const { ring, direction } = action.payload;
-
-	  // Each ring rotates by exactly one cell
-	  // Ring cell counts: [32, 16, 16, 8, 4] from ring 0-4
-	  const cellCounts = [32, 16, 16, 8, 4];
-	  const increment = 360 / cellCounts[ring];
-
+	  const increment = 360 / RING_CELL_COUNTS[ring];
 	  const rotation = direction === 'cw' ? increment : -increment;
 	  state.degrees[ring] = (state.degrees[ring] + rotation) % 360;
 	},
@@ -818,6 +331,10 @@ const voragoSlice = createSlice({
   }
 });
 
+// Inject actions into the AI thunk to avoid circular dependency
+injectSliceActions(voragoSlice.actions);
+
+// Export actions
 export const {
   newGame,
   setPlayerNames,
@@ -844,5 +361,8 @@ export const {
   selectStone,
   setAIThinking
 } = voragoSlice.actions;
+
+// Re-export the AI thunk
+export { executeAITurn };
 
 export default voragoSlice.reducer;

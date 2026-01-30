@@ -8,6 +8,7 @@ import {
 	DISCIPLINES_QUERY_RESULT,
 } from '../../../../sanity.types';
 import { calculateGearShieldBonuses } from '@/lib/utils/shield';
+import { calculateScoreAverage } from '@/lib/utils/score';
 
 interface CharacterSheetProps {
 	cultures: CULTURES_QUERY_RESULT;
@@ -49,20 +50,14 @@ const CharacterSheet = ({
 	// Calculate score averages and find shield values
 	const getScoreAverage = (scoreId: string) => {
 		const score = character.scores.find(s => s._id === scoreId);
-		if (!score || !score.subscores.length) return 0;
-		const total = score.subscores.reduce((sum, sub) => sum + (sub.value || 0), 0);
-		return Math.round(total / score.subscores.length);
+		return calculateScoreAverage(score?.subscores);
 	};
 
 	// Find Physical and Psyche scores for shield calculation
 	const physicalScore = character.scores.find(s => s.title === 'Physical');
 	const psycheScore = character.scores.find(s => s.title === 'Psyche');
-	const physicalAvg = physicalScore ? Math.round(
-		physicalScore.subscores.reduce((sum, sub) => sum + (sub.value || 0), 0) / physicalScore.subscores.length
-	) : 0;
-	const psycheAvg = psycheScore ? Math.round(
-		psycheScore.subscores.reduce((sum, sub) => sum + (sub.value || 0), 0) / psycheScore.subscores.length
-	) : 0;
+	const physicalAvg = calculateScoreAverage(physicalScore?.subscores);
+	const psycheAvg = calculateScoreAverage(psycheScore?.subscores);
 
 	// Get gear
 	const armor = character.gear.find(g => g.type === 'armor');

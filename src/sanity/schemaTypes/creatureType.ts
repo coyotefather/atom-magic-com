@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity';
+import { defineField, defineType, type Rule } from 'sanity';
 import { BoltIcon } from '@sanity/icons';
 
 export const creatureType = defineType({
@@ -156,7 +156,7 @@ export const creatureType = defineType({
 							title: 'Name',
 							type: 'string',
 							description: 'e.g., "Claw", "Bite", "Tail Swipe"',
-							validation: (Rule: any) => Rule.required(),
+							validation: (rule: Rule) => rule.required(),
 						},
 						{
 							name: 'damage',

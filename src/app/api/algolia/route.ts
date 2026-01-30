@@ -19,12 +19,22 @@ const sanityClient = createClient({
   useCdn: false,
 });
 
+// Shape of documents fetched from Sanity for indexing
+interface SanityDocument {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  entryBody?: string;
+  description?: string;
+  _type: string;
+  _createdAt: string;
+  _updatedAt: string;
+}
+
 // Function to perform initial indexing
 async function performInitialIndexing() {
-  console.log("Starting initial indexing...");
-
   // Fetch all entry-like documents from Sanity (entries, creatures, disciplines, techniques, paths)
-  const sanityData = await sanityClient.fetch(`*[_type in ["entry", "creature", "discipline", "technique", "path"] && defined(slug.current)]{
+  const sanityData: SanityDocument[] = await sanityClient.fetch(`*[_type in ["entry", "creature", "discipline", "technique", "path"] && defined(slug.current)]{
 	_id,
 	"title": coalesce(title, name),
 	slug,
@@ -35,7 +45,7 @@ async function performInitialIndexing() {
 	_updatedAt
   }`);
 
-  const records = sanityData.map((doc: any) => ({
+  const records = sanityData.map((doc) => ({
 	objectID: doc._id,
 	title: doc.title,
 	path: doc.slug.current,
@@ -55,7 +65,6 @@ async function performInitialIndexing() {
 	objects: records,
   });
 
-  console.log(`Initial indexing completed. Indexed ${records.length} documents.`);
   return {
 	message: `Successfully completed initial indexing! Indexed ${records.length} documents.`,
   };
@@ -96,9 +105,7 @@ export async function POST(request: Request) {
 	let payload;
 	try {
 	  payload = JSON.parse(body);
-	  console.log("Parsed Payload:", JSON.stringify(payload));
-	} catch (jsonError) {
-	  console.warn("No JSON payload provided");
+	} catch {
 	  return Response.json({ error: "No payload provided" }, { status: 400 });
 	}
 
@@ -117,7 +124,6 @@ export async function POST(request: Request) {
 		indexName,
 		objectID: _id,
 	  });
-	  console.log(`Deleted object with ID: ${_id}`);
 	  return Response.json({
 		message: `Successfully deleted object with ID: ${_id}`,
 	  });
@@ -143,16 +149,15 @@ export async function POST(request: Request) {
 		},
 	  });
 
-	  console.log(`Indexed/Updated object with ID: ${_id}`);
 	  return Response.json({
 		message: `Successfully processed document with ID: ${_id}!`,
 	  });
 	}
-  } catch (error: any) {
-	console.error("Error indexing objects:", error.message);
+  } catch (error) {
+	const message = error instanceof Error ? error.message : 'Unknown error';
 	// Return a 200 code so that Sanity does not try the request again
 	return Response.json(
-	  { error: "Error indexing objects", details: error.message },
+	  { error: "Error indexing objects", details: message },
 	  { status: 200 }
 	);
   }
