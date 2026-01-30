@@ -79,9 +79,9 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Extract Vorago AI helpers** - Split `voragoSlice.ts` into 4 files: types, constants, AI thunk, and slice
 
 ### Performance optimization
-- [ ] **Memoize ChooseDisciplinesAndTechniques** - Remove JSX-in-state anti-pattern, add useCallback for handlers (311 lines)
+- [x] **Memoize ChooseDisciplinesAndTechniques** - Removed JSX-in-state, added useMemo/useCallback, fixed component name
 - [ ] **Split CharacterGenerator.tsx** - Extract GeneratorMode and GeneratorPreview sub-components (547 lines)
-- [ ] **Memoize CoinSelector calculations** - `getInapplicableCoins()` runs expensive filtering every render (484 lines)
+- [x] **Memoize CoinSelector calculations** - Added useMemo for inapplicable coins, useCallback for handlers
 - [ ] **Optimize VoragoBoard rendering** - Memoize geometry calculations, extract cell render to sub-component (560 lines)
 - [x] **ContactForm error state** - Already has error UI (lines 249-254) showing errors to users
 - [x] **Clean up Refactor suffix components** - Renamed to `Score.tsx` and `SubScore.tsx`
