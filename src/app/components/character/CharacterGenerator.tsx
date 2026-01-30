@@ -18,6 +18,7 @@ import {
 	CharacterSummary,
 } from '@/lib/characterPersistence';
 import { calculateGearShieldBonuses, getArmorCapacity } from '@/lib/utils/shield';
+import { calculateScoreAverage } from '@/lib/utils/score';
 import { CharacterState } from '@/lib/slices/characterSlice';
 import CharacterSummaryCard from './CharacterSummaryCard';
 import FunctionButton from '@/app/components/common/FunctionButton';
@@ -92,12 +93,8 @@ const CharacterGenerator = ({
 		// Calculate shield values
 		const physicalScore = generatedCharacter.scores.find(s => s.title === 'Physical');
 		const psycheScore = generatedCharacter.scores.find(s => s.title === 'Psyche');
-		const physicalAvg = physicalScore?.subscores?.length
-			? Math.round(physicalScore.subscores.reduce((sum, sub) => sum + (sub.value || 0), 0) / physicalScore.subscores.length)
-			: 0;
-		const psycheAvg = psycheScore?.subscores?.length
-			? Math.round(psycheScore.subscores.reduce((sum, sub) => sum + (sub.value || 0), 0) / psycheScore.subscores.length)
-			: 0;
+		const physicalAvg = calculateScoreAverage(physicalScore?.subscores);
+		const psycheAvg = calculateScoreAverage(psycheScore?.subscores);
 
 		// Get gear bonuses
 		const { physicalShieldBonus, psychicShieldBonus } = calculateGearShieldBonuses(generatedCharacter.gear);

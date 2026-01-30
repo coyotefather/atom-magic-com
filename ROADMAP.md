@@ -66,6 +66,9 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Extract shield calculation utility** - Duplicate shield calc logic in `CharacterGenerator.tsx` and `CharacterSheet.tsx`
 - [x] **Extract random selection utility** - Create `selectRandomElement<T>()` to replace 8 repeated patterns in `voragoSlice.ts`
 - [x] **Remove dead commented code** - Clean up `ScoreUpdate` interface in `characterSlice.ts` and other commented blocks
+- [x] **Extract score average utility** - Created `calculateScoreAverage()` in `src/lib/utils/score.ts`
+- [x] **Remove/guard Algolia console.logs** - Removed all debug console.logs from `api/algolia/route.ts`
+- [x] **Fix remaining `any` types** - Added `SanityDocument` interface, proper error handling, imported `Rule` type
 
 ### High priority
 - [x] **Vorago AI logging cleanup** - Replace 40+ console.logs in `voragoSlice.ts:269-514` with proper logging or remove
@@ -73,7 +76,13 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Fix CategoryChip typing** - Replace `chipColor: any` in `CategoryChip.tsx` with proper color type
 
 ### Medium priority
-- [ ] **Extract Vorago AI helpers** - Split `voragoSlice.ts` (882 lines) by extracting AI logic to separate file
+- [x] **Extract Vorago AI helpers** - Split `voragoSlice.ts` into 4 files: types, constants, AI thunk, and slice
+
+### Performance optimization
+- [ ] **Memoize ChooseDisciplinesAndTechniques** - Remove JSX-in-state anti-pattern, add useCallback for handlers (311 lines)
+- [ ] **Split CharacterGenerator.tsx** - Extract GeneratorMode and GeneratorPreview sub-components (547 lines)
+- [ ] **Memoize CoinSelector calculations** - `getInapplicableCoins()` runs expensive filtering every render (484 lines)
+- [ ] **Optimize VoragoBoard rendering** - Memoize geometry calculations, extract cell render to sub-component (560 lines)
 - [x] **ContactForm error state** - Already has error UI (lines 249-254) showing errors to users
 - [x] **Clean up Refactor suffix components** - Renamed to `Score.tsx` and `SubScore.tsx`
 - [x] **Extract section visibility hook** - Created `useSectionVisibility` hook in `src/lib/hooks/`
