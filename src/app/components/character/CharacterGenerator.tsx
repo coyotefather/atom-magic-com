@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/lib/hooks';
 import { loadCharacter } from '@/lib/slices/characterSlice';
@@ -10,7 +10,7 @@ import {
 	GeneratorData,
 	LockedFields,
 } from '@/lib/character-generator';
-import { ARCHETYPES, Archetype } from '@/lib/archetype-data';
+import { ARCHETYPES } from '@/lib/archetype-data';
 import {
 	createNewCharacterId,
 	saveCharacterById,
@@ -50,6 +50,19 @@ interface CharacterGeneratorProps {
 
 type GeneratorMode = 'easy' | 'advanced';
 
+// Consolidated lock state for advanced mode
+interface LockState {
+	culture: { locked: boolean; value: string };
+	path: { locked: boolean; value: string };
+	patronage: { locked: boolean; value: string };
+}
+
+const initialLockState: LockState = {
+	culture: { locked: false, value: '' },
+	path: { locked: false, value: '' },
+	patronage: { locked: false, value: '' },
+};
+
 const CharacterGenerator = ({
 	cultures,
 	paths,
@@ -64,14 +77,7 @@ const CharacterGenerator = ({
 	const [mode, setMode] = useState<GeneratorMode>('easy');
 	const [archetype, setArchetype] = useState<string>('any');
 	const [pathPreference, setPathPreference] = useState<string>('');
-
-	// Advanced mode locks
-	const [lockedCulture, setLockedCulture] = useState<string>('');
-	const [lockedPath, setLockedPath] = useState<string>('');
-	const [lockedPatronage, setLockedPatronage] = useState<string>('');
-	const [isCultureLocked, setIsCultureLocked] = useState(false);
-	const [isPathLocked, setIsPathLocked] = useState(false);
-	const [isPatronageLocked, setIsPatronageLocked] = useState(false);
+	const [locks, setLocks] = useState<LockState>(initialLockState);
 
 	// Generated character
 	const [generatedCharacter, setGeneratedCharacter] = useState<CharacterState | null>(null);
@@ -90,17 +96,14 @@ const CharacterGenerator = ({
 	const characterSummary: CharacterSummary | null = useMemo(() => {
 		if (!generatedCharacter) return null;
 
-		// Calculate shield values
 		const physicalScore = generatedCharacter.scores.find(s => s.title === 'Physical');
 		const psycheScore = generatedCharacter.scores.find(s => s.title === 'Psyche');
 		const physicalAvg = calculateScoreAverage(physicalScore?.subscores);
 		const psycheAvg = calculateScoreAverage(psycheScore?.subscores);
 
-		// Get gear bonuses
 		const { physicalShieldBonus, psychicShieldBonus } = calculateGearShieldBonuses(generatedCharacter.gear);
 		const armorCapacity = getArmorCapacity(generatedCharacter.gear);
 
-		// Resolve IDs to names for display
 		const cultureName = cultures.find(c => c._id === generatedCharacter.culture)?.title || '';
 		const pathName = paths.find(p => p._id === generatedCharacter.path)?.title || '';
 		const patronageName = patronages.find(p => p._id === generatedCharacter.patronage)?.title || '';
@@ -121,14 +124,69 @@ const CharacterGenerator = ({
 		};
 	}, [generatedCharacter, cultures, paths, patronages]);
 
+	// Memoize discipline names for preview
+	const disciplineNames = useMemo(() => {
+		if (!generatedCharacter) return [];
+		return generatedCharacter.disciplines.map(id => {
+			const disc = disciplines.find(d => d._id === id);
+			return disc?.title || id;
+		});
+	}, [generatedCharacter, disciplines]);
+
+	// Memoize technique names for preview
+	const techniqueNames = useMemo(() => {
+		if (!generatedCharacter) return [];
+		return generatedCharacter.techniques.map(id => {
+			for (const disc of disciplines) {
+				const tech = disc.techniques?.find(t => t._id === id);
+				if (tech) return tech.title || id;
+			}
+			return id;
+		});
+	}, [generatedCharacter, disciplines]);
+
+	// Memoize gear summary for preview
+	const gearSummary = useMemo(() => {
+		if (!generatedCharacter) return [];
+		return generatedCharacter.gear.map(g => {
+			let name = g.name;
+			if (g.enhancement) {
+				name += ` (${g.enhancement.name})`;
+			}
+			return name;
+		});
+	}, [generatedCharacter]);
+
+	// Get selected archetype description
+	const selectedArchetype = useMemo(() =>
+		ARCHETYPES.find(a => a.id === archetype),
+		[archetype]
+	);
+
+	// Toggle lock for a field
+	const toggleLock = useCallback((field: keyof LockState) => {
+		setLocks(prev => ({
+			...prev,
+			[field]: { ...prev[field], locked: !prev[field].locked }
+		}));
+	}, []);
+
+	// Update locked value for a field
+	const updateLockValue = useCallback((field: keyof LockState, value: string) => {
+		setLocks(prev => ({
+			...prev,
+			[field]: { ...prev[field], value }
+		}));
+	}, []);
+
 	// Generate a character
-	const handleGenerate = () => {
+	const handleGenerate = useCallback(() => {
 		const lockedFields: LockedFields = {};
 
 		if (mode === 'advanced') {
-			if (isCultureLocked && lockedCulture) lockedFields.culture = lockedCulture;
-			if (isPathLocked && lockedPath) lockedFields.path = lockedPath;
-			if (isPatronageLocked && lockedPatronage) lockedFields.patronage = lockedPatronage;
+			if (locks.culture.locked && locks.culture.value) lockedFields.culture = locks.culture.value;
+			if (locks.path.locked && locks.path.value) lockedFields.path = locks.path.value;
+			if (locks.patronage.locked && locks.patronage.value) lockedFields.patronage = locks.patronage.value;
 		}
 
 		const options: GeneratorOptions = {
@@ -141,69 +199,31 @@ const CharacterGenerator = ({
 		const character = generateCharacter(options, generatorData);
 		setGeneratedCharacter(character);
 		setIsSaved(false);
-	};
+	}, [mode, archetype, pathPreference, locks, generatorData]);
 
 	// Save character to roster
-	const handleSave = () => {
+	const handleSave = useCallback(() => {
 		if (!generatedCharacter) return;
 
 		const id = createNewCharacterId();
 		saveCharacterById(id, generatedCharacter);
 		setActiveCharacter(id);
 		setIsSaved(true);
-	};
+	}, [generatedCharacter]);
 
 	// Open in character manager for editing
-	const handleEdit = () => {
+	const handleEdit = useCallback(() => {
 		if (!generatedCharacter) return;
 
-		// Save if not already saved
 		if (!isSaved) {
 			const id = createNewCharacterId();
 			saveCharacterById(id, generatedCharacter);
 			setActiveCharacter(id);
 		}
 
-		// Load into Redux and navigate
 		dispatch(loadCharacter({ ...generatedCharacter, loaded: true }));
 		router.push('/character');
-	};
-
-	// Get archetype description
-	const selectedArchetype = ARCHETYPES.find(a => a.id === archetype);
-
-	// Get discipline names for preview
-	const getDisciplineNames = () => {
-		if (!generatedCharacter) return [];
-		return generatedCharacter.disciplines.map(id => {
-			const disc = disciplines.find(d => d._id === id);
-			return disc?.title || id;
-		});
-	};
-
-	// Get technique names for preview
-	const getTechniqueNames = () => {
-		if (!generatedCharacter) return [];
-		return generatedCharacter.techniques.map(id => {
-			for (const disc of disciplines) {
-				const tech = disc.techniques?.find(t => t._id === id);
-				if (tech) return tech.title || id;
-			}
-			return id;
-		});
-	};
-
-	// Get gear summary
-	const getGearSummary = () => {
-		if (!generatedCharacter) return [];
-		return generatedCharacter.gear.map(g => {
-			let name = g.name;
-			if (g.enhancement) {
-				name += ` (${g.enhancement.name})`;
-			}
-			return name;
-		});
-	};
+	}, [generatedCharacter, isSaved, dispatch, router]);
 
 	return (
 		<div className="container px-6 md:px-8 py-8">
@@ -300,21 +320,21 @@ const CharacterGenerator = ({
 							<div className="flex items-center gap-3">
 								<FunctionButton
 									variant="toggle"
-									isActive={isCultureLocked}
-									onClick={() => setIsCultureLocked(!isCultureLocked)}
-									icon={isCultureLocked ? mdiLock : mdiLockOpen}
-									title={isCultureLocked ? 'Unlock culture' : 'Lock culture'}
+									isActive={locks.culture.locked}
+									onClick={() => toggleLock('culture')}
+									icon={locks.culture.locked ? mdiLock : mdiLockOpen}
+									title={locks.culture.locked ? 'Unlock culture' : 'Lock culture'}
 								/>
 								<div className="flex-1">
 									<label className="block text-sm font-medium text-stone-dark dark:text-stone-light mb-1">
 										Culture
 									</label>
 									<select
-										value={lockedCulture}
-										onChange={(e) => setLockedCulture(e.target.value)}
-										disabled={!isCultureLocked}
+										value={locks.culture.value}
+										onChange={(e) => updateLockValue('culture', e.target.value)}
+										disabled={!locks.culture.locked}
 										className={`w-full p-2 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-gold outline-none ${
-											!isCultureLocked ? 'opacity-50' : ''
+											!locks.culture.locked ? 'opacity-50' : ''
 										}`}
 									>
 										<option value="">Select culture...</option>
@@ -331,21 +351,21 @@ const CharacterGenerator = ({
 							<div className="flex items-center gap-3">
 								<FunctionButton
 									variant="toggle"
-									isActive={isPathLocked}
-									onClick={() => setIsPathLocked(!isPathLocked)}
-									icon={isPathLocked ? mdiLock : mdiLockOpen}
-									title={isPathLocked ? 'Unlock path' : 'Lock path'}
+									isActive={locks.path.locked}
+									onClick={() => toggleLock('path')}
+									icon={locks.path.locked ? mdiLock : mdiLockOpen}
+									title={locks.path.locked ? 'Unlock path' : 'Lock path'}
 								/>
 								<div className="flex-1">
 									<label className="block text-sm font-medium text-stone-dark dark:text-stone-light mb-1">
 										Path
 									</label>
 									<select
-										value={lockedPath}
-										onChange={(e) => setLockedPath(e.target.value)}
-										disabled={!isPathLocked}
+										value={locks.path.value}
+										onChange={(e) => updateLockValue('path', e.target.value)}
+										disabled={!locks.path.locked}
 										className={`w-full p-2 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-gold outline-none ${
-											!isPathLocked ? 'opacity-50' : ''
+											!locks.path.locked ? 'opacity-50' : ''
 										}`}
 									>
 										<option value="">Select path...</option>
@@ -362,21 +382,21 @@ const CharacterGenerator = ({
 							<div className="flex items-center gap-3">
 								<FunctionButton
 									variant="toggle"
-									isActive={isPatronageLocked}
-									onClick={() => setIsPatronageLocked(!isPatronageLocked)}
-									icon={isPatronageLocked ? mdiLock : mdiLockOpen}
-									title={isPatronageLocked ? 'Unlock patronage' : 'Lock patronage'}
+									isActive={locks.patronage.locked}
+									onClick={() => toggleLock('patronage')}
+									icon={locks.patronage.locked ? mdiLock : mdiLockOpen}
+									title={locks.patronage.locked ? 'Unlock patronage' : 'Lock patronage'}
 								/>
 								<div className="flex-1">
 									<label className="block text-sm font-medium text-stone-dark dark:text-stone-light mb-1">
 										Patronage
 									</label>
 									<select
-										value={lockedPatronage}
-										onChange={(e) => setLockedPatronage(e.target.value)}
-										disabled={!isPatronageLocked}
+										value={locks.patronage.value}
+										onChange={(e) => updateLockValue('patronage', e.target.value)}
+										disabled={!locks.patronage.locked}
 										className={`w-full p-2 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-gold outline-none ${
-											!isPatronageLocked ? 'opacity-50' : ''
+											!locks.patronage.locked ? 'opacity-50' : ''
 										}`}
 									>
 										<option value="">Select patronage...</option>
@@ -444,7 +464,7 @@ const CharacterGenerator = ({
 										Disciplines
 									</h3>
 									<p className="text-stone dark:text-stone-light">
-										{getDisciplineNames().join(', ') || 'None'}
+										{disciplineNames.join(', ') || 'None'}
 									</p>
 								</div>
 
@@ -454,7 +474,7 @@ const CharacterGenerator = ({
 										Techniques
 									</h3>
 									<p className="text-stone dark:text-stone-light">
-										{getTechniqueNames().join(', ') || 'None'}
+										{techniqueNames.join(', ') || 'None'}
 									</p>
 								</div>
 
@@ -464,7 +484,7 @@ const CharacterGenerator = ({
 										Gear
 									</h3>
 									<p className="text-stone dark:text-stone-light">
-										{getGearSummary().join(', ') || 'None'}
+										{gearSummary.join(', ') || 'None'}
 									</p>
 								</div>
 

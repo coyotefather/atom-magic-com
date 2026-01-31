@@ -80,9 +80,9 @@ Feature ideas and improvements for the Atom Magic website.
 
 ### Performance optimization
 - [x] **Memoize ChooseDisciplinesAndTechniques** - Removed JSX-in-state, added useMemo/useCallback, fixed component name
-- [ ] **Split CharacterGenerator.tsx** - Extract GeneratorMode and GeneratorPreview sub-components (547 lines)
+- [x] **Optimize CharacterGenerator.tsx** - Added useMemo/useCallback, consolidated lock state (547 → 564 lines)
 - [x] **Memoize CoinSelector calculations** - Added useMemo for inapplicable coins, useCallback for handlers
-- [ ] **Optimize VoragoBoard rendering** - Memoize geometry calculations, extract cell render to sub-component (560 lines)
+- [x] **Optimize VoragoBoard rendering** - Pre-computed geometry, extracted memoized BoardCell sub-component, useCallback handlers
 - [x] **ContactForm error state** - Already has error UI (lines 249-254) showing errors to users
 - [x] **Clean up Refactor suffix components** - Renamed to `Score.tsx` and `SubScore.tsx`
 - [x] **Extract section visibility hook** - Created `useSectionVisibility` hook in `src/lib/hooks/`
