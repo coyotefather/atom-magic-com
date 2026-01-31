@@ -13,8 +13,9 @@ import {
   transformWallBridge,
   moveWallBridge
 } from '@/lib/slices/voragoSlice';
-import { useState } from 'react';
+import { useState, useCallback, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { Cell, Stone } from '@/lib/slices/voragoSlice';
 
 // Ring configurations - doubling cells from innermost (4) outward
 // Ring 4 (innermost): 4 cells (90° each)
@@ -144,6 +145,174 @@ function getLogicalCell(ringIndex: number, visualCell: number, rotation: number)
 // Debug mode - controlled via NEXT_PUBLIC_VORAGO_DEBUG env variable
 const DEBUG_MODE = process.env.NEXT_PUBLIC_VORAGO_DEBUG === 'true';
 
+// Pre-compute all pie slice paths (they never change)
+const PIE_SLICE_PATHS: Record<string, string> = {};
+const CELL_CENTERS: Record<string, { x: number; y: number; rotation: number }> = {};
+
+RING_CONFIG.forEach((config, ringIdx) => {
+  for (let cellIdx = 0; cellIdx < config.cells; cellIdx++) {
+    const key = `${ringIdx}-${cellIdx}`;
+    PIE_SLICE_PATHS[key] = generatePieSlicePath(ringIdx, cellIdx);
+    CELL_CENTERS[key] = getCellCenter(ringIdx, cellIdx);
+  }
+});
+
+// Memoized cell component to prevent unnecessary re-renders
+interface BoardCellProps {
+  ringIdx: number;
+  cellIdx: number;
+  cellData: Cell;
+  isHovered: boolean;
+  isSelected: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  onClick: () => void;
+}
+
+const BoardCell = memo(function BoardCell({
+  ringIdx,
+  cellIdx,
+  cellData,
+  isHovered,
+  isSelected,
+  onMouseEnter,
+  onMouseLeave,
+  onClick
+}: BoardCellProps) {
+  const cellKey = `${ringIdx}-${cellIdx}`;
+  const path = PIE_SLICE_PATHS[cellKey];
+  const center = CELL_CENTERS[cellKey];
+
+  return (
+    <g>
+      {/* Pie slice cell */}
+      <motion.path
+        d={path}
+        fill={
+          isHovered ? 'rgba(255, 255, 200, 0.8)' :
+          cellData.stone ? 'rgba(200, 200, 200, 0.3)' :
+          // Depth-based coloring - darker as you go deeper
+          ringIdx === 0 ? 'rgba(255, 255, 255, 0.85)' :
+          ringIdx === 1 ? 'rgba(245, 245, 240, 0.80)' :
+          ringIdx === 2 ? 'rgba(235, 235, 230, 0.75)' :
+          ringIdx === 3 ? 'rgba(225, 225, 220, 0.70)' :
+          'rgba(215, 215, 210, 0.65)'
+        }
+        stroke="#3e3a36"
+        strokeWidth="1.5"
+        filter={`url(#ringShadow${ringIdx})`}
+        className="cursor-pointer transition-colors"
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onClick={onClick}
+        whileHover={{ scale: 1.02 }}
+        style={{ transformOrigin: '250px 250px' }}
+      />
+
+      {/* Wall */}
+      {cellData.hasWall && (
+        <g transform={`translate(${center.x}, ${center.y}) rotate(${center.rotation})`}>
+          <motion.rect
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            x={-15}
+            y={-15}
+            width="30"
+            height="30"
+            fill="#5a5550"
+            stroke="#000"
+            strokeWidth="2"
+            rx="3"
+            className="pointer-events-none"
+          />
+        </g>
+      )}
+
+      {/* Bridge */}
+      {cellData.hasBridge && (
+        <g transform={`translate(${center.x}, ${center.y}) rotate(${center.rotation})`}>
+          <motion.g
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="pointer-events-none"
+          >
+            <line x1={-15} y1={0} x2={15} y2={0}
+                  stroke="#6b8e23" strokeWidth="4" strokeLinecap="round"/>
+            <line x1={-12} y1={-6} x2={12} y2={-6}
+                  stroke="#6b8e23" strokeWidth="2" strokeLinecap="round"/>
+            <line x1={-12} y1={6} x2={12} y2={6}
+                  stroke="#6b8e23" strokeWidth="2" strokeLinecap="round"/>
+          </motion.g>
+        </g>
+      )}
+
+      {/* Debug: Cell index label */}
+      {DEBUG_MODE && (
+        <text
+          x={center.x}
+          y={center.y + (cellData.stone ? -20 : 0)}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fill="#666"
+          fontSize={ringIdx === 0 ? "7" : ringIdx <= 2 ? "9" : "11"}
+          className="pointer-events-none select-none"
+          fontFamily="monospace"
+        >
+          {cellIdx}
+        </text>
+      )}
+
+      {/* Stone */}
+      <AnimatePresence mode="wait">
+        {cellData.stone && (
+          <g key={`stone-group-${cellKey}-p${cellData.stone.player}`}>
+            <motion.circle
+              key={`stone-${cellKey}-p${cellData.stone.player}`}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 2, opacity: 0 }}
+              cx={center.x}
+              cy={center.y}
+              r="14"
+              fill={cellData.stone.player === 1 ? '#8C7853' : '#722F37'}
+              stroke={isSelected ? '#d4af37' : '#000'}
+              strokeWidth={isSelected ? '4' : '2.5'}
+              className="cursor-pointer"
+              onClick={onClick}
+              whileHover={{ scale: 1.15 }}
+            />
+          </g>
+        )}
+      </AnimatePresence>
+
+      {/* Pulsing selection ring - separate AnimatePresence */}
+      <AnimatePresence>
+        {cellData.stone && isSelected && (
+          <motion.circle
+            key={`pulse-${ringIdx}-${cellIdx}-p${cellData.stone.player}`}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1.3, opacity: 0.6 }}
+            exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
+            transition={{
+              repeat: Infinity,
+              duration: 1,
+              ease: "easeInOut",
+              repeatType: "reverse"
+            }}
+            cx={center.x}
+            cy={center.y}
+            r="20"
+            fill="none"
+            stroke="#d4af37"
+            strokeWidth="3"
+            className="pointer-events-none"
+          />
+        )}
+      </AnimatePresence>
+    </g>
+  );
+});
+
 const VoragoBoard = () => {
   const dispatch = useAppDispatch();
   const {
@@ -158,7 +327,7 @@ const VoragoBoard = () => {
   const [hoveredCell, setHoveredCell] = useState<string | null>(null);
   const [spectrumSource, setSpectrumSource] = useState<{ ring: number; cell: number } | null>(null);
 
-  const handleCellClick = (ring: number, visualCell: number) => {
+  const handleCellClick = useCallback((ring: number, visualCell: number) => {
 	// Goal handling
 	if (ring === 5 && selectedStone) {
 	  if (selectedStone.ring === 4) {
@@ -322,7 +491,16 @@ const VoragoBoard = () => {
 	else if (cellData.stone && cellData.stone.player === turn && !hasMovedStone) {
 	  dispatch(selectStone(cellData.stone));
 	}
-  };
+  }, [cells, degrees, selectedStone, turn, hasMovedStone, selectedCoin, spectrumSource, dispatch]);
+
+  // Memoized handlers for hover state
+  const handleMouseEnter = useCallback((cellKey: string) => {
+    setHoveredCell(cellKey);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setHoveredCell(null);
+  }, []);
 
   return (
 	<div className="relative w-full max-w-[600px] mx-auto aspect-square">
@@ -370,140 +548,23 @@ const VoragoBoard = () => {
 		  >
 			{/* Cells */}
 			{Array.from({ length: config.cells }).map((_, cellIdx) => {
-			  // Use cellIdx directly - the group transform handles visual rotation
 			  const cellKey = `${ringIdx}-${cellIdx}`;
 			  const cellData = cells[cellKey];
-			  const center = getCellCenter(ringIdx, cellIdx);
 			  const isHovered = hoveredCell === cellKey;
 			  const isSelected = selectedStone?.ring === ringIdx && selectedStone?.cell === cellIdx;
 
 			  return (
-				<g key={cellKey}>
-				  {/* Pie slice cell */}
-				  <motion.path
-					d={generatePieSlicePath(ringIdx, cellIdx)}
-					fill={
-					  isHovered ? 'rgba(255, 255, 200, 0.8)' :
-					  cellData.stone ? 'rgba(200, 200, 200, 0.3)' :
-					  // Depth-based coloring - darker as you go deeper
-					  ringIdx === 0 ? 'rgba(255, 255, 255, 0.85)' :
-					  ringIdx === 1 ? 'rgba(245, 245, 240, 0.80)' :
-					  ringIdx === 2 ? 'rgba(235, 235, 230, 0.75)' :
-					  ringIdx === 3 ? 'rgba(225, 225, 220, 0.70)' :
-					  'rgba(215, 215, 210, 0.65)'
-					}
-					stroke="#3e3a36"
-					strokeWidth="1.5"
-					filter={`url(#ringShadow${ringIdx})`}
-					className="cursor-pointer transition-colors"
-					onMouseEnter={() => setHoveredCell(cellKey)}
-					onMouseLeave={() => setHoveredCell(null)}
-					onClick={() => handleCellClick(ringIdx, cellIdx)}
-					whileHover={{ scale: 1.02 }}
-					style={{ transformOrigin: '250px 250px' }}
-				  />
-
-				  {/* Wall */}
-				  {cellData.hasWall && (
-					<g transform={`translate(${center.x}, ${center.y}) rotate(${center.rotation})`}>
-					  <motion.rect
-						initial={{ scale: 0 }}
-						animate={{ scale: 1 }}
-						x={-15}
-						y={-15}
-						width="30"
-						height="30"
-						fill="#5a5550"
-						stroke="#000"
-						strokeWidth="2"
-						rx="3"
-						className="pointer-events-none"
-					  />
-					</g>
-				  )}
-
-				  {/* Bridge */}
-				  {cellData.hasBridge && (
-					<g transform={`translate(${center.x}, ${center.y}) rotate(${center.rotation})`}>
-					  <motion.g
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						className="pointer-events-none"
-					  >
-						<line x1={-15} y1={0} x2={15} y2={0}
-							  stroke="#6b8e23" strokeWidth="4" strokeLinecap="round"/>
-						<line x1={-12} y1={-6} x2={12} y2={-6}
-							  stroke="#6b8e23" strokeWidth="2" strokeLinecap="round"/>
-						<line x1={-12} y1={6} x2={12} y2={6}
-							  stroke="#6b8e23" strokeWidth="2" strokeLinecap="round"/>
-					  </motion.g>
-					</g>
-				  )}
-
-				  {/* Debug: Cell index label */}
-				  {DEBUG_MODE && (
-					<text
-					  x={center.x}
-					  y={center.y + (cellData.stone ? -20 : 0)}
-					  textAnchor="middle"
-					  dominantBaseline="central"
-					  fill="#666"
-					  fontSize={ringIdx === 0 ? "7" : ringIdx <= 2 ? "9" : "11"}
-					  className="pointer-events-none select-none"
-					  fontFamily="monospace"
-					>
-					  {cellIdx}
-					</text>
-				  )}
-
-				  {/* Stone */}
-				  <AnimatePresence mode="wait">
-					{cellData.stone && (
-					  <g key={`stone-group-${cellKey}-p${cellData.stone.player}`}>
-						<motion.circle
-						  key={`stone-${cellKey}-p${cellData.stone.player}`}
-						  initial={{ scale: 0, opacity: 0 }}
-						  animate={{ scale: 1, opacity: 1 }}
-						  exit={{ scale: 2, opacity: 0 }}
-						  cx={center.x}
-						  cy={center.y}
-						  r="14"
-						  fill={cellData.stone.player === 1 ? '#8C7853' : '#722F37'}
-						  stroke={isSelected ? '#d4af37' : '#000'}
-						  strokeWidth={isSelected ? '4' : '2.5'}
-						  className="cursor-pointer"
-						  onClick={() => handleCellClick(ringIdx, cellIdx)}
-						  whileHover={{ scale: 1.15 }}
-						/>
-					  </g>
-					)}
-				  </AnimatePresence>
-
-				  {/* Pulsing selection ring - separate AnimatePresence */}
-				  <AnimatePresence>
-					{cellData.stone && isSelected && (
-					  <motion.circle
-						key={`pulse-${ringIdx}-${cellIdx}-p${cellData.stone.player}`}
-						initial={{ scale: 0.8, opacity: 0 }}
-						animate={{ scale: 1.3, opacity: 0.6 }}
-						exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
-						transition={{
-						  repeat: Infinity,
-						  duration: 1,
-						  ease: "easeInOut",
-						  repeatType: "reverse"
-						}}
-						cx={center.x}
-						cy={center.y}
-						r="20"
-						fill="none"
-						stroke="#d4af37"
-						strokeWidth="3"
-						className="pointer-events-none"
-					  />
-					)}
-				  </AnimatePresence>
-				</g>
+			    <BoardCell
+			      key={cellKey}
+			      ringIdx={ringIdx}
+			      cellIdx={cellIdx}
+			      cellData={cellData}
+			      isHovered={isHovered}
+			      isSelected={isSelected}
+			      onMouseEnter={() => handleMouseEnter(cellKey)}
+			      onMouseLeave={handleMouseLeave}
+			      onClick={() => handleCellClick(ringIdx, cellIdx)}
+			    />
 			  );
 			})}
 
