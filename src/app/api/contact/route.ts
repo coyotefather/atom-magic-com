@@ -84,12 +84,21 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		// Sanitize inputs (basic XSS prevention)
-		const sanitize = (str: string) =>
-			str.replace(/[<>]/g, '').trim().slice(0, 5000);
-		const sanitizedName = sanitize(name);
-		const sanitizedSubject = sanitize(subject);
-		const sanitizedMessage = sanitize(message);
+		// HTML escape function for safe email content
+		const escapeHtml = (str: string): string =>
+			str
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#039;')
+				.trim()
+				.slice(0, 5000);
+
+		const sanitizedName = escapeHtml(name);
+		const sanitizedSubject = escapeHtml(subject);
+		const sanitizedMessage = escapeHtml(message);
+		const sanitizedEmail = escapeHtml(email);
 
 		// Check if Resend is configured
 		if (!resend) {
@@ -116,13 +125,13 @@ export async function POST(request: NextRequest) {
 		const { error } = await resend.emails.send({
 			from: 'Atom Magic Contact <form@contact.atom-magic.com>', // Use your verified domain in production
 			to: recipientEmail,
-			replyTo: email,
+			replyTo: email, // Original email for reply-to (validated by regex)
 			subject: `[Contact Form] ${sanitizedSubject}`,
 			text: `Name: ${sanitizedName}\nEmail: ${email}\n\nMessage:\n${sanitizedMessage}`,
 			html: `
 				<h2>New Contact Form Submission</h2>
 				<p><strong>Name:</strong> ${sanitizedName}</p>
-				<p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+				<p><strong>Email:</strong> <a href="mailto:${sanitizedEmail}">${sanitizedEmail}</a></p>
 				<p><strong>Subject:</strong> ${sanitizedSubject}</p>
 				<hr />
 				<p><strong>Message:</strong></p>

@@ -59,6 +59,17 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Algolia API optimization** - Review search implementation to minimize API calls and stay within plan limits.
 - [x] **Sanity API optimization** - Review CMS queries and caching to minimize API usage and stay within plan limits.
 
+## Security
+
+- [x] **Secure Algolia initialIndex endpoint** - Added secret key authentication to prevent unauthorized re-indexing
+- [x] **Fix XSS in contact form** - Replaced basic sanitization with proper HTML entity escaping
+- [x] **Add security headers** - Added X-Frame-Options, X-Content-Type-Options, Referrer-Policy, X-XSS-Protection, Permissions-Policy
+- [x] **Remove error details from API responses** - Algolia and Vorago AI routes now return generic errors to clients
+- [x] **Validate vorago-ai input** - Added difficulty whitelist and game state type validation
+- [ ] **CSRF protection** - Add CSRF tokens to form submissions (low priority for contact-only form)
+- [ ] **Content Security Policy** - Add CSP headers (requires testing with Sanity Studio, Algolia)
+- [ ] **Redis rate limiting** - Replace in-memory rate limiting for production scale
+
 ## Code Quality & Technical Debt
 
 ### Quick wins
