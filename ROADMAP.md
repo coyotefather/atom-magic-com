@@ -39,7 +39,7 @@ Feature ideas and improvements for the Atom Magic website.
 ## Site-wide
 
 - [x] **Dark mode toggle** - The color palette inverted for comfortable nighttime use
-- [ ] **PWA support** - Offline access to Codex entries would be valuable for sessions without reliable internet
+- [x] **PWA support** - Offline access to Codex entries would be valuable for sessions without reliable internet
 - [ ] **PWA pre-cache audit** - After v1 complete, revisit which pages are pre-cached vs cached-on-demand
 - [ ] **Bookmarks** - Let users save favorite Codex entries
 
