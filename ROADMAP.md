@@ -40,6 +40,7 @@ Feature ideas and improvements for the Atom Magic website.
 
 - [x] **Dark mode toggle** - The color palette inverted for comfortable nighttime use
 - [ ] **PWA support** - Offline access to Codex entries would be valuable for sessions without reliable internet
+- [ ] **PWA pre-cache audit** - After v1 complete, revisit which pages are pre-cached vs cached-on-demand
 - [ ] **Bookmarks** - Let users save favorite Codex entries
 
 ## Vorago
@@ -52,12 +53,24 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Quick Reference audit** - Review Quick Reference page against markdown rules files to ensure accuracy and completeness
 - [x] **Contact form** - Build functional contact form with spam prevention (honeypot, rate limiting), privacy compliance, and email delivery
 
+## Session Tools (Future)
+
+- [ ] **Initiative tracker** - Combat order manager with turn indicators, delay/ready actions, round counter
+- [ ] **Session timer** - Track playtime with break reminders, useful for online sessions
+- [ ] **NPC quick-gen** - Lighter than character generator, just name + culture + 2-3 defining traits + threat level
+
+## Campaign Management
+
+- [ ] **Campaign dashboard** - Link adventure logs together, track party progression across sessions
+
 ## Polish & Optimization
 
 - [x] **Component optimization** - Identify repeated UI patterns and extract into reusable components. Look for other performance optimizations.
 - [x] **UX & styling finalization** - Review and refine the user experience and visual consistency across all pages.
 - [x] **Algolia API optimization** - Review search implementation to minimize API calls and stay within plan limits.
 - [x] **Sanity API optimization** - Review CMS queries and caching to minimize API usage and stay within plan limits.
+- [ ] **Accessibility audit** - Screen reader support, keyboard navigation, focus states
+- [ ] **Mobile UX pass** - Touch targets, swipe gestures for Vorago
 
 ## Security
 
