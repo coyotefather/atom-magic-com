@@ -63,6 +63,10 @@ interface GameState {
   magnaDisabledCoin: string | null;
 }
 
+// Valid difficulty levels
+const VALID_DIFFICULTIES = ['easy', 'medium', 'hard', 'expert'] as const;
+type Difficulty = typeof VALID_DIFFICULTIES[number];
+
 export async function POST(request: NextRequest) {
   try {
 	const body = await request.json();
@@ -76,6 +80,14 @@ export async function POST(request: NextRequest) {
 
 	const { gameState, difficulty = 'medium' } = body;
 
+	// Validate difficulty parameter
+	if (!VALID_DIFFICULTIES.includes(difficulty as Difficulty)) {
+	  return NextResponse.json(
+		{ error: 'Invalid difficulty level' },
+		{ status: 400 }
+	  );
+	}
+
 	// Validate required game state properties
 	if (!gameState.stones || !gameState.cells || !gameState.availableCoins) {
 	  return NextResponse.json(
@@ -84,8 +96,18 @@ export async function POST(request: NextRequest) {
 	  );
 	}
 
+	// Validate game state structure
+	if (typeof gameState.stones !== 'object' ||
+		typeof gameState.cells !== 'object' ||
+		!Array.isArray(gameState.availableCoins)) {
+	  return NextResponse.json(
+		{ error: 'Invalid gameState: incorrect property types' },
+		{ status: 400 }
+	  );
+	}
+
 	// Generate AI move
-	const aiMove = makeAIMove(gameState, difficulty);
+	const aiMove = makeAIMove(gameState, difficulty as Difficulty);
 
 	if (!aiMove.stoneMove && !aiMove.coinAction) {
 	  return NextResponse.json(
@@ -96,17 +118,18 @@ export async function POST(request: NextRequest) {
 
 	return NextResponse.json(aiMove);
   } catch (error) {
-	const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-	console.error('Vorago AI Error:', errorMessage);
+	// Log detailed error server-side only
+	console.error('Vorago AI Error:', error instanceof Error ? error.message : 'Unknown error');
 
+	// Return generic error to client
 	return NextResponse.json(
-	  { error: 'AI failed to process turn', details: errorMessage },
+	  { error: 'AI failed to process turn' },
 	  { status: 500 }
 	);
   }
 }
 
-function makeAIMove(gameState: GameState, difficulty: string) {
+function makeAIMove(gameState: GameState, _difficulty: Difficulty) {
   // 1. Move a stone (prioritize moving toward center)
   const stoneMove = chooseStoneMove(gameState);
 

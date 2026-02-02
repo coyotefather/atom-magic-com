@@ -39,7 +39,8 @@ Feature ideas and improvements for the Atom Magic website.
 ## Site-wide
 
 - [x] **Dark mode toggle** - The color palette inverted for comfortable nighttime use
-- [ ] **PWA support** - Offline access to Codex entries would be valuable for sessions without reliable internet
+- [x] **PWA support** - Offline access to Codex entries would be valuable for sessions without reliable internet
+- [ ] **PWA pre-cache audit** - After v1 complete, revisit which pages are pre-cached vs cached-on-demand
 - [ ] **Bookmarks** - Let users save favorite Codex entries
 
 ## Vorago
@@ -52,12 +53,35 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Quick Reference audit** - Review Quick Reference page against markdown rules files to ensure accuracy and completeness
 - [x] **Contact form** - Build functional contact form with spam prevention (honeypot, rate limiting), privacy compliance, and email delivery
 
+## Session Tools (Future)
+
+- [ ] **Initiative tracker** - Combat order manager with turn indicators, delay/ready actions, round counter
+- [ ] **Session timer** - Track playtime with break reminders, useful for online sessions
+- [ ] **NPC quick-gen** - Lighter than character generator, just name + culture + 2-3 defining traits + threat level
+
+## Campaign Management
+
+- [ ] **Campaign dashboard** - Link adventure logs together, track party progression across sessions
+
 ## Polish & Optimization
 
 - [x] **Component optimization** - Identify repeated UI patterns and extract into reusable components. Look for other performance optimizations.
 - [x] **UX & styling finalization** - Review and refine the user experience and visual consistency across all pages.
 - [x] **Algolia API optimization** - Review search implementation to minimize API calls and stay within plan limits.
 - [x] **Sanity API optimization** - Review CMS queries and caching to minimize API usage and stay within plan limits.
+- [ ] **Accessibility audit** - Screen reader support, keyboard navigation, focus states
+- [ ] **Mobile UX pass** - Touch targets, swipe gestures for Vorago
+
+## Security
+
+- [x] **Secure Algolia initialIndex endpoint** - Added secret key authentication to prevent unauthorized re-indexing
+- [x] **Fix XSS in contact form** - Replaced basic sanitization with proper HTML entity escaping
+- [x] **Add security headers** - Added X-Frame-Options, X-Content-Type-Options, Referrer-Policy, X-XSS-Protection, Permissions-Policy
+- [x] **Remove error details from API responses** - Algolia and Vorago AI routes now return generic errors to clients
+- [x] **Validate vorago-ai input** - Added difficulty whitelist and game state type validation
+- [ ] **CSRF protection** - Add CSRF tokens to form submissions (low priority for contact-only form)
+- [ ] **Content Security Policy** - Add CSP headers (requires testing with Sanity Studio, Algolia)
+- [ ] **Redis rate limiting** - Replace in-memory rate limiting for production scale
 
 ## Code Quality & Technical Debt
 
@@ -90,6 +114,22 @@ Feature ideas and improvements for the Atom Magic website.
 ### Documentation
 - [x] **Document state management patterns** - When to use Redux vs Context API (added to CLAUDE.md)
 - [x] **Document component naming conventions** - Clarify naming patterns and suffixes (added to CLAUDE.md)
+
+## Testing Infrastructure
+
+Currently no test setup. Adding tests would improve confidence in complex logic.
+
+### Setup (do first)
+- [ ] **Set up Vitest + React Testing Library** - Configure test runner, add npm scripts, create test utilities
+
+### High-value test targets
+- [ ] **Vorago game logic tests** - Move validation, coin effects, win conditions, ring rotation
+- [ ] **Character calculation tests** - Shield calculations, score averages, gear bonuses
+- [ ] **Utility function tests** - `random.ts`, `shield.ts`, `score.ts`
+
+### Nice to have
+- [ ] **Component tests** - Key interactive components (CoinSelector, CharacterRoster)
+- [ ] **E2E tests with Playwright** - Critical user flows (create character, play Vorago game)
 
 ---
 

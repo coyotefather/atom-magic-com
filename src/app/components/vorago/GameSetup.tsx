@@ -4,7 +4,8 @@ import { useAppDispatch } from '@/lib/hooks';
 import { newGame, setPlayerNames, setAIMode } from '@/lib/slices/voragoSlice';
 import { useState } from 'react';
 import Icon from '@mdi/react';
-import { mdiRobot, mdiAccountGroup } from '@mdi/js';
+import { mdiRobot, mdiAccountGroup, mdiWifiOff } from '@mdi/js';
+import { useOffline } from '@/lib/OfflineContext';
 
 interface GameSetupProps {
 	onStart: () => void;
@@ -18,6 +19,7 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 	const [aiDifficulty, setAIDifficulty] = useState<'easy' | 'medium' | 'hard'>(
 		'medium'
 	);
+	const { isOffline } = useOffline();
 
 	const handleStartGame = () => {
 		dispatch(
@@ -99,26 +101,37 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 								<label className="block mb-2 text-sm uppercase tracking-wider text-stone">
 									AI Difficulty
 								</label>
-								<div className="grid grid-cols-3 gap-3">
-									{(['easy', 'medium', 'hard'] as const).map((level) => (
-										<button
-											key={level}
-											onClick={() => setAIDifficulty(level)}
-											className={`py-3 px-4 border-2 transition-all capitalize marcellus ${
-												aiDifficulty === level
-													? 'bg-laurel text-white border-laurel'
-													: 'bg-white text-black border-stone hover:border-laurel'
-											}`}
-										>
-											{level}
-										</button>
-									))}
-								</div>
-								<p className="text-sm text-stone mt-2">
-									{aiDifficulty === 'easy' && 'AI makes basic moves'}
-									{aiDifficulty === 'medium' && 'AI uses simple strategy'}
-									{aiDifficulty === 'hard' && 'AI plays competitively'}
-								</p>
+								{isOffline ? (
+									<div className="flex items-center gap-2 py-3 px-4 border-2 border-stone bg-parchment">
+										<Icon path={mdiWifiOff} size={0.8} className="text-stone" />
+										<span className="text-stone text-sm">
+											AI opponent requires internet connection
+										</span>
+									</div>
+								) : (
+									<>
+										<div className="grid grid-cols-3 gap-3">
+											{(['easy', 'medium', 'hard'] as const).map((level) => (
+												<button
+													key={level}
+													onClick={() => setAIDifficulty(level)}
+													className={`py-3 px-4 border-2 transition-all capitalize marcellus ${
+														aiDifficulty === level
+															? 'bg-laurel text-white border-laurel'
+															: 'bg-white text-black border-stone hover:border-laurel'
+													}`}
+												>
+													{level}
+												</button>
+											))}
+										</div>
+										<p className="text-sm text-stone mt-2">
+											{aiDifficulty === 'easy' && 'AI makes basic moves'}
+											{aiDifficulty === 'medium' && 'AI uses simple strategy'}
+											{aiDifficulty === 'hard' && 'AI plays competitively'}
+										</p>
+									</>
+								)}
 							</div>
 						)}
 
@@ -141,9 +154,14 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 						{/* Start Button */}
 						<button
 							onClick={handleStartGame}
-							className="w-full py-4 px-6 bg-laurel text-white border-2 border-laurel marcellus text-xl hover:bg-laurel-dark transition-colors"
+							disabled={vsAI && isOffline}
+							className={`w-full py-4 px-6 border-2 marcellus text-xl transition-colors ${
+								vsAI && isOffline
+									? 'bg-stone/50 text-white border-stone cursor-not-allowed'
+									: 'bg-laurel text-white border-laurel hover:bg-laurel-dark'
+							}`}
 						>
-							Start Game
+							{vsAI && isOffline ? 'AI Requires Internet' : 'Start Game'}
 						</button>
 					</div>
 				</div>

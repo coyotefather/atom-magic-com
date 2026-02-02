@@ -75,8 +75,15 @@ export async function POST(request: Request) {
 	const { searchParams } = new URL(request.url);
 	const initialIndex = searchParams.get("initialIndex") === "true";
 
-	// Perform initial indexing
+	// Perform initial indexing - requires admin secret for security
 	if (initialIndex) {
+	  const adminSecret = searchParams.get("secret");
+	  if (!adminSecret || adminSecret !== process.env.ALGOLIA_ADMIN_SECRET) {
+		return Response.json(
+		  { error: "Unauthorized" },
+		  { status: 401 }
+		);
+	  }
 	  const response = await performInitialIndexing();
 	  return Response.json(response);
 	}
@@ -154,10 +161,12 @@ export async function POST(request: Request) {
 	  });
 	}
   } catch (error) {
-	const message = error instanceof Error ? error.message : 'Unknown error';
+	// Log detailed error server-side only
+	console.error('Algolia indexing error:', error instanceof Error ? error.message : 'Unknown error');
 	// Return a 200 code so that Sanity does not try the request again
+	// Don't expose error details to client
 	return Response.json(
-	  { error: "Error indexing objects", details: message },
+	  { error: "Error indexing objects" },
 	  { status: 200 }
 	);
   }
