@@ -7,6 +7,9 @@ import CustomSearchBox from '@/app/components/global/search/CustomSearchBox';
 import CustomPagination from '@/app/components/global/search/CustomPagination';
 import CustomHitsPerPage from '@/app/components/global/search/CustomHitsPerPage';
 import { createCachedSearchClient } from '@/app/components/global/search/cachedSearchClient';
+import { useOffline } from '@/lib/OfflineContext';
+import Icon from '@mdi/react';
+import { mdiWifiOff } from '@mdi/js';
 
 const searchClient = createCachedSearchClient(
 	process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!,
@@ -14,6 +17,23 @@ const searchClient = createCachedSearchClient(
 );
 
 export function Search() {
+	const { isOffline } = useOffline();
+
+	if (isOffline) {
+		return (
+			<div className="text-center py-12">
+				<Icon path={mdiWifiOff} size={2} className="mx-auto mb-4 text-stone" />
+				<h2 className="marcellus text-xl mb-2 text-charcoal dark:text-parchment">
+					Search Unavailable Offline
+				</h2>
+				<p className="text-stone dark:text-stone/80">
+					Search requires an internet connection. You can still browse cached
+					Codex pages.
+				</p>
+			</div>
+		);
+	}
+
 	return (
 		<InstantSearchNext
 			indexName="entries"
