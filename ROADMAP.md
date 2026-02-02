@@ -115,6 +115,22 @@ Feature ideas and improvements for the Atom Magic website.
 - [x] **Document state management patterns** - When to use Redux vs Context API (added to CLAUDE.md)
 - [x] **Document component naming conventions** - Clarify naming patterns and suffixes (added to CLAUDE.md)
 
+## Testing Infrastructure
+
+Currently no test setup. Adding tests would improve confidence in complex logic.
+
+### Setup (do first)
+- [ ] **Set up Vitest + React Testing Library** - Configure test runner, add npm scripts, create test utilities
+
+### High-value test targets
+- [ ] **Vorago game logic tests** - Move validation, coin effects, win conditions, ring rotation
+- [ ] **Character calculation tests** - Shield calculations, score averages, gear bonuses
+- [ ] **Utility function tests** - `random.ts`, `shield.ts`, `score.ts`
+
+### Nice to have
+- [ ] **Component tests** - Key interactive components (CoinSelector, CharacterRoster)
+- [ ] **E2E tests with Playwright** - Critical user flows (create character, play Vorago game)
+
 ---
 
 ## Completed
