@@ -36,6 +36,21 @@ Feature ideas and improvements for the Atom Magic website.
   - Timestamps for pacing analysis
   - Export to session summary / "Previously on..." recap
 
+## Creature Manager
+
+A tool for GMs to create, customize, and manage creatures - analogous to the Character Manager but for monsters and NPCs.
+
+### Core features
+- [ ] **Creature editor** - Create custom creatures with stats, abilities, and descriptions
+- [ ] **Modify existing creatures** - Start from a Codex creature and customize (reskin, buff/nerf, add abilities)
+- [ ] **Creature roster** - Save/manage multiple custom creatures in browser storage
+- [ ] **Creature stat block** - Print-friendly layout matching official creature format
+
+### Nice to have
+- [ ] **Creature templates** - Quick presets (minion, elite, boss) that scale base creatures
+- [ ] **Shareable creatures** - URL/QR sharing like characters
+- [ ] **Import to encounters** - Use custom creatures in the Encounter Builder
+
 ## Site-wide
 
 - [x] **Dark mode toggle** - The color palette inverted for comfortable nighttime use
