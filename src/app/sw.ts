@@ -1,6 +1,6 @@
 import { defaultCache } from '@serwist/next/worker';
-import type { PrecacheEntry, SerwistGlobalConfig } from 'serwist';
-import { Serwist } from 'serwist';
+import type { PrecacheEntry, SerwistGlobalConfig, RuntimeCaching } from 'serwist';
+import { Serwist, NetworkOnly } from 'serwist';
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
@@ -10,12 +10,28 @@ declare global {
 
 declare const self: ServiceWorkerGlobalScope;
 
+// Custom runtime caching that excludes Sanity Studio and API
+const runtimeCaching: RuntimeCaching[] = [
+  // Exclude Sanity API calls - always go to network
+  {
+    matcher: ({ url }) => url.hostname.endsWith('.sanity.io'),
+    handler: new NetworkOnly(),
+  },
+  // Exclude /studio routes - always go to network
+  {
+    matcher: ({ url }) => url.pathname.startsWith('/studio'),
+    handler: new NetworkOnly(),
+  },
+  // Use default caching for everything else
+  ...defaultCache,
+];
+
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
-  runtimeCaching: defaultCache,
+  runtimeCaching,
   fallbacks: {
     entries: [
       {
