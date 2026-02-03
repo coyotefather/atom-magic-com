@@ -28,13 +28,19 @@ const ShareCharacterModal = ({ isOpen, onClose, character }: ShareCharacterModal
     }
   }, [isOpen, character]);
 
+  // Manage timeout cleanup for copied state
+  useEffect(() => {
+    if (!copied) return;
+    const timeoutId = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(timeoutId);
+  }, [copied]);
+
   const handleCopyLink = useCallback(async () => {
     if (!shareUrl) return;
 
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
     } catch (error) {
       console.error('Failed to copy to clipboard:', error);
     }
@@ -66,6 +72,10 @@ const ShareCharacterModal = ({ isOpen, onClose, character }: ShareCharacterModal
       link.download = `${fileName}-qr.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
+      URL.revokeObjectURL(url);
+    };
+    img.onerror = () => {
+      console.error('Failed to load QR code image for download');
       URL.revokeObjectURL(url);
     };
     img.src = url;
@@ -141,12 +151,17 @@ const ShareCharacterModal = ({ isOpen, onClose, character }: ShareCharacterModal
               )}
             </ModalBody>
             <ModalFooter className="flex gap-3 justify-center">
+              {/* Accessibility announcement for copy success */}
+              <span className="sr-only" aria-live="polite" aria-atomic="true">
+                {copied ? 'Link copied to clipboard' : ''}
+              </span>
               {shareUrl && (
                 <>
                   <FunctionButton
                     onClick={handleCopyLink}
                     icon={copied ? mdiCheck : mdiContentCopy}
                     variant="primary"
+                    title={copied ? 'Link copied to clipboard' : 'Copy share link to clipboard'}
                   >
                     {copied ? 'Copied!' : 'Copy Link'}
                   </FunctionButton>
@@ -154,6 +169,7 @@ const ShareCharacterModal = ({ isOpen, onClose, character }: ShareCharacterModal
                     onClick={handleDownloadQR}
                     icon={mdiDownload}
                     variant="secondary"
+                    title="Download QR code as PNG image"
                   >
                     Download QR
                   </FunctionButton>
