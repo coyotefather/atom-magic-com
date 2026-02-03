@@ -21,6 +21,11 @@ const serwist = new Serwist({
       {
         url: '/offline',
         matcher({ request }) {
+          // Don't show offline fallback for studio routes
+          const url = new URL(request.url);
+          if (url.pathname.startsWith('/studio')) {
+            return false;
+          }
           return request.destination === 'document';
         },
       },
