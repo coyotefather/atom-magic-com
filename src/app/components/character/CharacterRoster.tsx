@@ -7,6 +7,7 @@ import {
 	mdiAccountEdit,
 	mdiDelete,
 	mdiFileImport,
+	mdiShareVariant,
 } from '@mdi/js';
 import FunctionButton from '@/app/components/common/FunctionButton';
 import {
@@ -23,6 +24,8 @@ import {
 import { useAppDispatch } from '@/lib/hooks';
 import { loadCharacter, clearCharacter } from '@/lib/slices/characterSlice';
 import CharacterSummaryCard from './CharacterSummaryCard';
+import ShareCharacterModal from './ShareCharacterModal';
+import { CharacterState } from '@/lib/slices/characterSlice';
 
 interface CharacterRosterProps {
 	onCharacterSelected: (characterId: string) => void;
@@ -35,6 +38,7 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 	const [activeId, setActiveId] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+	const [shareCharacter, setShareCharacter] = useState<CharacterState | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	// Load roster on mount
@@ -81,6 +85,14 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 
 	const handleImportClick = () => {
 		fileInputRef.current?.click();
+	};
+
+	const handleShareCharacter = (id: string, e?: React.MouseEvent) => {
+		e?.stopPropagation();
+		const character = getCharacterById(id);
+		if (character) {
+			setShareCharacter(character);
+		}
 	};
 
 	const handleFileImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -166,6 +178,14 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 							/>
 							{/* Action buttons overlay */}
 							<div className="absolute top-4 right-4 flex items-center gap-2">
+								<FunctionButton
+									variant="ghost"
+									size="sm"
+									onClick={(e) => handleShareCharacter(char.id, e)}
+									icon={mdiShareVariant}
+									title="Share character"
+									className="hover:text-gold"
+								/>
 								{activeId !== char.id && (
 									<FunctionButton
 										variant="secondary"
@@ -220,6 +240,15 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 						</div>
 					))}
 				</div>
+			)}
+
+			{/* Share Modal */}
+			{shareCharacter && (
+				<ShareCharacterModal
+					isOpen={!!shareCharacter}
+					onClose={() => setShareCharacter(null)}
+					character={shareCharacter}
+				/>
 			)}
 		</div>
 	);
