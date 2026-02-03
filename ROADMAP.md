@@ -16,7 +16,7 @@ Feature ideas and improvements for the Atom Magic website.
   - Lock specific choices (e.g., "I want a Theurgist" or "I want Spiranos culture") and randomize the rest
   - Presets for common archetypes (battle mage, healer, rogue, etc.)
   - Review and tweak results before saving
-- [ ] **Shareable characters** - Generate a URL or QR code to share a character (could encode in URL params or use a simple backend)
+- [x] **Shareable characters** - Generate a URL or QR code to share a character (could encode in URL params or use a simple backend)
 
 ## New Utility Tools
 
@@ -35,6 +35,21 @@ Feature ideas and improvements for the Atom Magic website.
   - GM notes for story beats, NPC encounters, discoveries
   - Timestamps for pacing analysis
   - Export to session summary / "Previously on..." recap
+
+## Creature Manager
+
+A tool for GMs to create, customize, and manage creatures - analogous to the Character Manager but for monsters and NPCs.
+
+### Core features
+- [ ] **Creature editor** - Create custom creatures with stats, abilities, and descriptions
+- [ ] **Modify existing creatures** - Start from a Codex creature and customize (reskin, buff/nerf, add abilities)
+- [ ] **Creature roster** - Save/manage multiple custom creatures in browser storage
+- [ ] **Creature stat block** - Print-friendly layout matching official creature format
+
+### Nice to have
+- [ ] **Creature templates** - Quick presets (minion, elite, boss) that scale base creatures
+- [ ] **Shareable creatures** - URL/QR sharing like characters
+- [ ] **Import to encounters** - Use custom creatures in the Encounter Builder
 
 ## Site-wide
 

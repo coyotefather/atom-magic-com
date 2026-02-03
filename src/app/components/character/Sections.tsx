@@ -1,5 +1,5 @@
 'use client';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Section from '@/app/components/common/Section';
 import TheBasics from '@/app/components/character/sections/TheBasics';
 import CharacterOptions from '@/app/components/character/sections/CharacterOptions';
@@ -16,7 +16,9 @@ import ChooseAnimalCompanion from '@/app/components/character/sections/ChooseAni
 import WrapUp from '@/app/components/character/sections/WrapUp';
 import ProgressIndicator from '@/app/components/character/ProgressIndicator';
 import PageHero from '@/app/components/common/PageHero';
-import { mdiAccountEdit } from '@mdi/js';
+import FunctionButton from '@/app/components/common/FunctionButton';
+import ShareCharacterModal from './ShareCharacterModal';
+import { mdiAccountEdit, mdiShareVariant } from '@mdi/js';
 import CharacterSheet from '@/app/components/character/CharacterSheet';
 import CharacterRoster from '@/app/components/character/CharacterRoster';
 import { useAppSelector } from '@/lib/hooks';
@@ -108,6 +110,8 @@ const Sections = ({
 		setShowWrapUp,
 		showAllSections,
 	} = useSectionVisibility(true, character.loaded, characterHasProgress);
+
+	const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
 	const rollCharacter = showAllSections;
 
@@ -222,13 +226,21 @@ const Sections = ({
 			{!showRoster && (
 				<>
 					{/* Back to roster button */}
-					<div className="container px-6 md:px-8 pt-4">
+					<div className="container px-6 md:px-8 pt-4 flex items-center justify-between">
 						<button
 							onClick={showCharacterRoster}
 							className="py-3 px-6 bg-gold text-black marcellus uppercase tracking-widest text-sm font-bold hover:bg-brightgold transition-colors flex items-center gap-1"
 						>
 							← Back to Characters
 						</button>
+						<FunctionButton
+							variant="secondary"
+							onClick={() => setIsShareModalOpen(true)}
+							icon={mdiShareVariant}
+							title="Share this character"
+						>
+							Share
+						</FunctionButton>
 					</div>
 					<Section
 				expanded={true}
@@ -373,6 +385,13 @@ const Sections = ({
 				expandFunction={() => { return; }}>
 				<WrapUp />
 			</Section>
+
+					{/* Share Modal */}
+					<ShareCharacterModal
+						isOpen={isShareModalOpen}
+						onClose={() => setIsShareModalOpen(false)}
+						character={character}
+					/>
 				</>
 			)}
 
