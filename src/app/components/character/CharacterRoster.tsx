@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Icon from '@mdi/react';
 import {
 	mdiAccountPlus,
 	mdiAccountEdit,
