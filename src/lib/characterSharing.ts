@@ -4,7 +4,11 @@ import { CharacterState } from './slices/characterSlice';
 // Constants
 export const MAX_PAYLOAD_SIZE = 8192; // 8KB limit for URL safety
 const UUID_PATTERN = /^[a-zA-Z0-9._-]+$/; // Sanity document ID pattern
-const EXCLUDED_FIELDS = ['loaded', 'additionalScores', 'scorePoints'] as const;
+const VALID_CATEGORIES = ['light', 'medium', 'heavy'] as const;
+const VALID_TIERS = [1, 2, 3] as const;
+const MAX_SHIELD_BONUS = 50; // Maximum reasonable shield bonus value
+const MAX_WEALTH_VALUE = 999999; // Maximum wealth per field
+const MAX_SCORE_VALUE = 100; // Maximum score/subscore value
 
 // Type for shareable character (without derived fields)
 export type ShareableCharacter = Omit<CharacterState, 'loaded' | 'additionalScores' | 'scorePoints'>;
@@ -18,30 +22,19 @@ function stripDerivedFields(character: CharacterState): ShareableCharacter {
 }
 
 /**
- * Escape HTML special characters to prevent XSS
- */
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;');
-}
-
-/**
  * Sanitize and truncate string fields
+ * Note: HTML escaping removed - React handles this automatically
  */
 function sanitizeStrings(data: ShareableCharacter): ShareableCharacter {
   return {
     ...data,
-    name: escapeHtml(data.name.slice(0, 100)),
-    pronouns: escapeHtml(data.pronouns.slice(0, 50)),
-    description: escapeHtml(data.description.slice(0, 2000)),
+    name: data.name.slice(0, 100),
+    pronouns: data.pronouns.slice(0, 50),
+    description: data.description.slice(0, 2000),
     animalCompanion: {
       ...data.animalCompanion,
-      name: escapeHtml(data.animalCompanion.name.slice(0, 100)),
-      details: escapeHtml(data.animalCompanion.details.slice(0, 500)),
+      name: data.animalCompanion.name.slice(0, 100),
+      details: data.animalCompanion.details.slice(0, 500),
     },
   };
 }
@@ -114,6 +107,19 @@ function validateCharacterStructure(data: unknown): data is ShareableCharacter {
     if (typeof s._id !== 'string' || !isValidUUID(s._id)) {
       return false;
     }
+    // Validate score.title and score.description
+    if (s.title !== null && typeof s.title !== 'string') {
+      return false;
+    }
+    if (s.description !== null && typeof s.description !== 'string') {
+      return false;
+    }
+    // Validate score.value is null or number in range
+    if (s.value !== null) {
+      if (typeof s.value !== 'number' || s.value < 0 || s.value > MAX_SCORE_VALUE) {
+        return false;
+      }
+    }
     if (!Array.isArray(s.subscores)) {
       return false;
     }
@@ -124,6 +130,19 @@ function validateCharacterStructure(data: unknown): data is ShareableCharacter {
       const ss = subscore as Record<string, unknown>;
       if (typeof ss._id !== 'string' || !isValidUUID(ss._id)) {
         return false;
+      }
+      // Validate subscore.title and subscore.description
+      if (ss.title !== null && typeof ss.title !== 'string') {
+        return false;
+      }
+      if (ss.description !== null && typeof ss.description !== 'string') {
+        return false;
+      }
+      // Validate subscore.value is null or number in range
+      if (ss.value !== null) {
+        if (typeof ss.value !== 'number' || ss.value < 0 || ss.value > MAX_SCORE_VALUE) {
+          return false;
+        }
       }
     }
   }
@@ -143,6 +162,50 @@ function validateCharacterStructure(data: unknown): data is ShareableCharacter {
     if (g.type !== 'weapon' && g.type !== 'armor') {
       return false;
     }
+    // Validate category
+    if (typeof g.category !== 'string' || !VALID_CATEGORIES.includes(g.category as typeof VALID_CATEGORIES[number])) {
+      return false;
+    }
+    // Validate tier
+    if (typeof g.tier !== 'number' || !VALID_TIERS.includes(g.tier as typeof VALID_TIERS[number])) {
+      return false;
+    }
+    // Validate isExotic
+    if (typeof g.isExotic !== 'boolean') {
+      return false;
+    }
+    // Validate optional shield bonuses on gear
+    if (g.physicalShieldBonus !== undefined) {
+      if (typeof g.physicalShieldBonus !== 'number' || g.physicalShieldBonus < 0 || g.physicalShieldBonus > MAX_SHIELD_BONUS) {
+        return false;
+      }
+    }
+    if (g.psychicShieldBonus !== undefined) {
+      if (typeof g.psychicShieldBonus !== 'number' || g.psychicShieldBonus < 0 || g.psychicShieldBonus > MAX_SHIELD_BONUS) {
+        return false;
+      }
+    }
+    // Validate enhancement if present
+    if (g.enhancement !== undefined) {
+      if (typeof g.enhancement !== 'object' || g.enhancement === null) {
+        return false;
+      }
+      const enh = g.enhancement as Record<string, unknown>;
+      if (typeof enh.name !== 'string' || typeof enh.description !== 'string') {
+        return false;
+      }
+      // Validate enhancement shield bonuses
+      if (enh.physicalShieldBonus !== undefined) {
+        if (typeof enh.physicalShieldBonus !== 'number' || enh.physicalShieldBonus < 0 || enh.physicalShieldBonus > MAX_SHIELD_BONUS) {
+          return false;
+        }
+      }
+      if (enh.psychicShieldBonus !== undefined) {
+        if (typeof enh.psychicShieldBonus !== 'number' || enh.psychicShieldBonus < 0 || enh.psychicShieldBonus > MAX_SHIELD_BONUS) {
+          return false;
+        }
+      }
+    }
   }
 
   // Wealth object validation
@@ -152,7 +215,8 @@ function validateCharacterStructure(data: unknown): data is ShareableCharacter {
   const wealth = obj.wealth as Record<string, unknown>;
   const wealthFields = ['silver', 'gold', 'lead', 'uranium'];
   for (const field of wealthFields) {
-    if (typeof wealth[field] !== 'number' || wealth[field] < 0) {
+    const value = wealth[field];
+    if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > MAX_WEALTH_VALUE) {
       return false;
     }
   }
@@ -229,16 +293,20 @@ export function decompressCharacter(compressed: string): ShareableCharacter | nu
 
 /**
  * Generate a shareable URL for a character
- * Returns null if compression fails
+ * Returns null if compression fails or if called during SSR (window undefined)
  */
 export function generateShareUrl(character: CharacterState): string | null {
+  // Return null during SSR - sharing requires browser context
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
   const compressed = compressCharacter(character);
   if (!compressed) {
     return null;
   }
 
-  const origin = typeof window !== 'undefined' ? window.location.origin : '';
-  return `${origin}/character/shared?c=${compressed}`;
+  return `${window.location.origin}/character/shared?c=${compressed}`;
 }
 
 /**
