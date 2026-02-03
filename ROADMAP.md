@@ -16,7 +16,7 @@ Feature ideas and improvements for the Atom Magic website.
   - Lock specific choices (e.g., "I want a Theurgist" or "I want Spiranos culture") and randomize the rest
   - Presets for common archetypes (battle mage, healer, rogue, etc.)
   - Review and tweak results before saving
-- [ ] **Shareable characters** - Generate a URL or QR code to share a character (could encode in URL params or use a simple backend)
+- [x] **Shareable characters** - Generate a URL or QR code to share a character (could encode in URL params or use a simple backend)
 
 ## New Utility Tools
 
