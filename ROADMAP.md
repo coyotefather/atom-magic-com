@@ -115,6 +115,9 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [x] **Remove/guard Algolia console.logs** - Removed all debug console.logs from `api/algolia/route.ts`
 - [x] **Fix remaining `any` types** - Added `SanityDocument` interface, proper error handling, imported `Rule` type
 
+### Remaining quick wins
+- [x] **Remove `@types/lz-string`** - lz-string now ships its own types, so the separate `@types/lz-string` package is redundant
+
 ### High priority
 - [x] **Vorago AI logging cleanup** - Replace 40+ console.logs in `voragoSlice.ts:269-514` with proper logging or remove
 - [x] **Type safety in vorago-ai route** - Replace multiple `any` types in `vorago-ai/route.ts` with proper TypeScript types
