@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Icon from '@mdi/react';
-import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight, mdiSwordCross, mdiBookOpenPageVariantOutline, mdiTools } from '@mdi/js';
+import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight, mdiSwordCross, mdiBookOpenPageVariantOutline, mdiTools, mdiPaw } from '@mdi/js';
 import PageHero from '@/app/components/common/PageHero';
 
 export const metadata = {
@@ -36,6 +36,13 @@ const tools = [
 		href: '/encounters',
 		icon: mdiSwordCross,
 		color: 'oxblood',
+	},
+	{
+		name: 'Creature Manager',
+		description: 'Create and customize your own creatures. Build custom monsters and NPCs, or start from an existing Codex creature.',
+		href: '/creatures/manager',
+		icon: mdiPaw,
+		color: 'bronze',
 	},
 	{
 		name: 'Adventure Log',

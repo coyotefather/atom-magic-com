@@ -177,7 +177,7 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 						<h2 className="marcellus text-lg text-stone mb-4">
 							{isRolling ? 'Rolling...' : 'Rolled Creature'}
 						</h2>
-						<CreatureCard creature={rolledCreature} isSelected />
+						<CreatureCard creature={rolledCreature} isSelected showCustomize />
 					</div>
 				)}
 
@@ -193,6 +193,7 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 									key={creature._id}
 									creature={creature}
 									isSelected={rolledCreature?._id === creature._id}
+									showCustomize
 								/>
 							))}
 						</div>
