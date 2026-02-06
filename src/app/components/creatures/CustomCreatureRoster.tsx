@@ -78,8 +78,9 @@ const CustomCreatureRoster = ({
 		try {
 			const creature = await importCreatureFromFile(file);
 			const id = createNewCreatureId();
-			saveCreatureById(id, creature);
-			dispatch(loadCreature(creature));
+			const importedCreature = { ...creature, id, loaded: true };
+			saveCreatureById(id, importedCreature);
+			dispatch(loadCreature(importedCreature));
 			setActiveCreature(id);
 
 			// Refresh roster
