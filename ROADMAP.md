@@ -41,9 +41,9 @@ Feature ideas and improvements for the Atom Magic website.
 A tool for GMs to create, customize, and manage creatures - analogous to the Character Manager but for monsters and NPCs.
 
 ### Core features
-- [ ] **Creature editor** - Create custom creatures with stats, abilities, and descriptions
-- [ ] **Modify existing creatures** - Start from a Codex creature and customize (reskin, buff/nerf, add abilities)
-- [ ] **Creature roster** - Save/manage multiple custom creatures in browser storage
+- [x] **Creature editor** - Create custom creatures with stats, abilities, and descriptions
+- [x] **Modify existing creatures** - Start from a Codex creature and customize (reskin, buff/nerf, add abilities)
+- [x] **Creature roster** - Save/manage multiple custom creatures in browser storage
 - [ ] **Creature stat block** - Print-friendly layout matching official creature format
 
 ### Nice to have
@@ -114,6 +114,10 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [x] **Extract score average utility** - Created `calculateScoreAverage()` in `src/lib/utils/score.ts`
 - [x] **Remove/guard Algolia console.logs** - Removed all debug console.logs from `api/algolia/route.ts`
 - [x] **Fix remaining `any` types** - Added `SanityDocument` interface, proper error handling, imported `Rule` type
+
+### Remaining quick wins
+- [x] **Remove `@types/lz-string`** - lz-string now ships its own types, so the separate `@types/lz-string` package is redundant
+- [ ] **Rename `.solum` to `.persona`** - Rename character export file extension from `.solum` to `.persona` for clarity
 
 ### High priority
 - [x] **Vorago AI logging cleanup** - Replace 40+ console.logs in `voragoSlice.ts:269-514` with proper logging or remove

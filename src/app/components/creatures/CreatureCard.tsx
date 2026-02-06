@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { urlFor } from '@/sanity/lib/image';
 import { CREATURES_QUERY_RESULT } from '../../../../sanity.types';
 import Icon from '@mdi/react';
-import { mdiShield, mdiShieldOutline, mdiSword, mdiOpenInNew, mdiHeart } from '@mdi/js';
+import { mdiShield, mdiShieldOutline, mdiSword, mdiOpenInNew, mdiHeart, mdiPencil } from '@mdi/js';
 import IconLabel from '@/app/components/common/IconLabel';
 
 type Creature = CREATURES_QUERY_RESULT[number];
@@ -12,6 +12,7 @@ type Creature = CREATURES_QUERY_RESULT[number];
 interface CreatureCardProps {
 	creature: Creature;
 	isSelected?: boolean;
+	showCustomize?: boolean;
 }
 
 // Helper to display score value or n/a if null/undefined
@@ -19,7 +20,7 @@ const displayScore = (value: number | null | undefined): string => {
 	return value != null ? String(value) : 'n/a';
 };
 
-const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
+const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: CreatureCardProps) => {
 	const challengeLevelColors: Record<string, string> = {
 		harmless: 'bg-stone/10 text-stone-dark',
 		trivial: 'bg-stone/20 text-stone',
@@ -213,16 +214,27 @@ const CreatureCard = ({ creature, isSelected = false }: CreatureCardProps) => {
 					)}
 				</div>
 
-				{/* Link to full entry */}
-				{creature.slug && (
-					<Link
-						href={`/codex/entries/${creature.slug.current}`}
-						className="inline-flex items-center gap-1 text-sm text-bronze hover:text-gold transition-colors"
-					>
-						View full Codex entry
-						<Icon path={mdiOpenInNew} size={0.5} />
-					</Link>
-				)}
+				{/* Links */}
+				<div className="flex flex-wrap items-center gap-4">
+					{creature.slug && (
+						<Link
+							href={`/codex/entries/${creature.slug.current}`}
+							className="inline-flex items-center gap-1 text-sm text-bronze hover:text-gold transition-colors"
+						>
+							View full Codex entry
+							<Icon path={mdiOpenInNew} size={0.5} />
+						</Link>
+					)}
+					{showCustomize && (
+						<Link
+							href={`/creatures/manager?clone=${creature._id}`}
+							className="inline-flex items-center gap-1 text-sm text-stone hover:text-bronze transition-colors"
+						>
+							<Icon path={mdiPencil} size={0.5} />
+							Customize
+						</Link>
+					)}
+				</div>
 			</div>
 		</article>
 	);
