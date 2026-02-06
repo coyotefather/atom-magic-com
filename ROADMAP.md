@@ -41,9 +41,9 @@ Feature ideas and improvements for the Atom Magic website.
 A tool for GMs to create, customize, and manage creatures - analogous to the Character Manager but for monsters and NPCs.
 
 ### Core features
-- [ ] **Creature editor** - Create custom creatures with stats, abilities, and descriptions
-- [ ] **Modify existing creatures** - Start from a Codex creature and customize (reskin, buff/nerf, add abilities)
-- [ ] **Creature roster** - Save/manage multiple custom creatures in browser storage
+- [x] **Creature editor** - Create custom creatures with stats, abilities, and descriptions
+- [x] **Modify existing creatures** - Start from a Codex creature and customize (reskin, buff/nerf, add abilities)
+- [x] **Creature roster** - Save/manage multiple custom creatures in browser storage
 - [ ] **Creature stat block** - Print-friendly layout matching official creature format
 
 ### Nice to have
