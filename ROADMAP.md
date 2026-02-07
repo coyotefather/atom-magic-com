@@ -49,7 +49,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 ### Nice to have
 - [ ] **Creature templates** - Quick presets (minion, elite, boss) that scale base creatures
 - [ ] **Shareable creatures** - URL/QR sharing like characters
-- [ ] **Import to encounters** - Use custom creatures in the Encounter Builder
+- [x] **Import to encounters** - Use custom creatures in the Encounter Builder
 
 ## Site-wide
 
@@ -57,6 +57,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [x] **PWA support** - Offline access to Codex entries would be valuable for sessions without reliable internet
 - [ ] **PWA pre-cache audit** - After v1 complete, revisit which pages are pre-cached vs cached-on-demand
 - [ ] **Bookmarks** - Let users save favorite Codex entries
+- [ ] **Local storage notice** - Inform users that data (characters, creatures, encounters, etc.) is stored locally in the browser, not on a server, so they understand how it can be lost or become inaccessible
 
 ## Vorago
 
@@ -92,6 +93,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [x] **Sanity API optimization** - Review CMS queries and caching to minimize API usage and stay within plan limits.
 - [ ] **Accessibility audit** - Screen reader support, keyboard navigation, focus states
 - [ ] **Mobile UX pass** - Touch targets, swipe gestures for Vorago
+- [ ] **Encounter Builder creature selector height** - The creature grid area is too short, making it hard to browse. Revisit the layout to show more creatures at once
 
 ## Security
 
@@ -117,7 +119,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 
 ### Remaining quick wins
 - [x] **Remove `@types/lz-string`** - lz-string now ships its own types, so the separate `@types/lz-string` package is redundant
-- [ ] **Rename `.solum` to `.persona`** - Rename character export file extension from `.solum` to `.persona` for clarity
+- [x] **Rename `.solum` to `.persona`** - Rename character export file extension from `.solum` to `.persona` for clarity
 
 ### High priority
 - [x] **Vorago AI logging cleanup** - Replace 40+ console.logs in `voragoSlice.ts:269-514` with proper logging or remove
@@ -160,7 +162,7 @@ Currently no test setup. Adding tests would improve confidence in complex logic.
 
 ## Completed
 
-- [x] Character save/load to .solum files
+- [x] Character save/load to .persona files (formerly .solum)
 - [x] Character resume from browser storage
 - [x] Creature roller with filtering
 - [x] Unified entry system (creatures, disciplines, techniques, paths in Codex)

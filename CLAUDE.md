@@ -229,6 +229,7 @@ interface PageHeroProps {
 ---
 
 ## Recent Changes
+- Custom creatures can be added to encounters via tabbed Codex/Custom creature selector
 - Creature Manager feature: custom creature creation, editing, roster management, CMS cloning, .creatura file import/export
 - Unified PageHero component replaces 7 separate hero components
 - Standardized button styling (LinkButton, FunctionButton) with consistent padding and variants
