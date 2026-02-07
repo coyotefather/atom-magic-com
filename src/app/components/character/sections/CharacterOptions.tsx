@@ -148,7 +148,7 @@ const CharacterOptions = ({
 					/>
 					<CharacterOptionCard
 						title="Import Character"
-						description="Load a character from a .solum file."
+						description="Load a character from a .persona file."
 						icon={mdiFileUploadOutline}
 						buttonText="Import"
 						onClick={handleImportClick}
@@ -166,7 +166,7 @@ const CharacterOptions = ({
 				<input
 					ref={fileInputRef}
 					type="file"
-					accept=".solum,.json"
+					accept=".persona,.solum,.json"
 					onChange={handleFileSelect}
 					className="hidden"
 				/>

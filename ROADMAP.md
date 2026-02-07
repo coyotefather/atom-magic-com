@@ -117,7 +117,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 
 ### Remaining quick wins
 - [x] **Remove `@types/lz-string`** - lz-string now ships its own types, so the separate `@types/lz-string` package is redundant
-- [ ] **Rename `.solum` to `.persona`** - Rename character export file extension from `.solum` to `.persona` for clarity
+- [x] **Rename `.solum` to `.persona`** - Rename character export file extension from `.solum` to `.persona` for clarity
 
 ### High priority
 - [x] **Vorago AI logging cleanup** - Replace 40+ console.logs in `voragoSlice.ts:269-514` with proper logging or remove
@@ -160,7 +160,7 @@ Currently no test setup. Adding tests would improve confidence in complex logic.
 
 ## Completed
 
-- [x] Character save/load to .solum files
+- [x] Character save/load to .persona files (formerly .solum)
 - [x] Character resume from browser storage
 - [x] Creature roller with filtering
 - [x] Unified entry system (creatures, disciplines, techniques, paths in Codex)

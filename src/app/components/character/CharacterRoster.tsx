@@ -152,7 +152,7 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 					<input
 						ref={fileInputRef}
 						type="file"
-						accept=".solum"
+						accept=".persona,.solum"
 						onChange={handleFileImport}
 						className="hidden"
 					/>

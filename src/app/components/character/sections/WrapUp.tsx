@@ -46,11 +46,11 @@ const WrapUp = () => {
 								icon={mdiFileDownloadOutline}
 								variant="primary"
 							>
-								Download .solum
+								Download .persona
 							</FunctionButton>
 						</div>
 						<p className="text-center text-sm text-stone mt-4">
-							Download as a .solum file to import later or share with your Dominus Ludi.
+							Download as a .persona file to import later or share with your Dominus Ludi.
 						</p>
 					</div>
 				</div>

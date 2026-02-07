@@ -3,7 +3,7 @@ import { CharacterState } from './slices/characterSlice';
 const STORAGE_KEY = 'atom-magic-character';
 const ROSTER_KEY = 'atom-magic-roster';
 const CHARACTER_PREFIX = 'atom-magic-character-';
-const FILE_EXTENSION = '.solum';
+const FILE_EXTENSION = '.persona';
 const FILE_VERSION = 1;
 
 // Roster types
@@ -256,7 +256,7 @@ interface CharacterFile {
 }
 
 /**
- * Export character to a downloadable .solum file
+ * Export character to a downloadable .persona file
  */
 export const exportCharacterToFile = (character: CharacterState): void => {
 	if (typeof window === 'undefined') return;
@@ -293,7 +293,7 @@ export const exportCharacterToFile = (character: CharacterState): void => {
 };
 
 /**
- * Import character from a .solum file
+ * Import character from a .persona file (also accepts legacy .solum files)
  * Returns the character state or throws an error
  */
 export const importCharacterFromFile = (file: File): Promise<CharacterState> => {
