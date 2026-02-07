@@ -1,9 +1,11 @@
 'use client';
 import { useState, useMemo } from 'react';
+import Link from 'next/link';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiChevronDown, mdiChevronUp } from '@mdi/js';
 import FunctionButton from '@/app/components/common/FunctionButton';
 import { getChallengeLevelColor, THREAT_VALUES } from '@/lib/encounter-data';
+import { CustomCreatureSummary } from '@/lib/customCreaturePersistence';
 import {
 	CREATURES_QUERY_RESULT,
 	CREATURE_FILTERS_QUERY_RESULT,
@@ -15,6 +17,8 @@ interface CreatureSelectorProps {
 	creatures: CREATURES_QUERY_RESULT;
 	filters: CREATURE_FILTERS_QUERY_RESULT;
 	onAddCreature: (creature: Creature) => void;
+	customCreatures: CustomCreatureSummary[];
+	onAddCustomCreature: (creature: CustomCreatureSummary) => void;
 }
 
 const challengeLevelLabels: Record<string, string> = {
@@ -30,12 +34,15 @@ const CreatureSelector = ({
 	creatures,
 	filters,
 	onAddCreature,
+	customCreatures,
+	onAddCustomCreature,
 }: CreatureSelectorProps) => {
 	const [selectedEnvironments, setSelectedEnvironments] = useState<string[]>([]);
 	const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 	const [selectedChallengeLevels, setSelectedChallengeLevels] = useState<string[]>([]);
 	const [isExpanded, setIsExpanded] = useState(true);
 	const [showAll, setShowAll] = useState(false);
+	const [activeTab, setActiveTab] = useState<'codex' | 'custom'>('codex');
 
 	// Filter creatures based on selections
 	const filteredCreatures = useMemo(() => {
@@ -116,170 +123,257 @@ const CreatureSelector = ({
 
 			{isExpanded && (
 				<div className="px-4 pb-4">
-					{/* Filters */}
-					<div className="space-y-4 mb-6">
-						{/* Challenge Level */}
-						<div>
-							<div className="flex items-center justify-between mb-2">
-								<h4 className="text-xs text-stone uppercase tracking-wider">
-									Challenge Level
-								</h4>
-								{hasActiveFilters && (
-									<FunctionButton
-										variant="ghost"
-										size="sm"
-										onClick={handleClearAll}
-										className="hover:text-oxblood"
-									>
-										Clear All
-									</FunctionButton>
-								)}
-							</div>
-							<div className="flex flex-wrap gap-2">
-								{filters.challengeLevels.map(level => (
-									<FunctionButton
-										key={level}
-										variant="chip"
-										size="sm"
-										isActive={selectedChallengeLevels.includes(level)}
-										onClick={() =>
-											toggleFilter(
-												level,
-												selectedChallengeLevels,
-												setSelectedChallengeLevels
-											)
-										}
-									>
-										{challengeLevelLabels[level] || level}
-									</FunctionButton>
-								))}
-							</div>
-						</div>
+					{/* Tabs */}
+					<div className="flex border-b-2 border-stone/30 mb-4">
+						<button
+							onClick={() => setActiveTab('codex')}
+							className={`px-4 py-2 text-sm marcellus uppercase tracking-wider transition-colors ${
+								activeTab === 'codex'
+									? 'border-b-2 border-bronze text-bronze -mb-[2px]'
+									: 'text-stone hover:text-black'
+							}`}
+						>
+							Codex Creatures ({creatures.length})
+						</button>
+						<button
+							onClick={() => setActiveTab('custom')}
+							className={`px-4 py-2 text-sm marcellus uppercase tracking-wider transition-colors ${
+								activeTab === 'custom'
+									? 'border-b-2 border-bronze text-bronze -mb-[2px]'
+									: 'text-stone hover:text-black'
+							}`}
+						>
+							Custom Creatures ({customCreatures.length})
+						</button>
+					</div>
 
-						{/* Creature Type */}
-						{filters.creatureTypes && filters.creatureTypes.length > 0 && (
-							<div>
-								<h4 className="text-xs text-stone uppercase tracking-wider mb-2">
-									Creature Type
-								</h4>
-								<div className="flex flex-wrap gap-2">
-									{filters.creatureTypes
-										.filter((type): type is string => type !== null)
-										.map(type => (
+					{activeTab === 'codex' && (
+						<>
+							{/* Filters */}
+							<div className="space-y-4 mb-6">
+								{/* Challenge Level */}
+								<div>
+									<div className="flex items-center justify-between mb-2">
+										<h4 className="text-xs text-stone uppercase tracking-wider">
+											Challenge Level
+										</h4>
+										{hasActiveFilters && (
 											<FunctionButton
-												key={type}
-												variant="chip"
+												variant="ghost"
 												size="sm"
-												isActive={selectedTypes.includes(type)}
-												onClick={() =>
-													toggleFilter(type, selectedTypes, setSelectedTypes)
-												}
+												onClick={handleClearAll}
+												className="hover:text-oxblood"
 											>
-												{type}
+												Clear All
 											</FunctionButton>
-										))}
-								</div>
-							</div>
-						)}
-
-						{/* Environments */}
-						{filters.environments && filters.environments.length > 0 && (
-							<div>
-								<h4 className="text-xs text-stone uppercase tracking-wider mb-2">
-									Environment
-								</h4>
-								<div className="flex flex-wrap gap-2">
-									{filters.environments
-										.filter((env): env is string => env !== null)
-										.map(env => (
+										)}
+									</div>
+									<div className="flex flex-wrap gap-2">
+										{filters.challengeLevels.map(level => (
 											<FunctionButton
-												key={env}
+												key={level}
 												variant="chip"
 												size="sm"
-												isActive={selectedEnvironments.includes(env)}
+												isActive={selectedChallengeLevels.includes(level)}
 												onClick={() =>
 													toggleFilter(
-														env,
-														selectedEnvironments,
-														setSelectedEnvironments
+														level,
+														selectedChallengeLevels,
+														setSelectedChallengeLevels
 													)
 												}
 											>
-												{env}
+												{challengeLevelLabels[level] || level}
 											</FunctionButton>
 										))}
+									</div>
 								</div>
+
+								{/* Creature Type */}
+								{filters.creatureTypes && filters.creatureTypes.length > 0 && (
+									<div>
+										<h4 className="text-xs text-stone uppercase tracking-wider mb-2">
+											Creature Type
+										</h4>
+										<div className="flex flex-wrap gap-2">
+											{filters.creatureTypes
+												.filter((type): type is string => type !== null)
+												.map(type => (
+													<FunctionButton
+														key={type}
+														variant="chip"
+														size="sm"
+														isActive={selectedTypes.includes(type)}
+														onClick={() =>
+															toggleFilter(type, selectedTypes, setSelectedTypes)
+														}
+													>
+														{type}
+													</FunctionButton>
+												))}
+										</div>
+									</div>
+								)}
+
+								{/* Environments */}
+								{filters.environments && filters.environments.length > 0 && (
+									<div>
+										<h4 className="text-xs text-stone uppercase tracking-wider mb-2">
+											Environment
+										</h4>
+										<div className="flex flex-wrap gap-2">
+											{filters.environments
+												.filter((env): env is string => env !== null)
+												.map(env => (
+													<FunctionButton
+														key={env}
+														variant="chip"
+														size="sm"
+														isActive={selectedEnvironments.includes(env)}
+														onClick={() =>
+															toggleFilter(
+																env,
+																selectedEnvironments,
+																setSelectedEnvironments
+															)
+														}
+													>
+														{env}
+													</FunctionButton>
+												))}
+										</div>
+									</div>
+								)}
 							</div>
-						)}
-					</div>
 
-					{/* Creature count */}
-					<div className="text-sm text-stone mb-4">
-						Showing {displayCreatures.length} of {filteredCreatures.length} creatures
-						{filteredCreatures.length !== creatures.length && (
-							<span> (filtered from {creatures.length} total)</span>
-						)}
-					</div>
+							{/* Creature count */}
+							<div className="text-sm text-stone mb-4">
+								Showing {displayCreatures.length} of {filteredCreatures.length} creatures
+								{filteredCreatures.length !== creatures.length && (
+									<span> (filtered from {creatures.length} total)</span>
+								)}
+							</div>
 
-					{/* Creature grid */}
-					{filteredCreatures.length === 0 ? (
-						<div className="text-center py-6 text-stone">
-							No creatures match your filters.
-						</div>
-					) : (
-						<>
-							<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-								{displayCreatures.map(creature => {
-									const challengeLevel = creature.challengeLevel || 'moderate';
-									const threatPts = THREAT_VALUES[challengeLevel] || 0;
+							{/* Creature grid */}
+							{filteredCreatures.length === 0 ? (
+								<div className="text-center py-6 text-stone">
+									No creatures match your filters.
+								</div>
+							) : (
+								<>
+									<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+										{displayCreatures.map(creature => {
+											const challengeLevel = creature.challengeLevel || 'moderate';
+											const threatPts = THREAT_VALUES[challengeLevel] || 0;
 
-									return (
-										<button
-											key={creature._id}
-											onClick={() => onAddCreature(creature)}
-											className="group text-left p-3 bg-white border-2 border-stone/50 hover:border-bronze transition-colors"
+											return (
+												<button
+													key={creature._id}
+													onClick={() => onAddCreature(creature)}
+													className="group text-left p-3 bg-white border-2 border-stone/50 hover:border-bronze transition-colors"
+												>
+													<div className="flex items-start justify-between gap-1">
+														<div className="flex-1 min-w-0">
+															<div className="font-semibold text-sm text-black truncate">
+																{creature.name}
+															</div>
+															<div className="flex items-center gap-2 mt-1">
+																<span
+																	className={`px-1.5 py-0.5 text-xs ${getChallengeLevelColor(
+																		challengeLevel
+																	)}`}
+																>
+																	{challengeLevelLabels[challengeLevel]}
+																</span>
+																<span className="text-xs text-stone">
+																	{threatPts} pts
+																</span>
+															</div>
+														</div>
+														<div className="p-1 text-stone group-hover:text-bronze transition-colors">
+															<Icon path={mdiPlus} size={0.625} />
+														</div>
+													</div>
+												</button>
+											);
+										})}
+									</div>
+
+									{/* Show more/less */}
+									{filteredCreatures.length > 12 && (
+										<FunctionButton
+											variant="ghost"
+											fullWidth
+											onClick={() => setShowAll(!showAll)}
+											className="mt-4 text-bronze hover:text-gold"
 										>
-											<div className="flex items-start justify-between gap-1">
-												<div className="flex-1 min-w-0">
-													<div className="font-semibold text-sm text-black truncate">
-														{creature.name}
-													</div>
-													<div className="flex items-center gap-2 mt-1">
-														<span
-															className={`px-1.5 py-0.5 text-xs ${getChallengeLevelColor(
-																challengeLevel
-															)}`}
-														>
-															{challengeLevelLabels[challengeLevel]}
-														</span>
-														<span className="text-xs text-stone">
-															{threatPts} pts
-														</span>
-													</div>
-												</div>
-												<div className="p-1 text-stone group-hover:text-bronze transition-colors">
-													<Icon path={mdiPlus} size={0.625} />
-												</div>
-											</div>
-										</button>
-									);
-								})}
-							</div>
-
-							{/* Show more/less */}
-							{filteredCreatures.length > 12 && (
-								<FunctionButton
-									variant="ghost"
-									fullWidth
-									onClick={() => setShowAll(!showAll)}
-									className="mt-4 text-bronze hover:text-gold"
-								>
-									{showAll
-										? 'Show Less'
-										: `Show All ${filteredCreatures.length} Creatures`}
-								</FunctionButton>
+											{showAll
+												? 'Show Less'
+												: `Show All ${filteredCreatures.length} Creatures`}
+										</FunctionButton>
+									)}
+								</>
 							)}
 						</>
+					)}
+
+					{activeTab === 'custom' && (
+						<div>
+							{customCreatures.length === 0 ? (
+								<div className="text-center py-8">
+									<p className="text-sm text-stone mb-2">No custom creatures yet.</p>
+									<Link
+										href="/creatures/manager"
+										className="text-sm text-bronze hover:text-gold transition-colors"
+									>
+										Create one in the Creature Manager
+									</Link>
+								</div>
+							) : (
+								<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+									{customCreatures.map(creature => {
+										const challengeLevel = creature.challengeLevel || 'moderate';
+										const threatPts = THREAT_VALUES[challengeLevel] || 0;
+
+										return (
+											<button
+												key={creature.id}
+												onClick={() => onAddCustomCreature(creature)}
+												className="group text-left p-3 bg-white border-2 border-stone/50 hover:border-bronze transition-colors"
+											>
+												<div className="flex items-start justify-between gap-1">
+													<div className="flex-1 min-w-0">
+														<div className="font-semibold text-sm text-black truncate">
+															{creature.name || 'Unnamed Creature'}
+														</div>
+														<div className="flex items-center gap-2 mt-1">
+															<span
+																className={`px-1.5 py-0.5 text-xs ${getChallengeLevelColor(
+																	challengeLevel
+																)}`}
+															>
+																{challengeLevelLabels[challengeLevel] || challengeLevel}
+															</span>
+															<span className="text-xs text-stone">
+																{threatPts} pts
+															</span>
+														</div>
+														{creature.creatureType && (
+															<div className="text-xs text-stone mt-1 truncate">
+																{creature.creatureType}
+															</div>
+														)}
+													</div>
+													<div className="p-1 text-stone group-hover:text-bronze transition-colors">
+														<Icon path={mdiPlus} size={0.625} />
+													</div>
+												</div>
+											</button>
+										);
+									})}
+								</div>
+							)}
+						</div>
 					)}
 				</div>
 			)}

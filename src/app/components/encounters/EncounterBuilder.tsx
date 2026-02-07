@@ -26,6 +26,10 @@ import {
 	copyEncounterToClipboard,
 } from '@/lib/encounterPersistence';
 import {
+	getCreatureRoster,
+	CustomCreatureSummary,
+} from '@/lib/customCreaturePersistence';
+import {
 	CREATURES_QUERY_RESULT,
 	CREATURE_FILTERS_QUERY_RESULT,
 } from '../../../../sanity.types';
@@ -40,6 +44,7 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 	const [activeEncounterId, setActiveEncounterId] = useState<string | null>(null);
 	const [currentEncounter, setCurrentEncounter] = useState<Encounter | null>(null);
 	const [copySuccess, setCopySuccess] = useState(false);
+	const [customCreatures, setCustomCreatures] = useState<CustomCreatureSummary[]>([]);
 
 	// Load roster from localStorage on mount
 	useEffect(() => {
@@ -54,6 +59,10 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 				setCurrentEncounter(encounter);
 			}
 		}
+
+		// Load custom creatures from localStorage
+		const creatureRoster = getCreatureRoster();
+		setCustomCreatures(creatureRoster.creatures);
 	}, []);
 
 	// Save encounter when it changes
@@ -124,7 +133,7 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 		if (!currentEncounter) return;
 
 		const existingIdx = currentEncounter.creatures.findIndex(
-			c => c.creatureId === creature._id
+			c => c.creatureId === creature._id && c.source !== 'custom'
 		);
 
 		let updatedCreatures: EncounterCreature[];
@@ -142,6 +151,38 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 				name: creature.name || 'Unknown',
 				challengeLevel: creature.challengeLevel || 'moderate',
 				quantity: 1,
+				source: 'cms',
+			};
+			updatedCreatures = [...currentEncounter.creatures, newCreature];
+		}
+
+		const updated = { ...currentEncounter, creatures: updatedCreatures };
+		setCurrentEncounter(updated);
+		saveCurrentEncounter(updated);
+	};
+
+	// Add custom creature to encounter
+	const handleAddCustomCreature = (creature: CustomCreatureSummary) => {
+		if (!currentEncounter) return;
+
+		const existingIdx = currentEncounter.creatures.findIndex(
+			c => c.creatureId === creature.id && c.source === 'custom'
+		);
+
+		let updatedCreatures: EncounterCreature[];
+		if (existingIdx >= 0) {
+			updatedCreatures = [...currentEncounter.creatures];
+			updatedCreatures[existingIdx] = {
+				...updatedCreatures[existingIdx],
+				quantity: updatedCreatures[existingIdx].quantity + 1,
+			};
+		} else {
+			const newCreature: EncounterCreature = {
+				creatureId: creature.id,
+				name: creature.name || 'Unnamed Creature',
+				challengeLevel: creature.challengeLevel || 'moderate',
+				quantity: 1,
+				source: 'custom',
 			};
 			updatedCreatures = [...currentEncounter.creatures, newCreature];
 		}
@@ -286,6 +327,8 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 							creatures={creatures}
 							filters={filters}
 							onAddCreature={handleAddCreature}
+							customCreatures={customCreatures}
+							onAddCustomCreature={handleAddCustomCreature}
 						/>
 
 						{/* Current encounter creatures */}
