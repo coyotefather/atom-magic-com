@@ -49,7 +49,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 ### Nice to have
 - [ ] **Creature templates** - Quick presets (minion, elite, boss) that scale base creatures
 - [ ] **Shareable creatures** - URL/QR sharing like characters
-- [ ] **Import to encounters** - Use custom creatures in the Encounter Builder
+- [x] **Import to encounters** - Use custom creatures in the Encounter Builder
 
 ## Site-wide
 
