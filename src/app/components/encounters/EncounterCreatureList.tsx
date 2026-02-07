@@ -56,8 +56,13 @@ const EncounterCreatureList = ({
 						>
 							{/* Creature info */}
 							<div className="flex-1 min-w-0">
-								<div className="font-semibold text-black truncate">
+								<div className="font-semibold text-black truncate flex items-center gap-2">
 									{creature.name}
+									{creature.source === 'custom' && (
+										<span className="px-1.5 py-0.5 text-xs bg-bronze/20 text-bronze uppercase tracking-wider shrink-0">
+											Custom
+										</span>
+									)}
 								</div>
 								<div className="flex items-center gap-2 mt-1">
 									<span

@@ -27,6 +27,7 @@ export interface EncounterCreature {
 	name: string;            // Cached for display
 	challengeLevel: string;  // harmless, trivial, easy, moderate, hard, deadly
 	quantity: number;
+	source?: 'cms' | 'custom';  // Optional for backwards compat, defaults to 'cms'
 }
 
 // A saved encounter
@@ -142,7 +143,8 @@ export const generateEncounterSummary = (
 
 	for (const creature of encounter.creatures) {
 		const threatPoints = getCreatureThreat(creature.challengeLevel) * creature.quantity;
-		lines.push(`- ${creature.name} (${creature.challengeLevel}) x${creature.quantity} = ${threatPoints} pts`);
+		const customTag = creature.source === 'custom' ? ' [Custom]' : '';
+		lines.push(`- ${creature.name}${customTag} (${creature.challengeLevel}) x${creature.quantity} = ${threatPoints} pts`);
 	}
 
 	return lines.join('\n');
