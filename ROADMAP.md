@@ -57,6 +57,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [x] **PWA support** - Offline access to Codex entries would be valuable for sessions without reliable internet
 - [ ] **PWA pre-cache audit** - After v1 complete, revisit which pages are pre-cached vs cached-on-demand
 - [ ] **Bookmarks** - Let users save favorite Codex entries
+- [ ] **Local storage notice** - Inform users that data (characters, creatures, encounters, etc.) is stored locally in the browser, not on a server, so they understand how it can be lost or become inaccessible
 
 ## Vorago
 
@@ -92,6 +93,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [x] **Sanity API optimization** - Review CMS queries and caching to minimize API usage and stay within plan limits.
 - [ ] **Accessibility audit** - Screen reader support, keyboard navigation, focus states
 - [ ] **Mobile UX pass** - Touch targets, swipe gestures for Vorago
+- [ ] **Encounter Builder creature selector height** - The creature grid area is too short, making it hard to browse. Revisit the layout to show more creatures at once
 
 ## Security
 
