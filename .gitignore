@@ -40,6 +40,9 @@ next-env.d.ts
 CLAUDE.md
 ROADMAP.md
 
+# Map tiles (generated from source image)
+public/map/tiles/
+
 # PWA
 public/sw.js
 public/sw.js.map

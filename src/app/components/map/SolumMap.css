@@ -1,0 +1,93 @@
+/* Leaflet overrides for Atom Magic classical theme */
+
+.solum-map {
+	background-color: var(--color-parchment);
+	border: 2px solid var(--color-stone);
+}
+
+/* Zoom controls */
+.solum-map .leaflet-control-zoom {
+	border: 2px solid var(--color-stone) !important;
+	border-radius: 0 !important;
+}
+
+.solum-map .leaflet-control-zoom a {
+	border-radius: 0 !important;
+	background-color: white !important;
+	color: var(--color-stone-dark) !important;
+	border-bottom-color: var(--color-stone) !important;
+	font-family: 'Marcellus', serif !important;
+	width: 32px !important;
+	height: 32px !important;
+	line-height: 32px !important;
+	font-size: 18px !important;
+}
+
+.solum-map .leaflet-control-zoom a:hover {
+	background-color: var(--color-parchment) !important;
+	color: var(--color-laurel) !important;
+}
+
+.solum-map .leaflet-control-zoom a.leaflet-disabled {
+	opacity: 0.4;
+}
+
+/* Attribution */
+.solum-map .leaflet-control-attribution {
+	background-color: rgba(245, 240, 225, 0.85) !important;
+	border-radius: 0 !important;
+	font-size: 10px !important;
+	color: var(--color-stone-dark) !important;
+}
+
+.solum-map .leaflet-control-attribution a {
+	color: var(--color-laurel) !important;
+}
+
+/* Region tooltips */
+.solum-map .leaflet-tooltip {
+	border-radius: 0 !important;
+	border: 2px solid var(--color-stone) !important;
+	background-color: white !important;
+	padding: 8px 12px !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.solum-map .leaflet-tooltip::before {
+	border-top-color: var(--color-stone) !important;
+}
+
+.solum-tooltip-content {
+	font-family: 'Noto Serif', serif;
+}
+
+.solum-tooltip-content h3 {
+	font-family: 'Marcellus', serif;
+	font-size: 14px;
+	font-weight: 600;
+	color: black;
+	margin: 0 0 2px 0;
+}
+
+.solum-tooltip-content p {
+	font-size: 12px;
+	color: var(--color-stone-dark);
+	margin: 0;
+	max-width: 200px;
+}
+
+/* Tile layer — hide missing tiles gracefully */
+.solum-map .leaflet-tile {
+	background-color: var(--color-parchment);
+}
+
+/* Remove default Leaflet popup shadows */
+.solum-map .leaflet-popup-content-wrapper {
+	border-radius: 0 !important;
+	border: 2px solid var(--color-stone) !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.solum-map .leaflet-popup-tip {
+	border-top-color: var(--color-stone) !important;
+}
