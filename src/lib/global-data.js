@@ -6,6 +6,7 @@ export const NAVIGATION_LINKS = [
 	{ href: "/character", name: "CHARACTER MANAGER", icon: "", extended: false },
 	{ href: "/tools", name: "TOOLS", icon: "", extended: false },
 	{ href: "/vorago", name: "VORAGO", icon: "", extended: false },
+	{ href: "/map", name: "MAP", icon: "", extended: false },
 	{ href: "/contact", name: "CONTACT", icon: "", extended: true },
 	{ href: "https://store.atom-magic.com", name: "STORE", icon: "", extended: true}
 ];
