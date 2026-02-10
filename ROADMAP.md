@@ -144,15 +144,13 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 
 ## Testing Infrastructure
 
-Currently no test setup. Adding tests would improve confidence in complex logic.
-
 ### Setup (do first)
-- [ ] **Set up Vitest + React Testing Library** - Configure test runner, add npm scripts, create test utilities
+- [x] **Set up Vitest + React Testing Library** - Configure test runner, add npm scripts, create test utilities
 
 ### High-value test targets
-- [ ] **Vorago game logic tests** - Move validation, coin effects, win conditions, ring rotation
-- [ ] **Character calculation tests** - Shield calculations, score averages, gear bonuses
-- [ ] **Utility function tests** - `random.ts`, `shield.ts`, `score.ts`
+- [x] **Vorago game logic tests** - Move validation, coin effects, win conditions, ring rotation
+- [x] **Character calculation tests** - Shield calculations, score averages, gear bonuses
+- [x] **Utility function tests** - `random.ts`, `shield.ts`, `score.ts`
 
 ### Nice to have
 - [ ] **Component tests** - Key interactive components (CoinSelector, CharacterRoster)
