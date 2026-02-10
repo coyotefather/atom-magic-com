@@ -57,7 +57,7 @@
     "sanity-plugin-markdown": "^8.0.5",
     "seeded-rand": "^4.0.0",
     "serwist": "^9.5.5",
-    "styled-components": "^6.3.8",
+    "styled-components": "^6.3.9",
     "use-debounce": "^10.1.0"
   },
   "devDependencies": {
