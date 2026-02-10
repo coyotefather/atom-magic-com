@@ -2,6 +2,21 @@
 
 .solum-map {
 	background-color: var(--color-parchment);
+	background-image:
+		repeating-linear-gradient(
+			0deg,
+			transparent,
+			transparent 3px,
+			rgba(107, 107, 98, 0.06) 3px,
+			rgba(107, 107, 98, 0.06) 4px
+		),
+		repeating-linear-gradient(
+			8deg,
+			transparent,
+			transparent 7px,
+			rgba(107, 107, 98, 0.04) 7px,
+			rgba(107, 107, 98, 0.04) 8px
+		);
 	border: 2px solid var(--color-stone);
 }
 
@@ -76,9 +91,9 @@
 	max-width: 200px;
 }
 
-/* Tile layer — hide missing tiles gracefully */
+/* Tile layer — transparent so water hatching shows through */
 .solum-map .leaflet-tile {
-	background-color: var(--color-parchment);
+	background-color: transparent;
 }
 
 /* Remove default Leaflet popup shadows */
@@ -90,4 +105,59 @@
 
 .solum-map .leaflet-popup-tip {
 	border-top-color: var(--color-stone) !important;
+}
+
+/* ── Capital city markers ── */
+
+.solum-capital-marker {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	pointer-events: none;
+}
+
+.solum-capital-dot {
+	display: block;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: #231f20;
+	border: 1.5px solid var(--color-parchment);
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+	flex-shrink: 0;
+}
+
+.solum-capital-label {
+	font-family: 'Marcellus', serif;
+	font-size: 11px;
+	color: #231f20;
+	white-space: nowrap;
+	text-shadow:
+		-1px -1px 0 var(--color-parchment),
+		 1px -1px 0 var(--color-parchment),
+		-1px  1px 0 var(--color-parchment),
+		 1px  1px 0 var(--color-parchment),
+		 0    1px 2px rgba(245, 240, 225, 0.8);
+}
+
+/* ── Region name labels ── */
+
+.solum-region-label {
+	pointer-events: none !important;
+}
+
+.solum-region-label span {
+	display: block;
+	font-family: 'Marcellus', serif;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: #231f20;
+	opacity: 0.55;
+	white-space: nowrap;
+	transform: translate(-50%, -50%);
+	text-shadow:
+		-1px -1px 0 var(--color-parchment),
+		 1px -1px 0 var(--color-parchment),
+		-1px  1px 0 var(--color-parchment),
+		 1px  1px 0 var(--color-parchment);
 }

@@ -5,6 +5,8 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
 import RegionOverlay from './RegionOverlay';
+import RegionLabels from './RegionLabels';
+import CapitalMarkers from './CapitalMarkers';
 
 import 'leaflet/dist/leaflet.css';
 import './SolumMap.css';
@@ -60,6 +62,8 @@ const SolumMap = () => {
 				errorTileUrl=""
 			/>
 			<RegionOverlay />
+			<RegionLabels />
+			<CapitalMarkers />
 		</MapContainer>
 	);
 };
