@@ -36,9 +36,11 @@ yarn-error.log*
 next-env.d.ts
 
 # claude code
-/markdown
 CLAUDE.md
 ROADMAP.md
+
+# markdown
+/markdown
 
 # Map tiles (generated from source image)
 public/map/tiles/
