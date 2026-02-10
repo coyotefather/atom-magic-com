@@ -27,14 +27,13 @@ const SolumMap = () => {
 		);
 	}
 
-	// Leaflet CRS.Simple maps [y, x] directly to pixel coordinates.
-	// Bounds define the map extents in [lat, lng] where lat = y, lng = x.
+	// CRS.Simple bounds derived from image pixel dimensions at maxZoom.
+	// Pixel (px, py) at maxZoom → CRS latLng(-py / 2^maxZoom, px / 2^maxZoom).
+	// This ensures tiles and GeoJSON share the same coordinate space.
 	const bounds = L.latLngBounds(
-		L.latLng(0, 0),
-		L.latLng(MAP_CONFIG.IMAGE_HEIGHT, MAP_CONFIG.IMAGE_WIDTH)
+		L.latLng(MAP_CONFIG.BOUNDS_SW[0], MAP_CONFIG.BOUNDS_SW[1]),
+		L.latLng(MAP_CONFIG.BOUNDS_NE[0], MAP_CONFIG.BOUNDS_NE[1])
 	);
-
-	const center = bounds.getCenter();
 
 	return (
 		<MapContainer
@@ -42,7 +41,7 @@ const SolumMap = () => {
 			bounds={bounds}
 			maxBounds={bounds.pad(0.1)}
 			maxBoundsViscosity={1.0}
-			center={center}
+			center={bounds.getCenter()}
 			zoom={MAP_CONFIG.DEFAULT_ZOOM}
 			minZoom={MAP_CONFIG.MIN_ZOOM}
 			maxZoom={MAP_CONFIG.MAX_ZOOM}
@@ -57,6 +56,7 @@ const SolumMap = () => {
 				tileSize={MAP_CONFIG.TILE_SIZE}
 				noWrap={true}
 				bounds={bounds}
+				maxNativeZoom={MAP_CONFIG.MAX_ZOOM}
 				errorTileUrl=""
 			/>
 			<RegionOverlay />
