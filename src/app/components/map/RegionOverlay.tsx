@@ -71,11 +71,17 @@ const RegionOverlay = () => {
 	);
 
 	// Don't render if boundaries are just placeholders (empty coordinates)
-	const hasRealBoundaries = REGION_BOUNDARIES.features.some(
-		(f) =>
-			f.geometry.type === 'Polygon' &&
-			(f.geometry as GeoJSON.Polygon).coordinates[0].length > 0
-	);
+	const hasRealBoundaries = REGION_BOUNDARIES.features.some((f) => {
+		if (f.geometry.type === 'Polygon') {
+			return (f.geometry as GeoJSON.Polygon).coordinates[0].length > 0;
+		}
+		if (f.geometry.type === 'MultiPolygon') {
+			return (f.geometry as GeoJSON.MultiPolygon).coordinates.some(
+				(poly) => poly[0].length > 0
+			);
+		}
+		return false;
+	});
 
 	if (!hasRealBoundaries) return null;
 

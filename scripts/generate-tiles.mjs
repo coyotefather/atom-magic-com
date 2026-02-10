@@ -87,7 +87,7 @@ async function generateTiles() {
 			.extend({
 				right: paddedW - scaledW,
 				bottom: paddedH - scaledH,
-				background: { r: 245, g: 240, b: 225, alpha: 1 },
+				background: { r: 0, g: 0, b: 0, alpha: 0 },
 			})
 			.png()
 			.toBuffer();
@@ -170,33 +170,50 @@ function extractRegions(imgW, imgH) {
 	const scaleY = imgH / svgH / divisor;
 
 	function parseSvgPath(d) {
-		const coords = [];
+		const rings = [];
+		let currentRing = null;
 		const commands = d.match(/[ML][^ML]*/g);
-		if (!commands) return coords;
+		if (!commands) return rings;
 
 		for (const cmd of commands) {
+			const type = cmd[0];
 			const nums = cmd.substring(1).split(/[,\s]+/).map(Number);
+
+			// M (moveto) starts a new ring — this is how SVG encodes
+			// separate subpaths (e.g., islands vs mainland)
+			if (type === 'M') {
+				if (currentRing && currentRing.length >= 3) {
+					rings.push(currentRing);
+				}
+				currentRing = [];
+			}
+
 			for (let i = 0; i < nums.length; i += 2) {
 				const svgX = nums[i];
 				const svgY = nums[i + 1];
 				// GeoJSON: [longitude, latitude]
-				coords.push([
+				currentRing.push([
 					Math.round(svgX * scaleX * 10000) / 10000,
 					Math.round(-svgY * scaleY * 10000) / 10000,
 				]);
 			}
 		}
 
-		// Close polygon if not already closed
-		if (coords.length > 0) {
-			const first = coords[0];
-			const last = coords[coords.length - 1];
+		// Push final ring
+		if (currentRing && currentRing.length >= 3) {
+			rings.push(currentRing);
+		}
+
+		// Close each ring if not already closed
+		for (const ring of rings) {
+			const first = ring[0];
+			const last = ring[ring.length - 1];
 			if (first[0] !== last[0] || first[1] !== last[1]) {
-				coords.push([first[0], first[1]]);
+				ring.push([first[0], first[1]]);
 			}
 		}
 
-		return coords;
+		return rings;
 	}
 
 	// --- Build regions and GeoJSON features ---
@@ -207,8 +224,8 @@ function extractRegions(imgW, imgH) {
 		const pathD = statePaths.get(stateId);
 		if (!pathD) continue;
 
-		const coords = parseSvgPath(pathD);
-		if (coords.length < 4) continue;
+		const rings = parseSvgPath(pathD);
+		if (rings.length === 0) continue;
 
 		const region = {
 			id: 'state-' + stateId,
@@ -218,32 +235,77 @@ function extractRegions(imgW, imgH) {
 		};
 		regions.push(region);
 
+		// 1 ring → Polygon, multiple rings → MultiPolygon
+		const geometry = rings.length === 1
+			? { type: 'Polygon', coordinates: [rings[0]] }
+			: { type: 'MultiPolygon', coordinates: rings.map((r) => [r]) };
+
 		features.push({
 			type: 'Feature',
 			properties: { regionId: region.id },
-			geometry: {
-				type: 'Polygon',
-				coordinates: [coords],
-			},
+			geometry,
 		});
 
-		console.log('  ' + region.id + ': ' + meta.name + ' (' + coords.length + ' vertices)');
+		const totalVerts = rings.reduce((sum, r) => sum + r.length, 0);
+		console.log('  ' + region.id + ': ' + meta.name + ' (' + totalVerts + ' vertices, ' + rings.length + ' ring' + (rings.length > 1 ? 's' : '') + ')');
 	}
 
 	return { regions, geojson: { type: 'FeatureCollection', features }, imgW, imgH };
 }
 
 // ---------------------------------------------------------------------------
-// 3. Write src/lib/map-data.ts
+// 3. Extract capital cities from Azgaar burg data
 // ---------------------------------------------------------------------------
 
-function writeMapData({ regions, geojson, imgW, imgH }) {
+function extractCapitals(imgW, imgH) {
+	console.log('\n=== Capital Extraction ===');
+	const raw = readFileSync(mapPath, 'utf-8');
+	const lines = raw.split(/\r?\n/);
+
+	// SVG dimensions from metadata line 1
+	const metaFields = lines[0].split('|');
+	const svgW = parseInt(metaFields[4], 10);
+	const svgH = parseInt(metaFields[5], 10);
+
+	const divisor = Math.pow(2, maxZoom);
+	const scaleX = imgW / svgW / divisor;
+	const scaleY = imgH / svgH / divisor;
+
+	// Burg data is on line 508 (0-indexed 507)
+	const burgsData = JSON.parse(lines[507]);
+	const capitals = [];
+
+	for (const burg of burgsData) {
+		if (!burg.capital || burg.removed) continue;
+		capitals.push({
+			id: burg.i,
+			name: burg.name,
+			stateId: burg.state,
+			lng: Math.round(burg.x * scaleX * 10000) / 10000,
+			lat: Math.round(-burg.y * scaleY * 10000) / 10000,
+		});
+	}
+
+	console.log('Found ' + capitals.length + ' capital cities');
+	for (const c of capitals) {
+		console.log('  ' + c.name + ' (state ' + c.stateId + ')');
+	}
+
+	return capitals;
+}
+
+// ---------------------------------------------------------------------------
+// 4. Write src/lib/map-data.ts
+// ---------------------------------------------------------------------------
+
+function writeMapData({ regions, geojson, capitals, imgW, imgH }) {
 	const divisor = Math.pow(2, maxZoom);
 	const boundsSwLat = (-imgH / divisor).toFixed(4);
 	const boundsNeLng = (imgW / divisor).toFixed(4);
 
 	const regionsStr = JSON.stringify(regions, null, '\t');
 	const geojsonStr = JSON.stringify(geojson);
+	const capitalsStr = JSON.stringify(capitals, null, '\t');
 
 	const ts = [
 		"import type { FeatureCollection } from 'geojson';",
@@ -254,6 +316,14 @@ function writeMapData({ regions, geojson, imgW, imgH }) {
 		'\tdescription: string;',
 		'\tcodexSlug?: string;',
 		'\tcolor: string;',
+		'}',
+		'',
+		'export interface MapCapital {',
+		'\tid: number;',
+		'\tname: string;',
+		'\tstateId: number;',
+		'\tlat: number;',
+		'\tlng: number;',
 		'}',
 		'',
 		'/**',
@@ -278,6 +348,11 @@ function writeMapData({ regions, geojson, imgW, imgH }) {
 		'export const MAP_REGIONS: MapRegion[] = ' + regionsStr + ';',
 		'',
 		'/**',
+		' * Capital cities extracted from Azgaar burg data.',
+		' */',
+		'export const MAP_CAPITALS: MapCapital[] = ' + capitalsStr + ';',
+		'',
+		'/**',
 		' * GeoJSON FeatureCollection for region boundaries.',
 		' * Generated from Azgaar state boundary SVG paths, scaled to CRS.Simple coordinates.',
 		' */',
@@ -297,7 +372,8 @@ function writeMapData({ regions, geojson, imgW, imgH }) {
 async function main() {
 	const { imgW, imgH } = await generateTiles();
 	const data = extractRegions(imgW, imgH);
-	writeMapData(data);
+	const capitals = extractCapitals(imgW, imgH);
+	writeMapData({ ...data, capitals });
 
 	console.log('\n=== Done! ===');
 	console.log('Next steps:');
