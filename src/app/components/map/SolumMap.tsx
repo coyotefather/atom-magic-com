@@ -1,21 +1,39 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
 import RegionOverlay from './RegionOverlay';
 import RegionLabels from './RegionLabels';
 import CapitalMarkers from './CapitalMarkers';
+import SpotlightMask from './SpotlightMask';
+import MapViewController from './MapViewController';
+import RegionFocusPanel from './RegionFocusPanel';
+import BiomeMarkers from './BiomeMarkers';
 
 import 'leaflet/dist/leaflet.css';
 import './SolumMap.css';
 
+interface FocusedRegion {
+	regionId: string;
+	bounds: L.LatLngBounds;
+}
+
 const SolumMap = () => {
 	const [isMounted, setIsMounted] = useState(false);
+	const [focusedRegion, setFocusedRegion] = useState<FocusedRegion | null>(null);
 
 	useEffect(() => {
 		setIsMounted(true);
+	}, []);
+
+	const handleRegionFocus = useCallback((regionId: string, bounds: L.LatLngBounds) => {
+		setFocusedRegion({ regionId, bounds });
+	}, []);
+
+	const handleCloseFocus = useCallback(() => {
+		setFocusedRegion(null);
 	}, []);
 
 	if (!isMounted) {
@@ -38,33 +56,44 @@ const SolumMap = () => {
 	);
 
 	return (
-		<MapContainer
-			crs={L.CRS.Simple}
-			bounds={bounds}
-			maxBounds={bounds.pad(0.1)}
-			maxBoundsViscosity={1.0}
-			center={bounds.getCenter()}
-			zoom={MAP_CONFIG.DEFAULT_ZOOM}
-			minZoom={MAP_CONFIG.MIN_ZOOM}
-			maxZoom={MAP_CONFIG.MAX_ZOOM}
-			zoomControl={true}
-			scrollWheelZoom={true}
-			attributionControl={false}
-			className="solum-map w-full"
-			style={{ aspectRatio: `${MAP_CONFIG.IMAGE_WIDTH} / ${MAP_CONFIG.IMAGE_HEIGHT}`, maxHeight: '75vh' }}
-		>
-			<TileLayer
-				url="/map/tiles/{z}/{x}/{y}.png"
-				tileSize={MAP_CONFIG.TILE_SIZE}
-				noWrap={true}
+		<div className="relative">
+			<MapContainer
+				crs={L.CRS.Simple}
 				bounds={bounds}
-				maxNativeZoom={MAP_CONFIG.MAX_ZOOM}
-				errorTileUrl=""
-			/>
-			<RegionOverlay />
-			<RegionLabels />
-			<CapitalMarkers />
-		</MapContainer>
+				maxBounds={bounds.pad(0.1)}
+				maxBoundsViscosity={1.0}
+				center={bounds.getCenter()}
+				zoom={MAP_CONFIG.DEFAULT_ZOOM}
+				minZoom={MAP_CONFIG.MIN_ZOOM}
+				maxZoom={MAP_CONFIG.MAX_ZOOM}
+				zoomControl={true}
+				scrollWheelZoom={true}
+				attributionControl={false}
+				className="solum-map w-full"
+				style={{ aspectRatio: `${MAP_CONFIG.IMAGE_WIDTH} / ${MAP_CONFIG.IMAGE_HEIGHT}`, maxHeight: '75vh' }}
+			>
+				<TileLayer
+					url="/map/tiles/{z}/{x}/{y}.png"
+					tileSize={MAP_CONFIG.TILE_SIZE}
+					noWrap={true}
+					bounds={bounds}
+					maxNativeZoom={MAP_CONFIG.MAX_ZOOM}
+					errorTileUrl=""
+				/>
+				<RegionOverlay onRegionFocus={handleRegionFocus} />
+				<RegionLabels />
+				<CapitalMarkers />
+				<BiomeMarkers />
+				{focusedRegion && <SpotlightMask focusedRegionId={focusedRegion.regionId} />}
+				<MapViewController focusedRegion={focusedRegion} onClearFocus={handleCloseFocus} />
+			</MapContainer>
+			{focusedRegion && (
+				<RegionFocusPanel
+					regionId={focusedRegion.regionId}
+					onClose={handleCloseFocus}
+				/>
+			)}
+		</div>
 	);
 };
 
