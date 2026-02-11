@@ -91,6 +91,16 @@
 	max-width: 200px;
 }
 
+/* Remove browser focus outline on region paths; use themed glow instead */
+.solum-map .leaflet-interactive:focus {
+	outline: none;
+}
+
+.solum-map .leaflet-interactive:focus-visible {
+	outline: none;
+	filter: drop-shadow(0 0 6px var(--color-brightgold)) drop-shadow(0 0 2px var(--color-gold));
+}
+
 /* Tile layer — transparent so water hatching shows through */
 .solum-map .leaflet-tile {
 	background-color: transparent;
@@ -177,12 +187,12 @@
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
 	color: #231f20;
-	opacity: 0.55;
 	white-space: nowrap;
 	transform: translate(-50%, -50%);
-	text-shadow:
-		-1px -1px 0 var(--color-parchment),
-		 1px -1px 0 var(--color-parchment),
-		-1px  1px 0 var(--color-parchment),
-		 1px  1px 0 var(--color-parchment);
+	background-color: rgba(245, 240, 225, 0.88);
+	border: 1.5px solid var(--color-stone);
+	border-top-width: 2px;
+	border-bottom-width: 2px;
+	padding: 2px 10px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
