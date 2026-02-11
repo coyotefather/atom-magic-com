@@ -11,6 +11,7 @@ import SpotlightMask from './SpotlightMask';
 import MapViewController from './MapViewController';
 import RegionFocusPanel from './RegionFocusPanel';
 import BiomeMarkers from './BiomeMarkers';
+import OceanContours from './OceanContours';
 
 import 'leaflet/dist/leaflet.css';
 import './SolumMap.css';
@@ -72,6 +73,7 @@ const SolumMap = () => {
 				className="solum-map w-full"
 				style={{ aspectRatio: `${MAP_CONFIG.IMAGE_WIDTH} / ${MAP_CONFIG.IMAGE_HEIGHT}`, maxHeight: '75vh' }}
 			>
+				<OceanContours />
 				<TileLayer
 					url="/map/tiles/{z}/{x}/{y}.png"
 					tileSize={MAP_CONFIG.TILE_SIZE}
