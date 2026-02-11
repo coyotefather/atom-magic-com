@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { GeoJSON, useMap } from 'react-leaflet';
 import { OCEAN_CONTOURS } from '@/lib/map-data';
 import type { Feature } from 'geojson';
@@ -14,6 +14,7 @@ const CONTOUR_STYLES: Record<number, L.PathOptions> = {
 
 const OceanContours = () => {
 	const map = useMap();
+	const [paneReady, setPaneReady] = useState(false);
 
 	// Create contour pane below tile pane (z-index 200) so land tiles mask contours on land
 	useEffect(() => {
@@ -21,9 +22,10 @@ const OceanContours = () => {
 			map.createPane('contourPane');
 			map.getPane('contourPane')!.style.zIndex = '150';
 		}
+		setPaneReady(true);
 	}, [map]);
 
-	if (OCEAN_CONTOURS.features.length === 0) return null;
+	if (!paneReady || OCEAN_CONTOURS.features.length === 0) return null;
 
 	return (
 		<GeoJSON
