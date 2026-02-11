@@ -307,11 +307,15 @@ function extractBiomes() {
 	// Format: colors|heights|names (all comma-separated, pipe-delimited)
 	const biomeParts = lines[3].split('|');
 	const biomeColors = biomeParts[0].split(',');
+	const biomeHeights = biomeParts[1] ? biomeParts[1].split(',').map(Number) : [];
 	const biomeNames = biomeParts[2].split(',');
+	// Normalize heights to 0-100 range
+	const maxHeight = Math.max(1, ...biomeHeights.filter((h) => !isNaN(h)));
 	const biomeLegend = biomeNames.map((name, i) => ({
 		id: i,
 		name: name,
 		color: biomeColors[i] || '#888',
+		height: biomeHeights[i] != null ? Math.round((biomeHeights[i] / maxHeight) * 100) : 0,
 	}));
 	console.log('Biome legend: ' + biomeLegend.length + ' types');
 
@@ -371,10 +375,160 @@ function extractBiomes() {
 }
 
 // ---------------------------------------------------------------------------
-// 5. Write src/lib/map-data.ts
+// 5. Generate ocean bathymetric contour lines
 // ---------------------------------------------------------------------------
 
-function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, imgW, imgH }) {
+function generateOceanContours(geojson) {
+	console.log('\n=== Ocean Contour Generation ===');
+	const OFFSETS = [3, 7, 12, 18]; // CRS units from coastline
+
+	// Compute signed area to determine winding direction
+	function signedArea(ring) {
+		let area = 0;
+		for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+			area += (ring[j][0] - ring[i][0]) * (ring[j][1] + ring[i][1]);
+		}
+		return area / 2;
+	}
+
+	// Line-line intersection of two infinite lines defined by points
+	function lineIntersection(p1, p2, p3, p4) {
+		const d1x = p2[0] - p1[0], d1y = p2[1] - p1[1];
+		const d2x = p4[0] - p3[0], d2y = p4[1] - p3[1];
+		const denom = d1x * d2y - d1y * d2x;
+		if (Math.abs(denom) < 1e-10) return null; // parallel
+		const t = ((p3[0] - p1[0]) * d2y - (p3[1] - p1[1]) * d2x) / denom;
+		return [p1[0] + t * d1x, p1[1] + t * d1y];
+	}
+
+	// Offset a single ring outward by the given distance
+	function offsetRing(ring, distance) {
+		// Remove closing vertex for processing
+		const pts = ring[ring.length - 1][0] === ring[0][0] && ring[ring.length - 1][1] === ring[0][1]
+			? ring.slice(0, -1)
+			: [...ring];
+		const n = pts.length;
+		if (n < 3) return null;
+
+		const area = signedArea(pts);
+		// Flip direction based on winding: we want outward = away from interior
+		const dir = area < 0 ? 1 : -1;
+
+		// Compute offset edge lines
+		const offsetEdges = [];
+		for (let i = 0; i < n; i++) {
+			const j = (i + 1) % n;
+			const dx = pts[j][0] - pts[i][0];
+			const dy = pts[j][1] - pts[i][1];
+			const len = Math.sqrt(dx * dx + dy * dy);
+			if (len < 1e-10) continue;
+			// Normal pointing outward
+			const nx = dir * dy / len;
+			const ny = dir * -dx / len;
+			offsetEdges.push({
+				p1: [pts[i][0] + distance * nx, pts[i][1] + distance * ny],
+				p2: [pts[j][0] + distance * nx, pts[j][1] + distance * ny],
+			});
+		}
+
+		if (offsetEdges.length < 3) return null;
+
+		// Find intersection of consecutive offset edges
+		const result = [];
+		for (let i = 0; i < offsetEdges.length; i++) {
+			const j = (i + 1) % offsetEdges.length;
+			const inter = lineIntersection(
+				offsetEdges[i].p1, offsetEdges[i].p2,
+				offsetEdges[j].p1, offsetEdges[j].p2
+			);
+
+			if (inter) {
+				// Miter limit: if the intersection is too far from both edge endpoints,
+				// it means a sharp concave spike — use bevel instead
+				const midX = (offsetEdges[i].p2[0] + offsetEdges[j].p1[0]) / 2;
+				const midY = (offsetEdges[i].p2[1] + offsetEdges[j].p1[1]) / 2;
+				const distSq = (inter[0] - midX) ** 2 + (inter[1] - midY) ** 2;
+				if (distSq > (distance * 3) ** 2) {
+					// Bevel: insert both edge endpoints instead of the miter point
+					result.push([
+						Math.round(offsetEdges[i].p2[0] * 100) / 100,
+						Math.round(offsetEdges[i].p2[1] * 100) / 100,
+					]);
+					result.push([
+						Math.round(offsetEdges[j].p1[0] * 100) / 100,
+						Math.round(offsetEdges[j].p1[1] * 100) / 100,
+					]);
+				} else {
+					result.push([
+						Math.round(inter[0] * 100) / 100,
+						Math.round(inter[1] * 100) / 100,
+					]);
+				}
+			} else {
+				// Parallel edges — use midpoint of endpoints
+				result.push([
+					Math.round(offsetEdges[i].p2[0] * 100) / 100,
+					Math.round(offsetEdges[i].p2[1] * 100) / 100,
+				]);
+			}
+		}
+
+		if (result.length < 3) return null;
+
+		// Close the ring
+		result.push([result[0][0], result[0][1]]);
+		return result;
+	}
+
+	// Build contour features: one MultiLineString per depth level
+	const features = [];
+
+	for (let depth = 0; depth < OFFSETS.length; depth++) {
+		const distance = OFFSETS[depth];
+		const lines = [];
+
+		for (const feature of geojson.features) {
+			let rings;
+			if (feature.geometry.type === 'Polygon') {
+				rings = [feature.geometry.coordinates[0]];
+			} else if (feature.geometry.type === 'MultiPolygon') {
+				rings = feature.geometry.coordinates.map((p) => p[0]);
+			} else {
+				continue;
+			}
+
+			for (const ring of rings) {
+				if (ring.length < 4) continue; // need at least 3 unique points + closing
+				const offset = offsetRing(ring, distance);
+				if (offset && offset.length >= 4) {
+					lines.push(offset);
+				}
+			}
+		}
+
+		if (lines.length > 0) {
+			features.push({
+				type: 'Feature',
+				properties: { depth: depth + 1 },
+				geometry: {
+					type: 'MultiLineString',
+					coordinates: lines,
+				},
+			});
+			const totalVerts = lines.reduce((sum, l) => sum + l.length, 0);
+			console.log('  Depth ' + (depth + 1) + ' (offset ' + distance + '): ' + lines.length + ' contours, ' + totalVerts + ' vertices');
+		}
+	}
+
+	console.log('Generated ' + features.length + ' contour depth levels');
+	return { type: 'FeatureCollection', features };
+}
+
+// ---------------------------------------------------------------------------
+// 6. Write src/lib/map-data.ts
+// ---------------------------------------------------------------------------
+
+function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, oceanContours, imgW, imgH }) {
 	const divisor = Math.pow(2, maxZoom);
 	const boundsSwLat = (-imgH / divisor).toFixed(4);
 	const boundsNeLng = (imgW / divisor).toFixed(4);
@@ -384,6 +538,7 @@ function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, i
 	const capitalsStr = JSON.stringify(capitals, null, '\t');
 	const biomeLegendStr = JSON.stringify(biomeLegend, null, '\t');
 	const regionBiomesStr = JSON.stringify(regionBiomes, null, '\t');
+	const oceanContoursStr = JSON.stringify(oceanContours);
 
 	const ts = [
 		"import type { FeatureCollection } from 'geojson';",
@@ -408,6 +563,7 @@ function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, i
 		'\tid: number;',
 		'\tname: string;',
 		'\tcolor: string;',
+		'\theight: number;',
 		'}',
 		'',
 		'export interface RegionBiomeBreakdown {',
@@ -458,6 +614,12 @@ function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, i
 		' */',
 		'export const REGION_BOUNDARIES: FeatureCollection = ' + geojsonStr + ';',
 		'',
+		'/**',
+		' * Ocean bathymetric contour lines — concentric rings radiating from coastlines.',
+		' * Each feature is a MultiLineString at a given depth level (1 = closest to shore).',
+		' */',
+		'export const OCEAN_CONTOURS: FeatureCollection = ' + oceanContoursStr + ';',
+		'',
 	].join('\n');
 
 	const outPath = resolve('src/lib/map-data.ts');
@@ -474,7 +636,8 @@ async function main() {
 	const data = extractRegions(imgW, imgH);
 	const capitals = extractCapitals(imgW, imgH);
 	const { biomeLegend, regionBiomes } = extractBiomes();
-	writeMapData({ ...data, capitals, biomeLegend, regionBiomes });
+	const oceanContours = generateOceanContours(data.geojson);
+	writeMapData({ ...data, capitals, biomeLegend, regionBiomes, oceanContours });
 
 	console.log('\n=== Done! ===');
 	console.log('Next steps:');
