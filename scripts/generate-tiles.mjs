@@ -295,10 +295,86 @@ function extractCapitals(imgW, imgH) {
 }
 
 // ---------------------------------------------------------------------------
-// 4. Write src/lib/map-data.ts
+// 4. Extract biome data from Azgaar pack cells
 // ---------------------------------------------------------------------------
 
-function writeMapData({ regions, geojson, capitals, imgW, imgH }) {
+function extractBiomes() {
+	console.log('\n=== Biome Extraction ===');
+	const raw = readFileSync(mapPath, 'utf-8');
+	const lines = raw.split(/\r?\n/);
+
+	// --- Biome legend from line 4 (0-indexed 3) ---
+	// Format: colors|heights|names (all comma-separated, pipe-delimited)
+	const biomeParts = lines[3].split('|');
+	const biomeColors = biomeParts[0].split(',');
+	const biomeNames = biomeParts[2].split(',');
+	const biomeLegend = biomeNames.map((name, i) => ({
+		id: i,
+		name: name,
+		color: biomeColors[i] || '#888',
+	}));
+	console.log('Biome legend: ' + biomeLegend.length + ' types');
+
+	// --- Pack cell arrays ---
+	// Line 509 (0-indexed 508): biome ID per pack cell
+	// Line 518 (0-indexed 517): state ID per pack cell
+	const cellBiomes = lines[508].split(',').map(Number);
+	const cellStates = lines[517].split(',').map(Number);
+
+	if (cellBiomes.length !== cellStates.length) {
+		console.warn('Warning: biome array (' + cellBiomes.length + ') and state array (' + cellStates.length + ') lengths differ');
+	}
+
+	const count = Math.min(cellBiomes.length, cellStates.length);
+	console.log('Pack cells: ' + count);
+
+	// --- Cross-reference to get biome distribution per state ---
+	const stateBiomeCounts = new Map(); // stateId → Map<biomeId, count>
+
+	for (let i = 0; i < count; i++) {
+		const stateId = cellStates[i];
+		const biomeId = cellBiomes[i];
+		if (stateId === 0) continue; // skip neutral/unassigned
+
+		if (!stateBiomeCounts.has(stateId)) {
+			stateBiomeCounts.set(stateId, new Map());
+		}
+		const biomeMap = stateBiomeCounts.get(stateId);
+		biomeMap.set(biomeId, (biomeMap.get(biomeId) || 0) + 1);
+	}
+
+	// --- Convert to percentages, keep top 5, drop < 2% ---
+	const regionBiomes = [];
+
+	for (const [stateId, biomeMap] of stateBiomeCounts) {
+		const total = [...biomeMap.values()].reduce((a, b) => a + b, 0);
+		const biomes = [...biomeMap.entries()]
+			.map(([biomeId, cnt]) => ({
+				biomeId,
+				percentage: Math.round((cnt / total) * 100),
+			}))
+			.filter((b) => b.percentage >= 2)
+			.sort((a, b) => b.percentage - a.percentage)
+			.slice(0, 5);
+
+		regionBiomes.push({
+			regionId: 'state-' + stateId,
+			biomes,
+			dominantBiome: biomes[0]?.biomeId ?? 0,
+		});
+
+		const dominant = biomeLegend[biomes[0]?.biomeId]?.name ?? 'unknown';
+		console.log('  state-' + stateId + ': ' + dominant + ' (' + biomes[0]?.percentage + '%) + ' + (biomes.length - 1) + ' others');
+	}
+
+	return { biomeLegend, regionBiomes };
+}
+
+// ---------------------------------------------------------------------------
+// 5. Write src/lib/map-data.ts
+// ---------------------------------------------------------------------------
+
+function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, imgW, imgH }) {
 	const divisor = Math.pow(2, maxZoom);
 	const boundsSwLat = (-imgH / divisor).toFixed(4);
 	const boundsNeLng = (imgW / divisor).toFixed(4);
@@ -306,6 +382,8 @@ function writeMapData({ regions, geojson, capitals, imgW, imgH }) {
 	const regionsStr = JSON.stringify(regions, null, '\t');
 	const geojsonStr = JSON.stringify(geojson);
 	const capitalsStr = JSON.stringify(capitals, null, '\t');
+	const biomeLegendStr = JSON.stringify(biomeLegend, null, '\t');
+	const regionBiomesStr = JSON.stringify(regionBiomes, null, '\t');
 
 	const ts = [
 		"import type { FeatureCollection } from 'geojson';",
@@ -324,6 +402,18 @@ function writeMapData({ regions, geojson, capitals, imgW, imgH }) {
 		'\tstateId: number;',
 		'\tlat: number;',
 		'\tlng: number;',
+		'}',
+		'',
+		'export interface BiomeInfo {',
+		'\tid: number;',
+		'\tname: string;',
+		'\tcolor: string;',
+		'}',
+		'',
+		'export interface RegionBiomeBreakdown {',
+		'\tregionId: string;',
+		'\tbiomes: { biomeId: number; percentage: number }[];',
+		'\tdominantBiome: number;',
 		'}',
 		'',
 		'/**',
@@ -353,6 +443,16 @@ function writeMapData({ regions, geojson, capitals, imgW, imgH }) {
 		'export const MAP_CAPITALS: MapCapital[] = ' + capitalsStr + ';',
 		'',
 		'/**',
+		' * Biome type legend — maps biome IDs to names and colors.',
+		' */',
+		'export const BIOME_LEGEND: BiomeInfo[] = ' + biomeLegendStr + ';',
+		'',
+		'/**',
+		' * Biome distribution per region — top biomes by percentage.',
+		' */',
+		'export const REGION_BIOMES: RegionBiomeBreakdown[] = ' + regionBiomesStr + ';',
+		'',
+		'/**',
 		' * GeoJSON FeatureCollection for region boundaries.',
 		' * Generated from Azgaar state boundary SVG paths, scaled to CRS.Simple coordinates.',
 		' */',
@@ -373,7 +473,8 @@ async function main() {
 	const { imgW, imgH } = await generateTiles();
 	const data = extractRegions(imgW, imgH);
 	const capitals = extractCapitals(imgW, imgH);
-	writeMapData({ ...data, capitals });
+	const { biomeLegend, regionBiomes } = extractBiomes();
+	writeMapData({ ...data, capitals, biomeLegend, regionBiomes });
 
 	console.log('\n=== Done! ===');
 	console.log('Next steps:');

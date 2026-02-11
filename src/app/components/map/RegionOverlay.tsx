@@ -1,7 +1,7 @@
 'use client';
 
 import { GeoJSON } from 'react-leaflet';
-import { useRouter } from 'next/navigation';
+import L from 'leaflet';
 import { MAP_REGIONS, REGION_BOUNDARIES } from '@/lib/map-data';
 import type { Layer, LeafletMouseEvent } from 'leaflet';
 import type { Feature } from 'geojson';
@@ -9,9 +9,11 @@ import { useCallback } from 'react';
 
 const regionMap = new Map(MAP_REGIONS.map((r) => [r.id, r]));
 
-const RegionOverlay = () => {
-	const router = useRouter();
+interface RegionOverlayProps {
+	onRegionFocus: (regionId: string, bounds: L.LatLngBounds) => void;
+}
 
+const RegionOverlay = ({ onRegionFocus }: RegionOverlayProps) => {
 	const style = useCallback((feature: Feature | undefined) => {
 		const region = feature?.properties?.regionId
 			? regionMap.get(feature.properties.regionId)
@@ -61,13 +63,12 @@ const RegionOverlay = () => {
 					});
 				},
 				click: () => {
-					if (region.codexSlug) {
-						router.push(`/codex/entries/${region.codexSlug}`);
-					}
+					const bounds = L.geoJSON(feature).getBounds();
+					onRegionFocus(region.id, bounds);
 				},
 			});
 		},
-		[router]
+		[onRegionFocus]
 	);
 
 	// Don't render if boundaries are just placeholders (empty coordinates)
