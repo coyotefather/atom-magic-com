@@ -293,12 +293,13 @@ function extractRegions(mapData, imgW, imgH) {
 	function parseSvgPath(d) {
 		const rings = [];
 		let currentRing = null;
-		const commands = d.match(/[ML][^ML]*/g);
+		// Strip Z (close path) commands — ring closing is handled below
+		const commands = d.replace(/Z/gi, '').match(/[ML][^ML]*/g);
 		if (!commands) return rings;
 
 		for (const cmd of commands) {
 			const type = cmd[0];
-			const nums = cmd.substring(1).split(/[,\s]+/).map(Number);
+			const nums = cmd.substring(1).trim().split(/[,\s]+/).filter(Boolean).map(Number);
 
 			// M (moveto) starts a new ring — this is how SVG encodes
 			// separate subpaths (e.g., islands vs mainland)
