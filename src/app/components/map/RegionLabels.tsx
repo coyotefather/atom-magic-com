@@ -83,7 +83,11 @@ function makeIcon(name: string, fontSize: number) {
 	});
 }
 
-const RegionLabels = () => {
+interface RegionLabelsProps {
+	focusedRegionId?: string | null;
+}
+
+const RegionLabels = ({ focusedRegionId }: RegionLabelsProps) => {
 	const map = useMap();
 	const [zoom, setZoom] = useState(map.getZoom());
 
@@ -98,10 +102,13 @@ const RegionLabels = () => {
 	if (zoom < MIN_ZOOM || labels.length === 0) return null;
 
 	const fontSize = ZOOM_FONT_SIZE[zoom] ?? 16;
+	const visibleLabels = focusedRegionId
+		? labels.filter((l) => l.regionId === focusedRegionId)
+		: labels;
 
 	return (
 		<>
-			{labels.map((label) => (
+			{visibleLabels.map((label) => (
 				<Marker
 					key={label.regionId}
 					position={label.position}
