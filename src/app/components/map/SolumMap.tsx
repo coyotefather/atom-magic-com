@@ -11,6 +11,7 @@ import SpotlightMask from './SpotlightMask';
 import MapViewController from './MapViewController';
 import RegionFocusPanel from './RegionFocusPanel';
 import OceanContours from './OceanContours';
+import LakesLayer from './LakesLayer';
 import ReliefLayer from './ReliefLayer';
 import RiversLayer from './RiversLayer';
 
@@ -81,6 +82,7 @@ const SolumMap = () => {
 			>
 				<ZoomConstraint />
 				<OceanContours />
+				<LakesLayer />
 				<ReliefLayer />
 				<RegionOverlay onRegionFocus={handleRegionFocus} />
 				<RiversLayer />

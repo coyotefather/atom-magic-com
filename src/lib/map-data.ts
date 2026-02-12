@@ -38,7 +38,7 @@ export const MAP_CONFIG = {
 	SVG_HEIGHT: 755,
 	MIN_ZOOM: 0,
 	MAX_ZOOM: 5,
-	DEFAULT_ZOOM: 2,
+	DEFAULT_ZOOM: 3,
 	BOUNDS_SW: [-23.5938, 0] as [number, number],
 	BOUNDS_NE: [0, 44.9375] as [number, number],
 };
