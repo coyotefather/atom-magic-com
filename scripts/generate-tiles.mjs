@@ -117,23 +117,131 @@ async function generateTiles() {
 }
 
 // ---------------------------------------------------------------------------
-// 2. Extract state boundaries and metadata from Azgaar .map file
+// 2. Parse Azgaar .map file — find sections by pattern matching
 // ---------------------------------------------------------------------------
 
-function extractRegions(imgW, imgH) {
-	console.log('=== Region Extraction ===');
+/**
+ * Reads the .map file once and locates all data sections by content patterns
+ * rather than hardcoded line numbers, making it resilient to format changes.
+ */
+function parseMapFile() {
 	const raw = readFileSync(mapPath, 'utf-8');
 	const lines = raw.split(/\r?\n/);
 
-	// --- SVG dimensions (from metadata line 1, fields 4 and 5) ---
+	// --- SVG dimensions (always line 1, pipe-delimited metadata) ---
 	const metaFields = lines[0].split('|');
 	const svgW = parseInt(metaFields[4], 10);
 	const svgH = parseInt(metaFields[5], 10);
+
+	// --- Biome legend: pipe-delimited line containing biome names like "Marine" ---
+	let biomeLegendLine = null;
+	for (let i = 1; i < Math.min(lines.length, 20); i++) {
+		if (/Marine.*Savanna.*Grassland/i.test(lines[i])) {
+			biomeLegendLine = i;
+			break;
+		}
+	}
+	if (biomeLegendLine === null) throw new Error('Could not find biome legend line');
+
+	// --- SVG line: contains <g id="viewbox" ---
+	let svgLineIdx = null;
+	for (let i = 0; i < lines.length; i++) {
+		if (lines[i].includes('<g id="viewbox"')) {
+			svgLineIdx = i;
+			break;
+		}
+	}
+	if (svgLineIdx === null) throw new Error('Could not find SVG viewbox line');
+
+	// --- States JSON: array entries with "diplomacy" field ---
+	let statesLineIdx = null;
+	for (let i = 0; i < lines.length; i++) {
+		if (/^\[.*"diplomacy"/.test(lines[i])) {
+			statesLineIdx = i;
+			break;
+		}
+	}
+	if (statesLineIdx === null) throw new Error('Could not find states JSON line');
+
+	// --- Burgs JSON: array starting with {} followed by entries with "capital" and "x" ---
+	let burgsLineIdx = null;
+	for (let i = 0; i < lines.length; i++) {
+		if (/^\[\{\},\{.*"capital".*"x"/.test(lines[i])) {
+			burgsLineIdx = i;
+			break;
+		}
+	}
+	if (burgsLineIdx === null) throw new Error('Could not find burgs JSON line');
+
+	// --- Cell data arrays: comma-separated numbers after burgs line ---
+	// Biome array: values in range 0..~12 (biome IDs)
+	// State array: values matching state IDs (max = stateCount - 1)
+	const statesData = JSON.parse(lines[statesLineIdx]);
+	const stateCount = statesData.length;
+
+	let cellBiomesIdx = null;
+	let cellStatesIdx = null;
+
+	for (let i = burgsLineIdx + 1; i < lines.length; i++) {
+		const line = lines[i].trim();
+		if (!line || !line.match(/^\d/)) continue;
+		if (!line.includes(',')) continue;
+
+		const values = line.split(',').map(Number);
+		if (values.some(isNaN)) continue;
+
+		const maxVal = Math.max(...values);
+
+		// Biome array: first numeric array, max value < 20 (biome IDs are typically 0-12)
+		if (cellBiomesIdx === null && maxVal <= 20 && maxVal >= 2) {
+			cellBiomesIdx = i;
+			continue;
+		}
+
+		// State array: max value matches stateCount - 1
+		if (cellStatesIdx === null && maxVal === stateCount - 1) {
+			cellStatesIdx = i;
+			break;
+		}
+	}
+
+	if (cellBiomesIdx === null) throw new Error('Could not find cell biomes array');
+	if (cellStatesIdx === null) throw new Error('Could not find cell states array');
+
+	console.log('=== Map File Structure ===');
+	console.log('  Biome legend:  line ' + (biomeLegendLine + 1));
+	console.log('  SVG viewbox:   line ' + (svgLineIdx + 1));
+	console.log('  States JSON:   line ' + (statesLineIdx + 1));
+	console.log('  Burgs JSON:    line ' + (burgsLineIdx + 1));
+	console.log('  Cell biomes:   line ' + (cellBiomesIdx + 1));
+	console.log('  Cell states:   line ' + (cellStatesIdx + 1));
+	console.log('');
+
+	return {
+		lines,
+		svgW,
+		svgH,
+		biomeLegendLine,
+		svgLineIdx,
+		statesLineIdx,
+		burgsLineIdx,
+		cellBiomesIdx,
+		cellStatesIdx,
+	};
+}
+
+// ---------------------------------------------------------------------------
+// 3. Extract state boundaries and metadata
+// ---------------------------------------------------------------------------
+
+function extractRegions(mapData, imgW, imgH) {
+	console.log('=== Region Extraction ===');
+	const { lines, svgW, svgH, svgLineIdx, statesLineIdx } = mapData;
 	console.log('SVG graph: ' + svgW + 'x' + svgH);
 	console.log('PNG image: ' + imgW + 'x' + imgH);
 
-	// --- State metadata (JSON array on line 507, 0-indexed 506) ---
-	const statesData = JSON.parse(lines[506]);
+	// --- State metadata ---
+	const statesData = JSON.parse(lines[statesLineIdx]);
 	const stateMap = new Map();
 	for (const s of statesData) {
 		if (s.cells > 0) {
@@ -142,13 +250,26 @@ function extractRegions(imgW, imgH) {
 	}
 	console.log('Found ' + stateMap.size + ' active states');
 
-	// --- SVG path data for each state (embedded in SVG line) ---
-	const svgLine = lines[494];
-	const pathRegex = /id="state(\d+)"[^>]*d="([^"]+)"/g;
-	let match;
+	// --- SVG path data for each state ---
+	// Extract <path> elements with id="stateN" and d="..." (handles any attribute order)
+	const svgLine = lines[svgLineIdx];
 	const statePaths = new Map();
-	while ((match = pathRegex.exec(svgLine)) !== null) {
-		statePaths.set(parseInt(match[1], 10), match[2]);
+	const pathTagRegex = /<path\s[^>]*?id="state(\d+)"[^>]*>/g;
+	let match;
+	while ((match = pathTagRegex.exec(svgLine)) !== null) {
+		const stateId = parseInt(match[1], 10);
+		const tag = match[0];
+		const dMatch = tag.match(/\sd="([^"]+)"/);
+		if (dMatch) {
+			statePaths.set(stateId, dMatch[1]);
+		}
+	}
+	// Also try reversed order: d="..." before id="stateN"
+	if (statePaths.size === 0) {
+		const reversedRegex = /<path\s[^>]*?d="([^"]+)"[^>]*?id="state(\d+)"[^>]*>/g;
+		while ((match = reversedRegex.exec(svgLine)) !== null) {
+			statePaths.set(parseInt(match[2], 10), match[1]);
+		}
 	}
 	console.log('Found ' + statePaths.size + ' state boundary paths\n');
 
@@ -254,25 +375,18 @@ function extractRegions(imgW, imgH) {
 }
 
 // ---------------------------------------------------------------------------
-// 3. Extract capital cities from Azgaar burg data
+// 4. Extract capital cities from Azgaar burg data
 // ---------------------------------------------------------------------------
 
-function extractCapitals(imgW, imgH) {
+function extractCapitals(mapData, imgW, imgH) {
 	console.log('\n=== Capital Extraction ===');
-	const raw = readFileSync(mapPath, 'utf-8');
-	const lines = raw.split(/\r?\n/);
-
-	// SVG dimensions from metadata line 1
-	const metaFields = lines[0].split('|');
-	const svgW = parseInt(metaFields[4], 10);
-	const svgH = parseInt(metaFields[5], 10);
+	const { lines, svgW, svgH, burgsLineIdx } = mapData;
 
 	const divisor = Math.pow(2, maxZoom);
 	const scaleX = imgW / svgW / divisor;
 	const scaleY = imgH / svgH / divisor;
 
-	// Burg data is on line 508 (0-indexed 507)
-	const burgsData = JSON.parse(lines[507]);
+	const burgsData = JSON.parse(lines[burgsLineIdx]);
 	const capitals = [];
 
 	for (const burg of burgsData) {
@@ -295,17 +409,16 @@ function extractCapitals(imgW, imgH) {
 }
 
 // ---------------------------------------------------------------------------
-// 4. Extract biome data from Azgaar pack cells
+// 5. Extract biome data from Azgaar pack cells
 // ---------------------------------------------------------------------------
 
-function extractBiomes() {
+function extractBiomes(mapData) {
 	console.log('\n=== Biome Extraction ===');
-	const raw = readFileSync(mapPath, 'utf-8');
-	const lines = raw.split(/\r?\n/);
+	const { lines, biomeLegendLine, cellBiomesIdx, cellStatesIdx } = mapData;
 
-	// --- Biome legend from line 4 (0-indexed 3) ---
+	// --- Biome legend ---
 	// Format: colors|heights|names (all comma-separated, pipe-delimited)
-	const biomeParts = lines[3].split('|');
+	const biomeParts = lines[biomeLegendLine].split('|');
 	const biomeColors = biomeParts[0].split(',');
 	const biomeHeights = biomeParts[1] ? biomeParts[1].split(',').map(Number) : [];
 	const biomeNames = biomeParts[2].split(',');
@@ -320,10 +433,8 @@ function extractBiomes() {
 	console.log('Biome legend: ' + biomeLegend.length + ' types');
 
 	// --- Pack cell arrays ---
-	// Line 509 (0-indexed 508): biome ID per pack cell
-	// Line 518 (0-indexed 517): state ID per pack cell
-	const cellBiomes = lines[508].split(',').map(Number);
-	const cellStates = lines[517].split(',').map(Number);
+	const cellBiomes = lines[cellBiomesIdx].split(',').map(Number);
+	const cellStates = lines[cellStatesIdx].split(',').map(Number);
 
 	if (cellBiomes.length !== cellStates.length) {
 		console.warn('Warning: biome array (' + cellBiomes.length + ') and state array (' + cellStates.length + ') lengths differ');
@@ -375,7 +486,7 @@ function extractBiomes() {
 }
 
 // ---------------------------------------------------------------------------
-// 5. Generate ocean bathymetric contour lines
+// 6. Generate ocean bathymetric contour lines
 // ---------------------------------------------------------------------------
 
 function generateOceanContours(geojson) {
@@ -525,7 +636,7 @@ function generateOceanContours(geojson) {
 }
 
 // ---------------------------------------------------------------------------
-// 6. Write src/lib/map-data.ts
+// 7. Write src/lib/map-data.ts
 // ---------------------------------------------------------------------------
 
 function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, oceanContours, imgW, imgH }) {
@@ -633,9 +744,10 @@ function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, o
 
 async function main() {
 	const { imgW, imgH } = await generateTiles();
-	const data = extractRegions(imgW, imgH);
-	const capitals = extractCapitals(imgW, imgH);
-	const { biomeLegend, regionBiomes } = extractBiomes();
+	const mapData = parseMapFile();
+	const data = extractRegions(mapData, imgW, imgH);
+	const capitals = extractCapitals(mapData, imgW, imgH);
+	const { biomeLegend, regionBiomes } = extractBiomes(mapData);
 	const oceanContours = generateOceanContours(data.geojson);
 	writeMapData({ ...data, capitals, biomeLegend, regionBiomes, oceanContours });
 
