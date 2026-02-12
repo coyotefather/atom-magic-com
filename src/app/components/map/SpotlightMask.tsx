@@ -21,7 +21,7 @@ const SpotlightMask = ({ focusedRegionId }: SpotlightMaskProps) => {
 		// Outer ring: covers entire map bounds with padding
 		const sw = MAP_CONFIG.BOUNDS_SW;
 		const ne = MAP_CONFIG.BOUNDS_NE;
-		const pad = 50;
+		const pad = 5;
 		const outerRing: L.LatLngExpression[] = [
 			[sw[0] - pad, sw[1] - pad],
 			[sw[0] - pad, ne[1] + pad],

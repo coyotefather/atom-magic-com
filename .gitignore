@@ -45,8 +45,6 @@ ROADMAP.md
 # map stuff
 /mapfiles
 
-# Map tiles (generated from source image)
-# public/map/tiles/
 
 # PWA
 public/sw.js
