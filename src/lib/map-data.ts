@@ -59,7 +59,8 @@ export const MAP_REGIONS: MapRegion[] = [
 		"id": "state-2",
 		"name": "Austellus",
 		"description": "",
-		"color": "#ebca3d"
+		"color": "#ebca3d",
+		"codexSlug": "austellus"
 	},
 	{
 		"id": "state-3",
