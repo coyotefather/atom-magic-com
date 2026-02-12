@@ -42,6 +42,9 @@ ROADMAP.md
 # markdown
 /markdown
 
+# map stuff
+/mapfiles
+
 # Map tiles (generated from source image)
 public/map/tiles/
 
