@@ -1,7 +1,8 @@
 /* Leaflet overrides for Atom Magic classical theme */
 
 .solum-map {
-	background-color: var(--color-parchment);
+	/* Pale blue-tinted parchment for ocean — faded, watercolor-stained feel */
+	background-color: #e8ebf0;
 	background-image:
 		repeating-linear-gradient(
 			0deg,

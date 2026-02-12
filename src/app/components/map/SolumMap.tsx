@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { MapContainer } from 'react-leaflet';
+import { MapContainer, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
 import RegionOverlay from './RegionOverlay';
@@ -11,6 +11,7 @@ import SpotlightMask from './SpotlightMask';
 import MapViewController from './MapViewController';
 import RegionFocusPanel from './RegionFocusPanel';
 import OceanContours from './OceanContours';
+import LakesLayer from './LakesLayer';
 import ReliefLayer from './ReliefLayer';
 import RiversLayer from './RiversLayer';
 
@@ -21,6 +22,22 @@ interface FocusedRegion {
 	regionId: string;
 	bounds: L.LatLngBounds;
 }
+
+const mapBounds = L.latLngBounds(
+	L.latLng(MAP_CONFIG.BOUNDS_SW[0], MAP_CONFIG.BOUNDS_SW[1]),
+	L.latLng(MAP_CONFIG.BOUNDS_NE[0], MAP_CONFIG.BOUNDS_NE[1])
+);
+
+/** Sets minZoom to the level that snugly fits the full map in the viewport. */
+const ZoomConstraint = () => {
+	const map = useMap();
+	useEffect(() => {
+		const fitZoom = map.getBoundsZoom(mapBounds);
+		map.setMinZoom(fitZoom);
+		map.fitBounds(mapBounds);
+	}, [map]);
+	return null;
+};
 
 const SolumMap = () => {
 	const [isMounted, setIsMounted] = useState(false);
@@ -49,31 +66,23 @@ const SolumMap = () => {
 		);
 	}
 
-	// CRS.Simple bounds derived from SVG dimensions at maxZoom.
-	// SVG (svgX, svgY) → CRS latLng(-svgY / 2^maxZoom, svgX / 2^maxZoom).
-	const bounds = L.latLngBounds(
-		L.latLng(MAP_CONFIG.BOUNDS_SW[0], MAP_CONFIG.BOUNDS_SW[1]),
-		L.latLng(MAP_CONFIG.BOUNDS_NE[0], MAP_CONFIG.BOUNDS_NE[1])
-	);
-
 	return (
 		<div className="relative">
 			<MapContainer
 				crs={L.CRS.Simple}
-				bounds={bounds}
-				maxBounds={bounds.pad(0.1)}
+				bounds={mapBounds}
+				maxBounds={mapBounds.pad(0.1)}
 				maxBoundsViscosity={1.0}
-				center={bounds.getCenter()}
-				zoom={MAP_CONFIG.DEFAULT_ZOOM}
-				minZoom={MAP_CONFIG.MIN_ZOOM}
-				maxZoom={MAP_CONFIG.MAX_ZOOM}
+				maxZoom={7}
 				zoomControl={true}
 				scrollWheelZoom={true}
 				attributionControl={false}
 				className="solum-map w-full"
 				style={{ aspectRatio: `${MAP_CONFIG.SVG_WIDTH} / ${MAP_CONFIG.SVG_HEIGHT}`, maxHeight: '75vh' }}
 			>
+				<ZoomConstraint />
 				<OceanContours />
+				<LakesLayer />
 				<ReliefLayer />
 				<RegionOverlay onRegionFocus={handleRegionFocus} />
 				<RiversLayer />
