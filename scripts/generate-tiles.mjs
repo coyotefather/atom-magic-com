@@ -3,20 +3,17 @@
 /**
  * Solum Map Builder
  *
- * Reads an Azgaar Fantasy Map Generator .map save file and a high-res PNG export,
- * then generates:
- *   1. A tile pyramid (/{z}/{x}/{y}.png) for Leaflet
- *   2. A map-data.ts file with region boundaries and configuration
+ * Reads an Azgaar Fantasy Map Generator .map save file and generates:
+ *   1. src/lib/map-data.ts   — region boundaries, capitals, biomes, ocean contours, config
+ *   2. src/lib/relief-data.ts — relief symbol definitions + 6,680 placements
+ *   3. src/lib/river-data.ts  — river SVG path data
  *
  * Usage:
- *   node scripts/generate-tiles.mjs <map.png> <save.map> [--max-zoom 5] [--output public/map/tiles]
- *
- * The PNG and .map file should be exports from the same Azgaar map.
+ *   node scripts/generate-tiles.mjs <save.map> [--max-zoom 5]
  */
 
-import { existsSync, mkdirSync, rmSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import sharp from 'sharp';
 
 // ---------------------------------------------------------------------------
 // Argument parsing
@@ -24,100 +21,27 @@ import sharp from 'sharp';
 
 const args = process.argv.slice(2);
 const positional = args.filter((a) => !a.startsWith('--'));
-const pngPath = positional[0] ? resolve(positional[0]) : null;
-const mapPath = positional[1] ? resolve(positional[1]) : null;
+const mapPath = positional[0] ? resolve(positional[0]) : null;
 
 function getArg(name, fallback) {
 	const i = args.indexOf(name);
 	return i >= 0 && args[i + 1] ? args[i + 1] : fallback;
 }
 
-const outputDir = resolve(getArg('--output', 'public/map/tiles'));
-const tileSize = 256;
 const maxZoom = parseInt(getArg('--max-zoom', '5'), 10);
 
-if (!pngPath || !mapPath) {
-	console.error('Usage: node scripts/generate-tiles.mjs <map.png> <save.map> [--max-zoom 5] [--output dir]');
+if (!mapPath) {
+	console.error('Usage: node scripts/generate-tiles.mjs <save.map> [--max-zoom 5]');
 	console.error('');
-	console.error('  <map.png>   High-res PNG export from Azgaar');
 	console.error('  <save.map>  Azgaar .map save file');
+	// eslint-disable-next-line no-process-exit
 	process.exit(1);
 }
 
-if (!existsSync(pngPath)) { console.error('PNG not found: ' + pngPath); process.exit(1); }
 if (!existsSync(mapPath)) { console.error('Map file not found: ' + mapPath); process.exit(1); }
 
 // ---------------------------------------------------------------------------
-// 1. Tile generation — non-square tile pyramid
-// ---------------------------------------------------------------------------
-
-async function generateTiles() {
-	const metadata = await sharp(pngPath).metadata();
-	const imgW = metadata.width;
-	const imgH = metadata.height;
-
-	console.log('\n=== Tile Generation ===');
-	console.log('Source: ' + imgW + 'x' + imgH);
-	console.log('Max zoom: ' + maxZoom);
-	console.log('Output: ' + outputDir + '\n');
-
-	if (existsSync(outputDir)) {
-		rmSync(outputDir, { recursive: true });
-	}
-
-	let totalTiles = 0;
-
-	for (let z = 0; z <= maxZoom; z++) {
-		// At maxZoom, 1 tile pixel = 1 image pixel (native resolution).
-		// At lower zooms, image is scaled down by 2^(maxZoom - z).
-		const scale = Math.pow(2, z - maxZoom);
-		const scaledW = Math.ceil(imgW * scale);
-		const scaledH = Math.ceil(imgH * scale);
-		const tilesX = Math.ceil(scaledW / tileSize);
-		const tilesY = Math.ceil(scaledH / tileSize);
-
-		// Resize and pad to fill last partial tiles
-		const paddedW = tilesX * tileSize;
-		const paddedH = tilesY * tileSize;
-
-		console.log('Zoom ' + z + ': ' + tilesX + 'x' + tilesY + ' tiles (' + scaledW + 'x' + scaledH + 'px)');
-
-		const resized = await sharp(pngPath)
-			.resize(scaledW, scaledH)
-			.extend({
-				right: paddedW - scaledW,
-				bottom: paddedH - scaledH,
-				background: { r: 0, g: 0, b: 0, alpha: 0 },
-			})
-			.png()
-			.toBuffer();
-
-		for (let x = 0; x < tilesX; x++) {
-			for (let y = 0; y < tilesY; y++) {
-				const tileDir = resolve(outputDir, '' + z, '' + x);
-				mkdirSync(tileDir, { recursive: true });
-
-				await sharp(resized)
-					.extract({
-						left: x * tileSize,
-						top: y * tileSize,
-						width: tileSize,
-						height: tileSize,
-					})
-					.png({ compressionLevel: 9 })
-					.toFile(resolve(tileDir, y + '.png'));
-
-				totalTiles++;
-			}
-		}
-	}
-
-	console.log('\nGenerated ' + totalTiles + ' tiles.\n');
-	return { imgW, imgH };
-}
-
-// ---------------------------------------------------------------------------
-// 2. Parse Azgaar .map file — find sections by pattern matching
+// 1. Parse Azgaar .map file — find sections by pattern matching
 // ---------------------------------------------------------------------------
 
 /**
@@ -174,8 +98,6 @@ function parseMapFile() {
 	if (burgsLineIdx === null) throw new Error('Could not find burgs JSON line');
 
 	// --- Cell data arrays: comma-separated numbers after burgs line ---
-	// Biome array: values in range 0..~12 (biome IDs)
-	// State array: values matching state IDs (max = stateCount - 1)
 	const statesData = JSON.parse(lines[statesLineIdx]);
 	const stateCount = statesData.length;
 
@@ -192,13 +114,11 @@ function parseMapFile() {
 
 		const maxVal = Math.max(...values);
 
-		// Biome array: first numeric array, max value < 20 (biome IDs are typically 0-12)
 		if (cellBiomesIdx === null && maxVal <= 20 && maxVal >= 2) {
 			cellBiomesIdx = i;
 			continue;
 		}
 
-		// State array: max value matches stateCount - 1
 		if (cellStatesIdx === null && maxVal === stateCount - 1) {
 			cellStatesIdx = i;
 			break;
@@ -209,6 +129,7 @@ function parseMapFile() {
 	if (cellStatesIdx === null) throw new Error('Could not find cell states array');
 
 	console.log('=== Map File Structure ===');
+	console.log('  SVG dimensions: ' + svgW + 'x' + svgH);
 	console.log('  Biome legend:  line ' + (biomeLegendLine + 1));
 	console.log('  SVG viewbox:   line ' + (svgLineIdx + 1));
 	console.log('  States JSON:   line ' + (statesLineIdx + 1));
@@ -231,14 +152,13 @@ function parseMapFile() {
 }
 
 // ---------------------------------------------------------------------------
-// 3. Extract state boundaries and metadata
+// 2. Extract state boundaries and metadata
 // ---------------------------------------------------------------------------
 
-function extractRegions(mapData, imgW, imgH) {
+function extractRegions(mapData) {
 	console.log('=== Region Extraction ===');
 	const { lines, svgW, svgH, svgLineIdx, statesLineIdx } = mapData;
-	console.log('SVG graph: ' + svgW + 'x' + svgH);
-	console.log('PNG image: ' + imgW + 'x' + imgH);
+	console.log('SVG dimensions: ' + svgW + 'x' + svgH);
 
 	// --- State metadata ---
 	const statesData = JSON.parse(lines[statesLineIdx]);
@@ -251,7 +171,6 @@ function extractRegions(mapData, imgW, imgH) {
 	console.log('Found ' + stateMap.size + ' active states');
 
 	// --- SVG path data for each state ---
-	// Extract <path> elements with id="stateN" and d="..." (handles any attribute order)
 	const svgLine = lines[svgLineIdx];
 	const statePaths = new Map();
 	const pathTagRegex = /<path\s[^>]*?id="state(\d+)"[^>]*>/g;
@@ -264,7 +183,6 @@ function extractRegions(mapData, imgW, imgH) {
 			statePaths.set(stateId, dMatch[1]);
 		}
 	}
-	// Also try reversed order: d="..." before id="stateN"
 	if (statePaths.size === 0) {
 		const reversedRegex = /<path\s[^>]*?d="([^"]+)"[^>]*?id="state(\d+)"[^>]*>/g;
 		while ((match = reversedRegex.exec(svgLine)) !== null) {
@@ -273,27 +191,16 @@ function extractRegions(mapData, imgW, imgH) {
 	}
 	console.log('Found ' + statePaths.size + ' state boundary paths\n');
 
-	// --- Coordinate transform: SVG → CRS.Simple ---
-	//
-	// CRS.Simple with unproject-based bounds:
-	//   Pixel (px, py) at maxZoom → CRS latLng(-py / 2^maxZoom, px / 2^maxZoom)
-	//   SW = latLng(-imgH / 2^maxZoom, 0)
-	//   NE = latLng(0, imgW / 2^maxZoom)
-	//
-	// SVG → PNG pixel: px = svgX * imgW/svgW,  py = svgY * imgH/svgH
-	// PNG pixel → CRS: lng = px / 2^maxZoom,   lat = -py / 2^maxZoom
-	//
-	// Combined: lng = svgX * imgW / (svgW * 2^maxZoom)
-	//           lat = -svgY * imgH / (svgH * 2^maxZoom)
-
+	// --- Coordinate transform: SVG -> CRS.Simple ---
+	// No PNG scaling — map directly from SVG coordinates.
+	// CRS.Simple: lng = svgX / divisor, lat = -svgY / divisor
 	const divisor = Math.pow(2, maxZoom);
-	const scaleX = imgW / svgW / divisor;
-	const scaleY = imgH / svgH / divisor;
+	const scaleX = 1 / divisor;
+	const scaleY = 1 / divisor;
 
 	function parseSvgPath(d) {
 		const rings = [];
 		let currentRing = null;
-		// Strip Z (close path) commands — ring closing is handled below
 		const commands = d.replace(/Z/gi, '').match(/[ML][^ML]*/g);
 		if (!commands) return rings;
 
@@ -301,8 +208,6 @@ function extractRegions(mapData, imgW, imgH) {
 			const type = cmd[0];
 			const nums = cmd.substring(1).trim().split(/[,\s]+/).filter(Boolean).map(Number);
 
-			// M (moveto) starts a new ring — this is how SVG encodes
-			// separate subpaths (e.g., islands vs mainland)
 			if (type === 'M') {
 				if (currentRing && currentRing.length >= 3) {
 					rings.push(currentRing);
@@ -313,7 +218,6 @@ function extractRegions(mapData, imgW, imgH) {
 			for (let i = 0; i < nums.length; i += 2) {
 				const svgX = nums[i];
 				const svgY = nums[i + 1];
-				// GeoJSON: [longitude, latitude]
 				currentRing.push([
 					Math.round(svgX * scaleX * 10000) / 10000,
 					Math.round(-svgY * scaleY * 10000) / 10000,
@@ -321,12 +225,10 @@ function extractRegions(mapData, imgW, imgH) {
 			}
 		}
 
-		// Push final ring
 		if (currentRing && currentRing.length >= 3) {
 			rings.push(currentRing);
 		}
 
-		// Close each ring if not already closed
 		for (const ring of rings) {
 			const first = ring[0];
 			const last = ring[ring.length - 1];
@@ -357,7 +259,6 @@ function extractRegions(mapData, imgW, imgH) {
 		};
 		regions.push(region);
 
-		// 1 ring → Polygon, multiple rings → MultiPolygon
 		const geometry = rings.length === 1
 			? { type: 'Polygon', coordinates: [rings[0]] }
 			: { type: 'MultiPolygon', coordinates: rings.map((r) => [r]) };
@@ -372,20 +273,20 @@ function extractRegions(mapData, imgW, imgH) {
 		console.log('  ' + region.id + ': ' + meta.name + ' (' + totalVerts + ' vertices, ' + rings.length + ' ring' + (rings.length > 1 ? 's' : '') + ')');
 	}
 
-	return { regions, geojson: { type: 'FeatureCollection', features }, imgW, imgH };
+	return { regions, geojson: { type: 'FeatureCollection', features } };
 }
 
 // ---------------------------------------------------------------------------
-// 4. Extract capital cities from Azgaar burg data
+// 3. Extract capital cities from Azgaar burg data
 // ---------------------------------------------------------------------------
 
-function extractCapitals(mapData, imgW, imgH) {
+function extractCapitals(mapData) {
 	console.log('\n=== Capital Extraction ===');
-	const { lines, svgW, svgH, burgsLineIdx } = mapData;
+	const { lines, burgsLineIdx } = mapData;
 
 	const divisor = Math.pow(2, maxZoom);
-	const scaleX = imgW / svgW / divisor;
-	const scaleY = imgH / svgH / divisor;
+	const scaleX = 1 / divisor;
+	const scaleY = 1 / divisor;
 
 	const burgsData = JSON.parse(lines[burgsLineIdx]);
 	const capitals = [];
@@ -410,20 +311,17 @@ function extractCapitals(mapData, imgW, imgH) {
 }
 
 // ---------------------------------------------------------------------------
-// 5. Extract biome data from Azgaar pack cells
+// 4. Extract biome data from Azgaar pack cells
 // ---------------------------------------------------------------------------
 
 function extractBiomes(mapData) {
 	console.log('\n=== Biome Extraction ===');
 	const { lines, biomeLegendLine, cellBiomesIdx, cellStatesIdx } = mapData;
 
-	// --- Biome legend ---
-	// Format: colors|heights|names (all comma-separated, pipe-delimited)
 	const biomeParts = lines[biomeLegendLine].split('|');
 	const biomeColors = biomeParts[0].split(',');
 	const biomeHeights = biomeParts[1] ? biomeParts[1].split(',').map(Number) : [];
 	const biomeNames = biomeParts[2].split(',');
-	// Normalize heights to 0-100 range
 	const maxHeight = Math.max(1, ...biomeHeights.filter((h) => !isNaN(h)));
 	const biomeLegend = biomeNames.map((name, i) => ({
 		id: i,
@@ -433,7 +331,6 @@ function extractBiomes(mapData) {
 	}));
 	console.log('Biome legend: ' + biomeLegend.length + ' types');
 
-	// --- Pack cell arrays ---
 	const cellBiomes = lines[cellBiomesIdx].split(',').map(Number);
 	const cellStates = lines[cellStatesIdx].split(',').map(Number);
 
@@ -444,13 +341,12 @@ function extractBiomes(mapData) {
 	const count = Math.min(cellBiomes.length, cellStates.length);
 	console.log('Pack cells: ' + count);
 
-	// --- Cross-reference to get biome distribution per state ---
-	const stateBiomeCounts = new Map(); // stateId → Map<biomeId, count>
+	const stateBiomeCounts = new Map();
 
 	for (let i = 0; i < count; i++) {
 		const stateId = cellStates[i];
 		const biomeId = cellBiomes[i];
-		if (stateId === 0) continue; // skip neutral/unassigned
+		if (stateId === 0) continue;
 
 		if (!stateBiomeCounts.has(stateId)) {
 			stateBiomeCounts.set(stateId, new Map());
@@ -459,7 +355,6 @@ function extractBiomes(mapData) {
 		biomeMap.set(biomeId, (biomeMap.get(biomeId) || 0) + 1);
 	}
 
-	// --- Convert to percentages, keep top 5, drop < 2% ---
 	const regionBiomes = [];
 
 	for (const [stateId, biomeMap] of stateBiomeCounts) {
@@ -487,14 +382,133 @@ function extractBiomes(mapData) {
 }
 
 // ---------------------------------------------------------------------------
-// 6. Generate ocean bathymetric contour lines
+// 5. Extract relief symbol definitions and placements
+// ---------------------------------------------------------------------------
+
+function extractRelief(mapData) {
+	console.log('\n=== Relief Extraction ===');
+	const { lines, svgLineIdx } = mapData;
+	const svgLine = lines[svgLineIdx];
+
+	// --- Extract <symbol id="relief-*"> definitions ---
+	// Symbols span multiple lines in the .map file (not on the SVG viewbox line).
+	// Join all lines that contain relief symbol definitions.
+	const symbols = [];
+	let inReliefSymbol = false;
+	let currentId = '';
+	let currentViewBox = '';
+	let currentContent = '';
+
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i];
+		if (!inReliefSymbol) {
+			const openMatch = line.match(/<symbol\s+id="(relief-[^"]+)"\s+viewBox="([^"]+)">/);
+			if (openMatch) {
+				inReliefSymbol = true;
+				currentId = openMatch[1];
+				currentViewBox = openMatch[2];
+				currentContent = '';
+				// Check if the closing tag is on the same line
+				const closeIdx = line.indexOf('</symbol>', openMatch.index);
+				if (closeIdx > -1) {
+					const afterOpen = line.substring(openMatch.index + openMatch[0].length, closeIdx);
+					symbols.push({ id: currentId, viewBox: currentViewBox, content: afterOpen.trim() });
+					inReliefSymbol = false;
+				}
+			}
+		} else {
+			const closeIdx = line.indexOf('</symbol>');
+			if (closeIdx > -1) {
+				currentContent += line.substring(0, closeIdx);
+				symbols.push({ id: currentId, viewBox: currentViewBox, content: currentContent.trim() });
+				inReliefSymbol = false;
+			} else {
+				currentContent += line;
+			}
+		}
+	}
+
+	console.log('Found ' + symbols.length + ' relief symbol definitions');
+
+	// --- Extract <use> placements from <g id="terrain"> ---
+	const terrainStart = svgLine.indexOf('<g id="terrain"');
+	if (terrainStart === -1) {
+		console.warn('Warning: could not find <g id="terrain"> group');
+		return { symbols: [], placements: [] };
+	}
+
+	const terrainEnd = svgLine.indexOf('</g>', terrainStart);
+	const terrainContent = svgLine.substring(terrainStart, terrainEnd);
+
+	const placements = [];
+	const useRegex = /<use\s+x="([^"]+)"\s+y="([^"]+)"\s+width="([^"]+)"\s+height="([^"]+)"\s+href="#([^"]+)"/g;
+	let match;
+	while ((match = useRegex.exec(terrainContent)) !== null) {
+		placements.push({
+			x: parseFloat(match[1]),
+			y: parseFloat(match[2]),
+			w: parseFloat(match[3]),
+			h: parseFloat(match[4]),
+			href: match[5],
+		});
+	}
+	console.log('Found ' + placements.length + ' relief placements');
+
+	// Log breakdown by type
+	const typeCounts = new Map();
+	for (const p of placements) {
+		const type = p.href.replace(/-\d+$/, '');
+		typeCounts.set(type, (typeCounts.get(type) || 0) + 1);
+	}
+	for (const [type, count] of [...typeCounts.entries()].sort((a, b) => b[1] - a[1])) {
+		console.log('  ' + type + ': ' + count);
+	}
+
+	return { symbols, placements };
+}
+
+// ---------------------------------------------------------------------------
+// 6. Extract river paths
+// ---------------------------------------------------------------------------
+
+function extractRivers(mapData) {
+	console.log('\n=== River Extraction ===');
+	const { lines, svgLineIdx } = mapData;
+	const svgLine = lines[svgLineIdx];
+
+	const riversStart = svgLine.indexOf('<g id="rivers"');
+	if (riversStart === -1) {
+		console.warn('Warning: could not find <g id="rivers"> group');
+		return [];
+	}
+
+	const riversEnd = svgLine.indexOf('</g>', riversStart);
+	const riversContent = svgLine.substring(riversStart, riversEnd);
+
+	const rivers = [];
+	const pathRegex = /<path\s+d="([^"]+)"\s+id="([^"]+)"\s+data-width="([^"]+)"\s+data-increment="([^"]+)"/g;
+	let match;
+	while ((match = pathRegex.exec(riversContent)) !== null) {
+		rivers.push({
+			d: match[1],
+			id: match[2],
+			width: parseFloat(match[3]),
+		});
+	}
+
+	console.log('Found ' + rivers.length + ' rivers');
+
+	return rivers;
+}
+
+// ---------------------------------------------------------------------------
+// 7. Generate ocean bathymetric contour lines
 // ---------------------------------------------------------------------------
 
 function generateOceanContours(geojson) {
 	console.log('\n=== Ocean Contour Generation ===');
-	const OFFSETS = [3, 7, 12, 18]; // CRS units from coastline
+	const OFFSETS = [0.1, 0.22, 0.38, 0.56]; // CRS units (SVG-scale space is ~45x24)
 
-	// Compute signed area to determine winding direction
 	function signedArea(ring) {
 		let area = 0;
 		for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
@@ -503,19 +517,16 @@ function generateOceanContours(geojson) {
 		return area / 2;
 	}
 
-	// Line-line intersection of two infinite lines defined by points
 	function lineIntersection(p1, p2, p3, p4) {
 		const d1x = p2[0] - p1[0], d1y = p2[1] - p1[1];
 		const d2x = p4[0] - p3[0], d2y = p4[1] - p3[1];
 		const denom = d1x * d2y - d1y * d2x;
-		if (Math.abs(denom) < 1e-10) return null; // parallel
+		if (Math.abs(denom) < 1e-10) return null;
 		const t = ((p3[0] - p1[0]) * d2y - (p3[1] - p1[1]) * d2x) / denom;
 		return [p1[0] + t * d1x, p1[1] + t * d1y];
 	}
 
-	// Offset a single ring outward by the given distance
 	function offsetRing(ring, distance) {
-		// Remove closing vertex for processing
 		const pts = ring[ring.length - 1][0] === ring[0][0] && ring[ring.length - 1][1] === ring[0][1]
 			? ring.slice(0, -1)
 			: [...ring];
@@ -523,10 +534,8 @@ function generateOceanContours(geojson) {
 		if (n < 3) return null;
 
 		const area = signedArea(pts);
-		// Flip direction based on winding: we want outward = away from interior
 		const dir = area < 0 ? 1 : -1;
 
-		// Compute offset edge lines
 		const offsetEdges = [];
 		for (let i = 0; i < n; i++) {
 			const j = (i + 1) % n;
@@ -534,7 +543,6 @@ function generateOceanContours(geojson) {
 			const dy = pts[j][1] - pts[i][1];
 			const len = Math.sqrt(dx * dx + dy * dy);
 			if (len < 1e-10) continue;
-			// Normal pointing outward
 			const nx = dir * dy / len;
 			const ny = dir * -dx / len;
 			offsetEdges.push({
@@ -545,7 +553,6 @@ function generateOceanContours(geojson) {
 
 		if (offsetEdges.length < 3) return null;
 
-		// Find intersection of consecutive offset edges
 		const result = [];
 		for (let i = 0; i < offsetEdges.length; i++) {
 			const j = (i + 1) % offsetEdges.length;
@@ -555,13 +562,10 @@ function generateOceanContours(geojson) {
 			);
 
 			if (inter) {
-				// Miter limit: if the intersection is too far from both edge endpoints,
-				// it means a sharp concave spike — use bevel instead
 				const midX = (offsetEdges[i].p2[0] + offsetEdges[j].p1[0]) / 2;
 				const midY = (offsetEdges[i].p2[1] + offsetEdges[j].p1[1]) / 2;
 				const distSq = (inter[0] - midX) ** 2 + (inter[1] - midY) ** 2;
 				if (distSq > (distance * 3) ** 2) {
-					// Bevel: insert both edge endpoints instead of the miter point
 					result.push([
 						Math.round(offsetEdges[i].p2[0] * 100) / 100,
 						Math.round(offsetEdges[i].p2[1] * 100) / 100,
@@ -577,7 +581,6 @@ function generateOceanContours(geojson) {
 					]);
 				}
 			} else {
-				// Parallel edges — use midpoint of endpoints
 				result.push([
 					Math.round(offsetEdges[i].p2[0] * 100) / 100,
 					Math.round(offsetEdges[i].p2[1] * 100) / 100,
@@ -586,18 +589,15 @@ function generateOceanContours(geojson) {
 		}
 
 		if (result.length < 3) return null;
-
-		// Close the ring
 		result.push([result[0][0], result[0][1]]);
 		return result;
 	}
 
-	// Build contour features: one MultiLineString per depth level
 	const features = [];
 
 	for (let depth = 0; depth < OFFSETS.length; depth++) {
 		const distance = OFFSETS[depth];
-		const lines = [];
+		const contourLines = [];
 
 		for (const feature of geojson.features) {
 			let rings;
@@ -610,25 +610,25 @@ function generateOceanContours(geojson) {
 			}
 
 			for (const ring of rings) {
-				if (ring.length < 4) continue; // need at least 3 unique points + closing
+				if (ring.length < 4) continue;
 				const offset = offsetRing(ring, distance);
 				if (offset && offset.length >= 4) {
-					lines.push(offset);
+					contourLines.push(offset);
 				}
 			}
 		}
 
-		if (lines.length > 0) {
+		if (contourLines.length > 0) {
 			features.push({
 				type: 'Feature',
 				properties: { depth: depth + 1 },
 				geometry: {
 					type: 'MultiLineString',
-					coordinates: lines,
+					coordinates: contourLines,
 				},
 			});
-			const totalVerts = lines.reduce((sum, l) => sum + l.length, 0);
-			console.log('  Depth ' + (depth + 1) + ' (offset ' + distance + '): ' + lines.length + ' contours, ' + totalVerts + ' vertices');
+			const totalVerts = contourLines.reduce((sum, l) => sum + l.length, 0);
+			console.log('  Depth ' + (depth + 1) + ' (offset ' + distance + '): ' + contourLines.length + ' contours, ' + totalVerts + ' vertices');
 		}
 	}
 
@@ -637,13 +637,13 @@ function generateOceanContours(geojson) {
 }
 
 // ---------------------------------------------------------------------------
-// 7. Write src/lib/map-data.ts
+// 8. Write src/lib/map-data.ts
 // ---------------------------------------------------------------------------
 
-function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, oceanContours, imgW, imgH }) {
+function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, oceanContours, svgW, svgH }) {
 	const divisor = Math.pow(2, maxZoom);
-	const boundsSwLat = (-imgH / divisor).toFixed(4);
-	const boundsNeLng = (imgW / divisor).toFixed(4);
+	const boundsSwLat = (-svgH / divisor).toFixed(4);
+	const boundsNeLng = (svgW / divisor).toFixed(4);
 
 	const regionsStr = JSON.stringify(regions, null, '\t');
 	const geojsonStr = JSON.stringify(geojson);
@@ -689,12 +689,11 @@ function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, o
 		' * Generated by scripts/generate-tiles.mjs — do not edit by hand.',
 		' */',
 		'export const MAP_CONFIG = {',
-		'\tIMAGE_WIDTH: ' + imgW + ',',
-		'\tIMAGE_HEIGHT: ' + imgH + ',',
+		'\tSVG_WIDTH: ' + svgW + ',',
+		'\tSVG_HEIGHT: ' + svgH + ',',
 		'\tMIN_ZOOM: 0,',
 		'\tMAX_ZOOM: ' + maxZoom + ',',
-		'\tDEFAULT_ZOOM: 2,',
-		'\tTILE_SIZE: 256,',
+		'\tDEFAULT_ZOOM: 3,',
 		'\tBOUNDS_SW: [' + boundsSwLat + ', 0] as [number, number],',
 		'\tBOUNDS_NE: [0, ' + boundsNeLng + '] as [number, number],',
 		'};',
@@ -740,17 +739,83 @@ function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, o
 }
 
 // ---------------------------------------------------------------------------
+// 9. Write src/lib/relief-data.ts
+// ---------------------------------------------------------------------------
+
+function writeReliefData({ symbols, placements }) {
+	const tsLines = [
+		'/**',
+		' * Relief icon data extracted from Azgaar Fantasy Map Generator.',
+		' * Generated by scripts/generate-tiles.mjs — do not edit by hand.',
+		' */',
+		'',
+		'export interface ReliefSymbol {',
+		'\tid: string;',
+		'\tviewBox: string;',
+		'\tcontent: string;',
+		'}',
+		'',
+		'export interface ReliefPlacement {',
+		'\tx: number;',
+		'\ty: number;',
+		'\tw: number;',
+		'\th: number;',
+		'\thref: string;',
+		'}',
+		'',
+		'export const RELIEF_SYMBOLS: ReliefSymbol[] = ' + JSON.stringify(symbols, null, '\t') + ';',
+		'',
+		'export const RELIEF_PLACEMENTS: ReliefPlacement[] = ' + JSON.stringify(placements) + ';',
+		'',
+	];
+
+	const outPath = resolve('src/lib/relief-data.ts');
+	writeFileSync(outPath, tsLines.join('\n'), 'utf-8');
+	console.log('Wrote ' + outPath + ' (' + symbols.length + ' symbols, ' + placements.length + ' placements)');
+}
+
+// ---------------------------------------------------------------------------
+// 10. Write src/lib/river-data.ts
+// ---------------------------------------------------------------------------
+
+function writeRiverData(rivers) {
+	const tsLines = [
+		'/**',
+		' * River path data extracted from Azgaar Fantasy Map Generator.',
+		' * Generated by scripts/generate-tiles.mjs — do not edit by hand.',
+		' */',
+		'',
+		'export interface RiverPath {',
+		'\td: string;',
+		'\tid: string;',
+		'\twidth: number;',
+		'}',
+		'',
+		'export const RIVER_PATHS: RiverPath[] = ' + JSON.stringify(rivers, null, '\t') + ';',
+		'',
+	];
+
+	const outPath = resolve('src/lib/river-data.ts');
+	writeFileSync(outPath, tsLines.join('\n'), 'utf-8');
+	console.log('Wrote ' + outPath + ' (' + rivers.length + ' rivers)');
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
-async function main() {
-	const { imgW, imgH } = await generateTiles();
+function main() {
 	const mapData = parseMapFile();
-	const data = extractRegions(mapData, imgW, imgH);
-	const capitals = extractCapitals(mapData, imgW, imgH);
+	const { svgW, svgH } = mapData;
+	const data = extractRegions(mapData);
+	const capitals = extractCapitals(mapData);
 	const { biomeLegend, regionBiomes } = extractBiomes(mapData);
+	const relief = extractRelief(mapData);
+	const rivers = extractRivers(mapData);
 	const oceanContours = generateOceanContours(data.geojson);
-	writeMapData({ ...data, capitals, biomeLegend, regionBiomes, oceanContours });
+	writeMapData({ ...data, capitals, biomeLegend, regionBiomes, oceanContours, svgW, svgH });
+	writeReliefData(relief);
+	writeRiverData(rivers);
 
 	console.log('\n=== Done! ===');
 	console.log('Next steps:');
@@ -759,7 +824,4 @@ async function main() {
 	console.log('   to link regions to Codex entries');
 }
 
-main().catch((err) => {
-	console.error('Build failed:', err);
-	process.exit(1);
-});
+main();

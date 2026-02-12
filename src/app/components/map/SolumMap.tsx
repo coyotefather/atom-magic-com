@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer } from 'react-leaflet';
 import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
 import RegionOverlay from './RegionOverlay';
@@ -10,8 +10,9 @@ import CapitalMarkers from './CapitalMarkers';
 import SpotlightMask from './SpotlightMask';
 import MapViewController from './MapViewController';
 import RegionFocusPanel from './RegionFocusPanel';
-import BiomeMarkers from './BiomeMarkers';
 import OceanContours from './OceanContours';
+import ReliefLayer from './ReliefLayer';
+import RiversLayer from './RiversLayer';
 
 import 'leaflet/dist/leaflet.css';
 import './SolumMap.css';
@@ -41,16 +42,15 @@ const SolumMap = () => {
 		return (
 			<div
 				className="w-full bg-parchment border-2 border-stone flex items-center justify-center"
-				style={{ aspectRatio: `${MAP_CONFIG.IMAGE_WIDTH} / ${MAP_CONFIG.IMAGE_HEIGHT}`, maxHeight: '75vh' }}
+				style={{ aspectRatio: `${MAP_CONFIG.SVG_WIDTH} / ${MAP_CONFIG.SVG_HEIGHT}`, maxHeight: '75vh' }}
 			>
 				<p className="text-stone-dark marcellus">Loading map...</p>
 			</div>
 		);
 	}
 
-	// CRS.Simple bounds derived from image pixel dimensions at maxZoom.
-	// Pixel (px, py) at maxZoom → CRS latLng(-py / 2^maxZoom, px / 2^maxZoom).
-	// This ensures tiles and GeoJSON share the same coordinate space.
+	// CRS.Simple bounds derived from SVG dimensions at maxZoom.
+	// SVG (svgX, svgY) → CRS latLng(-svgY / 2^maxZoom, svgX / 2^maxZoom).
 	const bounds = L.latLngBounds(
 		L.latLng(MAP_CONFIG.BOUNDS_SW[0], MAP_CONFIG.BOUNDS_SW[1]),
 		L.latLng(MAP_CONFIG.BOUNDS_NE[0], MAP_CONFIG.BOUNDS_NE[1])
@@ -71,21 +71,14 @@ const SolumMap = () => {
 				scrollWheelZoom={true}
 				attributionControl={false}
 				className="solum-map w-full"
-				style={{ aspectRatio: `${MAP_CONFIG.IMAGE_WIDTH} / ${MAP_CONFIG.IMAGE_HEIGHT}`, maxHeight: '75vh' }}
+				style={{ aspectRatio: `${MAP_CONFIG.SVG_WIDTH} / ${MAP_CONFIG.SVG_HEIGHT}`, maxHeight: '75vh' }}
 			>
 				<OceanContours />
-				<TileLayer
-					url="/map/tiles/{z}/{x}/{y}.png"
-					tileSize={MAP_CONFIG.TILE_SIZE}
-					noWrap={true}
-					bounds={bounds}
-					maxNativeZoom={MAP_CONFIG.MAX_ZOOM}
-					errorTileUrl=""
-				/>
+				<ReliefLayer />
 				<RegionOverlay onRegionFocus={handleRegionFocus} />
+				<RiversLayer />
 				<RegionLabels />
 				<CapitalMarkers />
-				<BiomeMarkers />
 				{focusedRegion && <SpotlightMask focusedRegionId={focusedRegion.regionId} />}
 				<MapViewController focusedRegion={focusedRegion} onClearFocus={handleCloseFocus} />
 			</MapContainer>

@@ -91,6 +91,11 @@
 	max-width: 200px;
 }
 
+/* Sepia filter on map layers (not zoom controls or tooltips) */
+.solum-map .leaflet-map-pane {
+	filter: sepia(1);
+}
+
 /* Remove browser focus outline on region paths; use themed glow instead */
 .solum-map .leaflet-interactive:focus {
 	outline: none;
@@ -99,11 +104,6 @@
 .solum-map .leaflet-interactive:focus-visible {
 	outline: none;
 	filter: drop-shadow(0 0 6px var(--color-brightgold)) drop-shadow(0 0 2px var(--color-gold));
-}
-
-/* Tile layer — transparent so water hatching shows through */
-.solum-map .leaflet-tile {
-	background-color: transparent;
 }
 
 /* Remove default Leaflet popup shadows */
@@ -160,14 +160,6 @@
 	background: none !important;
 	border: none !important;
 	overflow: visible !important;
-}
-
-/* ── Biome scatter markers ── */
-
-.solum-biome-marker {
-	pointer-events: none !important;
-	background: transparent !important;
-	border: none !important;
 }
 
 /* ── Region focus panel ── */
