@@ -86,7 +86,7 @@ const SolumMap = () => {
 				<ReliefLayer />
 				<RegionOverlay onRegionFocus={handleRegionFocus} />
 				<RiversLayer />
-				<RegionLabels />
+				<RegionLabels focusedRegionId={focusedRegion?.regionId} />
 				<CapitalMarkers />
 				{focusedRegion && <SpotlightMask focusedRegionId={focusedRegion.regionId} />}
 				<MapViewController focusedRegion={focusedRegion} onClearFocus={handleCloseFocus} />
