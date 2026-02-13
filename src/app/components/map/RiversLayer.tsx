@@ -32,7 +32,7 @@ const RiversLayer = () => {
 					<path
 						key={river.id}
 						d={river.d}
-						fill="#5d97bb"
+						fill="#5C4A3A"
 						stroke="none"
 					/>
 				))}
