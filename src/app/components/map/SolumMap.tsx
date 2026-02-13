@@ -10,9 +10,11 @@ import CapitalMarkers from './CapitalMarkers';
 import SpotlightMask from './SpotlightMask';
 import MapViewController from './MapViewController';
 import RegionFocusPanel from './RegionFocusPanel';
+import CoastlineShadow from './CoastlineShadow';
 import OceanContours from './OceanContours';
 import LakesLayer from './LakesLayer';
 import ReliefLayer from './ReliefLayer';
+import RegionShadows from './RegionShadows';
 import RiversLayer from './RiversLayer';
 
 import 'leaflet/dist/leaflet.css';
@@ -81,10 +83,12 @@ const SolumMap = () => {
 				style={{ aspectRatio: `${MAP_CONFIG.SVG_WIDTH} / ${MAP_CONFIG.SVG_HEIGHT}`, maxHeight: '75vh' }}
 			>
 				<ZoomConstraint />
+				<CoastlineShadow />
 				<OceanContours />
 				<LakesLayer />
 				<ReliefLayer />
 				<RegionOverlay onRegionFocus={handleRegionFocus} />
+				<RegionShadows />
 				<RiversLayer />
 				<RegionLabels focusedRegionId={focusedRegion?.regionId} />
 				<CapitalMarkers />
