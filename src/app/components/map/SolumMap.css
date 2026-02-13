@@ -1,22 +1,22 @@
 /* Leaflet overrides for Atom Magic classical theme */
 
 .solum-map {
-	/* Pale blue-tinted parchment for ocean — faded, watercolor-stained feel */
-	background-color: #e8ebf0;
+	/* Warm parchment ocean with fine cartographic hatching for water texture */
+	background-color: #EDE5D3;
 	background-image:
 		repeating-linear-gradient(
-			0deg,
+			-45deg,
 			transparent,
 			transparent 3px,
-			rgba(107, 107, 98, 0.06) 3px,
-			rgba(107, 107, 98, 0.06) 4px
+			rgba(107, 91, 74, 0.07) 3px,
+			rgba(107, 91, 74, 0.07) 3.5px
 		),
 		repeating-linear-gradient(
-			8deg,
+			-45deg,
 			transparent,
 			transparent 7px,
-			rgba(107, 107, 98, 0.04) 7px,
-			rgba(107, 107, 98, 0.04) 8px
+			rgba(107, 91, 74, 0.05) 7px,
+			rgba(107, 91, 74, 0.05) 7.5px
 		);
 	border: 2px solid var(--color-stone);
 }

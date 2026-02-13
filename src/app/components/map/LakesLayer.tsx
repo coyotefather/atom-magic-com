@@ -32,10 +32,10 @@ const LakesLayer = () => {
 					<path
 						key={lake.id}
 						d={lake.d}
-						fill={lake.fill}
-						stroke={lake.stroke}
-						strokeWidth={0.7}
-						opacity={lake.opacity}
+						fill="#D5CCBC"
+						stroke="#5C4A3A"
+						strokeWidth={0.8}
+						opacity={0.8}
 					/>
 				))}
 			</svg>

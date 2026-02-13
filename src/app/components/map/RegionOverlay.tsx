@@ -29,10 +29,11 @@ const RegionOverlay = ({ onRegionFocus }: RegionOverlayProps) => {
 		const region = regionId ? regionMap.get(regionId) : undefined;
 		return {
 			fillColor: region?.color ?? '#888',
-			fillOpacity: regionId ? getRegionFillOpacity(regionId) : 0.2,
-			color: region?.color ?? '#888',
-			weight: 2,
-			opacity: 0.6,
+			fillOpacity: regionId ? getRegionFillOpacity(regionId) * 0.35 : 0.05,
+			color: '#4A3728',
+			weight: 1.2,
+			opacity: 0.5,
+			dashArray: '6 4',
 		};
 	}, []);
 
@@ -57,18 +58,20 @@ const RegionOverlay = ({ onRegionFocus }: RegionOverlayProps) => {
 				mouseover: (e: LeafletMouseEvent) => {
 					const target = e.target;
 					target.setStyle({
-						fillOpacity: 0.4,
-						weight: 3,
-						opacity: 0.9,
+						fillOpacity: 0.15,
+						weight: 2,
+						opacity: 0.8,
+						dashArray: '',
 					});
 					target.bringToFront();
 				},
 				mouseout: (e: LeafletMouseEvent) => {
 					const target = e.target;
 					target.setStyle({
-						fillOpacity: getRegionFillOpacity(region.id),
-						weight: 2,
-						opacity: 0.6,
+						fillOpacity: getRegionFillOpacity(region.id) * 0.35,
+						weight: 1.2,
+						opacity: 0.5,
+						dashArray: '6 4',
 					});
 				},
 				click: () => {
