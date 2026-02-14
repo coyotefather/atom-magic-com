@@ -106,56 +106,6 @@
 	border-top-color: #1a1a1a !important;
 }
 
-/* ── Capital city markers ── */
-
-.solum-capital-marker {
-	display: flex;
-	align-items: center;
-	gap: 5px;
-	pointer-events: none;
-	background: none !important;
-	border: none !important;
-	overflow: visible !important;
-}
-
-.solum-capital-dot {
-	display: block;
-	width: 6px;
-	height: 6px;
-	border-radius: 50%;
-	background-color: #1a1a1a;
-	border: none;
-	flex-shrink: 0;
-}
-
-.solum-capital-label {
-	font-family: 'Noto Serif', serif;
-	font-size: 10px;
-	font-style: italic;
-	color: #1a1a1a;
-	white-space: nowrap;
-	text-shadow: 0 0 3px rgba(245, 243, 237, 0.9), 0 0 6px rgba(245, 243, 237, 0.7);
-}
-
-/* ── Region name labels ── */
-
-.solum-region-label {
-	pointer-events: none !important;
-	background: none !important;
-	border: none !important;
-	overflow: visible !important;
-}
-
-.solum-region-label span {
-	display: inline-block;
-	font-family: 'Marcellus', serif;
-	text-transform: uppercase;
-	letter-spacing: 0.2em;
-	color: #8B2500;
-	white-space: nowrap;
-	transform: translate(-50%, -50%);
-	text-shadow: 0 0 4px rgba(245, 243, 237, 0.9), 0 0 8px rgba(245, 243, 237, 0.7);
-}
 
 /* ── Region focus panel ── */
 

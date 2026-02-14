@@ -586,7 +586,8 @@ function extractLakes(mapData) {
 
 function generateOceanContours(geojson) {
 	console.log('\n=== Ocean Contour Generation ===');
-	const OFFSETS = [0.1, 0.22, 0.38, 0.56]; // CRS units (SVG-scale space is ~45x24)
+	// 8 concentric levels, densely packed near coast and sparser further out
+	const OFFSETS = [0.03, 0.07, 0.12, 0.18, 0.26, 0.36, 0.48, 0.62];
 
 	function signedArea(ring) {
 		let area = 0;
