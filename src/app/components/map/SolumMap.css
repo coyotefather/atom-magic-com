@@ -2,7 +2,7 @@
 
 .solum-map {
 	/* Warm parchment ocean with fine cartographic hatching for water texture */
-	background-color: #EDE5D3;
+	/* background-color: #EDE5D3; */
 	background-image:
 		repeating-linear-gradient(
 			-45deg,
