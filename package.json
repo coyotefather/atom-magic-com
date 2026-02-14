@@ -24,7 +24,7 @@
     "@sanity/image-url": "^2.0.3",
     "@sanity/vision": "^5.9.0",
     "@sanity/webhook": "^4.0.4",
-    "@serwist/next": "^9.5.5",
+    "@serwist/next": "^9.5.6",
     "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
     "@types/leaflet": "^1.9.21",
     "@types/react-transition-group": "^4.4.12",
