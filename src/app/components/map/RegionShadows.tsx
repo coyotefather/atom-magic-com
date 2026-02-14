@@ -27,9 +27,9 @@ const RegionShadows = () => {
 			data={REGION_BOUNDARIES}
 			style={() => ({
 				fill: false,
-				color: '#3D2B1F',
-				weight: 8,
-				opacity: 0.06,
+				color: '#1a1a1a',
+				weight: 6,
+				opacity: 0.04,
 				interactive: false,
 			})}
 			interactive={false}
