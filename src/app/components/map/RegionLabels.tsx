@@ -1,25 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Marker, useMap, useMapEvents } from 'react-leaflet';
+import { useState, useEffect } from 'react';
+import { SVGOverlay, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { MAP_REGIONS, REGION_BOUNDARIES } from '@/lib/map-data';
+import { MAP_CONFIG, MAP_REGIONS, REGION_BOUNDARIES } from '@/lib/map-data';
 import type { Position } from 'geojson';
 
-const MIN_ZOOM = 2;
-
-// Font sizes by zoom level
-const ZOOM_FONT_SIZE: Record<number, number> = {
-	2: 10,
-	3: 12,
-	4: 14,
-	5: 16,
-};
+const DIVISOR = 32; // 2^maxZoom
 
 function centroid(ring: Position[]): [number, number] {
 	let sumLng = 0;
 	let sumLat = 0;
-	// Exclude the closing vertex (same as first)
 	const count = ring.length > 1 && ring[0][0] === ring[ring.length - 1][0] && ring[0][1] === ring[ring.length - 1][1]
 		? ring.length - 1
 		: ring.length;
@@ -45,7 +36,8 @@ function largestRingCentroid(coordinates: Position[][][]): [number, number] {
 interface LabelData {
 	regionId: string;
 	name: string;
-	position: [number, number];
+	svgX: number;
+	svgY: number;
 }
 
 function computeLabels(): LabelData[] {
@@ -66,7 +58,13 @@ function computeLabels(): LabelData[] {
 			continue;
 		}
 
-		labels.push({ regionId: region.id, name: region.name, position });
+		const [lat, lng] = position;
+		labels.push({
+			regionId: region.id,
+			name: region.name,
+			svgX: lng * DIVISOR,
+			svgY: -lat * DIVISOR,
+		});
 	}
 
 	return labels;
@@ -74,14 +72,10 @@ function computeLabels(): LabelData[] {
 
 const labels = computeLabels();
 
-function makeIcon(name: string, fontSize: number) {
-	return L.divIcon({
-		className: 'solum-region-label',
-		html: `<span style="font-size:${fontSize}px">${name}</span>`,
-		iconSize: [0, 0],
-		iconAnchor: [0, 0],
-	});
-}
+const bounds = L.latLngBounds(
+	L.latLng(MAP_CONFIG.BOUNDS_SW[0], MAP_CONFIG.BOUNDS_SW[1]),
+	L.latLng(MAP_CONFIG.BOUNDS_NE[0], MAP_CONFIG.BOUNDS_NE[1])
+);
 
 interface RegionLabelsProps {
 	focusedRegionId?: string | null;
@@ -89,35 +83,49 @@ interface RegionLabelsProps {
 
 const RegionLabels = ({ focusedRegionId }: RegionLabelsProps) => {
 	const map = useMap();
-	const [zoom, setZoom] = useState(map.getZoom());
-
-	useMapEvents({
-		zoomend: () => setZoom(map.getZoom()),
-	});
+	const [paneReady, setPaneReady] = useState(false);
 
 	useEffect(() => {
-		setZoom(map.getZoom());
+		if (!map.getPane('regionLabelsPane')) {
+			map.createPane('regionLabelsPane');
+			map.getPane('regionLabelsPane')!.style.zIndex = '500';
+			map.getPane('regionLabelsPane')!.style.pointerEvents = 'none';
+		}
+		setPaneReady(true);
 	}, [map]);
 
-	if (zoom < MIN_ZOOM || labels.length === 0) return null;
+	if (!paneReady || labels.length === 0) return null;
 
-	const fontSize = ZOOM_FONT_SIZE[zoom] ?? 16;
 	const visibleLabels = focusedRegionId
 		? labels.filter((l) => l.regionId === focusedRegionId)
 		: labels;
 
 	return (
-		<>
-			{visibleLabels.map((label) => (
-				<Marker
-					key={label.regionId}
-					position={label.position}
-					icon={makeIcon(label.name, fontSize)}
-					interactive={false}
-					zIndexOffset={-1000}
-				/>
-			))}
-		</>
+		<SVGOverlay bounds={bounds} pane="regionLabelsPane" interactive={false}>
+			<svg viewBox={`0 0 ${MAP_CONFIG.SVG_WIDTH} ${MAP_CONFIG.SVG_HEIGHT}`} preserveAspectRatio="none">
+				{visibleLabels.map((label) => (
+					<text
+						key={label.regionId}
+						x={label.svgX}
+						y={label.svgY}
+						textAnchor="middle"
+						dominantBaseline="central"
+						fontFamily="'Marcellus', serif"
+						fontSize="9"
+						fill="#8B2500"
+						letterSpacing="0.2em"
+						textDecoration="none"
+						paintOrder="stroke fill"
+						stroke="#F5F3ED"
+						strokeWidth="3"
+						strokeLinejoin="round"
+						style={{ textTransform: 'uppercase' as const }}
+					>
+						{label.name}
+					</text>
+				))}
+			</svg>
+		</SVGOverlay>
 	);
 };
 
