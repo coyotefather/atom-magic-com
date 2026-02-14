@@ -6,10 +6,10 @@ import { OCEAN_CONTOURS } from '@/lib/map-data';
 import type { Feature } from 'geojson';
 
 const CONTOUR_STYLES: Record<number, L.PathOptions> = {
-	1: { color: '#1a1a1a', weight: 1.2, opacity: 0.22 },
-	2: { color: '#1a1a1a', weight: 0.9, opacity: 0.15 },
-	3: { color: '#1a1a1a', weight: 0.7, opacity: 0.10 },
-	4: { color: '#1a1a1a', weight: 0.5, opacity: 0.06 },
+	1: { color: '#1a1a1a', weight: 1.0, opacity: 0.25, dashArray: '4 3' },
+	2: { color: '#1a1a1a', weight: 0.8, opacity: 0.18, dashArray: '3 4' },
+	3: { color: '#1a1a1a', weight: 0.6, opacity: 0.12, dashArray: '2 5' },
+	4: { color: '#1a1a1a', weight: 0.5, opacity: 0.07, dashArray: '2 6' },
 };
 
 const OceanContours = () => {
