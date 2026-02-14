@@ -19,7 +19,7 @@ const CoastlineShadow = () => {
 			const pane = map.getPane('coastlineShadowPane')!;
 			pane.style.zIndex = '140';
 			pane.style.filter =
-				'drop-shadow(0 0 8px rgba(50, 35, 20, 0.35)) drop-shadow(0 0 3px rgba(50, 35, 20, 0.2))';
+				'drop-shadow(0 0 6px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 2px rgba(0, 0, 0, 0.15))';
 		}
 		setPaneReady(true);
 	}, [map]);
@@ -30,7 +30,7 @@ const CoastlineShadow = () => {
 		<GeoJSON
 			data={REGION_BOUNDARIES}
 			style={() => ({
-				fillColor: '#F2EBD9',
+				fillColor: '#F5F3ED',
 				fillOpacity: 1,
 				stroke: false,
 				interactive: false,

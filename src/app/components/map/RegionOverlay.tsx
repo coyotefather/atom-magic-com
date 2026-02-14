@@ -24,16 +24,14 @@ interface RegionOverlayProps {
 }
 
 const RegionOverlay = ({ onRegionFocus }: RegionOverlayProps) => {
-	const style = useCallback((feature: Feature | undefined) => {
-		const regionId = feature?.properties?.regionId;
-		const region = regionId ? regionMap.get(regionId) : undefined;
+	const style = useCallback((_feature: Feature | undefined) => {
 		return {
-			fillColor: region?.color ?? '#888',
-			fillOpacity: regionId ? getRegionFillOpacity(regionId) * 0.35 : 0.05,
-			color: '#4A3728',
-			weight: 1.2,
-			opacity: 0.5,
-			dashArray: '6 4',
+			fillColor: 'transparent',
+			fillOpacity: 0,
+			color: '#1a1a1a',
+			weight: 1,
+			opacity: 0.35,
+			dashArray: '8 5',
 		};
 	}, []);
 
@@ -58,9 +56,10 @@ const RegionOverlay = ({ onRegionFocus }: RegionOverlayProps) => {
 				mouseover: (e: LeafletMouseEvent) => {
 					const target = e.target;
 					target.setStyle({
-						fillOpacity: 0.15,
-						weight: 2,
-						opacity: 0.8,
+						fillColor: '#1a1a1a',
+						fillOpacity: 0.05,
+						weight: 1.5,
+						opacity: 0.6,
 						dashArray: '',
 					});
 					target.bringToFront();
@@ -68,10 +67,11 @@ const RegionOverlay = ({ onRegionFocus }: RegionOverlayProps) => {
 				mouseout: (e: LeafletMouseEvent) => {
 					const target = e.target;
 					target.setStyle({
-						fillOpacity: getRegionFillOpacity(region.id) * 0.35,
-						weight: 1.2,
-						opacity: 0.5,
-						dashArray: '6 4',
+						fillColor: 'transparent',
+						fillOpacity: 0,
+						weight: 1,
+						opacity: 0.35,
+						dashArray: '8 5',
 					});
 				},
 				click: () => {
