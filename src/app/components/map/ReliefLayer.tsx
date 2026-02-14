@@ -13,7 +13,11 @@ const ReliefLayer = () => {
 	useEffect(() => {
 		if (!map.getPane('reliefPane')) {
 			map.createPane('reliefPane');
-			map.getPane('reliefPane')!.style.zIndex = '250';
+			const pane = map.getPane('reliefPane')!;
+			pane.style.zIndex = '250';
+			// Force all relief icons to pure black ink regardless of original color
+			pane.style.filter = 'brightness(0)';
+			pane.style.opacity = '0.8';
 		}
 		setPaneReady(true);
 	}, [map]);
