@@ -45,21 +45,21 @@ interface LabelOverride {
 // ---------------------------------------------------------------------------
 
 const LABEL_OVERRIDES: Record<string, LabelOverride> = {
-	'state-1': { angle: 0 },
-	'state-2': { angle: 0 },
-	'state-3': { angle: 0 },
-	'state-4': { angle: 0 },
-	'state-5': { angle: 0 },
-	'state-8': { angle: 0 },
-	'state-9': { angle: 0 },
-	'state-10': { angle: 0 },
-	'state-11': { angle: 0 },
-	'state-12': { angle: 0 },
-	'state-13': { angle: 0 },
-	'state-14': { angle: 0 },
-	'state-15': { angle: 0 },
-	'state-16': { angle: 0 },
-	'state-17': { angle: 0 },
+	'state-1': { angle: -8 },      // Soli Minor
+	'state-2': { angle: 25 },      // Austellus (capped from 40)
+	'state-3': { angle: 25 },      // Cassis Minor (capped from 26)
+	'state-4': { angle: -24 },     // W Terrae Mortuae
+	'state-5': { angle: 25 },      // E Terrae Mortuae (capped from 37)
+	'state-8': { angle: -10 },     // Cassis Major (PCA 80° → perpendicular, use -10)
+	'state-9': { angle: 6 },       // Terrae Liberae
+	'state-10': { angle: 25 },     // Circeii (capped from 27)
+	'state-11': { angle: -25 },    // Praesidium (capped from -37)
+	'state-12': { angle: -21 },    // Isospora
+	'state-13': { angle: 3 },      // Aetos
+	'state-14': { angle: 16 },     // Hesperia
+	'state-15': { angle: -3 },     // Aquilo
+	'state-16': { angle: -13 },    // Aquilo Novus
+	'state-17': { angle: 25 },     // Insula Palmaris (capped from 49)
 };
 
 // ---------------------------------------------------------------------------
