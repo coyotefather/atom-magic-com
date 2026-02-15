@@ -468,6 +468,247 @@ function extractRelief(mapData) {
 }
 
 // ---------------------------------------------------------------------------
+// 5b. Terrain clustering + composite path generation
+// ---------------------------------------------------------------------------
+
+function clusterPlacements(placements, maxDistance = 40) {
+	const used = new Set();
+	const clusters = [];
+	for (let i = 0; i < placements.length; i++) {
+		if (used.has(i)) continue;
+		const cluster = [placements[i]];
+		used.add(i);
+		let changed = true;
+		while (changed) {
+			changed = false;
+			for (let j = 0; j < placements.length; j++) {
+				if (used.has(j)) continue;
+				for (const cp of cluster) {
+					const dx = placements[j].x + placements[j].w / 2 - (cp.x + cp.w / 2);
+					const dy = placements[j].y + placements[j].h / 2 - (cp.y + cp.h / 2);
+					if (Math.sqrt(dx * dx + dy * dy) < maxDistance) {
+						cluster.push(placements[j]);
+						used.add(j);
+						changed = true;
+						break;
+					}
+				}
+			}
+		}
+		clusters.push(cluster);
+	}
+	return clusters;
+}
+
+function generateMountainRidgeline(cluster) {
+	const sorted = cluster
+		.map(p => ({ cx: p.x + p.w / 2, cy: p.y + p.h / 2, size: p.w }))
+		.sort((a, b) => a.cx - b.cx);
+
+	const maxY = Math.max(...sorted.map(p => p.cy + p.size * 0.3));
+	const baseY = maxY + 2;
+
+	// Build ridgeline path
+	let d = `M ${sorted[0].cx - sorted[0].size * 0.6},${baseY}`;
+	for (const p of sorted) {
+		const peakH = p.size * 0.8;
+		const peakTop = p.cy - peakH * 0.5;
+		const halfW = p.size * 0.35;
+		d += ` L ${p.cx - halfW},${baseY}`;
+		d += ` L ${p.cx},${peakTop}`;
+		d += ` L ${p.cx + halfW},${baseY}`;
+	}
+	d += ` L ${sorted[sorted.length - 1].cx + sorted[sorted.length - 1].size * 0.6},${baseY}`;
+
+	// Generate hatching lines on right side of each peak
+	const hatching = [];
+	for (const p of sorted) {
+		const peakTop = p.cy - p.size * 0.8 * 0.5;
+		const halfW = p.size * 0.35;
+		for (let h = 0; h < 3; h++) {
+			const t = 0.3 + h * 0.25;
+			const y1 = peakTop + (baseY - peakTop) * t * 0.6;
+			const y2 = peakTop + (baseY - peakTop) * (t + 0.15);
+			const x1 = p.cx + halfW * t * 0.4;
+			const x2 = p.cx + halfW * (t + 0.3);
+			hatching.push(`M ${x1.toFixed(1)},${y1.toFixed(1)} L ${x2.toFixed(1)},${y2.toFixed(1)}`);
+		}
+	}
+
+	// Bounding box for clearance zone detection
+	const minX = Math.min(...sorted.map(p => p.cx - p.size * 0.6));
+	const maxX = Math.max(...sorted.map(p => p.cx + p.size * 0.6));
+	const minY = Math.min(...sorted.map(p => p.cy - p.size * 0.8 * 0.5));
+
+	return {
+		outline: d,
+		hatching: hatching.join(' '),
+		bbox: { minX, minY, maxX, maxY: baseY },
+	};
+}
+
+function convexHull(points) {
+	if (points.length < 3) return points;
+	const pts = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+	function cross(O, A, B) {
+		return (A[0] - O[0]) * (B[1] - O[1]) - (A[1] - O[1]) * (B[0] - O[0]);
+	}
+	const lower = [];
+	for (const p of pts) {
+		while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], p) <= 0) lower.pop();
+		lower.push(p);
+	}
+	const upper = [];
+	for (const p of [...pts].reverse()) {
+		while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0) upper.pop();
+		upper.push(p);
+	}
+	return lower.slice(0, -1).concat(upper.slice(0, -1));
+}
+
+function generateForestCanopy(cluster) {
+	const points = cluster
+		.map(p => ({ cx: p.x + p.w / 2, cy: p.y + p.h / 2, size: p.w }))
+		.sort((a, b) => a.cx - b.cx);
+
+	const hull = convexHull(points.map(p => [p.cx, p.cy]));
+	if (hull.length < 3) return null;
+
+	// Create bumpy outline with quadratic curves between hull points
+	let d = `M ${hull[0][0].toFixed(1)},${hull[0][1].toFixed(1)}`;
+	for (let i = 1; i <= hull.length; i++) {
+		const prev = hull[i - 1];
+		const curr = hull[i % hull.length];
+		const midX = (prev[0] + curr[0]) / 2;
+		const midY = (prev[1] + curr[1]) / 2;
+		const dx = curr[0] - prev[0];
+		const dy = curr[1] - prev[1];
+		const len = Math.sqrt(dx * dx + dy * dy);
+		if (len < 1e-6) continue;
+		const bumpSize = Math.min(len * 0.15, 8);
+		const nx = -dy / len * bumpSize;
+		const ny = dx / len * bumpSize;
+		d += ` Q ${(midX + nx).toFixed(1)},${(midY + ny).toFixed(1)} ${curr[0].toFixed(1)},${curr[1].toFixed(1)}`;
+	}
+
+	const xs = hull.map(p => p[0]);
+	const ys = hull.map(p => p[1]);
+
+	return {
+		outline: d,
+		bbox: { minX: Math.min(...xs), minY: Math.min(...ys), maxX: Math.max(...xs), maxY: Math.max(...ys) },
+	};
+}
+
+function generateTerrainData(relief) {
+	const { placements } = relief;
+	const COMPOSITE_TYPES = new Set(['mount', 'mountSnow', 'hill', 'conifer', 'coniferSnow', 'deciduous', 'acacia', 'palm']);
+	const MOUNTAIN_TYPES = new Set(['mount', 'mountSnow', 'hill']);
+	const INDIVIDUAL_TYPES = new Set(['grass', 'dune', 'swamp', 'vulcan', 'cactus', 'deadTree']);
+	const MIN_CLUSTER_SIZE = 5;
+
+	const byType = {};
+	for (const p of placements) {
+		const type = p.href.replace(/^relief-/, '').replace(/-\d+$/, '');
+		if (!byType[type]) byType[type] = [];
+		byType[type].push(p);
+	}
+
+	const composites = [];
+	const individuals = [];
+
+	for (const [type, pts] of Object.entries(byType)) {
+		if (INDIVIDUAL_TYPES.has(type)) {
+			individuals.push(...pts.map(p => ({ ...p, type })));
+			continue;
+		}
+		if (!COMPOSITE_TYPES.has(type)) {
+			individuals.push(...pts.map(p => ({ ...p, type })));
+			continue;
+		}
+
+		const clusters = clusterPlacements(pts);
+		for (const cluster of clusters) {
+			if (cluster.length < MIN_CLUSTER_SIZE) {
+				individuals.push(...cluster.map(p => ({ ...p, type })));
+				continue;
+			}
+
+			if (MOUNTAIN_TYPES.has(type)) {
+				const ridge = generateMountainRidgeline(cluster);
+				composites.push({
+					type,
+					kind: 'ridge',
+					outline: ridge.outline,
+					hatching: ridge.hatching,
+					bbox: ridge.bbox,
+					pointCount: cluster.length,
+				});
+			} else {
+				const canopy = generateForestCanopy(cluster);
+				if (canopy) {
+					composites.push({
+						type,
+						kind: 'canopy',
+						outline: canopy.outline,
+						hatching: '',
+						bbox: canopy.bbox,
+						pointCount: cluster.length,
+					});
+				} else {
+					individuals.push(...cluster.map(p => ({ ...p, type })));
+				}
+			}
+		}
+	}
+
+	console.log('\n=== Terrain Composites ===');
+	console.log('  ' + composites.length + ' composite shapes');
+	console.log('  ' + individuals.length + ' individual icons remaining');
+	for (const c of composites) {
+		console.log('  ' + c.type + ' ' + c.kind + ': ' + c.pointCount + ' points');
+	}
+
+	return { composites, individuals };
+}
+
+function writeTerrainData({ composites, individuals }) {
+	const ts = [
+		'/**',
+		' * Composite terrain data for Tolkien-style map rendering.',
+		' * Generated by scripts/generate-tiles.mjs — do not edit by hand.',
+		' */',
+		'',
+		'export interface TerrainComposite {',
+		'\ttype: string;',
+		'\tkind: "ridge" | "canopy";',
+		'\toutline: string;',
+		'\thatching: string;',
+		'\tbbox: { minX: number; minY: number; maxX: number; maxY: number };',
+		'\tpointCount: number;',
+		'}',
+		'',
+		'export interface TerrainPlacement {',
+		'\tx: number;',
+		'\ty: number;',
+		'\tw: number;',
+		'\th: number;',
+		'\thref: string;',
+		'\ttype: string;',
+		'}',
+		'',
+		'export const TERRAIN_COMPOSITES: TerrainComposite[] = ' + JSON.stringify(composites) + ';',
+		'',
+		'export const TERRAIN_INDIVIDUALS: TerrainPlacement[] = ' + JSON.stringify(individuals) + ';',
+		'',
+	].join('\n');
+
+	const outPath = resolve('src/lib/terrain-data.ts');
+	writeFileSync(outPath, ts, 'utf-8');
+	console.log('Wrote ' + outPath);
+}
+
+// ---------------------------------------------------------------------------
 // 6. Extract river paths
 // ---------------------------------------------------------------------------
 
@@ -959,11 +1200,13 @@ function main() {
 	const capitals = extractCapitals(mapData);
 	const { biomeLegend, regionBiomes } = extractBiomes(mapData);
 	const relief = extractRelief(mapData);
+	const terrain = generateTerrainData(relief);
 	const rivers = extractRivers(mapData);
 	const lakes = extractLakes(mapData);
 	const oceanContours = generateOceanContours(data.geojson);
 	writeMapData({ ...data, capitals, biomeLegend, regionBiomes, oceanContours, svgW, svgH });
 	writeReliefData(relief);
+	writeTerrainData(terrain);
 	writeRiverData(rivers);
 	writeLakeData(lakes);
 
