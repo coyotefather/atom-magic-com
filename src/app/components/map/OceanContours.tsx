@@ -16,6 +16,13 @@ const CONTOUR_STYLES: Record<number, L.PathOptions> = {
 	8: { color: '#1a1a1a', weight: 0.4, opacity: 0.04, dashArray: '2 7' },
 };
 
+// Outward coastline echo lines — solid, thin, fading out
+const OUTWARD_STYLES: Map<number, L.PathOptions> = new Map([
+	[-1, { color: '#1a1a1a', weight: 0.9, opacity: 0.30 }],
+	[-2, { color: '#1a1a1a', weight: 0.7, opacity: 0.22 }],
+	[-3, { color: '#1a1a1a', weight: 0.5, opacity: 0.15 }],
+]);
+
 const OceanContours = () => {
 	const map = useMap();
 	const [paneReady, setPaneReady] = useState(false);
@@ -36,8 +43,11 @@ const OceanContours = () => {
 			data={OCEAN_CONTOURS}
 			style={(feature: Feature | undefined) => {
 				const depth = (feature?.properties?.depth as number) ?? 1;
+				const baseStyle = depth < 0
+					? (OUTWARD_STYLES.get(depth) ?? OUTWARD_STYLES.get(-1)!)
+					: (CONTOUR_STYLES[depth] ?? CONTOUR_STYLES[1]);
 				return {
-					...(CONTOUR_STYLES[depth] ?? CONTOUR_STYLES[1]),
+					...baseStyle,
 					fill: false,
 					interactive: false,
 				};

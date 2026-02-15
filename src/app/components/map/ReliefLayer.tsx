@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import { SVGOverlay, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
-import { RELIEF_SYMBOLS, RELIEF_PLACEMENTS } from '@/lib/relief-data';
+import { RELIEF_SYMBOLS } from '@/lib/relief-data';
+import { TERRAIN_COMPOSITES, TERRAIN_INDIVIDUALS } from '@/lib/terrain-data';
+import { computeClearanceZones, type LabelBBox } from '@/lib/label-config';
 
 // ---------------------------------------------------------------------------
 // Tolkien-style SVG symbol content by type.
@@ -149,24 +151,42 @@ const SIZE_SCALE: Record<string, number> = {
 	deadTree: 0.55,
 };
 
+/** Check whether a point falls inside any rotated-rect clearance zone. */
+function isInClearanceZone(px: number, py: number, zones: LabelBBox[]): boolean {
+	for (const zone of zones) {
+		const rad = (-zone.angle * Math.PI) / 180;
+		const cos = Math.cos(rad);
+		const sin = Math.sin(rad);
+		const dx = px - zone.cx;
+		const dy = py - zone.cy;
+		const localX = dx * cos - dy * sin;
+		const localY = dx * sin + dy * cos;
+		if (Math.abs(localX) < zone.halfW && Math.abs(localY) < zone.halfH) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/** Pre-computed label clearance zones so terrain icons don't crowd text. */
+const clearanceZones = computeClearanceZones(12);
+
 /** Deterministic hash (0–1) from placement position so thinning is stable. */
 function posHash(x: number, y: number): number {
 	const n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
 	return n - Math.floor(n);
 }
 
-function getType(href: string): string {
-	return href.replace(/^relief-/, '').replace(/-\d+$/, '');
-}
-
 /** Pre-compute the filtered + resized placement list once at module load. */
-const visiblePlacements = RELIEF_PLACEMENTS.filter((p) => {
-	const type = getType(p.href);
-	const rate = KEEP_RATE[type] ?? 0.3;
+const visiblePlacements = TERRAIN_INDIVIDUALS.filter((p) => {
+	const rate = KEEP_RATE[p.type] ?? 0.3;
 	return posHash(p.x, p.y) < rate;
+}).filter((p) => {
+	const cx = p.x + p.w / 2;
+	const cy = p.y + p.h / 2;
+	return !isInClearanceZone(cx, cy, clearanceZones);
 }).map((p) => {
-	const type = getType(p.href);
-	const scale = SIZE_SCALE[type] ?? 0.6;
+	const scale = SIZE_SCALE[p.type] ?? 0.6;
 	const newW = p.w * scale;
 	const newH = p.h * scale;
 	// Centre the shrunken icon on the original centre point
@@ -193,7 +213,7 @@ const ReliefLayer = () => {
 		setPaneReady(true);
 	}, [map]);
 
-	if (!paneReady || visiblePlacements.length === 0) return null;
+	if (!paneReady || (visiblePlacements.length === 0 && TERRAIN_COMPOSITES.length === 0)) return null;
 
 	const bounds = L.latLngBounds(
 		L.latLng(MAP_CONFIG.BOUNDS_SW[0], MAP_CONFIG.BOUNDS_SW[1]),
@@ -211,6 +231,29 @@ const ReliefLayer = () => {
 						</symbol>
 					))}
 				</defs>
+				{/* Composite terrain shapes (ridgelines + canopies) */}
+				{TERRAIN_COMPOSITES.map((comp, i) => (
+					<g key={`comp-${i}`}>
+						<path
+							d={comp.outline}
+							fill="none"
+							stroke="black"
+							strokeWidth={comp.kind === 'ridge' ? 1.0 : 0.7}
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+						{comp.hatching && (
+							<path
+								d={comp.hatching}
+								fill="none"
+								stroke="black"
+								strokeWidth={0.4}
+								strokeLinecap="round"
+							/>
+						)}
+					</g>
+				))}
+				{/* Individual icons */}
 				{visiblePlacements.map((p, i) => (
 					<use
 						key={i}
