@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { SVGOverlay, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
-import { RELIEF_SYMBOLS, RELIEF_PLACEMENTS } from '@/lib/relief-data';
+import { RELIEF_SYMBOLS } from '@/lib/relief-data';
+import { TERRAIN_COMPOSITES, TERRAIN_INDIVIDUALS } from '@/lib/terrain-data';
 
 // ---------------------------------------------------------------------------
 // Tolkien-style SVG symbol content by type.
@@ -155,18 +156,12 @@ function posHash(x: number, y: number): number {
 	return n - Math.floor(n);
 }
 
-function getType(href: string): string {
-	return href.replace(/^relief-/, '').replace(/-\d+$/, '');
-}
-
 /** Pre-compute the filtered + resized placement list once at module load. */
-const visiblePlacements = RELIEF_PLACEMENTS.filter((p) => {
-	const type = getType(p.href);
-	const rate = KEEP_RATE[type] ?? 0.3;
+const visiblePlacements = TERRAIN_INDIVIDUALS.filter((p) => {
+	const rate = KEEP_RATE[p.type] ?? 0.3;
 	return posHash(p.x, p.y) < rate;
 }).map((p) => {
-	const type = getType(p.href);
-	const scale = SIZE_SCALE[type] ?? 0.6;
+	const scale = SIZE_SCALE[p.type] ?? 0.6;
 	const newW = p.w * scale;
 	const newH = p.h * scale;
 	// Centre the shrunken icon on the original centre point
@@ -193,7 +188,7 @@ const ReliefLayer = () => {
 		setPaneReady(true);
 	}, [map]);
 
-	if (!paneReady || visiblePlacements.length === 0) return null;
+	if (!paneReady || (visiblePlacements.length === 0 && TERRAIN_COMPOSITES.length === 0)) return null;
 
 	const bounds = L.latLngBounds(
 		L.latLng(MAP_CONFIG.BOUNDS_SW[0], MAP_CONFIG.BOUNDS_SW[1]),
@@ -211,6 +206,29 @@ const ReliefLayer = () => {
 						</symbol>
 					))}
 				</defs>
+				{/* Composite terrain shapes (ridgelines + canopies) */}
+				{TERRAIN_COMPOSITES.map((comp, i) => (
+					<g key={`comp-${i}`}>
+						<path
+							d={comp.outline}
+							fill="none"
+							stroke="black"
+							strokeWidth={comp.kind === 'ridge' ? 1.0 : 0.7}
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+						{comp.hatching && (
+							<path
+								d={comp.hatching}
+								fill="none"
+								stroke="black"
+								strokeWidth={0.4}
+								strokeLinecap="round"
+							/>
+						)}
+					</g>
+				))}
+				{/* Individual icons */}
 				{visiblePlacements.map((p, i) => (
 					<use
 						key={i}
