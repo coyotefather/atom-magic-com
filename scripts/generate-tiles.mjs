@@ -712,6 +712,45 @@ function generateOceanContours(geojson) {
 		}
 	}
 
+	// Outward contours (into ocean) — solid coastline echo lines
+	const OUTWARD_OFFSETS = [0.008, 0.018, 0.03];
+	for (let i = 0; i < OUTWARD_OFFSETS.length; i++) {
+		const distance = -OUTWARD_OFFSETS[i]; // negative = outward into ocean
+		const contourLines = [];
+
+		for (const feature of geojson.features) {
+			let rings;
+			if (feature.geometry.type === 'Polygon') {
+				rings = [feature.geometry.coordinates[0]];
+			} else if (feature.geometry.type === 'MultiPolygon') {
+				rings = feature.geometry.coordinates.map((p) => p[0]);
+			} else {
+				continue;
+			}
+
+			for (const ring of rings) {
+				if (ring.length < 4) continue;
+				const offset = offsetRing(ring, distance);
+				if (offset && offset.length >= 4) {
+					contourLines.push(offset);
+				}
+			}
+		}
+
+		if (contourLines.length > 0) {
+			features.push({
+				type: 'Feature',
+				properties: { depth: -(i + 1), direction: 'outward' },
+				geometry: {
+					type: 'MultiLineString',
+					coordinates: contourLines,
+				},
+			});
+			const totalVerts = contourLines.reduce((sum, l) => sum + l.length, 0);
+			console.log('  Outward ' + (i + 1) + ' (offset ' + OUTWARD_OFFSETS[i] + '): ' + contourLines.length + ' contours, ' + totalVerts + ' vertices');
+		}
+	}
+
 	console.log('Generated ' + features.length + ' contour depth levels');
 	return { type: 'FeatureCollection', features };
 }
