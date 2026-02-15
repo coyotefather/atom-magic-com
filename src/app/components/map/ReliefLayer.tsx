@@ -6,6 +6,7 @@ import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
 import { RELIEF_SYMBOLS } from '@/lib/relief-data';
 import { TERRAIN_COMPOSITES, TERRAIN_INDIVIDUALS } from '@/lib/terrain-data';
+import { computeClearanceZones, type LabelBBox } from '@/lib/label-config';
 
 // ---------------------------------------------------------------------------
 // Tolkien-style SVG symbol content by type.
@@ -150,6 +151,26 @@ const SIZE_SCALE: Record<string, number> = {
 	deadTree: 0.55,
 };
 
+/** Check whether a point falls inside any rotated-rect clearance zone. */
+function isInClearanceZone(px: number, py: number, zones: LabelBBox[]): boolean {
+	for (const zone of zones) {
+		const rad = (-zone.angle * Math.PI) / 180;
+		const cos = Math.cos(rad);
+		const sin = Math.sin(rad);
+		const dx = px - zone.cx;
+		const dy = py - zone.cy;
+		const localX = dx * cos - dy * sin;
+		const localY = dx * sin + dy * cos;
+		if (Math.abs(localX) < zone.halfW && Math.abs(localY) < zone.halfH) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/** Pre-computed label clearance zones so terrain icons don't crowd text. */
+const clearanceZones = computeClearanceZones(12);
+
 /** Deterministic hash (0–1) from placement position so thinning is stable. */
 function posHash(x: number, y: number): number {
 	const n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
@@ -160,6 +181,10 @@ function posHash(x: number, y: number): number {
 const visiblePlacements = TERRAIN_INDIVIDUALS.filter((p) => {
 	const rate = KEEP_RATE[p.type] ?? 0.3;
 	return posHash(p.x, p.y) < rate;
+}).filter((p) => {
+	const cx = p.x + p.w / 2;
+	const cy = p.y + p.h / 2;
+	return !isInClearanceZone(cx, cy, clearanceZones);
 }).map((p) => {
 	const scale = SIZE_SCALE[p.type] ?? 0.6;
 	const newW = p.w * scale;
