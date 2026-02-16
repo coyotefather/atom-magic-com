@@ -85,6 +85,39 @@
 	max-width: 200px;
 }
 
+/* ── Hand-drawn SVG filter effects ── */
+
+/* Stronger wobble for region borders and coastline */
+.solum-map .leaflet-overlay-pane svg {
+	filter: url(#solum-ink);
+}
+
+/* Subtle wobble for relief icons */
+.solum-map [style*="z-index: 250"] svg {
+	filter: url(#solum-pencil);
+}
+
+/* Subtle wobble for rivers */
+.solum-map [style*="z-index: 420"] svg {
+	filter: url(#solum-pencil);
+}
+
+/* Subtle wobble for contours */
+.solum-map [style*="z-index: 150"] svg {
+	filter: url(#solum-pencil);
+}
+
+/* No filter on labels and capitals — keep text crisp */
+.solum-map [style*="z-index: 500"] svg,
+.solum-map [style*="z-index: 520"] svg {
+	filter: none;
+}
+
+/* No filter on spotlight mask */
+.solum-map [style*="z-index: 450"] svg {
+	filter: none;
+}
+
 /* Remove browser focus outline on region paths; use themed glow instead */
 .solum-map .leaflet-interactive:focus {
 	outline: none;
