@@ -238,7 +238,7 @@ const ReliefLayer = () => {
 							d={comp.outline}
 							fill="none"
 							stroke="black"
-							strokeWidth={comp.kind === 'ridge' ? 1.0 : 0.7}
+							strokeWidth={1.0}
 							strokeLinecap="round"
 							strokeLinejoin="round"
 						/>

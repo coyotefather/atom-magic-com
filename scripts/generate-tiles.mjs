@@ -501,44 +501,57 @@ function clusterPlacements(placements, maxDistance = 40) {
 }
 
 function generateMountainRidgeline(cluster) {
-	const sorted = cluster
+	const all = cluster
 		.map(p => ({ cx: p.x + p.w / 2, cy: p.y + p.h / 2, size: p.w }))
 		.sort((a, b) => a.cx - b.cx);
 
-	const maxY = Math.max(...sorted.map(p => p.cy + p.size * 0.3));
-	const baseY = maxY + 2;
-
-	// Build ridgeline path
-	let d = `M ${sorted[0].cx - sorted[0].size * 0.6},${baseY}`;
-	for (const p of sorted) {
-		const peakH = p.size * 0.8;
-		const peakTop = p.cy - peakH * 0.5;
-		const halfW = p.size * 0.35;
-		d += ` L ${p.cx - halfW},${baseY}`;
-		d += ` L ${p.cx},${peakTop}`;
-		d += ` L ${p.cx + halfW},${baseY}`;
+	// Subsample to max ~12 representative peaks so ridgeline stays clean
+	const MAX_PEAKS = 12;
+	let peaks;
+	if (all.length <= MAX_PEAKS) {
+		peaks = all;
+	} else {
+		peaks = [];
+		const step = (all.length - 1) / (MAX_PEAKS - 1);
+		for (let i = 0; i < MAX_PEAKS; i++) {
+			const idx = Math.round(i * step);
+			peaks.push(all[idx]);
+		}
 	}
-	d += ` L ${sorted[sorted.length - 1].cx + sorted[sorted.length - 1].size * 0.6},${baseY}`;
 
-	// Generate hatching lines on right side of each peak
+	// Compute baseline from peaks only
+	const maxY = Math.max(...peaks.map(p => p.cy + p.size * 0.2));
+	const baseY = maxY + 1;
+
+	// Build ridgeline as smooth connected peaks
+	const peakHeight = 6; // fixed peak height in SVG units
+	const peakWidth = 8;  // fixed half-width for each peak
+	let d = `M ${(peaks[0].cx - peakWidth).toFixed(1)},${baseY.toFixed(1)}`;
+	for (const p of peaks) {
+		const top = (baseY - peakHeight - (p.size * 0.15)).toFixed(1);
+		d += ` L ${(p.cx - peakWidth * 0.6).toFixed(1)},${baseY.toFixed(1)}`;
+		d += ` L ${p.cx.toFixed(1)},${top}`;
+		d += ` L ${(p.cx + peakWidth * 0.6).toFixed(1)},${baseY.toFixed(1)}`;
+	}
+	d += ` L ${(peaks[peaks.length - 1].cx + peakWidth).toFixed(1)},${baseY.toFixed(1)}`;
+
+	// Light hatching — 2 short lines per peak on the right side
 	const hatching = [];
-	for (const p of sorted) {
-		const peakTop = p.cy - p.size * 0.8 * 0.5;
-		const halfW = p.size * 0.35;
-		for (let h = 0; h < 3; h++) {
-			const t = 0.3 + h * 0.25;
-			const y1 = peakTop + (baseY - peakTop) * t * 0.6;
-			const y2 = peakTop + (baseY - peakTop) * (t + 0.15);
-			const x1 = p.cx + halfW * t * 0.4;
-			const x2 = p.cx + halfW * (t + 0.3);
+	for (const p of peaks) {
+		const top = baseY - peakHeight - (p.size * 0.15);
+		for (let h = 0; h < 2; h++) {
+			const t = 0.35 + h * 0.3;
+			const y1 = top + (baseY - top) * t;
+			const y2 = y1 + (baseY - top) * 0.15;
+			const x1 = p.cx + peakWidth * 0.1 * (1 + h);
+			const x2 = x1 + peakWidth * 0.25;
 			hatching.push(`M ${x1.toFixed(1)},${y1.toFixed(1)} L ${x2.toFixed(1)},${y2.toFixed(1)}`);
 		}
 	}
 
-	// Bounding box for clearance zone detection
-	const minX = Math.min(...sorted.map(p => p.cx - p.size * 0.6));
-	const maxX = Math.max(...sorted.map(p => p.cx + p.size * 0.6));
-	const minY = Math.min(...sorted.map(p => p.cy - p.size * 0.8 * 0.5));
+	const minX = peaks[0].cx - peakWidth;
+	const maxX = peaks[peaks.length - 1].cx + peakWidth;
+	const minY = baseY - peakHeight - Math.max(...peaks.map(p => p.size * 0.15));
 
 	return {
 		outline: d,
@@ -547,64 +560,9 @@ function generateMountainRidgeline(cluster) {
 	};
 }
 
-function convexHull(points) {
-	if (points.length < 3) return points;
-	const pts = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-	function cross(O, A, B) {
-		return (A[0] - O[0]) * (B[1] - O[1]) - (A[1] - O[1]) * (B[0] - O[0]);
-	}
-	const lower = [];
-	for (const p of pts) {
-		while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], p) <= 0) lower.pop();
-		lower.push(p);
-	}
-	const upper = [];
-	for (const p of [...pts].reverse()) {
-		while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0) upper.pop();
-		upper.push(p);
-	}
-	return lower.slice(0, -1).concat(upper.slice(0, -1));
-}
-
-function generateForestCanopy(cluster) {
-	const points = cluster
-		.map(p => ({ cx: p.x + p.w / 2, cy: p.y + p.h / 2, size: p.w }))
-		.sort((a, b) => a.cx - b.cx);
-
-	const hull = convexHull(points.map(p => [p.cx, p.cy]));
-	if (hull.length < 3) return null;
-
-	// Create bumpy outline with quadratic curves between hull points
-	let d = `M ${hull[0][0].toFixed(1)},${hull[0][1].toFixed(1)}`;
-	for (let i = 1; i <= hull.length; i++) {
-		const prev = hull[i - 1];
-		const curr = hull[i % hull.length];
-		const midX = (prev[0] + curr[0]) / 2;
-		const midY = (prev[1] + curr[1]) / 2;
-		const dx = curr[0] - prev[0];
-		const dy = curr[1] - prev[1];
-		const len = Math.sqrt(dx * dx + dy * dy);
-		if (len < 1e-6) continue;
-		const bumpSize = Math.min(len * 0.15, 8);
-		const nx = -dy / len * bumpSize;
-		const ny = dx / len * bumpSize;
-		d += ` Q ${(midX + nx).toFixed(1)},${(midY + ny).toFixed(1)} ${curr[0].toFixed(1)},${curr[1].toFixed(1)}`;
-	}
-
-	const xs = hull.map(p => p[0]);
-	const ys = hull.map(p => p[1]);
-
-	return {
-		outline: d,
-		bbox: { minX: Math.min(...xs), minY: Math.min(...ys), maxX: Math.max(...xs), maxY: Math.max(...ys) },
-	};
-}
-
 function generateTerrainData(relief) {
 	const { placements } = relief;
-	const COMPOSITE_TYPES = new Set(['mount', 'mountSnow', 'hill', 'conifer', 'coniferSnow', 'deciduous', 'acacia', 'palm']);
 	const MOUNTAIN_TYPES = new Set(['mount', 'mountSnow', 'hill']);
-	const INDIVIDUAL_TYPES = new Set(['grass', 'dune', 'swamp', 'vulcan', 'cactus', 'deadTree']);
 	const MIN_CLUSTER_SIZE = 5;
 
 	const byType = {};
@@ -618,11 +576,8 @@ function generateTerrainData(relief) {
 	const individuals = [];
 
 	for (const [type, pts] of Object.entries(byType)) {
-		if (INDIVIDUAL_TYPES.has(type)) {
-			individuals.push(...pts.map(p => ({ ...p, type })));
-			continue;
-		}
-		if (!COMPOSITE_TYPES.has(type)) {
+		// Only mountain/hill types get composite ridgelines; everything else stays individual
+		if (!MOUNTAIN_TYPES.has(type)) {
 			individuals.push(...pts.map(p => ({ ...p, type })));
 			continue;
 		}
@@ -634,31 +589,15 @@ function generateTerrainData(relief) {
 				continue;
 			}
 
-			if (MOUNTAIN_TYPES.has(type)) {
-				const ridge = generateMountainRidgeline(cluster);
-				composites.push({
-					type,
-					kind: 'ridge',
-					outline: ridge.outline,
-					hatching: ridge.hatching,
-					bbox: ridge.bbox,
-					pointCount: cluster.length,
-				});
-			} else {
-				const canopy = generateForestCanopy(cluster);
-				if (canopy) {
-					composites.push({
-						type,
-						kind: 'canopy',
-						outline: canopy.outline,
-						hatching: '',
-						bbox: canopy.bbox,
-						pointCount: cluster.length,
-					});
-				} else {
-					individuals.push(...cluster.map(p => ({ ...p, type })));
-				}
-			}
+			const ridge = generateMountainRidgeline(cluster);
+			composites.push({
+				type,
+				kind: 'ridge',
+				outline: ridge.outline,
+				hatching: ridge.hatching,
+				bbox: ridge.bbox,
+				pointCount: cluster.length,
+			});
 		}
 	}
 
@@ -681,7 +620,7 @@ function writeTerrainData({ composites, individuals }) {
 		'',
 		'export interface TerrainComposite {',
 		'\ttype: string;',
-		'\tkind: "ridge" | "canopy";',
+		'\tkind: "ridge";',
 		'\toutline: string;',
 		'\thatching: string;',
 		'\tbbox: { minX: number; minY: number; maxX: number; maxY: number };',
@@ -950,45 +889,6 @@ function generateOceanContours(geojson) {
 			});
 			const totalVerts = contourLines.reduce((sum, l) => sum + l.length, 0);
 			console.log('  Depth ' + (depth + 1) + ' (offset ' + distance + '): ' + contourLines.length + ' contours, ' + totalVerts + ' vertices');
-		}
-	}
-
-	// Outward contours (into ocean) — solid coastline echo lines
-	const OUTWARD_OFFSETS = [0.008, 0.018, 0.03];
-	for (let i = 0; i < OUTWARD_OFFSETS.length; i++) {
-		const distance = -OUTWARD_OFFSETS[i]; // negative = outward into ocean
-		const contourLines = [];
-
-		for (const feature of geojson.features) {
-			let rings;
-			if (feature.geometry.type === 'Polygon') {
-				rings = [feature.geometry.coordinates[0]];
-			} else if (feature.geometry.type === 'MultiPolygon') {
-				rings = feature.geometry.coordinates.map((p) => p[0]);
-			} else {
-				continue;
-			}
-
-			for (const ring of rings) {
-				if (ring.length < 4) continue;
-				const offset = offsetRing(ring, distance);
-				if (offset && offset.length >= 4) {
-					contourLines.push(offset);
-				}
-			}
-		}
-
-		if (contourLines.length > 0) {
-			features.push({
-				type: 'Feature',
-				properties: { depth: -(i + 1), direction: 'outward' },
-				geometry: {
-					type: 'MultiLineString',
-					coordinates: contourLines,
-				},
-			});
-			const totalVerts = contourLines.reduce((sum, l) => sum + l.length, 0);
-			console.log('  Outward ' + (i + 1) + ' (offset ' + OUTWARD_OFFSETS[i] + '): ' + contourLines.length + ' contours, ' + totalVerts + ' vertices');
 		}
 	}
 
