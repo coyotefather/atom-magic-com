@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react';
 import { SVGOverlay, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
-import { RELIEF_SYMBOLS } from '@/lib/relief-data';
-import { TERRAIN_COMPOSITES, TERRAIN_INDIVIDUALS } from '@/lib/terrain-data';
+import { RELIEF_SYMBOLS, RELIEF_PLACEMENTS } from '@/lib/relief-data';
 import { computeClearanceZones, type LabelBBox } from '@/lib/label-config';
 
 // ---------------------------------------------------------------------------
@@ -177,8 +176,16 @@ function posHash(x: number, y: number): number {
 	return n - Math.floor(n);
 }
 
+/** Derive terrain type from href (e.g. "relief-mount-1" -> "mount"). */
+function hrefToType(href: string): string {
+	return href.replace(/^relief-/, '').replace(/-\d+$/, '');
+}
+
 /** Pre-compute the filtered + resized placement list once at module load. */
-const visiblePlacements = TERRAIN_INDIVIDUALS.filter((p) => {
+const visiblePlacements = RELIEF_PLACEMENTS.map((p) => ({
+	...p,
+	type: hrefToType(p.href),
+})).filter((p) => {
 	const rate = KEEP_RATE[p.type] ?? 0.3;
 	return posHash(p.x, p.y) < rate;
 }).filter((p) => {
@@ -213,7 +220,7 @@ const ReliefLayer = () => {
 		setPaneReady(true);
 	}, [map]);
 
-	if (!paneReady || (visiblePlacements.length === 0 && TERRAIN_COMPOSITES.length === 0)) return null;
+	if (!paneReady || visiblePlacements.length === 0) return null;
 
 	const bounds = L.latLngBounds(
 		L.latLng(MAP_CONFIG.BOUNDS_SW[0], MAP_CONFIG.BOUNDS_SW[1]),
@@ -231,28 +238,6 @@ const ReliefLayer = () => {
 						</symbol>
 					))}
 				</defs>
-				{/* Composite terrain shapes (ridgelines + canopies) */}
-				{TERRAIN_COMPOSITES.map((comp, i) => (
-					<g key={`comp-${i}`}>
-						<path
-							d={comp.outline}
-							fill="none"
-							stroke="black"
-							strokeWidth={1.0}
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-						{comp.hatching && (
-							<path
-								d={comp.hatching}
-								fill="none"
-								stroke="black"
-								strokeWidth={0.4}
-								strokeLinecap="round"
-							/>
-						)}
-					</g>
-				))}
 				{/* Individual icons */}
 				{visiblePlacements.map((p, i) => (
 					<use
