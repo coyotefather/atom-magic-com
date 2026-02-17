@@ -14,6 +14,7 @@ import CoastlineShadow from './CoastlineShadow';
 import OceanContours from './OceanContours';
 import LakesLayer from './LakesLayer';
 import ReliefLayer from './ReliefLayer';
+import RoughBorders from './RoughBorders';
 import RegionShadows from './RegionShadows';
 import RiversLayer from './RiversLayer';
 
@@ -88,6 +89,7 @@ const SolumMap = () => {
 				<LakesLayer />
 				<ReliefLayer />
 				<RegionOverlay onRegionFocus={handleRegionFocus} />
+				<RoughBorders />
 				<RegionShadows />
 				<RiversLayer />
 				<RegionLabels focusedRegionId={focusedRegion?.regionId} />
