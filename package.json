@@ -53,6 +53,7 @@
     "remark-gfm": "^4.0.0",
     "remark-heading-id": "^1.0.1",
     "resend": "^6.9.2",
+    "roughjs": "^4.6.6",
     "sanity": "5.9.0",
     "sanity-plugin-markdown": "^8.0.5",
     "seeded-rand": "^4.0.0",

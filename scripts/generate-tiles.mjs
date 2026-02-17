@@ -910,6 +910,183 @@ function writeLakeData(lakes) {
 }
 
 // ---------------------------------------------------------------------------
+// 13. Compute terrain density clusters from relief placements
+// ---------------------------------------------------------------------------
+
+function computeTerrainClusters(relief) {
+	console.log('\n=== Terrain Cluster Analysis ===');
+	const { placements } = relief;
+
+	// Map dimensions
+	const MAP_W = 1438;
+	const MAP_H = 755;
+	const CELL_SIZE = 60; // SVG units per grid cell
+	const COLS = Math.ceil(MAP_W / CELL_SIZE); // ~18
+	const ROWS = Math.ceil(MAP_H / CELL_SIZE); // ~10
+
+	// Types eligible for clustering
+	const CLUSTERABLE = new Set([
+		'mount', 'mountSnow', 'hill', 'conifer', 'coniferSnow',
+		'deciduous', 'acacia', 'palm',
+	]);
+
+	// Group placements by terrain type (strip variant number suffix)
+	const byType = new Map();
+	for (const p of placements) {
+		const type = p.href.replace(/-\d+$/, '').replace(/^relief-/, '');
+		if (!CLUSTERABLE.has(type)) continue;
+		if (!byType.has(type)) byType.set(type, []);
+		byType.get(type).push(p);
+	}
+
+	console.log('Clusterable types: ' + [...byType.keys()].join(', '));
+
+	const allClusters = [];
+
+	for (const [type, typePlacements] of byType) {
+		// Grid-bin placements
+		const grid = Array.from({ length: ROWS }, () => new Array(COLS).fill(0));
+		const gridPlacements = Array.from({ length: ROWS }, () =>
+			Array.from({ length: COLS }, () => [])
+		);
+
+		for (const p of typePlacements) {
+			const col = Math.min(Math.floor(p.x / CELL_SIZE), COLS - 1);
+			const row = Math.min(Math.floor(p.y / CELL_SIZE), ROWS - 1);
+			grid[row][col]++;
+			gridPlacements[row][col].push(p);
+		}
+
+		// Compute density threshold from non-zero cells
+		const nonZero = [];
+		for (let r = 0; r < ROWS; r++) {
+			for (let c = 0; c < COLS; c++) {
+				if (grid[r][c] > 0) nonZero.push(grid[r][c]);
+			}
+		}
+
+		if (nonZero.length === 0) continue;
+
+		const mean = nonZero.reduce((a, b) => a + b, 0) / nonZero.length;
+		const variance = nonZero.reduce((a, v) => a + (v - mean) ** 2, 0) / nonZero.length;
+		const stddev = Math.sqrt(variance);
+		const threshold = Math.max(2, mean + 0.25 * stddev);
+
+		// Mark high-density cells
+		const highDensity = Array.from({ length: ROWS }, () => new Array(COLS).fill(false));
+		for (let r = 0; r < ROWS; r++) {
+			for (let c = 0; c < COLS; c++) {
+				if (grid[r][c] >= threshold) highDensity[r][c] = true;
+			}
+		}
+
+		// Flood-fill adjacent high-density cells into cluster regions
+		const visited = Array.from({ length: ROWS }, () => new Array(COLS).fill(false));
+		const typeClusters = [];
+
+		for (let r = 0; r < ROWS; r++) {
+			for (let c = 0; c < COLS; c++) {
+				if (!highDensity[r][c] || visited[r][c]) continue;
+
+				// BFS flood-fill
+				const queue = [[r, c]];
+				visited[r][c] = true;
+				const clusterCells = [];
+
+				while (queue.length > 0) {
+					const [cr, cc] = queue.shift();
+					clusterCells.push([cr, cc]);
+
+					// 4-connected neighbors
+					for (const [dr, dc] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+						const nr = cr + dr;
+						const nc = cc + dc;
+						if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS &&
+							highDensity[nr][nc] && !visited[nr][nc]) {
+							visited[nr][nc] = true;
+							queue.push([nr, nc]);
+						}
+					}
+				}
+
+				// Compute weighted centroid and total count
+				let totalCount = 0;
+				let weightedX = 0;
+				let weightedY = 0;
+
+				for (const [cr, cc] of clusterCells) {
+					const cellPlacements = gridPlacements[cr][cc];
+					const count = cellPlacements.length;
+					totalCount += count;
+					for (const p of cellPlacements) {
+						weightedX += p.x;
+						weightedY += p.y;
+					}
+				}
+
+				if (totalCount > 0) {
+					typeClusters.push({
+						type,
+						cx: Math.round((weightedX / totalCount) * 10) / 10,
+						cy: Math.round((weightedY / totalCount) * 10) / 10,
+						count: totalCount,
+					});
+				}
+			}
+		}
+
+		// Normalize scale per type: largest = 1.0, smallest = 0.4
+		if (typeClusters.length > 0) {
+			const counts = typeClusters.map((c) => c.count);
+			const maxCount = Math.max(...counts);
+			const minCount = Math.min(...counts);
+			const range = maxCount - minCount;
+
+			for (const cluster of typeClusters) {
+				cluster.scale = range > 0
+					? Math.round((0.4 + 0.6 * ((cluster.count - minCount) / range)) * 100) / 100
+					: 1.0;
+			}
+
+			allClusters.push(...typeClusters);
+			console.log('  ' + type + ': ' + typePlacements.length + ' placements -> ' +
+				typeClusters.length + ' clusters (threshold=' + threshold.toFixed(1) + ')');
+		}
+	}
+
+	console.log('Total clusters: ' + allClusters.length);
+	return allClusters;
+}
+
+// ---------------------------------------------------------------------------
+// 14. Write src/lib/cluster-placements.ts
+// ---------------------------------------------------------------------------
+
+function writeClusterData(clusters) {
+	const tsLines = [
+		'/**',
+		' * Terrain cluster data computed from relief placement density analysis.',
+		' * Generated by scripts/generate-tiles.mjs — do not edit by hand.',
+		' */',
+		'',
+		'export interface TerrainCluster {',
+		'\ttype: string;',
+		'\tcx: number;',
+		'\tcy: number;',
+		'\tcount: number;',
+		'\tscale: number;',
+		'}',
+		'',
+		'export const TERRAIN_CLUSTERS: TerrainCluster[] = ' + JSON.stringify(clusters, null, '\t') + ';',
+		'',
+	];
+
+	const outPath = resolve('src/lib/cluster-placements.ts');
+	writeFileSync(outPath, tsLines.join('\n'), 'utf-8');
+	console.log('Wrote ' + outPath + ' (' + clusters.length + ' clusters)');
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
@@ -920,6 +1097,7 @@ function main() {
 	const capitals = extractCapitals(mapData);
 	const { biomeLegend, regionBiomes } = extractBiomes(mapData);
 	const relief = extractRelief(mapData);
+	const clusters = computeTerrainClusters(relief);
 	const rivers = extractRivers(mapData);
 	const lakes = extractLakes(mapData);
 	const oceanContours = generateOceanContours(data.geojson);
@@ -927,6 +1105,7 @@ function main() {
 	writeReliefData(relief);
 	writeRiverData(rivers);
 	writeLakeData(lakes);
+	writeClusterData(clusters);
 
 	console.log('\n=== Done! ===');
 	console.log('Next steps:');

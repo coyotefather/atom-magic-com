@@ -6,6 +6,9 @@ import L from 'leaflet';
 import rough from 'roughjs';
 import { MAP_CONFIG, REGION_BOUNDARIES } from '@/lib/map-data';
 
+/**
+ * Converts a GeoJSON coordinate ring ([lng, lat] pairs) to an SVG path string.
+ */
 function ringToSvgPath(ring: number[][]): string {
 	return ring.map((coord, i) => {
 		const x = coord[0] * 32;
@@ -15,22 +18,19 @@ function ringToSvgPath(ring: number[][]): string {
 }
 
 /**
- * Renders all region polygons as solid paper fills with a bold ink coastline
- * and subtle drop-shadow, drawn through Rough.js for a hand-drawn appearance.
+ * Renders region boundary polygons through Rough.js for a hand-drawn ink effect.
+ * Uses its own SVGOverlay pane at z-index 410 (above RegionOverlay, below rivers).
  */
-const CoastlineShadow = () => {
+const RoughBorders = () => {
 	const map = useMap();
 	const [paneReady, setPaneReady] = useState(false);
 	const gRef = useRef<SVGGElement>(null);
 	const svgRef = useRef<SVGSVGElement>(null);
 
 	useEffect(() => {
-		if (!map.getPane('coastlineShadowPane')) {
-			map.createPane('coastlineShadowPane');
-			const pane = map.getPane('coastlineShadowPane')!;
-			pane.style.zIndex = '140';
-			pane.style.filter =
-				'drop-shadow(0 0 4px rgba(0, 0, 0, 0.25)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.15))';
+		if (!map.getPane('roughBorderPane')) {
+			map.createPane('roughBorderPane');
+			map.getPane('roughBorderPane')!.style.zIndex = '410';
 		}
 		setPaneReady(true);
 	}, [map]);
@@ -39,18 +39,18 @@ const CoastlineShadow = () => {
 		if (!paneReady || !gRef.current || !svgRef.current) return;
 
 		const g = gRef.current;
+		// Clear previous rough elements
 		while (g.firstChild) {
 			g.removeChild(g.firstChild);
 		}
 
 		const rc = rough.svg(svgRef.current);
 		const opts = {
-			roughness: 1.0,
-			strokeWidth: 2.5,
-			bowing: 1.2,
+			roughness: 0.8,
+			strokeWidth: 1.5,
+			bowing: 1,
 			stroke: '#1a1a1a',
-			fill: '#F5F3ED',
-			fillStyle: 'solid' as const,
+			fill: 'none',
 		};
 
 		for (const feature of REGION_BOUNDARIES.features) {
@@ -75,7 +75,7 @@ const CoastlineShadow = () => {
 	);
 
 	return (
-		<SVGOverlay bounds={bounds} pane="coastlineShadowPane" interactive={false}>
+		<SVGOverlay bounds={bounds} pane="roughBorderPane" interactive={false}>
 			<svg
 				ref={svgRef}
 				viewBox={`0 0 ${MAP_CONFIG.SVG_WIDTH} ${MAP_CONFIG.SVG_HEIGHT}`}
@@ -87,4 +87,4 @@ const CoastlineShadow = () => {
 	);
 };
 
-export default CoastlineShadow;
+export default RoughBorders;
