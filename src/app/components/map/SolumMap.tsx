@@ -76,7 +76,7 @@ const SolumMap = () => {
 					{/* Subtle wobble for region borders, coastlines, contours, rivers */}
 					<filter id="solum-pencil" x="-2%" y="-2%" width="104%" height="104%">
 						<feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="3" seed="2" result="noise" />
-						<feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G" />
+						<feDisplacementMap in="SourceGraphic" in2="noise" scale="1" xChannelSelector="R" yChannelSelector="G" />
 					</filter>
 					{/* Slightly stronger wobble for the coastline shadow and region borders */}
 					<filter id="solum-ink" x="-3%" y="-3%" width="106%" height="106%">
