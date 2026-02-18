@@ -46,11 +46,12 @@ const RoughBorders = () => {
 
 		const rc = rough.svg(svgRef.current);
 		const opts = {
-			roughness: 0.8,
-			strokeWidth: 1.5,
-			bowing: 1,
+			roughness: 0.35,
+			strokeWidth: 0.9,
+			bowing: 0.4,
 			stroke: '#1a1a1a',
 			fill: 'none',
+			disableMultiStroke: true,
 		};
 
 		for (const feature of REGION_BOUNDARIES.features) {
