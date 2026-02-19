@@ -58,6 +58,7 @@ export interface SessionSummary {
 	entryCount: number;
 	keyEventCount: number;
 	lastModified: string;
+	campaignId?: string;
 }
 
 // The roster of all saved sessions

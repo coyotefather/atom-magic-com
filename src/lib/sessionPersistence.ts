@@ -84,6 +84,7 @@ export const saveSessionById = (id: string, session: Session): void => {
 			entryCount: session.entries.length,
 			keyEventCount: countKeyEvents(session.entries),
 			lastModified: session.lastModified,
+			campaignId: session.campaignId,
 		};
 
 		if (summaryIndex >= 0) {
