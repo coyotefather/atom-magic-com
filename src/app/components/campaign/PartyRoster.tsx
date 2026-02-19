@@ -13,6 +13,7 @@ interface PartyRosterProps {
 
 const PartyRoster = ({ partyCharacterIds, onAdd, onRemove }: PartyRosterProps) => {
 	const [allCharacters, setAllCharacters] = useState<CharacterSummary[]>([]);
+	const [selectedCharacterId, setSelectedCharacterId] = useState('');
 
 	useEffect(() => {
 		const roster = getRoster();
@@ -74,12 +75,12 @@ const PartyRoster = ({ partyCharacterIds, onAdd, onRemove }: PartyRosterProps) =
 				<div className="flex items-center gap-3">
 					<select
 						id="add-character-select"
+						value={selectedCharacterId}
 						className="flex-1 px-3 py-2 border-2 border-stone bg-white text-sm focus:border-bronze focus:outline-none"
-						defaultValue=""
 						onChange={e => {
 							if (e.target.value) {
 								onAdd(e.target.value);
-								e.target.value = '';
+								setSelectedCharacterId('');
 							}
 						}}
 					>

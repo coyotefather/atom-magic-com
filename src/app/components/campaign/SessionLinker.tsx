@@ -1,9 +1,9 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Icon from '@mdi/react';
 import { mdiLink, mdiLinkOff, mdiStar, mdiChevronDown, mdiChevronUp, mdiBookOpen } from '@mdi/js';
 import FunctionButton from '@/app/components/common/FunctionButton';
-import { SessionSummary, Session, formatFullTimestamp, getNoteCategoryLabel } from '@/lib/adventure-log-data';
+import { SessionSummary, Session, LogEntry, formatFullTimestamp, getNoteCategoryLabel } from '@/lib/adventure-log-data';
 import { getSessionById } from '@/lib/sessionPersistence';
 
 interface SessionLinkerProps {
@@ -20,15 +20,20 @@ const SessionLinker = ({
 	onUnlink,
 }: SessionLinkerProps) => {
 	const [expandedSessionId, setExpandedSessionId] = useState<string | null>(null);
+	const [keyEvents, setKeyEvents] = useState<LogEntry[]>([]);
+	const [selectedSessionId, setSelectedSessionId] = useState('');
+
+	useEffect(() => {
+		if (!expandedSessionId) {
+			setKeyEvents([]);
+			return;
+		}
+		const session = getSessionById(expandedSessionId) as Session | null;
+		setKeyEvents(session ? session.entries.filter(e => e.isKeyEvent) : []);
+	}, [expandedSessionId]);
 
 	const toggleExpand = (id: string) => {
 		setExpandedSessionId(prev => prev === id ? null : id);
-	};
-
-	const getKeyEvents = (sessionId: string) => {
-		const session = getSessionById(sessionId) as Session | null;
-		if (!session) return [];
-		return session.entries.filter(e => e.isKeyEvent);
 	};
 
 	return (
@@ -42,12 +47,12 @@ const SessionLinker = ({
 			{unlinkedSessions.length > 0 && (
 				<div className="flex items-center gap-3">
 					<select
+						value={selectedSessionId}
 						className="flex-1 px-3 py-2 border-2 border-stone bg-white text-sm focus:border-bronze focus:outline-none"
-						defaultValue=""
 						onChange={e => {
 							if (e.target.value) {
 								onLink(e.target.value);
-								e.target.value = '';
+								setSelectedSessionId('');
 							}
 						}}
 					>
@@ -82,7 +87,6 @@ const SessionLinker = ({
 			<div className="space-y-3">
 				{linkedSessions.map(summary => {
 					const isExpanded = expandedSessionId === summary.id;
-					const keyEvents = isExpanded ? getKeyEvents(summary.id) : [];
 
 					return (
 						<div key={summary.id} className="bg-white border-2 border-stone">
