@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Icon from '@mdi/react';
-import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight, mdiSwordCross, mdiBookOpenPageVariantOutline, mdiTools, mdiPaw } from '@mdi/js';
+import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight, mdiSwordCross, mdiBookOpenPageVariantOutline, mdiTools, mdiPaw, mdiMapMarkerMultiple } from '@mdi/js';
 import PageHero from '@/app/components/common/PageHero';
 
 export const metadata = {
@@ -49,6 +49,13 @@ const tools = [
 		description: 'Track rolls, character actions, and story events during sessions. Export key moments for recaps.',
 		href: '/adventure-log',
 		icon: mdiBookOpenPageVariantOutline,
+		color: 'laurel',
+	},
+	{
+		name: 'Campaign Dashboard',
+		description: 'Link adventure log sessions into a campaign, track your party roster, and review key events across sessions.',
+		href: '/campaign',
+		icon: mdiMapMarkerMultiple,
 		color: 'laurel',
 	},
 	{
