@@ -1,12 +1,7 @@
 import { Metadata } from 'next';
 import PageHero from '@/app/components/common/PageHero';
 import { mdiMapMarkerMultiple } from '@mdi/js';
-import dynamic from 'next/dynamic';
-
-const CampaignDashboard = dynamic(
-	() => import('@/app/components/campaign/CampaignDashboard'),
-	{ ssr: false }
-);
+import CampaignClientContainer from '@/app/components/campaign/CampaignClientContainer';
 
 export const metadata: Metadata = {
 	title: 'Campaign Dashboard | Atom Magic',
@@ -24,7 +19,7 @@ const Page = () => {
 				accentColor="laurel"
 			/>
 			<section className="container px-6 md:px-8 py-12">
-				<CampaignDashboard />
+				<CampaignClientContainer />
 			</section>
 		</main>
 	);
