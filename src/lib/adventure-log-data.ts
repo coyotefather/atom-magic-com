@@ -48,6 +48,7 @@ export interface Session {
 	entries: LogEntry[];
 	createdAt: string;
 	lastModified: string;
+	campaignId?: string;   // links this session to a campaign (optional)
 }
 
 // Session summary for roster display
