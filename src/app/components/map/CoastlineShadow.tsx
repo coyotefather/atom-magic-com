@@ -44,11 +44,11 @@ const CoastlineShadow = () => {
 		}
 
 		const rc = rough.svg(svgRef.current);
+		// Fill only — no stroke here. RoughBorders owns the border drawing.
+		// The pane drop-shadow creates the coastline glow on the land edge.
 		const opts = {
-			roughness: 1.0,
-			strokeWidth: 2.5,
-			bowing: 1.2,
-			stroke: '#1a1a1a',
+			roughness: 0,
+			stroke: 'none',
 			fill: '#F5F3ED',
 			fillStyle: 'solid' as const,
 		};
