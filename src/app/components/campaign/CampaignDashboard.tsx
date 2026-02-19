@@ -88,6 +88,7 @@ const CampaignDashboard = () => {
 
 	const handleLinkSession = (sessionId: string) => {
 		if (!campaign) return;
+		if (linkedSessions.some(s => s.id === sessionId)) return;
 		linkSessionToCampaign(sessionId, campaign.id);
 		// Move session from unlinked to linked in local state
 		const session = allSessions.find(s => s.id === sessionId);
