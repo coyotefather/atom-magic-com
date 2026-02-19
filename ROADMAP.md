@@ -77,7 +77,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 
 ## Campaign Management
 
-- [ ] **Campaign dashboard** - Link adventure logs together, track party progression across sessions
+- [X] **Campaign dashboard v1** - Link adventure logs together, track party progression across sessions
 - [ ] **Adventure scaling** - Tools for GMs to scale encounters and challenges to match party size/power:
   - Define party composition (number of players, average level/power)
   - Auto-suggest creature quantities and threat adjustments
