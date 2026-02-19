@@ -1,6 +1,6 @@
 'use client';
 import Icon from '@mdi/react';
-import { mdiPlus, mdiDelete, mdiStar } from '@mdi/js';
+import { mdiPlus, mdiDelete, mdiStar, mdiMapMarkerMultiple } from '@mdi/js';
 import FunctionButton from '@/app/components/common/FunctionButton';
 import { SessionSummary, formatFullTimestamp } from '@/lib/adventure-log-data';
 
@@ -58,6 +58,12 @@ const SessionRoster = ({
 													<span className="flex items-center gap-1 text-gold">
 														<Icon path={mdiStar} size={0.5} />
 														{session.keyEventCount} key
+													</span>
+												)}
+												{session.campaignId && (
+													<span className="flex items-center gap-1 text-laurel">
+														<Icon path={mdiMapMarkerMultiple} size={0.5} />
+														Campaign
 													</span>
 												)}
 											</div>

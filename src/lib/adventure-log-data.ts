@@ -48,6 +48,7 @@ export interface Session {
 	entries: LogEntry[];
 	createdAt: string;
 	lastModified: string;
+	campaignId?: string;   // links this session to a campaign (optional)
 }
 
 // Session summary for roster display
@@ -57,6 +58,7 @@ export interface SessionSummary {
 	entryCount: number;
 	keyEventCount: number;
 	lastModified: string;
+	campaignId?: string;
 }
 
 // The roster of all saved sessions
