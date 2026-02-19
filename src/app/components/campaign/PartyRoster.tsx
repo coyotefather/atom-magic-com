@@ -73,6 +73,9 @@ const PartyRoster = ({ partyCharacterIds, onAdd, onRemove }: PartyRosterProps) =
 
 			{availableToAdd.length > 0 && (
 				<div className="flex items-center gap-3">
+					<label htmlFor="add-character-select" className="sr-only">
+						Add a character to the party
+					</label>
 					<select
 						id="add-character-select"
 						value={selectedCharacterId}
@@ -92,7 +95,7 @@ const PartyRoster = ({ partyCharacterIds, onAdd, onRemove }: PartyRosterProps) =
 							</option>
 						))}
 					</select>
-					<Icon path={mdiPlus} size={0.8} className="text-stone flex-shrink-0" />
+					<Icon path={mdiPlus} size={0.8} className="text-stone flex-shrink-0" aria-hidden="true" />
 				</div>
 			)}
 

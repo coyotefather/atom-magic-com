@@ -61,16 +61,12 @@ export const unlinkSessionFromCampaign = (sessionId: string): void => {
 	if (typeof window === 'undefined') return;
 	const session = getSessionById(sessionId);
 	if (!session) return;
-	const { campaignId: _removed, ...rest } = session as Session & { campaignId?: string };
+	const { campaignId: _removed, ...rest } = session;
 	saveSessionById(sessionId, rest as Session);
 };
 
 export const getLinkedSessions = (campaignId: string): SessionSummary[] => {
 	if (typeof window === 'undefined') return [];
 	const roster = getSessionRoster();
-	// Filter summaries by campaignId — need to read each full session to check
-	return roster.sessions.filter((summary) => {
-		const session = getSessionById(summary.id) as (Session & { campaignId?: string }) | null;
-		return session?.campaignId === campaignId;
-	});
+	return roster.sessions.filter((summary) => summary.campaignId === campaignId);
 };
