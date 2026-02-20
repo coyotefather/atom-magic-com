@@ -151,6 +151,9 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [x] **Vorago game logic tests** - Move validation, coin effects, win conditions, ring rotation
 - [x] **Character calculation tests** - Shield calculations, score averages, gear bonuses
 - [x] **Utility function tests** - `random.ts`, `shield.ts`, `score.ts`
+- [x] **Campaign persistence tests** - `campaignPersistence.ts`: getCampaign, saveCampaign, link/unlink sessions, getLinkedSessions
+- [x] **Session persistence tests** - `sessionPersistence.ts`: getSessionRoster, getSessionById, saveSessionById (roster summary propagation including campaignId), deleteSessionById
+- [x] **Character persistence tests** - `characterPersistence.ts`: getRoster, saveCharacterById (shield calc + summary), deleteCharacterById, migration from single-character storage
 
 ### Nice to have
 - [ ] **Component tests** - Key interactive components (CoinSelector, CharacterRoster)
