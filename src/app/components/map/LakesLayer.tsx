@@ -28,19 +28,14 @@ const LakesLayer = () => {
 	return (
 		<SVGOverlay bounds={bounds} pane="lakePane" interactive={false}>
 			<svg viewBox={`0 0 ${MAP_CONFIG.SVG_WIDTH} ${MAP_CONFIG.SVG_HEIGHT}`} preserveAspectRatio="none">
-				<defs>
-					<pattern id="lake-hatch" width="4" height="4" patternUnits="userSpaceOnUse">
-						<line x1="0" y1="2" x2="4" y2="2" stroke="#1a1a1a" strokeWidth="0.5" opacity="0.3" />
-					</pattern>
-				</defs>
 				{LAKE_POLYGONS.map((lake) => (
 					<path
 						key={lake.id}
 						d={lake.d}
-						fill="url(#lake-hatch)"
-						stroke="#1a1a1a"
+						fill="#8BA898"
+						stroke="#5A7A6E"
 						strokeWidth={0.8}
-						opacity={0.7}
+						opacity={0.85}
 					/>
 				))}
 			</svg>

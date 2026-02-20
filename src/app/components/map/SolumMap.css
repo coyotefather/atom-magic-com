@@ -1,16 +1,12 @@
 /* Leaflet overrides for Atom Magic classical theme */
 
 .solum-map {
-	/* Light paper with horizontal line hatching for ocean/water areas */
-	background-color: #F5F3ED;
+	/* Warm khaki ocean with faint cartographic grid */
+	background-color: #C4BB9A;
 	background-image:
-		repeating-linear-gradient(
-			0deg,
-			transparent,
-			transparent 2.5px,
-			rgba(0, 0, 0, 0.045) 2.5px,
-			rgba(0, 0, 0, 0.045) 3px
-		);
+		linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+	background-size: 48px 48px;
 	border: 2px solid var(--color-stone);
 }
 
