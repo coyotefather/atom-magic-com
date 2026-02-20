@@ -16,18 +16,18 @@ import { computeClearanceZones, type LabelBBox } from '@/lib/label-config';
 const KEEP_RATE: Record<string, number> = {
 	mount: 0.85,
 	mountSnow: 0.85,
-	hill: 0.55,
-	conifer: 0.22,
-	coniferSnow: 0.25,
-	deciduous: 0.22,
-	grass: 0.18,
-	acacia: 0.28,
-	palm: 0.35,
-	dune: 0.45,
-	swamp: 0.45,
+	hill: 0.65,
+	conifer: 0.65,
+	coniferSnow: 0.65,
+	deciduous: 0.65,
+	grass: 0.55,
+	acacia: 0.65,
+	palm: 0.65,
+	dune: 0.55,
+	swamp: 0.55,
 	vulcan: 0.9,
-	cactus: 0.35,
-	deadTree: 0.4,
+	cactus: 0.45,
+	deadTree: 0.55,
 };
 
 /** Size multiplier by terrain type. */
@@ -116,8 +116,10 @@ const ReliefLayer = () => {
 	useEffect(() => {
 		if (!map.getPane('reliefPane')) {
 			map.createPane('reliefPane');
-			map.getPane('reliefPane')!.style.zIndex = '250';
 		}
+		const pane = map.getPane('reliefPane')!;
+		pane.style.zIndex = '250';
+		pane.style.filter = 'sepia(0.5) brightness(0.82)';
 		setPaneReady(true);
 	}, [map]);
 

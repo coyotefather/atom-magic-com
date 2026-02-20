@@ -11,6 +11,7 @@ import SpotlightMask from './SpotlightMask';
 import MapViewController from './MapViewController';
 import RegionFocusPanel from './RegionFocusPanel';
 import CoastlineShadow from './CoastlineShadow';
+import BiomeFillLayer from './BiomeFillLayer';
 import OceanContours from './OceanContours';
 import LakesLayer from './LakesLayer';
 import ReliefLayer from './ReliefLayer';
@@ -85,6 +86,7 @@ const SolumMap = () => {
 			>
 				<ZoomConstraint />
 				<CoastlineShadow />
+				<BiomeFillLayer />
 				<OceanContours />
 				<LakesLayer />
 				<ReliefLayer />

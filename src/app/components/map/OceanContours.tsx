@@ -6,14 +6,14 @@ import { OCEAN_CONTOURS } from '@/lib/map-data';
 import type { Feature } from 'geojson';
 
 const CONTOUR_STYLES: Record<number, L.PathOptions> = {
-	1: { color: '#1a1a1a', weight: 1.1, opacity: 0.28, dashArray: '5 2' },
-	2: { color: '#1a1a1a', weight: 1.0, opacity: 0.24, dashArray: '4 3' },
-	3: { color: '#1a1a1a', weight: 0.9, opacity: 0.20, dashArray: '4 3' },
-	4: { color: '#1a1a1a', weight: 0.8, opacity: 0.16, dashArray: '3 4' },
-	5: { color: '#1a1a1a', weight: 0.7, opacity: 0.13, dashArray: '3 4' },
-	6: { color: '#1a1a1a', weight: 0.6, opacity: 0.10, dashArray: '2 5' },
-	7: { color: '#1a1a1a', weight: 0.5, opacity: 0.07, dashArray: '2 6' },
-	8: { color: '#1a1a1a', weight: 0.4, opacity: 0.04, dashArray: '2 7' },
+	1: { color: '#6B5B3E', weight: 1.2, opacity: 0.55 },
+	2: { color: '#6B5B3E', weight: 1.0, opacity: 0.45 },
+	3: { color: '#6B5B3E', weight: 0.9, opacity: 0.37 },
+	4: { color: '#6B5B3E', weight: 0.8, opacity: 0.30 },
+	5: { color: '#6B5B3E', weight: 0.7, opacity: 0.23 },
+	6: { color: '#6B5B3E', weight: 0.6, opacity: 0.17 },
+	7: { color: '#6B5B3E', weight: 0.5, opacity: 0.12 },
+	8: { color: '#6B5B3E', weight: 0.4, opacity: 0.07 },
 };
 
 const OceanContours = () => {
