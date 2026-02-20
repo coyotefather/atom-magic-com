@@ -58,6 +58,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [ ] **PWA pre-cache audit** - After v1 complete, revisit which pages are pre-cached vs cached-on-demand
 - [ ] **Bookmarks** - Let users save favorite Codex entries
 - [ ] **Local storage notice** - Inform users that data (characters, creatures, encounters, etc.) is stored locally in the browser, not on a server, so they understand how it can be lost or become inaccessible
+- [ ] **localStorage backup/restore** - Let users download all local data (characters, sessions, campaigns, creatures, encounters) as a single JSON file and re-upload it, either fully or selectively by type
 
 ## Vorago
 
@@ -78,6 +79,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 ## Campaign Management
 
 - [X] **Campaign dashboard v1** - Link adventure logs together, track party progression across sessions
+- [ ] **Campaign map annotations** - Show routes and hand-drawn marks on the Solum map driven by campaign/session data (regions visited, journey routes, GM notes); replaces or supplements auto-generated decorative annotations
 - [ ] **Adventure scaling** - Tools for GMs to scale encounters and challenges to match party size/power:
   - Define party composition (number of players, average level/power)
   - Auto-suggest creature quantities and threat adjustments
