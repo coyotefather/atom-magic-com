@@ -1,0 +1,33 @@
+{
+  "_instructions": "Fill in pixel coordinates for 3 clean instances of each icon type in mapfiles/solum-pr-qgis-12000 copy.png. In Photoshop: Window > Info shows cursor X/Y. x/y = top-left corner of crop box, w/h = dimensions. Aim for tight crops with a few pixels of parchment padding.",
+  "mountain": [
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 }
+  ],
+  "hill": [
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 }
+  ],
+  "tree-a": [
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 }
+  ],
+  "tree-b": [
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 }
+  ],
+  "tree-c": [
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 }
+  ],
+  "grass": [
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 },
+    { "x": 0, "y": 0, "w": 200, "h": 200 }
+  ]
+}
