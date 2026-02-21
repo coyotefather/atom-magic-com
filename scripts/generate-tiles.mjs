@@ -152,6 +152,133 @@ function parseMapFile() {
 }
 
 // ---------------------------------------------------------------------------
+// Helper: Parse SVG M/L path string → array of CRS.Simple coordinate rings
+// (handles M and L commands only — for state boundary paths)
+// ---------------------------------------------------------------------------
+
+function parseSvgPath(d) {
+	const divisor = Math.pow(2, maxZoom);
+	const scaleX = 1 / divisor;
+	const scaleY = 1 / divisor;
+
+	const rings = [];
+	let currentRing = null;
+	const commands = d.replace(/Z/gi, '').match(/[ML][^ML]*/g);
+	if (!commands) return rings;
+
+	for (const cmd of commands) {
+		const type = cmd[0];
+		const nums = cmd.substring(1).trim().split(/[,\s]+/).filter(Boolean).map(Number);
+
+		if (type === 'M') {
+			if (currentRing && currentRing.length >= 3) {
+				rings.push(currentRing);
+			}
+			currentRing = [];
+		}
+
+		for (let i = 0; i < nums.length; i += 2) {
+			const svgX = nums[i];
+			const svgY = nums[i + 1];
+			currentRing.push([
+				Math.round(svgX * scaleX * 10000) / 10000,
+				Math.round(-svgY * scaleY * 10000) / 10000,
+			]);
+		}
+	}
+
+	if (currentRing && currentRing.length >= 3) {
+		rings.push(currentRing);
+	}
+
+	for (const ring of rings) {
+		const first = ring[0];
+		const last = ring[ring.length - 1];
+		if (first[0] !== last[0] || first[1] !== last[1]) {
+			ring.push([first[0], first[1]]);
+		}
+	}
+
+	return rings;
+}
+
+// ---------------------------------------------------------------------------
+// Helper: Parse SVG path with Bezier curves → CRS.Simple coordinate rings
+// Handles M, L, C (cubic bezier), Q (quadratic bezier), Z commands.
+// For C/Q, uses only the curve endpoint (accurate enough for contour offsets).
+// ---------------------------------------------------------------------------
+
+function parseFeaturePath(d) {
+	const divisor = Math.pow(2, maxZoom);
+	const scaleX = 1 / divisor;
+	const scaleY = 1 / divisor;
+
+	const rings = [];
+	let currentRing = [];
+
+	function closeRing() {
+		if (currentRing.length >= 3) {
+			const first = currentRing[0];
+			const last = currentRing[currentRing.length - 1];
+			if (first[0] !== last[0] || first[1] !== last[1]) {
+				currentRing.push([first[0], first[1]]);
+			}
+			rings.push(currentRing);
+		}
+		currentRing = [];
+	}
+
+	function toCRS(svgX, svgY) {
+		return [
+			Math.round(svgX * scaleX * 10000) / 10000,
+			Math.round(-svgY * scaleY * 10000) / 10000,
+		];
+	}
+
+	// Split path into command segments: each segment starts with a command letter
+	const segments = d.match(/[MLCQZAmlcqza][^MLCQZAmlcqza]*/g);
+	if (!segments) return rings;
+
+	for (const seg of segments) {
+		const cmd = seg[0].toUpperCase();
+		const numStrs = seg.substring(1).trim().split(/[,\s]+/).filter(Boolean);
+		const nums = numStrs.map(Number).filter((n) => !isNaN(n));
+
+		if (cmd === 'Z') {
+			closeRing();
+		} else if (cmd === 'M') {
+			if (currentRing.length >= 3) closeRing();
+			else currentRing = [];
+			// M moves to the first point; any additional pairs are implicit L
+			for (let i = 0; i + 1 < nums.length; i += 2) {
+				currentRing.push(toCRS(nums[i], nums[i + 1]));
+			}
+		} else if (cmd === 'L') {
+			for (let i = 0; i + 1 < nums.length; i += 2) {
+				currentRing.push(toCRS(nums[i], nums[i + 1]));
+			}
+		} else if (cmd === 'C') {
+			// Cubic bezier: 6 numbers per segment (x1,y1, x2,y2, x,y)
+			// Use only the endpoint (every 3rd pair starting at index 4)
+			for (let i = 4; i + 1 < nums.length; i += 6) {
+				currentRing.push(toCRS(nums[i], nums[i + 1]));
+			}
+		} else if (cmd === 'Q') {
+			// Quadratic bezier: 4 numbers per segment (x1,y1, x,y)
+			// Use only the endpoint (every 2nd pair starting at index 2)
+			for (let i = 2; i + 1 < nums.length; i += 4) {
+				currentRing.push(toCRS(nums[i], nums[i + 1]));
+			}
+		}
+		// Ignore A (arc) and other commands — rare in Azgaar outputs
+	}
+
+	if (currentRing.length >= 3) closeRing();
+
+	return rings;
+}
+
+// ---------------------------------------------------------------------------
 // 2. Extract state boundaries and metadata
 // ---------------------------------------------------------------------------
 
@@ -191,55 +318,6 @@ function extractRegions(mapData) {
 	}
 	console.log('Found ' + statePaths.size + ' state boundary paths\n');
 
-	// --- Coordinate transform: SVG -> CRS.Simple ---
-	// No PNG scaling — map directly from SVG coordinates.
-	// CRS.Simple: lng = svgX / divisor, lat = -svgY / divisor
-	const divisor = Math.pow(2, maxZoom);
-	const scaleX = 1 / divisor;
-	const scaleY = 1 / divisor;
-
-	function parseSvgPath(d) {
-		const rings = [];
-		let currentRing = null;
-		const commands = d.replace(/Z/gi, '').match(/[ML][^ML]*/g);
-		if (!commands) return rings;
-
-		for (const cmd of commands) {
-			const type = cmd[0];
-			const nums = cmd.substring(1).trim().split(/[,\s]+/).filter(Boolean).map(Number);
-
-			if (type === 'M') {
-				if (currentRing && currentRing.length >= 3) {
-					rings.push(currentRing);
-				}
-				currentRing = [];
-			}
-
-			for (let i = 0; i < nums.length; i += 2) {
-				const svgX = nums[i];
-				const svgY = nums[i + 1];
-				currentRing.push([
-					Math.round(svgX * scaleX * 10000) / 10000,
-					Math.round(-svgY * scaleY * 10000) / 10000,
-				]);
-			}
-		}
-
-		if (currentRing && currentRing.length >= 3) {
-			rings.push(currentRing);
-		}
-
-		for (const ring of rings) {
-			const first = ring[0];
-			const last = ring[ring.length - 1];
-			if (first[0] !== last[0] || first[1] !== last[1]) {
-				ring.push([first[0], first[1]]);
-			}
-		}
-
-		return rings;
-	}
-
 	// --- Build regions and GeoJSON features ---
 	const regions = [];
 	const features = [];
@@ -274,6 +352,152 @@ function extractRegions(mapData) {
 	}
 
 	return { regions, geojson: { type: 'FeatureCollection', features } };
+}
+
+// ---------------------------------------------------------------------------
+// 2b. Extract unified coastline rings from <g id="coastline">
+// ---------------------------------------------------------------------------
+
+function extractCoastline(mapData) {
+	console.log('\n=== Coastline Extraction ===');
+	const { lines, svgLineIdx } = mapData;
+	const svgLine = lines[svgLineIdx];
+
+	// Build feature path lookup (same technique as extractLakes)
+	const featurePaths = new Map();
+	for (let i = 0; i < lines.length; i++) {
+		const featureRegex = /<path d="([^"]+)" id="(feature_\d+)" data-f="\d+"\/>/g;
+		let m;
+		while ((m = featureRegex.exec(lines[i])) !== null) {
+			featurePaths.set(m[2], m[1]);
+		}
+	}
+	console.log('Found ' + featurePaths.size + ' feature path definitions');
+
+	const coastlineStart = svgLine.indexOf('<g id="coastline"');
+	if (coastlineStart === -1) {
+		console.warn('Warning: could not find <g id="coastline"> group');
+		return [];
+	}
+
+	// Find the end of the coastline group by tracking nesting depth of <g> tags
+	let depth = 0;
+	let pos = coastlineStart;
+	let coastlineEnd = -1;
+
+	while (pos < svgLine.length) {
+		const nextOpen = svgLine.indexOf('<g', pos);
+		const nextClose = svgLine.indexOf('</g>', pos);
+
+		if (nextClose === -1) break;
+
+		if (nextOpen !== -1 && nextOpen < nextClose) {
+			// Opening <g tag found before next close — check if self-closing
+			const tagEnd = svgLine.indexOf('>', nextOpen);
+			if (tagEnd !== -1 && svgLine[tagEnd - 1] !== '/') {
+				depth++;
+			}
+			pos = tagEnd !== -1 ? tagEnd + 1 : nextOpen + 2;
+		} else {
+			// Closing </g> found first
+			depth--;
+			if (depth === 0) {
+				coastlineEnd = nextClose + 4;
+				break;
+			}
+			pos = nextClose + 4;
+		}
+	}
+
+	if (coastlineEnd === -1) {
+		console.warn('Warning: could not find end of coastline group');
+		return [];
+	}
+
+	const coastlineContent = svgLine.substring(coastlineStart, coastlineEnd);
+
+	// Extract <use href="#feature_N"> references and parse each feature path
+	const allRings = [];
+	const useRegex = /href="#(feature_\d+)"/g;
+	let match;
+	while ((match = useRegex.exec(coastlineContent)) !== null) {
+		const featureId = match[1];
+		const pathD = featurePaths.get(featureId);
+		if (pathD) {
+			const rings = parseFeaturePath(pathD);
+			allRings.push(...rings);
+		} else {
+			console.warn('  Warning: no path found for ' + featureId);
+		}
+	}
+
+	console.log('Found ' + allRings.length + ' coastline rings');
+	return allRings;
+}
+
+// ---------------------------------------------------------------------------
+// 2c. Extract biome geometry paths from <g id="biomes">
+// ---------------------------------------------------------------------------
+
+function extractBiomeGeometry(mapData) {
+	console.log('\n=== Biome Geometry Extraction ===');
+	const { lines, svgLineIdx } = mapData;
+	const svgLine = lines[svgLineIdx];
+
+	// Azgaar biome fill color → warm antique palette
+	const AZGAAR_TO_WARM = {
+		'#53679f': 'transparent', // Marine — skip (ocean background handles this)
+		'#fbe79f': '#D4C87A',     // Hot desert
+		'#b5b887': '#C8BA88',     // Cold desert
+		'#d2d082': '#C8C49A',     // Savanna
+		'#c8d68f': '#C4C490',     // Grassland
+		'#b6d95d': '#A8B07A',     // Tropical seasonal forest
+		'#29bc56': '#9EA878',     // Temperate deciduous forest
+		'#7dcb35': '#A0AA72',     // Tropical rain forest
+		'#45b348': '#9CA876',     // Temperate rain forest
+		'#4b6b32': '#A0A87A',     // Taiga
+		'#96784b': '#C0B890',     // Tundra
+		'#d5e7eb': '#E4E0D0',     // Glacier
+		'#0b9131': '#8E9870',     // Wetland
+	};
+	const DEFAULT_WARM = '#D0C98A';
+
+	const biomesStart = svgLine.indexOf('<g id="biomes"');
+	if (biomesStart === -1) {
+		console.warn('Warning: could not find <g id="biomes"> group');
+		return [];
+	}
+
+	const biomesEnd = svgLine.indexOf('</g>', biomesStart);
+	const biomesContent = svgLine.substring(biomesStart, biomesEnd);
+
+	const biomePaths = [];
+
+	// Try d-attribute-first ordering
+	const pathRegex = /<path[^>]*\sd="([^"]+)"[^>]*\sfill="([^"]+)"[^>]*/g;
+	let match;
+	while ((match = pathRegex.exec(biomesContent)) !== null) {
+		const d = match[1];
+		const azgaarFill = match[2].toLowerCase();
+		const warmFill = AZGAAR_TO_WARM[azgaarFill] ?? DEFAULT_WARM;
+		if (warmFill === 'transparent') continue;
+		biomePaths.push({ d, fill: warmFill });
+	}
+
+	// Try fill-attribute-first ordering if nothing found
+	if (biomePaths.length === 0) {
+		const pathRegex2 = /<path[^>]*\sfill="([^"]+)"[^>]*\sd="([^"]+)"[^>]*/g;
+		while ((match = pathRegex2.exec(biomesContent)) !== null) {
+			const azgaarFill = match[1].toLowerCase();
+			const d = match[2];
+			const warmFill = AZGAAR_TO_WARM[azgaarFill] ?? DEFAULT_WARM;
+			if (warmFill === 'transparent') continue;
+			biomePaths.push({ d, fill: warmFill });
+		}
+	}
+
+	console.log('Found ' + biomePaths.length + ' biome paths');
+	return biomePaths;
 }
 
 // ---------------------------------------------------------------------------
@@ -584,10 +808,10 @@ function extractLakes(mapData) {
 // 8. Generate ocean bathymetric contour lines
 // ---------------------------------------------------------------------------
 
-function generateOceanContours(geojson) {
-	console.log('\n=== Ocean Contour Generation ===');
-	// 8 concentric levels, densely packed near coast and sparser further out
-	const OFFSETS = [0.03, 0.07, 0.12, 0.18, 0.26, 0.36, 0.48, 0.62];
+function generateOceanContours(coastlineRings) {
+	console.log('\n=== Ocean Contour Generation (coastline-based) ===');
+	// 12 concentric levels following unified coastline, not per-region borders
+	const OFFSETS = [0.02, 0.05, 0.09, 0.14, 0.20, 0.27, 0.35, 0.44, 0.54, 0.65, 0.77, 0.90];
 
 	function signedArea(ring) {
 		let area = 0;
@@ -679,22 +903,11 @@ function generateOceanContours(geojson) {
 		const distance = OFFSETS[depth];
 		const contourLines = [];
 
-		for (const feature of geojson.features) {
-			let rings;
-			if (feature.geometry.type === 'Polygon') {
-				rings = [feature.geometry.coordinates[0]];
-			} else if (feature.geometry.type === 'MultiPolygon') {
-				rings = feature.geometry.coordinates.map((p) => p[0]);
-			} else {
-				continue;
-			}
-
-			for (const ring of rings) {
-				if (ring.length < 4) continue;
-				const offset = offsetRing(ring, distance);
-				if (offset && offset.length >= 4) {
-					contourLines.push(offset);
-				}
+		for (const ring of coastlineRings) {
+			if (ring.length < 4) continue;
+			const offset = offsetRing(ring, distance);
+			if (offset && offset.length >= 4) {
+				contourLines.push(offset);
 			}
 		}
 
@@ -878,6 +1091,32 @@ function writeRiverData(rivers) {
 	const outPath = resolve('src/lib/river-data.ts');
 	writeFileSync(outPath, tsLines.join('\n'), 'utf-8');
 	console.log('Wrote ' + outPath + ' (' + rivers.length + ' rivers)');
+}
+
+// ---------------------------------------------------------------------------
+// 11b. Write src/lib/biome-data.ts
+// ---------------------------------------------------------------------------
+
+function writeBiomeData(biomePaths) {
+	const tsLines = [
+		'/**',
+		' * Biome geometry paths extracted from Azgaar Fantasy Map Generator.',
+		' * Generated by scripts/generate-tiles.mjs — do not edit by hand.',
+		' * Paths are in SVG coordinate space (0 0 1438 755) — no transform needed for SVGOverlay.',
+		' */',
+		'',
+		'export interface BiomePath {',
+		'\td: string;',
+		'\tfill: string;',
+		'}',
+		'',
+		'export const BIOME_PATHS: BiomePath[] = ' + JSON.stringify(biomePaths, null, '\t') + ';',
+		'',
+	];
+
+	const outPath = resolve('src/lib/biome-data.ts');
+	writeFileSync(outPath, tsLines.join('\n'), 'utf-8');
+	console.log('Wrote ' + outPath + ' (' + biomePaths.length + ' biome paths)');
 }
 
 // ---------------------------------------------------------------------------
@@ -1094,18 +1333,21 @@ function main() {
 	const mapData = parseMapFile();
 	const { svgW, svgH } = mapData;
 	const data = extractRegions(mapData);
+	const coastlineRings = extractCoastline(mapData);
+	const biomePaths = extractBiomeGeometry(mapData);
 	const capitals = extractCapitals(mapData);
 	const { biomeLegend, regionBiomes } = extractBiomes(mapData);
 	const relief = extractRelief(mapData);
 	const clusters = computeTerrainClusters(relief);
 	const rivers = extractRivers(mapData);
 	const lakes = extractLakes(mapData);
-	const oceanContours = generateOceanContours(data.geojson);
+	const oceanContours = generateOceanContours(coastlineRings);
 	writeMapData({ ...data, capitals, biomeLegend, regionBiomes, oceanContours, svgW, svgH });
 	writeReliefData(relief);
 	writeRiverData(rivers);
 	writeLakeData(lakes);
 	writeClusterData(clusters);
+	writeBiomeData(biomePaths);
 
 	console.log('\n=== Done! ===');
 	console.log('Next steps:');
