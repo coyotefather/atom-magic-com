@@ -152,6 +152,56 @@ function parseMapFile() {
 }
 
 // ---------------------------------------------------------------------------
+// Helper: Parse SVG M/L path string → array of CRS.Simple coordinate rings
+// ---------------------------------------------------------------------------
+
+function parseSvgPath(d) {
+	const divisor = Math.pow(2, maxZoom);
+	const scaleX = 1 / divisor;
+	const scaleY = 1 / divisor;
+
+	const rings = [];
+	let currentRing = null;
+	const commands = d.replace(/Z/gi, '').match(/[ML][^ML]*/g);
+	if (!commands) return rings;
+
+	for (const cmd of commands) {
+		const type = cmd[0];
+		const nums = cmd.substring(1).trim().split(/[,\s]+/).filter(Boolean).map(Number);
+
+		if (type === 'M') {
+			if (currentRing && currentRing.length >= 3) {
+				rings.push(currentRing);
+			}
+			currentRing = [];
+		}
+
+		for (let i = 0; i < nums.length; i += 2) {
+			const svgX = nums[i];
+			const svgY = nums[i + 1];
+			currentRing.push([
+				Math.round(svgX * scaleX * 10000) / 10000,
+				Math.round(-svgY * scaleY * 10000) / 10000,
+			]);
+		}
+	}
+
+	if (currentRing && currentRing.length >= 3) {
+		rings.push(currentRing);
+	}
+
+	for (const ring of rings) {
+		const first = ring[0];
+		const last = ring[ring.length - 1];
+		if (first[0] !== last[0] || first[1] !== last[1]) {
+			ring.push([first[0], first[1]]);
+		}
+	}
+
+	return rings;
+}
+
+// ---------------------------------------------------------------------------
 // 2. Extract state boundaries and metadata
 // ---------------------------------------------------------------------------
 
@@ -191,55 +241,6 @@ function extractRegions(mapData) {
 	}
 	console.log('Found ' + statePaths.size + ' state boundary paths\n');
 
-	// --- Coordinate transform: SVG -> CRS.Simple ---
-	// No PNG scaling — map directly from SVG coordinates.
-	// CRS.Simple: lng = svgX / divisor, lat = -svgY / divisor
-	const divisor = Math.pow(2, maxZoom);
-	const scaleX = 1 / divisor;
-	const scaleY = 1 / divisor;
-
-	function parseSvgPath(d) {
-		const rings = [];
-		let currentRing = null;
-		const commands = d.replace(/Z/gi, '').match(/[ML][^ML]*/g);
-		if (!commands) return rings;
-
-		for (const cmd of commands) {
-			const type = cmd[0];
-			const nums = cmd.substring(1).trim().split(/[,\s]+/).filter(Boolean).map(Number);
-
-			if (type === 'M') {
-				if (currentRing && currentRing.length >= 3) {
-					rings.push(currentRing);
-				}
-				currentRing = [];
-			}
-
-			for (let i = 0; i < nums.length; i += 2) {
-				const svgX = nums[i];
-				const svgY = nums[i + 1];
-				currentRing.push([
-					Math.round(svgX * scaleX * 10000) / 10000,
-					Math.round(-svgY * scaleY * 10000) / 10000,
-				]);
-			}
-		}
-
-		if (currentRing && currentRing.length >= 3) {
-			rings.push(currentRing);
-		}
-
-		for (const ring of rings) {
-			const first = ring[0];
-			const last = ring[ring.length - 1];
-			if (first[0] !== last[0] || first[1] !== last[1]) {
-				ring.push([first[0], first[1]]);
-			}
-		}
-
-		return rings;
-	}
-
 	// --- Build regions and GeoJSON features ---
 	const regions = [];
 	const features = [];
@@ -274,6 +275,36 @@ function extractRegions(mapData) {
 	}
 
 	return { regions, geojson: { type: 'FeatureCollection', features } };
+}
+
+// ---------------------------------------------------------------------------
+// 2b. Extract unified coastline rings from <g id="coastline">
+// ---------------------------------------------------------------------------
+
+function extractCoastline(mapData) {
+	console.log('\n=== Coastline Extraction ===');
+	const { lines, svgLineIdx } = mapData;
+	const svgLine = lines[svgLineIdx];
+
+	const coastlineStart = svgLine.indexOf('<g id="coastline"');
+	if (coastlineStart === -1) {
+		console.warn('Warning: could not find <g id="coastline"> group');
+		return [];
+	}
+
+	const coastlineEnd = svgLine.indexOf('</g>', coastlineStart);
+	const coastlineContent = svgLine.substring(coastlineStart, coastlineEnd);
+
+	const allRings = [];
+	const pathRegex = /\sd="([^"]+)"/g;
+	let match;
+	while ((match = pathRegex.exec(coastlineContent)) !== null) {
+		const rings = parseSvgPath(match[1]);
+		allRings.push(...rings);
+	}
+
+	console.log('Found ' + allRings.length + ' coastline rings');
+	return allRings;
 }
 
 // ---------------------------------------------------------------------------
