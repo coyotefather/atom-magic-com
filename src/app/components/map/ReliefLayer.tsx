@@ -6,6 +6,7 @@ import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
 import { RELIEF_SYMBOLS, RELIEF_PLACEMENTS } from '@/lib/relief-data';
 import { computeClearanceZones, type LabelBBox } from '@/lib/label-config';
+import { CUSTOM_RELIEF_SYMBOLS } from '@/lib/custom-relief-symbols';
 
 // ---------------------------------------------------------------------------
 // Thinning & sizing — keep fewer icons so terrain is suggested rather than
@@ -32,20 +33,32 @@ const KEEP_RATE: Record<string, number> = {
 
 /** Size multiplier by terrain type. */
 const SIZE_SCALE: Record<string, number> = {
-	mount: 0.7,
-	mountSnow: 0.7,
-	hill: 0.6,
-	conifer: 0.55,
-	coniferSnow: 0.55,
-	deciduous: 0.55,
-	grass: 0.5,
-	acacia: 0.55,
-	palm: 0.55,
-	dune: 0.6,
-	swamp: 0.55,
-	vulcan: 0.7,
-	cactus: 0.5,
-	deadTree: 0.55,
+	mount:       1.8,
+	mountSnow:   1.8,
+	hill:        1.4,
+	conifer:     1.1,
+	coniferSnow: 1.1,
+	deciduous:   1.1,
+	grass:       0.9,
+	acacia:      1.1,
+	palm:        1.1,
+	deadTree:    1.1,
+	dune:        0.6,
+	swamp:       0.55,
+	vulcan:      0.7,
+	cactus:      0.5,
+};
+
+/** Maps Azgaar terrain type to custom hand-drawn icon type. */
+const AZGAAR_TO_CUSTOM: Record<string, string> = {
+	hill:        'hill',
+	conifer:     'tree-b',
+	coniferSnow: 'tree-b',
+	deciduous:   'tree-a',
+	acacia:      'tree-c',
+	palm:        'tree-d',
+	deadTree:    'tree-e',
+	grass:       'grass',
 };
 
 /** Check whether a point falls inside any rotated-rect clearance zone. */
@@ -96,18 +109,27 @@ const visiblePlacements = RELIEF_PLACEMENTS.map((p) => ({
 	const newH = p.h * scale;
 	const cx = p.x + p.w / 2;
 	const cy = p.y + p.h / 2;
-	return {
-		x: cx - newW / 2,
-		y: cy - newH / 2,
-		w: newW,
-		h: newH,
-		href: p.href,
-	};
+
+	const customType = AZGAAR_TO_CUSTOM[p.type];
+	let href = p.href;
+	if (customType) {
+		const variantIdx = Math.floor(posHash(p.x, p.y) * 3) + 1;
+		href = `custom-${customType}-${variantIdx}`;
+	}
+
+	return { x: cx - newW / 2, y: cy - newH / 2, w: newW, h: newH, href };
 });
 
-/** Only include symbol defs that are actually referenced by visible placements. */
-const usedSymbolIds = new Set(visiblePlacements.map((p) => p.href));
-const usedSymbols = RELIEF_SYMBOLS.filter((sym) => usedSymbolIds.has(sym.id));
+/** Azgaar symbol defs — only unmapped terrain types (mount, dune, swamp, etc.) */
+const usedAzgaarHrefs = new Set(
+	visiblePlacements.map((p) => p.href).filter((h) => !h.startsWith('custom-'))
+);
+const usedAzgaarSymbols = RELIEF_SYMBOLS.filter((sym) => usedAzgaarHrefs.has(sym.id));
+
+/** Custom image symbol defs — one per type + variant */
+const customSymbolDefs = Object.entries(CUSTOM_RELIEF_SYMBOLS).flatMap(([type, paths]) =>
+	paths.map((path, idx) => ({ id: `custom-${type}-${idx + 1}`, href: path }))
+);
 
 const ReliefLayer = () => {
 	const map = useMap();
@@ -134,7 +156,12 @@ const ReliefLayer = () => {
 		<SVGOverlay bounds={bounds} pane="reliefPane" interactive={false}>
 			<svg viewBox={`0 0 ${MAP_CONFIG.SVG_WIDTH} ${MAP_CONFIG.SVG_HEIGHT}`} preserveAspectRatio="none">
 				<defs>
-					{usedSymbols.map((sym) => (
+					{customSymbolDefs.map((sym) => (
+						<symbol key={sym.id} id={sym.id} viewBox="0 0 200 200">
+							<image href={sym.href} width="200" height="200" />
+						</symbol>
+					))}
+					{usedAzgaarSymbols.map((sym) => (
 						<symbol key={sym.id} id={sym.id} viewBox={sym.viewBox}>
 							{/* eslint-disable-next-line react/no-danger -- trusted Azgaar-generated SVG symbol content */}
 							<g dangerouslySetInnerHTML={{ __html: sym.content }} />

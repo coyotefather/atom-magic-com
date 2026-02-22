@@ -76,6 +76,10 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [ ] **Session timer** - Track playtime with break reminders, useful for online sessions
 - [ ] **NPC quick-gen** - Lighter than character generator, just name + culture + 2-3 defining traits + threat level
 
+## Interactive Map
+
+- [ ] **Mountain relief icons** - Draw individual mountain peak icons in Photoshop (same hand-drawn style as the existing tree/hill/grass icons) so they can be exported as transparent PNGs and used in `ReliefLayer.tsx` the same way as other terrain types. Currently `mount`/`mountSnow` fall back to Azgaar SVG symbols because the existing map art uses terrain-spanning zig-zag strokes that can't be cleanly isolated as individual icons.
+
 ## Campaign Management
 
 - [X] **Campaign dashboard v1** - Link adventure logs together, track party progression across sessions
