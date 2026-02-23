@@ -535,6 +535,34 @@ function extractCapitals(mapData) {
 }
 
 // ---------------------------------------------------------------------------
+// 3b. Extract all cities from Azgaar burg data
+// ---------------------------------------------------------------------------
+
+function extractCities(mapData) {
+	console.log('\n=== City Extraction ===');
+	const { lines, burgsLineIdx } = mapData;
+	const burgsData = JSON.parse(lines[burgsLineIdx]);
+	const cities = [];
+
+	for (const burg of burgsData) {
+		if (!burg.name || burg.removed) continue;
+		cities.push({
+			i: burg.i,
+			name: burg.name,
+			svgX: Math.round(burg.x * 100) / 100,
+			svgY: Math.round(burg.y * 100) / 100,
+			stateId: burg.state,
+			capital: burg.capital === 1,
+		});
+	}
+
+	console.log('Found ' + cities.length + ' cities (' +
+		cities.filter(c => c.capital).length + ' capitals, ' +
+		cities.filter(c => !c.capital).length + ' non-capitals)');
+	return cities;
+}
+
+// ---------------------------------------------------------------------------
 // 4. Extract biome data from Azgaar pack cells
 // ---------------------------------------------------------------------------
 
@@ -933,7 +961,7 @@ function generateOceanContours(coastlineRings) {
 // 8. Write src/lib/map-data.ts
 // ---------------------------------------------------------------------------
 
-function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, oceanContours, svgW, svgH }) {
+function writeMapData({ regions, geojson, capitals, cities, biomeLegend, regionBiomes, oceanContours, svgW, svgH }) {
 	const divisor = Math.pow(2, maxZoom);
 	const boundsSwLat = (-svgH / divisor).toFixed(4);
 	const boundsNeLng = (svgW / divisor).toFixed(4);
@@ -962,6 +990,15 @@ function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, o
 		'\tstateId: number;',
 		'\tlat: number;',
 		'\tlng: number;',
+		'}',
+		'',
+		'export interface MapCity {',
+		'\ti: number;',
+		'\tname: string;',
+		'\tsvgX: number;',
+		'\tsvgY: number;',
+		'\tstateId: number;',
+		'\tcapital: boolean;',
 		'}',
 		'',
 		'export interface BiomeInfo {',
@@ -1001,6 +1038,11 @@ function writeMapData({ regions, geojson, capitals, biomeLegend, regionBiomes, o
 		' * Capital cities extracted from Azgaar burg data.',
 		' */',
 		'export const MAP_CAPITALS: MapCapital[] = ' + capitalsStr + ';',
+		'',
+		'/**',
+		' * All cities (capitals + non-capitals) extracted from Azgaar burg data.',
+		' */',
+		'export const MAP_CITIES: MapCity[] = ' + JSON.stringify(cities) + ';',
 		'',
 		'/**',
 		' * Biome type legend — maps biome IDs to names and colors.',
@@ -1336,13 +1378,14 @@ function main() {
 	const coastlineRings = extractCoastline(mapData);
 	const biomePaths = extractBiomeGeometry(mapData);
 	const capitals = extractCapitals(mapData);
+	const cities = extractCities(mapData);
 	const { biomeLegend, regionBiomes } = extractBiomes(mapData);
 	const relief = extractRelief(mapData);
 	const clusters = computeTerrainClusters(relief);
 	const rivers = extractRivers(mapData);
 	const lakes = extractLakes(mapData);
 	const oceanContours = generateOceanContours(coastlineRings);
-	writeMapData({ ...data, capitals, biomeLegend, regionBiomes, oceanContours, svgW, svgH });
+	writeMapData({ ...data, capitals, cities, biomeLegend, regionBiomes, oceanContours, svgW, svgH });
 	writeReliefData(relief);
 	writeRiverData(rivers);
 	writeLakeData(lakes);
