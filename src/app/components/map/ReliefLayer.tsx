@@ -205,7 +205,19 @@ const visiblePlacements = RELIEF_PLACEMENTS.map((p) => ({
 	}
 
 	return { x: cx - newW / 2, y: cy - newH / 2, w: newW, h: newH, href };
-});
+}).reduce<Array<{ x: number; y: number; w: number; h: number; href: string }>>(
+	(accepted, p) => {
+		const pad = 1.0; // minimum gap between icon edges in SVG units
+		const pL = p.x - pad, pR = p.x + p.w + pad;
+		const pT = p.y - pad, pB = p.y + p.h + pad;
+		for (const a of accepted) {
+			if (pR > a.x && pL < a.x + a.w && pB > a.y && pT < a.y + a.h) return accepted;
+		}
+		accepted.push(p);
+		return accepted;
+	},
+	[]
+);
 
 /** Azgaar symbol defs — only unmapped terrain types (mount, dune, swamp, etc.) */
 const usedAzgaarHrefs = new Set(
