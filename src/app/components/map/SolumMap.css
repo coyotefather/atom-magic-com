@@ -2,7 +2,7 @@
 
 .solum-map {
 	/* Warm khaki ocean with faint cartographic grid */
-	background-color: #C4BB9A;
+	background-color: #BACDD8;
 	background-image:
 		linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
 		linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);

@@ -21,7 +21,7 @@ const KEEP_RATE: Record<string, number> = {
 	conifer: 0.42,
 	coniferSnow: 0.42,
 	deciduous: 0.42,
-	grass: 0.40,
+	grass: 0.50,
 	acacia: 0.75,
 	palm: 0.75,
 	dune: 0.55,
@@ -39,7 +39,7 @@ const SIZE_SCALE: Record<string, number> = {
 	conifer:     0.75,
 	coniferSnow: 1.1,
 	deciduous:   0.75,
-	grass:       0.75,
+	grass:       0.45,
 	acacia:      0.75,
 	palm:        0.75,
 	deadTree:    0.75,
@@ -113,6 +113,48 @@ for (const feature of REGION_BOUNDARIES.features) {
 	}
 }
 
+/** Pre-compute region border segments in SVG coordinate space for proximity checks.
+ *  GeoJSON coords are [lng, lat]; SVG = (lng*32, -lat*32). */
+const BORDER_SEGMENTS: Array<[number, number, number, number]> = [];
+for (const feature of REGION_BOUNDARIES.features) {
+	const geom = feature.geometry;
+	let rings: number[][][] = [];
+	if (geom.type === 'Polygon') {
+		rings = [geom.coordinates[0] as number[][]];
+	} else if (geom.type === 'MultiPolygon') {
+		rings = (geom.coordinates as number[][][][]).map((p) => p[0]);
+	}
+	for (const ring of rings) {
+		for (let i = 0; i < ring.length - 1; i++) {
+			const [lngA, latA] = ring[i];
+			const [lngB, latB] = ring[i + 1];
+			BORDER_SEGMENTS.push([lngA * 32, -latA * 32, lngB * 32, -latB * 32]);
+		}
+	}
+}
+
+const BORDER_CLEARANCE = 3.5;
+
+/** Returns true if (px, py) is within BORDER_CLEARANCE SVG units of any border segment. */
+function isNearBorder(px: number, py: number): boolean {
+	const c = BORDER_CLEARANCE;
+	const cSq = c * c;
+	for (const [ax, ay, bx, by] of BORDER_SEGMENTS) {
+		// Bounding box early exit
+		if (px < Math.min(ax, bx) - c) continue;
+		if (px > Math.max(ax, bx) + c) continue;
+		if (py < Math.min(ay, by) - c) continue;
+		if (py > Math.max(ay, by) + c) continue;
+		// Point-to-segment distance squared
+		const dx = bx - ax, dy = by - ay;
+		const lenSq = dx * dx + dy * dy;
+		const t = lenSq > 0 ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / lenSq)) : 0;
+		const nearX = ax + t * dx, nearY = ay + t * dy;
+		if ((px - nearX) ** 2 + (py - nearY) ** 2 < cSq) return true;
+	}
+	return false;
+}
+
 function isInTerraeMoretuae(svgX: number, svgY: number): boolean {
 	return TM_POLYGONS.some((poly) => pointInPolygon(svgX, svgY, poly));
 }
@@ -139,6 +181,10 @@ const visiblePlacements = RELIEF_PLACEMENTS.map((p) => ({
 	const cx = p.x + p.w / 2;
 	const cy = p.y + p.h / 2;
 	return !isInClearanceZone(cx, cy, clearanceZones);
+}).filter((p) => {
+	const cx = p.x + p.w / 2;
+	const cy = p.y + p.h / 2;
+	return !isNearBorder(cx, cy);
 }).map((p) => {
 	const scale = SIZE_SCALE[p.type] ?? 0.6;
 	const newW = p.w * scale;
@@ -159,7 +205,19 @@ const visiblePlacements = RELIEF_PLACEMENTS.map((p) => ({
 	}
 
 	return { x: cx - newW / 2, y: cy - newH / 2, w: newW, h: newH, href };
-});
+}).reduce<Array<{ x: number; y: number; w: number; h: number; href: string }>>(
+	(accepted, p) => {
+		const pad = 1.0; // minimum gap between icon edges in SVG units
+		const pL = p.x - pad, pR = p.x + p.w + pad;
+		const pT = p.y - pad, pB = p.y + p.h + pad;
+		for (const a of accepted) {
+			if (pR > a.x && pL < a.x + a.w && pB > a.y && pT < a.y + a.h) return accepted;
+		}
+		accepted.push(p);
+		return accepted;
+	},
+	[]
+);
 
 /** Azgaar symbol defs — only unmapped terrain types (mount, dune, swamp, etc.) */
 const usedAzgaarHrefs = new Set(

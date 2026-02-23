@@ -866,7 +866,7 @@ function generateOceanContours(coastlineRings) {
 		if (n < 3) return null;
 
 		const area = signedArea(pts);
-		const dir = area < 0 ? 1 : -1;
+		const dir = area < 0 ? -1 : 1;
 
 		const offsetEdges = [];
 		for (let i = 0; i < n; i++) {
