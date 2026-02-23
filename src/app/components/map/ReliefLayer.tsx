@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { SVGOverlay, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { MAP_CONFIG } from '@/lib/map-data';
+import { MAP_CONFIG, REGION_BOUNDARIES } from '@/lib/map-data';
 import { RELIEF_SYMBOLS, RELIEF_PLACEMENTS } from '@/lib/relief-data';
 import { computeClearanceZones, type LabelBBox } from '@/lib/label-config';
 import { CUSTOM_RELIEF_SYMBOLS } from '@/lib/custom-relief-symbols';
@@ -36,13 +36,13 @@ const SIZE_SCALE: Record<string, number> = {
 	mount:       1.8,
 	mountSnow:   1.8,
 	hill:        1.4,
-	conifer:     1.0,
+	conifer:     0.75,
 	coniferSnow: 1.1,
-	deciduous:   1.0,
-	grass:       0.9,
-	acacia:      1.1,
-	palm:        1.1,
-	deadTree:    1.1,
+	deciduous:   0.75,
+	grass:       0.75,
+	acacia:      0.75,
+	palm:        0.75,
+	deadTree:    0.75,
 	dune:        0.6,
 	swamp:       0.55,
 	vulcan:      0.7,
@@ -81,6 +81,42 @@ function isInClearanceZone(px: number, py: number, zones: LabelBBox[]): boolean 
 /** Pre-computed label clearance zones so icons don't crowd text. */
 const clearanceZones = computeClearanceZones(12);
 
+/** Ray-cast point-in-polygon test. Polygon is an array of [svgX, svgY] pairs. */
+function pointInPolygon(px: number, py: number, poly: number[][]): boolean {
+	let inside = false;
+	for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+		const xi = poly[i][0], yi = poly[i][1];
+		const xj = poly[j][0], yj = poly[j][1];
+		if ((yi > py) !== (yj > py) && px < ((xj - xi) * (py - yi)) / (yj - yi) + xi) {
+			inside = !inside;
+		}
+	}
+	return inside;
+}
+
+/** Terrae Mortuae polygon rings in SVG coordinate space.
+ *  GeoJSON coords are [lng, lat]; SVG = (lng*32, -lat*32).
+ */
+const TM_REGION_IDS = new Set(['state-4', 'state-5']);
+const TM_POLYGONS: number[][][] = [];
+for (const feature of REGION_BOUNDARIES.features) {
+	if (!TM_REGION_IDS.has(feature.properties?.regionId)) continue;
+	const geom = feature.geometry;
+	let rings: number[][][] = [];
+	if (geom.type === 'Polygon') {
+		rings = [geom.coordinates[0] as number[][]];
+	} else if (geom.type === 'MultiPolygon') {
+		rings = (geom.coordinates as number[][][][]).map((p) => p[0]);
+	}
+	for (const ring of rings) {
+		TM_POLYGONS.push(ring.map(([lng, lat]) => [lng * 32, -lat * 32]));
+	}
+}
+
+function isInTerraeMoretuae(svgX: number, svgY: number): boolean {
+	return TM_POLYGONS.some((poly) => pointInPolygon(svgX, svgY, poly));
+}
+
 /** Deterministic hash (0–1) from position so thinning is stable across renders. */
 function posHash(x: number, y: number): number {
 	const n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
@@ -114,7 +150,12 @@ const visiblePlacements = RELIEF_PLACEMENTS.map((p) => ({
 	let href = p.href;
 	if (customType) {
 		const variantIdx = Math.floor(posHash(p.x, p.y) * 3) + 1;
-		href = `custom-${customType}-${variantIdx}`;
+		const LIVE_TREE_CUSTOM_TYPES = new Set(['tree-a', 'tree-b', 'tree-c', 'tree-d']);
+		const effectiveType =
+			LIVE_TREE_CUSTOM_TYPES.has(customType) && isInTerraeMoretuae(cx, cy)
+				? 'tree-e'
+				: customType;
+		href = `custom-${effectiveType}-${variantIdx}`;
 	}
 
 	return { x: cx - newW / 2, y: cy - newH / 2, w: newW, h: newH, href };

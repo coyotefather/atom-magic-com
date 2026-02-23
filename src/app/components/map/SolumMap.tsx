@@ -6,7 +6,7 @@ import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
 import RegionOverlay from './RegionOverlay';
 import RegionLabels from './RegionLabels';
-import CapitalMarkers from './CapitalMarkers';
+import CityLabels from './CityLabels';
 import SpotlightMask from './SpotlightMask';
 import MapViewController from './MapViewController';
 import RegionFocusPanel from './RegionFocusPanel';
@@ -115,7 +115,7 @@ const SolumMap = () => {
 				<RiversLayer />
 				<AnnotationLayer visible={annotationsVisible} />
 				<RegionLabels focusedRegionId={focusedRegion?.regionId} />
-				<CapitalMarkers />
+				<CityLabels />
 				{focusedRegion && <SpotlightMask focusedRegionId={focusedRegion.regionId} />}
 				<MapViewController focusedRegion={focusedRegion} onClearFocus={handleCloseFocus} />
 			</MapContainer>

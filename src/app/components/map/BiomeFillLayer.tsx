@@ -80,13 +80,13 @@ const BiomeFillLayer = () => {
 
 					if (geom.type === 'Polygon') {
 						const d = ringToSvgPath(geom.coordinates[0] as number[][]);
-						return <path key={i} d={d} fill={fill} stroke="none" />;
+						return <path key={i} d={d} fill={fill} fillOpacity={0.5} stroke="none" />;
 					}
 					if (geom.type === 'MultiPolygon') {
 						const d = (geom.coordinates as number[][][][])
 							.map((poly) => ringToSvgPath(poly[0]))
 							.join(' ');
-						return <path key={i} d={d} fill={fill} stroke="none" />;
+						return <path key={i} d={d} fill={fill} fillOpacity={0.5} stroke="none" />;
 					}
 					return null;
 				})}
