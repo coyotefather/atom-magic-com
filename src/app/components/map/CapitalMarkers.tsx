@@ -40,10 +40,7 @@ const CapitalMarkers = () => {
 							fontStyle="italic"
 							fontSize="5"
 							fill="#1a1a1a"
-							paintOrder="stroke fill"
-							stroke="#F5F3ED"
-							strokeWidth="2"
-							strokeLinejoin="round"
+							style={{ textTransform: 'uppercase' as const }}
 						>
 							{capital.name}
 						</text>

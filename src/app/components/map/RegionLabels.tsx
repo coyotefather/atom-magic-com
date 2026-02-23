@@ -37,28 +37,31 @@ const RegionLabels = ({ focusedRegionId }: RegionLabelsProps) => {
 	return (
 		<SVGOverlay bounds={bounds} pane="regionLabelsPane" interactive={false}>
 			<svg viewBox={`0 0 ${MAP_CONFIG.SVG_WIDTH} ${MAP_CONFIG.SVG_HEIGHT}`} preserveAspectRatio="none">
-				{visibleLabels.map((label) => (
-					<text
-						key={label.regionId}
-						x={label.svgX}
-						y={label.svgY}
-						textAnchor="middle"
-						dominantBaseline="central"
-						fontFamily="'Marcellus', serif"
-						fontSize={label.fontSize}
-						fill="#8B2500"
-						letterSpacing="0.2em"
-						textDecoration="none"
-						paintOrder="stroke fill"
-						stroke="#F5F3ED"
-						strokeWidth="3"
-						strokeLinejoin="round"
-						style={{ textTransform: 'uppercase' as const }}
-						transform={label.angle ? `rotate(${label.angle}, ${label.svgX}, ${label.svgY})` : undefined}
-					>
-						{label.name}
-					</text>
-				))}
+				{visibleLabels.map((label) => {
+					const words = label.name.split(/\s+/);
+					const lineHeight = label.fontSize * 1.25;
+					const yStart = label.svgY - ((words.length - 1) * lineHeight) / 2;
+					return (
+						<text
+							key={label.regionId}
+							x={label.svgX}
+							y={yStart}
+							textAnchor="middle"
+							dominantBaseline="central"
+							fontFamily="'Marcellus', serif"
+							fontSize={label.fontSize}
+							fill="#8B2500"
+							letterSpacing="0.2em"
+							style={{ textTransform: 'uppercase' as const }}
+						>
+							{words.map((word, i) => (
+								<tspan key={i} x={label.svgX} dy={i === 0 ? 0 : lineHeight}>
+									{word}
+								</tspan>
+							))}
+						</text>
+					);
+				})}
 			</svg>
 		</SVGOverlay>
 	);
