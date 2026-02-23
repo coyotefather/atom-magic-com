@@ -5,24 +5,24 @@ import { SVGOverlay, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MAP_CONFIG, REGION_BOUNDARIES, REGION_BIOMES, MAP_REGIONS } from '@/lib/map-data';
 
-// Warm antique fill colours per Azgaar biome ID
+// Watercolor wash colours per Azgaar biome ID — light tints over parchment
 const BIOME_FILL_COLORS: Record<number, string> = {
-	11: '#E4E0D0', // Glacier — near-white cream (Boreas)
-	9:  '#A0A87A', // Taiga — muted olive
-	6:  '#9EA878', // Temperate deciduous forest — olive green
-	8:  '#9CA876', // Temperate rain forest — medium olive
-	7:  '#A0AA72', // Tropical rain forest — deeper olive
-	5:  '#A8B07A', // Tropical seasonal forest — lighter olive
-	4:  '#C4C490', // Grassland — warm tan-green
-	3:  '#C8C49A', // Savanna — warm tan
-	2:  '#C8BA88', // Cold desert — sandy
-	1:  '#D4C87A', // Hot desert — warm yellow-sand
-	10: '#C0B890', // Tundra — warm tan
-	12: '#8E9870', // Wetland — gray-olive
+	11: '#EDEAE0', // Glacier — near-white parchment wash
+	9:  '#D4D5B8', // Taiga — pale sage
+	6:  '#D2D4B5', // Temperate deciduous forest — pale sage-green
+	8:  '#D0D2B2', // Temperate rain forest — pale medium sage
+	7:  '#D2D4AE', // Tropical rain forest — pale olive wash
+	5:  '#D5D7BB', // Tropical seasonal forest — pale light sage
+	4:  '#DCDABC', // Grassland — pale warm green-tan
+	3:  '#DDD7BB', // Savanna — pale warm tan
+	2:  '#DDD3B5', // Cold desert — pale sandy
+	1:  '#DDD0A0', // Hot desert — pale warm ochre
+	10: '#DAD5BC', // Tundra — pale warm tan
+	12: '#C5C9B0', // Wetland — pale grey-olive
 };
 
-const DEFAULT_FILL = '#D0C98A';
-const DEAD_LAND_FILL = '#3A2E10';
+const DEFAULT_FILL = '#DDD8B8';
+const DEAD_LAND_FILL = '#BBB5A8'; // pale ashy grey — barren but not opaque black
 
 // Build lookups once at module load
 const regionBiomeMap = new Map(REGION_BIOMES.map((b) => [b.regionId, b.dominantBiome]));
