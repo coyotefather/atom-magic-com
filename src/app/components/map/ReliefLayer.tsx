@@ -17,18 +17,18 @@ import { CUSTOM_RELIEF_SYMBOLS } from '@/lib/custom-relief-symbols';
 const KEEP_RATE: Record<string, number> = {
 	mount: 0.85,
 	mountSnow: 0.85,
-	hill: 0.75,
-	conifer: 0.72,
+	hill: 1.0,
+	conifer: 1.0,
 	coniferSnow: 0.42,
-	deciduous: 0.72,
-	grass: 0.50,
-	acacia: 0.95,
-	palm: 0.95,
-	dune: 0.55,
+	deciduous: 1.0,
+	grass: 0.75,
+	acacia: 1.0,
+	palm: 1.0,
+	dune: 1.0,
 	swamp: 0.55,
 	vulcan: 0.9,
 	cactus: 0.45,
-	deadTree: 0.85,
+	deadTree: 1.0,
 };
 
 /** Size multiplier by terrain type. */
