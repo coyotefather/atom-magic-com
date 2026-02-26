@@ -40,26 +40,28 @@ interface LabelOverride {
 	fontSize?: number;
 }
 
+interface Segment { x1: number; y1: number; x2: number; y2: number; }
+
 // ---------------------------------------------------------------------------
-// Per-region overrides (angles at 0 for now; will be tuned later)
+// Per-region overrides
 // ---------------------------------------------------------------------------
 
 const LABEL_OVERRIDES: Record<string, LabelOverride> = {
-	'state-1': { angle: -8 },      // Soli Minor
-	'state-2': { angle: 25 },      // Austellus (capped from 40)
-	'state-3': { angle: 25 },      // Cassis Minor (capped from 26)
-	'state-4': { angle: -24 },     // W Terrae Mortuae
-	'state-5': { angle: 25 },      // E Terrae Mortuae (capped from 37)
-	'state-8': { angle: -10 },     // Cassis Major (PCA 80° → perpendicular, use -10)
-	'state-9': { angle: 6 },       // Terrae Liberae
-	'state-10': { angle: 25 },     // Circeii (capped from 27)
-	'state-11': { angle: -25 },    // Praesidium (capped from -37)
-	'state-12': { angle: -21 },    // Isospora
-	'state-13': { angle: 3 },      // Aetos
-	'state-14': { angle: 16 },     // Hesperia
-	'state-15': { angle: -3 },     // Aquilo
-	'state-16': { angle: -13 },    // Aquilo Novus
-	'state-17': { angle: 25 },     // Insula Palmaris (capped from 49)
+	'state-1':  { angle: -8  },  // Soli Minor
+	'state-2':  { angle: 25  },  // Austellus (capped from 40)
+	'state-3':  { angle: 25  },  // Cassis Minor (capped from 26)
+	'state-4':  { angle: -24 },  // W Terrae Mortuae
+	'state-5':  { angle: 25  },  // E Terrae Mortuae (capped from 37)
+	'state-8':  { angle: -10 },  // Cassis Major (PCA 80° → perpendicular, use -10)
+	'state-9':  { angle: 6   },  // Terrae Liberae
+	'state-10': { angle: 25  },  // Circeii (capped from 27)
+	'state-11': { angle: -25 },  // Praesidium (capped from -37)
+	'state-12': { angle: -21 },  // Isospora
+	'state-13': { angle: 3   },  // Aetos
+	'state-14': { angle: 16  },  // Hesperia
+	'state-15': { angle: -3  },  // Aquilo
+	'state-16': { angle: -13 },  // Aquilo Novus
+	'state-17': { angle: 25  },  // Insula Palmaris (capped from 49)
 };
 
 // ---------------------------------------------------------------------------
@@ -148,6 +150,85 @@ function computeCapitalConfigs(): CapitalConfig[] {
 }
 
 // ---------------------------------------------------------------------------
+// Border segment extraction and intersection test
+// ---------------------------------------------------------------------------
+
+// Build a map of regionId → SVG-space line segments from GeoJSON boundaries.
+// Used to prevent label placement from crossing a region's own border.
+function extractRegionSegments(): Map<string, Segment[]> {
+	const result = new Map<string, Segment[]>();
+	for (const feature of REGION_BOUNDARIES.features) {
+		const regionId = feature.properties?.regionId as string | undefined;
+		if (!regionId) continue;
+
+		const segments: Segment[] = [];
+		const rings: Position[][] = [];
+		if (feature.geometry.type === 'Polygon') {
+			rings.push(...(feature.geometry.coordinates as Position[][]));
+		} else if (feature.geometry.type === 'MultiPolygon') {
+			for (const poly of feature.geometry.coordinates as Position[][][]) {
+				rings.push(...poly);
+			}
+		}
+		for (const ring of rings) {
+			for (let i = 0; i + 1 < ring.length; i++) {
+				segments.push({
+					x1:  (ring[i] as Position)[0] * DIVISOR,
+					y1: -(ring[i] as Position)[1] * DIVISOR,
+					x2:  (ring[i + 1] as Position)[0] * DIVISOR,
+					y2: -(ring[i + 1] as Position)[1] * DIVISOR,
+				});
+			}
+		}
+		if (segments.length > 0) result.set(regionId, segments);
+	}
+	return result;
+}
+
+// Axis-aligned rectangle vs line segment intersection (Cohen–Sutherland style).
+function segmentIntersectsRect(
+	seg: Segment,
+	cx: number, cy: number, hw: number, hh: number,
+): boolean {
+	const left = cx - hw, right = cx + hw;
+	const top  = cy - hh, bottom = cy + hh;
+
+	// Quick reject: both endpoints outside the same side
+	if (seg.x1 < left   && seg.x2 < left)   return false;
+	if (seg.x1 > right  && seg.x2 > right)  return false;
+	if (seg.y1 < top    && seg.y2 < top)     return false;
+	if (seg.y1 > bottom && seg.y2 > bottom)  return false;
+
+	// Either endpoint inside rect
+	const inside = (x: number, y: number) =>
+		x >= left && x <= right && y >= top && y <= bottom;
+	if (inside(seg.x1, seg.y1) || inside(seg.x2, seg.y2)) return true;
+
+	// Parametric intersection with each rect edge
+	const dx = seg.x2 - seg.x1;
+	const dy = seg.y2 - seg.y1;
+	if (Math.abs(dx) > 1e-9) {
+		for (const edgeX of [left, right]) {
+			const t = (edgeX - seg.x1) / dx;
+			if (t >= 0 && t <= 1) {
+				const y = seg.y1 + t * dy;
+				if (y >= top && y <= bottom) return true;
+			}
+		}
+	}
+	if (Math.abs(dy) > 1e-9) {
+		for (const edgeY of [top, bottom]) {
+			const t = (edgeY - seg.y1) / dy;
+			if (t >= 0 && t <= 1) {
+				const x = seg.x1 + t * dx;
+				if (x >= left && x <= right) return true;
+			}
+		}
+	}
+	return false;
+}
+
+// ---------------------------------------------------------------------------
 // Clearance zones for relief placement avoidance
 // ---------------------------------------------------------------------------
 
@@ -205,6 +286,7 @@ export function deconflictLabels(configs: LabelConfig[]): LabelConfig[] {
 	const CHAR_WIDTH_FACTOR = 0.52;
 	const LINE_HEIGHT = 1.25;
 	const PADDING = 3;
+	const BORDER_PAD = 3; // extra clearance inside own region border
 
 	interface Box { cx: number; cy: number; hw: number; hh: number }
 
@@ -220,6 +302,18 @@ export function deconflictLabels(configs: LabelConfig[]): LabelConfig[] {
 		return (
 			Math.abs(a.cx - b.cx) < a.hw + b.hw &&
 			Math.abs(a.cy - b.cy) < a.hh + b.hh
+		);
+	}
+
+	const regionSegments = extractRegionSegments();
+
+	function hasBorderConflict(
+		regionId: string, cx: number, cy: number, hw: number, hh: number,
+	): boolean {
+		const segs = regionSegments.get(regionId);
+		if (!segs) return false;
+		return segs.some((seg) =>
+			segmentIntersectsRect(seg, cx, cy, hw + BORDER_PAD, hh + BORDER_PAD),
 		);
 	}
 
@@ -246,20 +340,61 @@ export function deconflictLabels(configs: LabelConfig[]): LabelConfig[] {
 	const adjustments = new Map<string, { svgX: number; svgY: number }>();
 
 	for (const label of sorted) {
-		let svgX = label.svgX;
-		let svgY = label.svgY;
+		const box0 = getBox(label, label.svgX, label.svgY);
+		const stepY = box0.hh * 2;      // one full label-height per Y step
+		const stepX = box0.hw * 0.75;   // narrower X steps (labels are wide)
 
-		for (let attempt = 0; attempt < 20; attempt++) {
-			const box = getBox(label, svgX, svgY);
-			const conflict = placed.find((p) => overlaps(box, p.box));
-			if (!conflict) break;
-			// Push away from conflict in Y
-			const overlap = conflict.box.hh + box.hh - Math.abs(svgY - conflict.box.cy);
-			svgY += svgY >= conflict.box.cy ? overlap : -overlap;
+		// Candidate offsets: centroid first, then spiral outward in 8 directions.
+		// Prefer vertical movement so labels stay near their region's horizontal center.
+		const offsets: Array<[number, number]> = [[0, 0]];
+		for (let s = 1; s <= 8; s++) {
+			const dy = s * stepY;
+			const dx = s * stepX;
+			offsets.push(
+				[0, -dy], [0, dy],
+				[-dx, 0], [dx, 0],
+				[-dx, -dy], [dx, -dy],
+				[-dx, dy],  [dx, dy],
+			);
 		}
 
-		placed.push({ id: label.regionId, box: getBox(label, svgX, svgY) });
-		adjustments.set(label.regionId, { svgX, svgY });
+		let bestX = label.svgX;
+		let bestY = label.svgY;
+
+		// Pass 1: find a position with no label conflicts AND no border crossings.
+		let found = false;
+		for (const [offX, offY] of offsets) {
+			const testX = label.svgX + offX;
+			const testY = label.svgY + offY;
+			const box = getBox(label, testX, testY);
+			if (
+				!placed.some((p) => overlaps(box, p.box)) &&
+				!hasBorderConflict(label.regionId, testX, testY, box.hw, box.hh)
+			) {
+				bestX = testX;
+				bestY = testY;
+				found = true;
+				break;
+			}
+		}
+
+		// Pass 2 (small islands / tight regions): allow border overflow, just avoid
+		// label–label conflicts. This lets island labels sit in the surrounding ocean.
+		if (!found) {
+			for (const [offX, offY] of offsets) {
+				const testX = label.svgX + offX;
+				const testY = label.svgY + offY;
+				const box = getBox(label, testX, testY);
+				if (!placed.some((p) => overlaps(box, p.box))) {
+					bestX = testX;
+					bestY = testY;
+					break;
+				}
+			}
+		}
+
+		placed.push({ id: label.regionId, box: getBox(label, bestX, bestY) });
+		adjustments.set(label.regionId, { svgX: bestX, svgY: bestY });
 	}
 
 	// Return in original order with adjusted positions
