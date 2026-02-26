@@ -49,7 +49,7 @@ const CoastlineShadow = () => {
 		const opts = {
 			roughness: 0,
 			stroke: 'none',
-			fill: '#F5F3ED',
+			fill: '#EDE8D5',
 			fillStyle: 'solid' as const,
 		};
 

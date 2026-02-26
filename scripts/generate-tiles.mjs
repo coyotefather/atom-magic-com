@@ -839,7 +839,7 @@ function extractLakes(mapData) {
 function generateOceanContours(coastlineRings) {
 	console.log('\n=== Ocean Contour Generation (coastline-based) ===');
 	// 12 concentric levels following unified coastline, not per-region borders
-	const OFFSETS = [0.02, 0.05, 0.09, 0.14, 0.20, 0.27, 0.35, 0.44, 0.54, 0.65, 0.77, 0.90];
+	const OFFSETS = [0.03, 0.07, 0.13, 0.22, 0.38, 0.62, 1.00, 1.55, 2.30, 3.25, 4.40, 5.80];
 
 	function signedArea(ring) {
 		let area = 0;

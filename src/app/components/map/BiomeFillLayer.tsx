@@ -5,24 +5,24 @@ import { SVGOverlay, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MAP_CONFIG, REGION_BOUNDARIES, REGION_BIOMES, MAP_REGIONS } from '@/lib/map-data';
 
-// Watercolor wash colours per Azgaar biome ID — light tints over parchment
+// Parchment-wash colours per Azgaar biome ID — very light tints at low opacity
 const BIOME_FILL_COLORS: Record<number, string> = {
-	11: '#EDEAE0', // Glacier — near-white parchment wash
-	9:  '#D4D5B8', // Taiga — pale sage
-	6:  '#D2D4B5', // Temperate deciduous forest — pale sage-green
-	8:  '#D0D2B2', // Temperate rain forest — pale medium sage
-	7:  '#D2D4AE', // Tropical rain forest — pale olive wash
-	5:  '#D5D7BB', // Tropical seasonal forest — pale light sage
-	4:  '#DCDABC', // Grassland — pale warm green-tan
-	3:  '#DDD7BB', // Savanna — pale warm tan
-	2:  '#DDD3B5', // Cold desert — pale sandy
-	1:  '#DDD0A0', // Hot desert — pale warm ochre
-	10: '#DAD5BC', // Tundra — pale warm tan
-	12: '#C5C9B0', // Wetland — pale grey-olive
+	11: '#DDD8C8', // Glacier — cool cream
+	9:  '#B8BF90', // Taiga — muted sage
+	6:  '#B5BF8C', // Temperate deciduous — sage-green
+	8:  '#B2BE88', // Temperate rain — medium sage
+	7:  '#B0BC80', // Tropical rain — deeper sage
+	5:  '#B8C090', // Tropical seasonal — lighter sage
+	4:  '#C8C898', // Grassland — warm tan-green
+	3:  '#CCC498', // Savanna — warm tan
+	2:  '#CCBA88', // Cold desert — sandy
+	1:  '#D0B870', // Hot desert — warm ochre
+	10: '#C8C098', // Tundra — warm tan
+	12: '#A0AC88', // Wetland — grey-olive
 };
 
-const DEFAULT_FILL = '#DDD8B8';
-const DEAD_LAND_FILL = '#BBB5A8'; // pale ashy grey — barren but not opaque black
+const DEFAULT_FILL = '#C8C090';
+const DEAD_LAND_FILL = '#7D7060'; // darker muted olive — keeps TM visually distinct
 
 // Build lookups once at module load
 const regionBiomeMap = new Map(REGION_BIOMES.map((b) => [b.regionId, b.dominantBiome]));
@@ -80,13 +80,13 @@ const BiomeFillLayer = () => {
 
 					if (geom.type === 'Polygon') {
 						const d = ringToSvgPath(geom.coordinates[0] as number[][]);
-						return <path key={i} d={d} fill={fill} fillOpacity={0.5} stroke="none" />;
+						return <path key={i} d={d} fill={fill} fillOpacity={0.3} stroke="none" />;
 					}
 					if (geom.type === 'MultiPolygon') {
 						const d = (geom.coordinates as number[][][][])
 							.map((poly) => ringToSvgPath(poly[0]))
 							.join(' ');
-						return <path key={i} d={d} fill={fill} fillOpacity={0.5} stroke="none" />;
+						return <path key={i} d={d} fill={fill} fillOpacity={0.3} stroke="none" />;
 					}
 					return null;
 				})}
