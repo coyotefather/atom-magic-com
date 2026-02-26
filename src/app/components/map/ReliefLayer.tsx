@@ -79,7 +79,7 @@ function isInClearanceZone(px: number, py: number, zones: LabelBBox[]): boolean 
 }
 
 /** Pre-computed label clearance zones so icons don't crowd text. */
-const clearanceZones = computeClearanceZones(12);
+const clearanceZones = computeClearanceZones(2);
 
 /** Ray-cast point-in-polygon test. Polygon is an array of [svgX, svgY] pairs. */
 function pointInPolygon(px: number, py: number, poly: number[][]): boolean {
