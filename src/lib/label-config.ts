@@ -223,9 +223,26 @@ export function deconflictLabels(configs: LabelConfig[]): LabelConfig[] {
 		);
 	}
 
+	// Pre-seed placed[] with capital city label bounding boxes as fixed obstacles.
+	// Capital text is rendered at fontSize=5, offset +3 from the dot.
+	const placed: Array<{ id: string; box: Box }> = MAP_CITIES
+		.filter((c) => c.capital)
+		.map((city) => {
+			const textWidth = city.name.length * 5 * CHAR_WIDTH_FACTOR;
+			const textHeight = 5 * LINE_HEIGHT;
+			return {
+				id: `_capital_${city.i}`,
+				box: {
+					cx: city.svgX + 3 + textWidth / 2,
+					cy: city.svgY,
+					hw: textWidth / 2 + PADDING,
+					hh: textHeight / 2 + PADDING,
+				},
+			};
+		});
+
 	// Sort by fontSize descending — larger labels take priority and stay put
 	const sorted = [...configs].sort((a, b) => b.fontSize - a.fontSize);
-	const placed: Array<{ id: string; box: Box }> = [];
 	const adjustments = new Map<string, { svgX: number; svgY: number }>();
 
 	for (const label of sorted) {

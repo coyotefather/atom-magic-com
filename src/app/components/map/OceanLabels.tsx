@@ -6,10 +6,10 @@ import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
 
 const OCEAN_LABELS = [
-	{ name: 'OCEANVS HIBERNIAE',  x: 590,  y: 165 },
-	{ name: 'OCEANVS ALBIS',      x: 1330, y: 240 },
-	{ name: 'OCEANVS CAMBRIAE',   x: 580,  y: 620 },
-	{ name: 'OCEANVS MERIDIANVS', x: 1180, y: 680 },
+	{ name: 'OCEANVS HIBERNIAE',  x: 200,  y: 90,  fontSize: 15 },
+	{ name: 'OCEANVS ALBIS',      x: 1360, y: 55,  fontSize: 12 },
+	{ name: 'OCEANVS CAMBRIAE',   x: 350,  y: 680, fontSize: 15 },
+	{ name: 'OCEANVS MERIDIANVS', x: 1050, y: 733, fontSize: 14 },
 ] as const;
 
 const OceanLabels = () => {
@@ -46,7 +46,7 @@ const OceanLabels = () => {
 						textAnchor="middle"
 						dominantBaseline="central"
 						fontFamily="'Noto Serif', serif"
-						fontSize={20}
+						fontSize={label.fontSize}
 						fill="#6B5B3E"
 						opacity={0.32}
 						letterSpacing={2}
