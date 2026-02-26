@@ -162,8 +162,9 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [x] **Character persistence tests** - `characterPersistence.ts`: getRoster, saveCharacterById (shield calc + summary), deleteCharacterById, migration from single-character storage
 
 ### Nice to have
-- [ ] **Component tests** - Key interactive components (CoinSelector, CharacterRoster)
-- [ ] **E2E tests with Playwright** - Critical user flows (create character, play Vorago game)
+- [x] **Component tests** - Key interactive components (CoinSelector, CharacterRoster)
+- [x] **E2E tests with Playwright** - Critical user flows (create character, play Vorago game)
+- [ ] **Testing revisit** — After map, campaign management, and creature stat block features are complete, revisit component and E2E coverage for new flows
 
 ---
 
