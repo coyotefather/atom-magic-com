@@ -46,7 +46,26 @@ const GrainOverlay = () => {
 							in="noise"
 						/>
 					</filter>
+					<filter id="paper-blotch">
+						<feTurbulence
+							type="fractalNoise"
+							baseFrequency="0.025 0.025"
+							numOctaves={2}
+							seed={7}
+							result="noise"
+						/>
+						<feColorMatrix
+							type="matrix"
+							values="0 0 0 0 0.35  0 0 0 0 0.30  0 0 0 0 0.20  0 0 0 0.07 0"
+							in="noise"
+						/>
+					</filter>
 				</defs>
+				<rect
+					width={MAP_CONFIG.SVG_WIDTH}
+					height={MAP_CONFIG.SVG_HEIGHT}
+					filter="url(#paper-blotch)"
+				/>
 				<rect
 					width={MAP_CONFIG.SVG_WIDTH}
 					height={MAP_CONFIG.SVG_HEIGHT}

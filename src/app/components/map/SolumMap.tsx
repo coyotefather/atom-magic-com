@@ -13,6 +13,7 @@ import RegionFocusPanel from './RegionFocusPanel';
 import CoastlineShadow from './CoastlineShadow';
 import BiomeFillLayer from './BiomeFillLayer';
 import OceanContours from './OceanContours';
+import OceanLabels from './OceanLabels';
 import LakesLayer from './LakesLayer';
 import ReliefLayer from './ReliefLayer';
 import RoughBorders from './RoughBorders';
@@ -105,6 +106,7 @@ const SolumMap = () => {
 				<CoastlineShadow />
 				<BiomeFillLayer />
 				<OceanContours />
+				<OceanLabels />
 				<GridLayer />
 				<GrainOverlay />
 				<LakesLayer />
