@@ -45,7 +45,7 @@ const CityLabels = () => {
 							y={city.svgY}
 							dominantBaseline="central"
 							fontFamily="'Noto Serif', serif"
-							fontStyle="italic"
+							
 							fontSize="3"
 							fill="#1a1a1a"
 							style={{ textTransform: 'uppercase' as const }}
@@ -63,7 +63,7 @@ const CityLabels = () => {
 							y={city.svgY}
 							dominantBaseline="central"
 							fontFamily="'Noto Serif', serif"
-							fontStyle="italic"
+							
 							fontSize="5"
 							fill="#1a1a1a"
 							style={{ textTransform: 'uppercase' as const }}

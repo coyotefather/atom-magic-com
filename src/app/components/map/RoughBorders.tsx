@@ -46,9 +46,9 @@ const RoughBorders = () => {
 
 		const rc = rough.svg(svgRef.current);
 		const opts = {
-			roughness: 0.35,
+			roughness: 0.5,
 			strokeWidth: 0.9,
-			bowing: 0.4,
+			bowing: 0.6,
 			stroke: '#1a1a1a',
 			fill: 'none',
 			disableMultiStroke: true,
