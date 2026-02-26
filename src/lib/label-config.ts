@@ -1,4 +1,4 @@
-import { MAP_REGIONS, MAP_CAPITALS, REGION_BOUNDARIES } from '@/lib/map-data';
+import { MAP_REGIONS, MAP_CAPITALS, REGION_BOUNDARIES, MAP_CITIES } from '@/lib/map-data';
 import type { Position } from 'geojson';
 
 const DIVISOR = 32; // 2^maxZoom
@@ -181,12 +181,80 @@ export function computeClearanceZones(padding: number): LabelBBox[] {
 		});
 	}
 
+	// Non-capital city labels: text offset +2 from dot, fontSize 3
+	for (const city of MAP_CITIES.filter((c) => !c.capital)) {
+		const textWidth = city.name.length * 2.0;
+		const textHeight = 3 * 1.2;
+		zones.push({
+			cx: city.svgX + 2 + textWidth / 2,
+			cy: city.svgY,
+			halfW: textWidth / 2 + padding,
+			halfH: textHeight / 2 + padding,
+			angle: 0,
+		});
+	}
+
 	return zones;
+}
+
+// ---------------------------------------------------------------------------
+// Automatic label deconfliction
+// ---------------------------------------------------------------------------
+
+export function deconflictLabels(configs: LabelConfig[]): LabelConfig[] {
+	const CHAR_WIDTH_FACTOR = 0.52;
+	const LINE_HEIGHT = 1.25;
+	const PADDING = 3;
+
+	interface Box { cx: number; cy: number; hw: number; hh: number }
+
+	function getBox(label: LabelConfig, svgX: number, svgY: number): Box {
+		const words = label.name.split(/\s+/);
+		const maxWordLen = Math.max(...words.map((w) => w.length));
+		const hw = (maxWordLen * label.fontSize * CHAR_WIDTH_FACTOR) / 2 + PADDING;
+		const hh = (words.length * label.fontSize * LINE_HEIGHT) / 2 + PADDING;
+		return { cx: svgX, cy: svgY, hw, hh };
+	}
+
+	function overlaps(a: Box, b: Box): boolean {
+		return (
+			Math.abs(a.cx - b.cx) < a.hw + b.hw &&
+			Math.abs(a.cy - b.cy) < a.hh + b.hh
+		);
+	}
+
+	// Sort by fontSize descending — larger labels take priority and stay put
+	const sorted = [...configs].sort((a, b) => b.fontSize - a.fontSize);
+	const placed: Array<{ id: string; box: Box }> = [];
+	const adjustments = new Map<string, { svgX: number; svgY: number }>();
+
+	for (const label of sorted) {
+		let svgX = label.svgX;
+		let svgY = label.svgY;
+
+		for (let attempt = 0; attempt < 20; attempt++) {
+			const box = getBox(label, svgX, svgY);
+			const conflict = placed.find((p) => overlaps(box, p.box));
+			if (!conflict) break;
+			// Push away from conflict in Y
+			const overlap = conflict.box.hh + box.hh - Math.abs(svgY - conflict.box.cy);
+			svgY += svgY >= conflict.box.cy ? overlap : -overlap;
+		}
+
+		placed.push({ id: label.regionId, box: getBox(label, svgX, svgY) });
+		adjustments.set(label.regionId, { svgX, svgY });
+	}
+
+	// Return in original order with adjusted positions
+	return configs.map((c) => {
+		const adj = adjustments.get(c.regionId);
+		return adj ? { ...c, svgX: adj.svgX, svgY: adj.svgY } : c;
+	});
 }
 
 // ---------------------------------------------------------------------------
 // Exported constants
 // ---------------------------------------------------------------------------
 
-export const LABEL_CONFIGS = computeLabelConfigs();
+export const LABEL_CONFIGS = deconflictLabels(computeLabelConfigs());
 export const CAPITAL_CONFIGS = computeCapitalConfigs();
