@@ -99,7 +99,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [x] **Sanity API optimization** - Review CMS queries and caching to minimize API usage and stay within plan limits.
 - [ ] **Accessibility audit** - Screen reader support, keyboard navigation, focus states
 - [ ] **Mobile UX pass** - Touch targets, swipe gestures for Vorago
-- [ ] **Encounter Builder creature selector height** - The creature grid area is too short, making it hard to browse. Revisit the layout to show more creatures at once
+- [x] **Encounter Builder creature selector height** - The creature grid area is too short, making it hard to browse. Revisit the layout to show more creatures at once
 
 ## Security
 
