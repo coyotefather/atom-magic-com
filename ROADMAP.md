@@ -99,7 +99,7 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [x] **Sanity API optimization** - Review CMS queries and caching to minimize API usage and stay within plan limits.
 - [ ] **Accessibility audit** - Screen reader support, keyboard navigation, focus states
 - [ ] **Mobile UX pass** - Touch targets, swipe gestures for Vorago
-- [ ] **Encounter Builder creature selector height** - The creature grid area is too short, making it hard to browse. Revisit the layout to show more creatures at once
+- [x] **Encounter Builder creature selector height** - The creature grid area is too short, making it hard to browse. Revisit the layout to show more creatures at once
 
 ## Security
 
@@ -162,8 +162,9 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [x] **Character persistence tests** - `characterPersistence.ts`: getRoster, saveCharacterById (shield calc + summary), deleteCharacterById, migration from single-character storage
 
 ### Nice to have
-- [ ] **Component tests** - Key interactive components (CoinSelector, CharacterRoster)
-- [ ] **E2E tests with Playwright** - Critical user flows (create character, play Vorago game)
+- [x] **Component tests** - Key interactive components (CoinSelector, CharacterRoster)
+- [x] **E2E tests with Playwright** - Critical user flows (create character, play Vorago game)
+- [ ] **Testing revisit** — After map, campaign management, and creature stat block features are complete, revisit component and E2E coverage for new flows
 
 ---
 
