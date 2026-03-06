@@ -51,6 +51,24 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [ ] **Shareable creatures** - URL/QR sharing like characters
 - [x] **Import to encounters** - Use custom creatures in the Encounter Builder
 
+## CMS Migration: Sanity → Payload
+
+Figma acquired Payload CMS, giving a strong incentive to migrate away from Sanity.
+
+### Exploration
+- [ ] **Audit current Sanity usage** - Inventory all document types, GROQ queries, webhook integrations (Algolia), Sanity Studio customizations, and `sanity.types` generated types that would need to be replicated
+- [ ] **Evaluate Payload feature parity** - Confirm Payload supports: rich text (markdown plugin), image/asset hosting, live preview, type generation, and a self-hosted or cloud option comparable to Sanity's plan
+
+### Migration tasks (once exploration is complete)
+- [ ] **Schema migration** - Recreate all Sanity schemas (`culture`, `path`, `patronage`, `discipline`, `technique`, `enhancement`, `score`, `additionalScore`, `subscore`, `entry`, `creature`) as Payload collections
+- [ ] **Data export/import** - Export content from Sanity (NDJSON) and write an import script for Payload
+- [ ] **Query layer** - Replace GROQ queries in `src/sanity/lib/queries.ts` with Payload REST/Local API equivalents
+- [ ] **Type generation** - Replace `npx sanity typegen generate` workflow with Payload's generated types
+- [ ] **Algolia webhook** - Rewire the Algolia reindex webhook to fire from Payload collection hooks instead of Sanity
+- [ ] **Sanity Studio removal** - Remove `src/app/(studio)` route and all `sanity` package dependencies
+- [ ] **Codex/creature pages** - Update all data-fetching in `src/sanity/` and page components to use Payload API
+- [ ] **Hosting decision** - Decide between Payload Cloud vs. self-hosting (Railway, Render, etc.)
+
 ## Site-wide
 
 - [x] **Dark mode toggle** - The color palette inverted for comfortable nighttime use
