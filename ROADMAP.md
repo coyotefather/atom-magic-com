@@ -53,9 +53,9 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 
 ## CMS Migration: Sanity → Payload
 
-Figma acquired Payload CMS, giving a strong incentive to migrate away from Sanity.
+Figma acquired Payload CMS, giving a strong incentive to migrate away from Sanity. **On hold** — waiting to see what Figma does with Payload (Cloud is currently paused for new sign-ups, markdown support is a notable gap). Revisit once Figma announces their roadmap.
 
-### Exploration
+### Exploration (on hold)
 - [ ] **Audit current Sanity usage** - Inventory all document types, GROQ queries, webhook integrations (Algolia), Sanity Studio customizations, and `sanity.types` generated types that would need to be replicated
 - [ ] **Evaluate Payload feature parity** - Confirm Payload supports: rich text (markdown plugin), image/asset hosting, live preview, type generation, and a self-hosted or cloud option comparable to Sanity's plan
 
