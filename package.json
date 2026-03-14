@@ -73,7 +73,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/remark-heading-id": "^1.0.0",
-    "@vitejs/plugin-react": "^5.2.0",
+    "@vitejs/plugin-react": "^6.0.0",
     "eslint": "^10.0.3",
     "eslint-config-next": "^16.1.5",
     "jsdom": "^28.1.0",
