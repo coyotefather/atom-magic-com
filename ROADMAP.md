@@ -83,6 +83,16 @@ Figma acquired Payload CMS, giving a strong incentive to migrate away from Sanit
 - [ ] **Save/resume games** - Similar to character persistence
 - [ ] **Game replay** - Step through a completed game move-by-move
 
+## Figma Design System
+
+- [x] **Design system variables** — Primitives + Theme collections (Light/Dark) covering colors, spacing, and typography, matching codebase tokens in `globals.css` and `tailwind.config.ts`
+- [x] **Design system docs** — Token reference at `docs/figma-design-system.md` keeping Figma and code in sync
+- [x] **Figma MCP rules in CLAUDE.md** — Required workflow and conventions for Figma-to-code implementation tasks
+- [ ] **Page captures** — Capture remaining pages and key states (character wizard steps, creature manager, encounter builder, Vorago, etc.) into Figma for design reference
+- [ ] **Figma components** — Build Button, Card, PageHero, and other reusable components on top of published design system variables
+- [ ] **Code Connect** — Map existing codebase components (PageHero, FunctionButton, LinkButton, etc.) to their Figma counterparts once components are built
+- [ ] **Map icons** — Draw new mountain relief icons in Figma, export as transparent PNGs, use in `ReliefLayer.tsx`
+
 ## Content & Documentation
 
 - [x] **Quick Reference audit** - Review Quick Reference page against markdown rules files to ensure accuracy and completeness
