@@ -55,7 +55,7 @@
     "remark-heading-id": "^1.0.1",
     "resend": "^6.9.3",
     "roughjs": "^4.6.6",
-    "sanity": "5.16.0",
+    "sanity": "5.17.1",
     "sanity-plugin-markdown": "^8.0.5",
     "seeded-rand": "^4.0.0",
     "serwist": "^9.5.6",
