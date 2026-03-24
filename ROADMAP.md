@@ -88,8 +88,13 @@ Figma acquired Payload CMS, giving a strong incentive to migrate away from Sanit
 - [x] **Design system variables** — Primitives + Theme collections (Light/Dark) covering colors, spacing, and typography, matching codebase tokens in `globals.css` and `tailwind.config.ts`
 - [x] **Design system docs** — Token reference at `docs/figma-design-system.md` keeping Figma and code in sync
 - [x] **Figma MCP rules in CLAUDE.md** — Required workflow and conventions for Figma-to-code implementation tasks
+- [x] **Figma components (Atoms)** — Badge/Challenge (6), Badge/Status (12), Button/Primary (9), Button/Function (36), ThemeToggle (4), Icon/Label (20) built programmatically via `use_figma`
+- [x] **Figma components (Molecules)** — Nav/Item (6), Status/Message (8), Card/Content (10), Card/Character Summary (2), Card/Creature Compact (2)
+- [x] **Figma components (Organisms)** — PageHero (6), NavBar (2), Footer — all with component properties, auto-layout, and variable-aligned colors
+- [ ] **PageHero accent color variants** — Currently only Gold variant built; add Oxblood, Laurel, Bronze, Stone variants
+- [ ] **Icon swap wiring** — Replace icon placeholders with real MDI icons once imported into Figma library
+- [ ] **Publish as library** — Main menu → Libraries → Publish so components are usable in page capture files
 - [ ] **Page captures** — Capture remaining pages and key states (character wizard steps, creature manager, encounter builder, Vorago, etc.) into Figma for design reference
-- [ ] **Figma components** — Build Button, Card, PageHero, and other reusable components on top of published design system variables
 - [ ] **Code Connect** — Map existing codebase components (PageHero, FunctionButton, LinkButton, etc.) to their Figma counterparts once components are built
 - [ ] **Map icons** — Draw new mountain relief icons in Figma, export as transparent PNGs, use in `ReliefLayer.tsx`
 
