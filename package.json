@@ -60,7 +60,7 @@
     "seeded-rand": "^4.0.0",
     "serwist": "^9.5.7",
     "styled-components": "^6.3.12",
-    "use-debounce": "^10.1.0"
+    "use-debounce": "^10.1.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
