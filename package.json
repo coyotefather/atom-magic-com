@@ -13,7 +13,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@heroui/react": "^2.8.10",
+    "@heroui/react": "^3.0.0",
     "@heroui/system": "^2.4.28",
     "@heroui/theme": "^2.4.26",
     "@mdi/js": "^7.4.47",
