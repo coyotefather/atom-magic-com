@@ -4,8 +4,7 @@ import ExternalLink from '@/app/components/common/ExternalLink';
 import { PATHS } from '@/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setPath } from "@/lib/slices/characterSlice";
-import {Select, SelectItem} from "@heroui/react";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
+import { Select, Label, ListBox, FieldError, Table } from "@heroui/react";
 import { useState, useRef, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
@@ -42,40 +41,42 @@ const ChoosePath = ({
 		const chosenPath = paths.find((p) => p._id === pathId);
 		if (chosenPath && chosenPath.modifiers !== null) {
 			const modifiers = (
-				<Table isCompact removeWrapper aria-label={`${chosenPath.title} Modifiers`} className="mt-8">
-					<TableHeader>
-						{["Score", "Subscore","Modifier"].map((tc) => (
-							<TableColumn
-								key={tc}
-								className="bg-transparent border-b-2 pl-0">
-								{tc}
-							</TableColumn>
-						))}
-					</TableHeader>
-					<TableBody>
-						{chosenPath.modifiers.map((m, index) => (
-							<TableRow key={`path-modifier-${index}`} >
-								<TableCell className="text-base pl-0">
-									{m.modifierSubscore && m.modifierSubscore.score ? m.modifierSubscore.score.title : ""}
-								</TableCell>
-								<TableCell className="text-base pl-0">
-									{m.modifierSubscore && m.modifierSubscore.title ? m.modifierSubscore.title : ""}
-								</TableCell>
-								<TableCell className={clsx(
-									'pl-0 font-bold',
-									{
-										'text-oxblood': m.modifierValue && m.modifierValue < 0
-									},
-									{
-										'text-laurel': m.modifierValue && m.modifierValue > 0
-									},
-								)}>
-									{m.modifierValue && m.modifierValue > 0 ? "+" : ""}
-									{m.modifierValue ? m.modifierValue : ""}
-								</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
+				<Table>
+					<Table.ScrollContainer>
+						<Table.Content aria-label={`${chosenPath.title} Modifiers`} className="mt-8">
+							<Table.Header>
+								{["Score", "Subscore","Modifier"].map((tc) => (
+									<Table.Column key={tc} id={tc} className="bg-transparent border-b-2 pl-0">
+										{tc}
+									</Table.Column>
+								))}
+							</Table.Header>
+							<Table.Body>
+								{chosenPath.modifiers.map((m, index) => (
+									<Table.Row key={`path-modifier-${index}`} id={`path-modifier-${index}`}>
+										<Table.Cell className="text-base pl-0">
+											{m.modifierSubscore && m.modifierSubscore.score ? m.modifierSubscore.score.title : ""}
+										</Table.Cell>
+										<Table.Cell className="text-base pl-0">
+											{m.modifierSubscore && m.modifierSubscore.title ? m.modifierSubscore.title : ""}
+										</Table.Cell>
+										<Table.Cell className={clsx(
+											'pl-0 font-bold',
+											{
+												'text-oxblood': m.modifierValue && m.modifierValue < 0
+											},
+											{
+												'text-laurel': m.modifierValue && m.modifierValue > 0
+											},
+										)}>
+											{m.modifierValue && m.modifierValue > 0 ? "+" : ""}
+											{m.modifierValue ? m.modifierValue : ""}
+										</Table.Cell>
+									</Table.Row>
+								))}
+							</Table.Body>
+						</Table.Content>
+					</Table.ScrollContainer>
 				</Table>
 			);
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
@@ -98,11 +99,10 @@ const ChoosePath = ({
 		}
 	}, [currentPath, updateDetailsForPath]);
 
-	const handleSelectChange = (event: React.ChangeEvent) => {
-		let val = (event.target as HTMLInputElement).value;
-		if(val !== "") {
-			dispatch(setPath(val));
-			updateDetailsForPath(val);
+	const handleSelectChange = (val: React.Key | null) => {
+		if (val) {
+			dispatch(setPath(String(val)));
+			updateDetailsForPath(String(val));
 		}
 	};
 
@@ -120,21 +120,30 @@ const ChoosePath = ({
 					<div className="m-auto">
 						<Select
 							isRequired
-							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
-							errorMessage="Please select a path."
-							variant="bordered"
-							radius="none"
-							label="Path"
+							isInvalid={!!(incompleteFields && incompleteFields !== "init")}
+							value={currentPath ?? ""}
+							onChange={handleSelectChange}
 							placeholder="Select a Path"
 							className="w-96 mt-8"
-							selectedKeys={currentPath ? [currentPath] : []}
-							onChange={(event) => handleSelectChange(event)}
-					  	>
-							{paths.map((path) => (
-							  <SelectItem key={path._id}>
-								{path.title}
-							  </SelectItem>
-							))}
+						>
+							<Label>Path</Label>
+							<Select.Trigger>
+								<Select.Value />
+								<Select.Indicator />
+							</Select.Trigger>
+							{!!(incompleteFields && incompleteFields !== "init") && (
+								<FieldError>Please select a path.</FieldError>
+							)}
+							<Select.Popover>
+								<ListBox>
+									{paths.map((path) => (
+										<ListBox.Item key={path._id} id={path._id} textValue={path.title ?? ""}>
+											{path.title}
+											<ListBox.ItemIndicator />
+										</ListBox.Item>
+									))}
+								</ListBox>
+							</Select.Popover>
 						</Select>
 					</div>
 				</div>

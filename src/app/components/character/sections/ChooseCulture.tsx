@@ -3,8 +3,7 @@ import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setCulture } from "@/lib/slices/characterSlice";
-import {Select, SelectItem} from "@heroui/react";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/react";
+import { Select, Label, ListBox, FieldError, Table } from "@heroui/react";
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useState, useRef, useEffect, useCallback } from 'react';
@@ -43,35 +42,33 @@ const ChooseCulture = ({
 		const chosenCulture = cultures.find((c) => c._id === cultureId);
 		if (chosenCulture != undefined && chosenCulture.aspects !== null) {
 			const aspects = (
-				<Table
-					isCompact
-					removeWrapper
-					aria-label={`${chosenCulture.title}`}
-					className="mt-8">
-					<TableHeader>
-						{["Aspect","Description"].map((tc) => (
-							<TableColumn
-								key={tc}
-								className="bg-transparent border-b-2 pl-0">
-								{tc}
-							</TableColumn>
-						))}
-					</TableHeader>
-					<TableBody>
-						{chosenCulture.aspects.map((aspect) => (
-							<TableRow key={aspect.aspectId}>
-								<TableCell className="align-top min-w-44 pl-0">
-									<ExternalLink
-									href={`https://atom-magic.com/codex/${aspect.aspectContentSlug}`} name={aspect.aspectName ? aspect.aspectName : ""} />
-								</TableCell>
-								<TableCell className="pl-0 prose prose-sm">
-									<Markdown remarkPlugins={[remarkGfm]}>
-										{aspect.aspectDescription}
-									</Markdown>
-								</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
+				<Table>
+					<Table.ScrollContainer>
+						<Table.Content aria-label={`${chosenCulture.title}`} className="mt-8">
+							<Table.Header>
+								{["Aspect","Description"].map((tc) => (
+									<Table.Column key={tc} id={tc} className="bg-transparent border-b-2 pl-0">
+										{tc}
+									</Table.Column>
+								))}
+							</Table.Header>
+							<Table.Body>
+								{chosenCulture.aspects.map((aspect) => (
+									<Table.Row key={String(aspect.aspectId)} id={String(aspect.aspectId)}>
+										<Table.Cell className="align-top min-w-44 pl-0">
+											<ExternalLink
+											href={`https://atom-magic.com/codex/${aspect.aspectContentSlug}`} name={aspect.aspectName ? aspect.aspectName : ""} />
+										</Table.Cell>
+										<Table.Cell className="pl-0 prose prose-sm">
+											<Markdown remarkPlugins={[remarkGfm]}>
+												{aspect.aspectDescription}
+											</Markdown>
+										</Table.Cell>
+									</Table.Row>
+								))}
+							</Table.Body>
+						</Table.Content>
+					</Table.ScrollContainer>
 				</Table>
 			);
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
@@ -94,11 +91,10 @@ const ChooseCulture = ({
 		}
 	}, [currentCulture, updateDetailsForCulture]);
 
-	const handleSelectChange = (event: React.ChangeEvent) => {
-		let val = (event.target as HTMLInputElement).value;
-		if(val !== "") {
-			dispatch(setCulture(val));
-			updateDetailsForCulture(val);
+	const handleSelectChange = (val: React.Key | null) => {
+		if (val) {
+			dispatch(setCulture(String(val)));
+			updateDetailsForCulture(String(val));
 		}
 	};
 
@@ -116,21 +112,30 @@ const ChooseCulture = ({
 					<div className="m-auto">
 						<Select
 							isRequired
-							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
-							errorMessage="Please select a culture."
-							variant="bordered"
-							radius="none"
-							label="Culture"
+							isInvalid={!!(incompleteFields && incompleteFields !== "init")}
+							value={currentCulture ?? ""}
+							onChange={handleSelectChange}
 							placeholder="Select a Culture"
 							className="w-96 mt-8"
-							selectedKeys={currentCulture ? [currentCulture] : []}
-							onChange={(event) => handleSelectChange(event)}
-					  	>
-							{cultures.map((culture) => (
-						  	<SelectItem key={culture._id }>
-								{culture.title}
-						  	</SelectItem>
-							))}
+						>
+							<Label>Culture</Label>
+							<Select.Trigger>
+								<Select.Value />
+								<Select.Indicator />
+							</Select.Trigger>
+							{!!(incompleteFields && incompleteFields !== "init") && (
+								<FieldError>Please select a culture.</FieldError>
+							)}
+							<Select.Popover>
+								<ListBox>
+									{cultures.map((culture) => (
+										<ListBox.Item key={culture._id} id={culture._id} textValue={culture.title ?? ""}>
+											{culture.title}
+											<ListBox.ItemIndicator />
+										</ListBox.Item>
+									))}
+								</ListBox>
+							</Select.Popover>
 						</Select>
 					</div>
 				</div>

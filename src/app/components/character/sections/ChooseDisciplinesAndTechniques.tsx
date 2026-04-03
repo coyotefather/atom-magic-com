@@ -8,7 +8,7 @@ import {
 } from "../../../../../sanity.types";
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import { Checkbox } from "@heroui/react";
+import { Checkbox, Label } from "@heroui/react";
 
 interface ChooseDisciplinesAndTechniquesProps {
 	incompleteFields: string;
@@ -129,13 +129,18 @@ const ChooseDisciplinesAndTechniques = ({
 									{disciplinesForPath.map(d => (
 										<div key={d._id} className="mb-2">
 											<Checkbox
-												color="default"
+												id={d._id}
 												className="mb-1"
 												isSelected={characterDisciplines.includes(d._id)}
 												isDisabled={characterDisciplines.length >= 2 && !characterDisciplines.includes(d._id)}
-												onChange={(e) => handleDisciplineCheck(d._id, e.target.checked)}
+												onChange={(checked) => handleDisciplineCheck(d._id, checked)}
 											>
-												{d.title}
+												<Checkbox.Control>
+													<Checkbox.Indicator />
+												</Checkbox.Control>
+												<Checkbox.Content>
+													<Label htmlFor={d._id}>{d.title}</Label>
+												</Checkbox.Content>
 											</Checkbox>
 											<div className={clsx(
 												'ml-8 mb-1 flex flex-col gap-2 w-full',
@@ -144,23 +149,28 @@ const ChooseDisciplinesAndTechniques = ({
 												{characterDisciplines.includes(d._id) && d.techniques?.map(t => (
 													<Checkbox
 														key={t._id}
+														id={t._id}
 														isSelected={characterTechniques.includes(t._id)}
 														isDisabled={characterTechniques.length >= 4 && !characterTechniques.includes(t._id)}
-														color="default"
 														className="items-start w-full"
-														onChange={(e) => handleTechniqueCheck(t._id, e.target.checked)}
+														onChange={(checked) => handleTechniqueCheck(t._id, checked)}
 													>
-														<div>
-															<div>{t.title}</div>
-															{t.latin && (
-																<div className="lapideum text-xxs text-stone uppercase mb-1">
-																	{t.latin}
+														<Checkbox.Control>
+															<Checkbox.Indicator />
+														</Checkbox.Control>
+														<Checkbox.Content>
+															<div>
+																<div>{t.title}</div>
+																{t.latin && (
+																	<div className="lapideum text-xxs text-stone uppercase mb-1">
+																		{t.latin}
+																	</div>
+																)}
+																<div className="text-sm w-full">
+																	<div>{t.description}</div>
 																</div>
-															)}
-															<div className="text-sm w-full">
-																<div>{t.description}</div>
 															</div>
-														</div>
+														</Checkbox.Content>
 													</Checkbox>
 												))}
 											</div>

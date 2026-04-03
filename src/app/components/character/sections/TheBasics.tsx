@@ -2,7 +2,7 @@
 import { useState, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setCharacterName, setCharacterAge, setCharacterPronouns, setCharacterDescription } from "@/lib/slices/characterSlice";
-import { Input, Textarea } from "@heroui/react";
+import { TextField, Label, Input, FieldError } from "@heroui/react";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import ExternalLink from '@/app/components/common/ExternalLink';
@@ -69,42 +69,49 @@ const TheBasics = ({
 						Enter some basic information about your character. Note that none of the choices here affect scores. These are purely for roleplaying purposes.
 					</p>
 					<div className="mb-2 flex flex-col sm:flex-row gap-2 sm:gap-4">
-						<Input
+						<TextField
 							isRequired
-							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
-							errorMessage="Please enter a name."
-							onChange={(e) => handleChange(e, 'update_name')}
-							type="text"
-							label="Name"
-							variant="bordered"
-							radius="none"
+							isInvalid={!!(incompleteFields && incompleteFields !== "init")}
 							className="w-full sm:flex-1"
-							placeholder="Enter Character Name" />
-						<Input
-							onChange={(e) => handleChange(e, 'update_age')}
-							type="number"
-							label="Age"
-							variant="bordered"
-							radius="none"
-							className="w-full sm:w-24"
-							placeholder="Age" />
-						<Input
-							onChange={(e) => handleChange(e, 'update_pronouns')}
-							type="text"
-							label="Pronouns"
-							variant="bordered"
-							radius="none"
-							className="w-full sm:w-40"
-							placeholder="Pronouns" />
+						>
+							<Label>Name</Label>
+							<Input
+								type="text"
+								placeholder="Enter Character Name"
+								onChange={(e) => handleChange(e, 'update_name')}
+							/>
+							{!!(incompleteFields && incompleteFields !== "init") && (
+								<FieldError>Please enter a name.</FieldError>
+							)}
+						</TextField>
+						<TextField className="w-full sm:w-24">
+							<Label>Age</Label>
+							<Input
+								type="number"
+								placeholder="Age"
+								onChange={(e) => handleChange(e, 'update_age')}
+							/>
+						</TextField>
+						<TextField className="w-full sm:w-40">
+							<Label>Pronouns</Label>
+							<Input
+								type="text"
+								placeholder="Pronouns"
+								onChange={(e) => handleChange(e, 'update_pronouns')}
+							/>
+						</TextField>
 					</div>
-					<Textarea
-						onChange={(e) => handleChange(e, 'update_description')}
-						variant="bordered"
-						radius="none"
-						label="Description"
-						labelPlacement="inside"
-						placeholder="Enter Character Description"
-					/>
+					<div className="flex flex-col gap-1">
+						<label className="text-sm text-stone">Description</label>
+						<textarea
+							onChange={(e) => {
+								dispatch(setCharacterDescription(e.target.value));
+								setDetailsUpdated(true);
+							}}
+							className="border-2 border-stone p-2 w-full min-h-[100px] bg-white"
+							placeholder="Enter Character Description"
+						/>
+					</div>
 				</div>
 			</div>
 			<div className="py-8 md:py-16 px-4 md:px-0">

@@ -5,7 +5,7 @@ import { setWealth } from "@/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import FunctionButton from '@/app/components/common/FunctionButton';
 import { WEALTH } from '@/lib/global-data';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
+import { Table } from "@heroui/react";
 import clsx from 'clsx';
 import { mdiDiceMultiple } from '@mdi/js';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
@@ -66,32 +66,36 @@ const ManageGear = ({
 
 			content = (
 				<div className="overflow-x-auto">
-					<Table isCompact removeWrapper aria-label="Wealth">
-						<TableHeader>
-							{["Name","Description","Type","Quantity"].map((tc) => (
-								<TableColumn key={tc} className="bg-transparent border-b-2 pl-0 font-bold">
-									{tc}
-								</TableColumn>
-							))}
-						</TableHeader>
-						<TableBody>
-							{WEALTH.map( (w) => (
-								<TableRow key={w.id}>
-									<TableCell className="align-top pl-0 font-bold">
-										{w.name}
-									</TableCell>
-									<TableCell className="align-top pl-0 max-w-36">
-										{w.description}
-									</TableCell>
-									<TableCell className="align-top pl-0 capitalize">
-										{w.type}
-									</TableCell>
-									<TableCell className="align-top pl-0 font-bold">
-										{rolledWealth[w.id as keyof typeof rolledWealth]}
-									</TableCell>
-								</TableRow>
-							) )}
-						</TableBody>
+					<Table>
+						<Table.ScrollContainer>
+							<Table.Content aria-label="Wealth">
+								<Table.Header>
+									{["Name","Description","Type","Quantity"].map((tc) => (
+										<Table.Column key={tc} id={tc} className="bg-transparent border-b-2 pl-0 font-bold">
+											{tc}
+										</Table.Column>
+									))}
+								</Table.Header>
+								<Table.Body>
+									{WEALTH.map((w) => (
+										<Table.Row key={w.id} id={w.id}>
+											<Table.Cell className="align-top pl-0 font-bold">
+												{w.name}
+											</Table.Cell>
+											<Table.Cell className="align-top pl-0 max-w-36">
+												{w.description}
+											</Table.Cell>
+											<Table.Cell className="align-top pl-0 capitalize">
+												{w.type}
+											</Table.Cell>
+											<Table.Cell className="align-top pl-0 font-bold">
+												{rolledWealth[w.id as keyof typeof rolledWealth]}
+											</Table.Cell>
+										</Table.Row>
+									))}
+								</Table.Body>
+							</Table.Content>
+						</Table.ScrollContainer>
 					</Table>
 				</div>
 			);

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/react';
+import { Modal } from '@heroui/react';
 import { QRCodeSVG } from 'qrcode.react';
 import Icon from '@mdi/react';
 import { mdiContentCopy, mdiCheck, mdiDownload, mdiAlertCircleOutline } from '@mdi/js';
@@ -87,25 +87,14 @@ const ShareCharacterModal = ({ isOpen, onClose, character }: ShareCharacterModal
   };
 
   return (
-    <Modal
-      backdrop="opaque"
-      size="md"
-      isOpen={isOpen}
-      onOpenChange={(open) => !open && onClose()}
-      classNames={{
-        base: 'rounded-none',
-        header: 'rounded-none',
-        body: 'rounded-none',
-        footer: 'rounded-none',
-      }}
-    >
-      <ModalContent>
-        {() => (
-          <>
-            <ModalHeader className="flex flex-col gap-1 marcellus">
-              Share Character
-            </ModalHeader>
-            <ModalBody>
+    <Modal.Backdrop isOpen={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <Modal.Container size="md">
+          <Modal.Dialog>
+            <Modal.CloseTrigger />
+            <Modal.Header>
+              <Modal.Heading className="marcellus">Share Character</Modal.Heading>
+            </Modal.Header>
+            <Modal.Body>
               {shareUrl ? (
                 <div className="flex flex-col items-center gap-6">
                   {/* QR Code */}
@@ -149,8 +138,8 @@ const ShareCharacterModal = ({ isOpen, onClose, character }: ShareCharacterModal
                   </p>
                 </div>
               )}
-            </ModalBody>
-            <ModalFooter className="flex gap-3 justify-center">
+            </Modal.Body>
+            <Modal.Footer className="flex gap-3 justify-center">
               {/* Accessibility announcement for copy success */}
               <span className="sr-only" aria-live="polite" aria-atomic="true">
                 {copied ? 'Link copied to clipboard' : ''}
@@ -183,11 +172,10 @@ const ShareCharacterModal = ({ isOpen, onClose, character }: ShareCharacterModal
                   Close
                 </FunctionButton>
               )}
-            </ModalFooter>
-          </>
-        )}
-      </ModalContent>
-    </Modal>
+            </Modal.Footer>
+          </Modal.Dialog>
+      </Modal.Container>
+    </Modal.Backdrop>
   );
 };
 

@@ -1,6 +1,4 @@
 'use client';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/react";
-import { Accordion, AccordionItem } from "@heroui/react";
 import { Chip } from "@heroui/react";
 import Icon from '@mdi/react';
 import { mdiChevronLeftCircle, mdiSword, mdiShield, mdiStar } from '@mdi/js';
@@ -19,42 +17,12 @@ const WeaponDisplay = ({ weapon, enhancement }: { weapon: Weapon; enhancement?: 
         <span className="marcellus font-semibold">{weapon.name}</span>
       </IconLabel>
       <div className="flex gap-2 mb-2">
-        <Chip
-          size="sm"
-          classNames={{
-            base: "bg-stone",
-            content: "capitalize text-white",
-          }}
-        >
-          {weapon.category}
-        </Chip>
-        <Chip
-          size="sm"
-          classNames={{
-            base: "bg-stone",
-            content: "capitalize text-white",
-          }}
-        >
-          {weapon.type}
-        </Chip>
-        <Chip
-          size="sm"
-          classNames={{
-            base: "bg-brightgold",
-            content: "text-black",
-          }}
-        >
-          Tier {weapon.tier}
-        </Chip>
+        <Chip size="sm" className="bg-stone capitalize text-white">{weapon.category}</Chip>
+        <Chip size="sm" className="bg-stone capitalize text-white">{weapon.type}</Chip>
+        <Chip size="sm" className="bg-brightgold text-black">Tier {weapon.tier}</Chip>
         {weapon.isExotic && (
-          <Chip
-            size="sm"
-            startContent={<Icon path={mdiStar} size={0.6} />}
-            classNames={{
-              base: "bg-oxblood",
-              content: "text-white",
-            }}
-          >
+          <Chip size="sm" className="bg-oxblood text-white">
+            <Icon path={mdiStar} size={0.6} />
             Exotic
           </Chip>
         )}
@@ -88,33 +56,11 @@ const ArmorDisplay = ({ armor, enhancement }: { armor: Armor; enhancement?: Enha
         <span className="marcellus font-semibold">{armor.name}</span>
       </IconLabel>
       <div className="flex gap-2 mb-2">
-        <Chip
-          size="sm"
-          classNames={{
-            base: "bg-stone",
-            content: "capitalize text-white",
-          }}
-        >
-          {armor.category}
-        </Chip>
-        <Chip
-          size="sm"
-          classNames={{
-            base: "bg-brightgold",
-            content: "text-black",
-          }}
-        >
-          Tier {armor.tier}
-        </Chip>
+        <Chip size="sm" className="bg-stone capitalize text-white">{armor.category}</Chip>
+        <Chip size="sm" className="bg-brightgold text-black">Tier {armor.tier}</Chip>
         {armor.isExotic && (
-          <Chip
-            size="sm"
-            startContent={<Icon path={mdiStar} size={0.6} />}
-            classNames={{
-              base: "bg-oxblood",
-              content: "text-white",
-            }}
-          >
+          <Chip size="sm" className="bg-oxblood text-white">
+            <Icon path={mdiStar} size={0.6} />
             Exotic
           </Chip>
         )}
