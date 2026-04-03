@@ -1,8 +1,8 @@
 'use client';
 import clsx from 'clsx';
-import {Accordion, AccordionItem} from "@heroui/react";
+import { Accordion } from "@heroui/react";
 import Icon from '@mdi/react';
-import { mdiPlus, mdiMinus, mdiChevronLeftCircle } from '@mdi/js';
+import { mdiPlus, mdiMinus } from '@mdi/js';
 import { useState, useEffect } from 'react';
 import { useAppDispatch } from '@/lib/hooks'
 import { setSubscore, setScorePoints } from "@/lib/slices/characterSlice";
@@ -124,63 +124,57 @@ const SubScore = ({
 				</div>
 			</div>
 			<div className="pb-2 w-full text-sm">
-				<Accordion
-					isCompact
-					className="border-0 focus:border-0 outline-hidden focus:outline-hidden pl-0 pr-0"
-					itemClasses={
-						{
-							base: 'pl-0 pr-0',
-							title: `text-right text-sm notoserif`,
-							trigger: 'border-0',
-							heading: "bg-white",
-							indicator: "",
-						}
-					}
-					fullWidth>
-					<AccordionItem
-						key={`${subscore}_modifiers`}
-						aria-label={`${subscore}_modifiers`}
-						indicator={<Icon path={mdiChevronLeftCircle} size={0.75} />}
-						title="Modifiers">
-						<div className="border-b text-sm flex justify-between">
-							<span>Base Score</span>
-							<span>{baseSubscoreValue}</span>
-						</div>
-						<div className="border-b text-sm flex justify-between">
-							<span>Elective Modifier</span>
-							<span>0</span>
-						</div>
-						<div className={clsx(
-							"text-sm border-b flex justify-between",
-							{
-								"text-oxblood font-semibold" : pathModifierTotal < 0
-							},
-							{
-								"text-laurel font-semibold" : pathModifierTotal > 0
-							},
-						)}>
-							<span>Path Modifier</span>
-							<span>
-								{ pathModifierTotal > 0 ? "+" : "" }
-								{pathModifierTotal}
-							</span>
-						</div>
-						<div className={clsx(
-							"text-sm flex justify-between",
-							{
-								"text-oxblood font-semibold" : gearModifierTotal < 0
-							},
-							{
-								"text-laurel font-semibold" : gearModifierTotal > 0
-							},
-						)}>
-							<span>Gear Modifier</span>
-							<span>
-								{ gearModifierTotal > 0 ? "+" : "" }
-								{gearModifierTotal}
-							</span>
-						</div>
-					</AccordionItem>
+				<Accordion className="border-0 outline-hidden pl-0 pr-0 w-full">
+					<Accordion.Item>
+						<Accordion.Heading className="bg-white pl-0 pr-0">
+							<Accordion.Trigger className="border-0 pl-0 pr-0" aria-label={`${subscore}_modifiers`}>
+								<span className="text-right text-sm notoserif">Modifiers</span>
+								<Accordion.Indicator />
+							</Accordion.Trigger>
+						</Accordion.Heading>
+						<Accordion.Panel>
+							<Accordion.Body className="pl-0 pr-0">
+								<div className="border-b text-sm flex justify-between">
+									<span>Base Score</span>
+									<span>{baseSubscoreValue}</span>
+								</div>
+								<div className="border-b text-sm flex justify-between">
+									<span>Elective Modifier</span>
+									<span>0</span>
+								</div>
+								<div className={clsx(
+									"text-sm border-b flex justify-between",
+									{
+										"text-oxblood font-semibold" : pathModifierTotal < 0
+									},
+									{
+										"text-laurel font-semibold" : pathModifierTotal > 0
+									},
+								)}>
+									<span>Path Modifier</span>
+									<span>
+										{ pathModifierTotal > 0 ? "+" : "" }
+										{pathModifierTotal}
+									</span>
+								</div>
+								<div className={clsx(
+									"text-sm flex justify-between",
+									{
+										"text-oxblood font-semibold" : gearModifierTotal < 0
+									},
+									{
+										"text-laurel font-semibold" : gearModifierTotal > 0
+									},
+								)}>
+									<span>Gear Modifier</span>
+									<span>
+										{ gearModifierTotal > 0 ? "+" : "" }
+										{gearModifierTotal}
+									</span>
+								</div>
+							</Accordion.Body>
+						</Accordion.Panel>
+					</Accordion.Item>
 				</Accordion>
 			</div>
 		</div>

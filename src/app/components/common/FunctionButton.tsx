@@ -235,11 +235,8 @@ const FunctionButton = ({
       type={type}
       isDisabled={isDisabled}
       onPress={() => onClick?.()}
-      radius="none"
       isIconOnly={isIconOnly}
-      startContent={!isIconOnly ? iconElement : undefined}
-      disableRipple={true}
-      title={title}
+      aria-label={title}
       className={clsx(
         'marcellus uppercase tracking-widest font-bold transition-colors',
         padding,
@@ -250,7 +247,7 @@ const FunctionButton = ({
         className
       )}
     >
-      {isIconOnly ? iconElement : children}
+      {isIconOnly ? iconElement : <>{iconElement}{children}</>}
     </Button>
   );
 };

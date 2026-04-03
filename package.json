@@ -13,9 +13,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@heroui/react": "^2.8.10",
-    "@heroui/system": "^2.4.28",
-    "@heroui/theme": "^2.4.26",
+    "@heroui/react": "^3.0.2",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@reduxjs/toolkit": "^2.11.2",

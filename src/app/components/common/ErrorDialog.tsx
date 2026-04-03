@@ -1,4 +1,5 @@
-import {  Modal,   ModalContent,   ModalHeader,   ModalBody,   ModalFooter} from "@heroui/react";
+'use client';
+import { Modal } from "@heroui/react";
 import FunctionButton from '@/app/components/common/FunctionButton';
 import { mdiCloseCircleOutline } from '@mdi/js';
 
@@ -10,44 +11,39 @@ const ErrorDialog = ({
 		isOpen,
 		onOpenChange
 	}: {
-		title: string,
-		message: string,
-		buttonText: string,
-		incomplete: string,
-		isOpen: boolean,
-		onOpenChange: (isOpen: boolean) => void
-	}) => {
+	title: string,
+	message: string,
+	buttonText: string,
+	incomplete: string,
+	isOpen: boolean,
+	onOpenChange: (isOpen: boolean) => void
+}) => {
 
 	return (
-		<>
-			<Modal
-				backdrop="opaque"
-				size="xs"
-				isOpen={isOpen}
-				onOpenChange={onOpenChange}>
-				<ModalContent>
-				  {(onClose) => (
-					<>
-					  <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
-					  <ModalBody>
+		<Modal.Backdrop isDismissable isOpen={isOpen} onOpenChange={onOpenChange}>
+			<Modal.Container size="xs">
+				<Modal.Dialog>
+					<Modal.CloseTrigger />
+					<Modal.Header>
+						<Modal.Heading>{title}</Modal.Heading>
+					</Modal.Header>
+					<Modal.Body>
 						<p>
-						  {message} <span className="text-oxblood text-semibold">{incomplete}</span>
+							{message} <span className="text-oxblood font-semibold">{incomplete}</span>
 						</p>
-					  </ModalBody>
-					  <ModalFooter>
+					</Modal.Body>
+					<Modal.Footer>
 						<FunctionButton
-							onClick={onClose}
+							onClick={() => onOpenChange(false)}
 							icon={mdiCloseCircleOutline}
 							variant="secondary"
 						>
 							{buttonText}
 						</FunctionButton>
-					  </ModalFooter>
-					</>
-				  )}
-				</ModalContent>
-			</Modal>
-		</>
+					</Modal.Footer>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 };
 

@@ -4,8 +4,7 @@ import ExternalLink from '@/app/components/common/ExternalLink';
 import { ANIMAL_COMPANIONS } from '@/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setAnimalCompanion } from "@/lib/slices/characterSlice";
-import {Select, SelectItem} from "@heroui/react";
-import { Input, Textarea } from "@heroui/react";
+import { Select, Label, ListBox, TextField, Input } from "@heroui/react";
 import { useState, useRef, useEffect } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
@@ -62,35 +61,20 @@ const ChooseAnimalCompanion = ({
 		}
 	},[animalId, animalType, name, description, dispatch, animalCompanion] );
 
-	const handleSelectOneChange = (event: React.ChangeEvent) => {
-		let val = (event.target as HTMLInputElement).value;
-		let children = ANIMAL_COMPANIONS[val as keyof typeof ANIMAL_COMPANIONS].children;
-		setSelectedFamily(children);
+	const handleSelectOneChange = (val: React.Key | null) => {
+		if (val) {
+			let children = ANIMAL_COMPANIONS[String(val) as keyof typeof ANIMAL_COMPANIONS].children;
+			setSelectedFamily(children);
+		}
 	};
 
-	const handleSelectTwoChange = (event: React.ChangeEvent) => {
-		let val = (event.target as HTMLInputElement).value;
-		let companion = selectedFamily.find((c) => c.id === val);
-		if(companion) {
-			setAnimalId(companion.id);
-			setAnimalType(companion.name);
-		}
-	}
-
-	const handleInput = (event: React.ChangeEvent) => {
-		let val = (event.target as HTMLInputElement).value;
-		if(val) {
-			if(name === "") {
-				setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
+	const handleSelectTwoChange = (val: React.Key | null) => {
+		if (val) {
+			let companion = selectedFamily.find((c) => c.id === String(val));
+			if(companion) {
+				setAnimalId(companion.id);
+				setAnimalType(companion.name);
 			}
-			setName(val);
-		}
-	};
-
-	const handleTextArea = (event: React.ChangeEvent) => {
-		let val = (event.target as HTMLInputElement).value;
-		if(val) {
-			setDescription(val);
 		}
 	};
 
@@ -107,48 +91,78 @@ const ChooseAnimalCompanion = ({
 					</p>
 					<div className="m-auto">
 						<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 mb-4">
-							<Select
-								variant="bordered"
-								radius="none"
-								label="Animal Family"
-								placeholder="Select a Family"
-								onChange={(event) => handleSelectOneChange(event)}>
-								<SelectItem key="canidae">Canidae</SelectItem>
-								<SelectItem key="felidae">Felidae</SelectItem>
-								<SelectItem key="rodentia">Rodentia</SelectItem>
-								<SelectItem key="primates">Primates</SelectItem>
-								<SelectItem key="aves">Aves</SelectItem>
-								<SelectItem key="reptilia">Reptilia</SelectItem>
-								<SelectItem key="other">Other</SelectItem>
+							<Select onChange={handleSelectOneChange} placeholder="Select a Family">
+								<Label>Animal Family</Label>
+								<Select.Trigger>
+									<Select.Value />
+									<Select.Indicator />
+								</Select.Trigger>
+								<Select.Popover>
+									<ListBox>
+										{[
+											{ id: "canidae", label: "Canidae" },
+											{ id: "felidae", label: "Felidae" },
+											{ id: "rodentia", label: "Rodentia" },
+											{ id: "primates", label: "Primates" },
+											{ id: "aves", label: "Aves" },
+											{ id: "reptilia", label: "Reptilia" },
+											{ id: "other", label: "Other" },
+										].map((item) => (
+											<ListBox.Item key={item.id} id={item.id} textValue={item.label}>
+												{item.label}
+												<ListBox.ItemIndicator />
+											</ListBox.Item>
+										))}
+									</ListBox>
+								</Select.Popover>
 							</Select>
 							<Select
-								isDisabled={selectedFamily.length === 0 ? true : false}
-								variant="bordered"
-								radius="none"
-								label="Animal"
+								isDisabled={selectedFamily.length === 0}
+								onChange={handleSelectTwoChange}
 								placeholder="Select an Animal"
-								onChange={(event) => handleSelectTwoChange(event)}>
-								{selectedFamily.map( (a) => (
-									<SelectItem key={a.id}>{a.name}</SelectItem>
-								) )}
+							>
+								<Label>Animal</Label>
+								<Select.Trigger>
+									<Select.Value />
+									<Select.Indicator />
+								</Select.Trigger>
+								<Select.Popover>
+									<ListBox>
+										{selectedFamily.map((a) => (
+											<ListBox.Item key={a.id} id={a.id} textValue={a.name}>
+												{a.name}
+												<ListBox.ItemIndicator />
+											</ListBox.Item>
+										))}
+									</ListBox>
+								</Select.Popover>
 							</Select>
-							<Input
-								isDisabled={animalId ? false : true }
-								type="text"
-								label="Name"
-								variant="bordered"
-								radius="none"
-								placeholder="Enter Animal Name"
-								onChange={(event) => handleInput(event)} />
+							<TextField isDisabled={!animalId}>
+								<Label>Name</Label>
+								<Input
+									type="text"
+									placeholder="Enter Animal Name"
+									onChange={(e) => {
+										const val = e.target.value;
+										if (val) {
+											if (name === "") setDetailsUpdated(cur => !cur);
+											setName(val);
+										}
+									}}
+								/>
+							</TextField>
 						</div>
-						<Textarea
-							isDisabled={animalId ? false : true }
-							variant="bordered"
-							radius="none"
-							label="Details"
-							labelPlacement="inside"
-							placeholder="Enter Animal Companion Details"
-							onChange={(event) => handleTextArea(event)}/>
+						<div className="flex flex-col gap-1">
+							<label className={`text-sm ${!animalId ? 'opacity-50' : ''}`}>Details</label>
+							<textarea
+								disabled={!animalId}
+								placeholder="Enter Animal Companion Details"
+								className="border-2 border-stone p-2 w-full min-h-[100px] bg-white disabled:opacity-50"
+								onChange={(e) => {
+									if (e.target.value) setDescription(e.target.value);
+								}}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

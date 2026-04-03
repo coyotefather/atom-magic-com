@@ -6,7 +6,6 @@ import remarkGfm from 'remark-gfm'
 import { remarkExtendedTable } from 'remark-extended-table';
 import { remarkDefinitionList } from 'remark-definition-list';
 import remarkHeadingId from 'remark-heading-id';
-import {Image} from "@heroui/react";
 import NextImage from "next/image";
 import clsx from 'clsx';
 
@@ -28,8 +27,7 @@ const SelectDetail = ({
 	let image = (<></>);
 	if(imagePath !== "") {
 		image = (
-			<Image
-				as={NextImage}
+			<NextImage
 				width={150}
 				height={150}
 				src={imagePath}

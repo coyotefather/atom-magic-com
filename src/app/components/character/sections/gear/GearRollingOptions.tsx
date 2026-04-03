@@ -1,5 +1,5 @@
 'use client';
-import { Checkbox, CheckboxGroup } from "@heroui/react";
+import { Checkbox, CheckboxGroup, Label } from "@heroui/react";
 import {
   GearRollingOptions as GearRollingOptionsType,
   WeaponCategory,
@@ -35,122 +35,120 @@ const GearRollingOptions = ({ options, onChange, disabled = false }: GearRolling
     onChange({ ...options, tiers: values.map(v => parseInt(v)) as Tier[] });
   };
 
+  const CheckboxItem = ({ value, label, isSelected, isDisabled: itemDisabled, onChange }: {
+    value?: string;
+    label: string;
+    isSelected?: boolean;
+    isDisabled?: boolean;
+    onChange?: (checked: boolean) => void;
+  }) => (
+    <Checkbox
+      value={value}
+      isSelected={isSelected}
+      isDisabled={itemDisabled}
+      onChange={onChange}
+    >
+      <Checkbox.Control>
+        <Checkbox.Indicator />
+      </Checkbox.Control>
+      <Checkbox.Content>
+        <Label>{label}</Label>
+      </Checkbox.Content>
+    </Checkbox>
+  );
+
   return (
     <div className="space-y-4">
       {/* Exotic & Enhancement Toggles */}
       <div className="grid grid-cols-2 gap-4 p-4 border border-stone bg-parchment/50">
         <div className="space-y-2">
           <h4 className="text-sm font-bold text-stone marcellus">Weapons</h4>
-          <Checkbox
-            color="default"
+          <CheckboxItem
+            label="Include Exotic"
             isSelected={options.includeExoticWeapons}
             isDisabled={disabled}
-            onValueChange={(checked) => handleToggle('includeExoticWeapons', checked)}
-          >
-            Include Exotic
-          </Checkbox>
-          <Checkbox
-            color="default"
+            onChange={(checked) => handleToggle('includeExoticWeapons', checked)}
+          />
+          <CheckboxItem
+            label="Include Enhancements"
             isSelected={options.includeWeaponEnhancements}
             isDisabled={disabled}
-            onValueChange={(checked) => handleToggle('includeWeaponEnhancements', checked)}
-          >
-            Include Enhancements
-          </Checkbox>
+            onChange={(checked) => handleToggle('includeWeaponEnhancements', checked)}
+          />
         </div>
         <div className="space-y-2">
           <h4 className="text-sm font-bold text-stone marcellus">Armor</h4>
-          <Checkbox
-            color="default"
+          <CheckboxItem
+            label="Include Exotic"
             isSelected={options.includeExoticArmor}
             isDisabled={disabled}
-            onValueChange={(checked) => handleToggle('includeExoticArmor', checked)}
-          >
-            Include Exotic
-          </Checkbox>
-          <Checkbox
-            color="default"
+            onChange={(checked) => handleToggle('includeExoticArmor', checked)}
+          />
+          <CheckboxItem
+            label="Include Enhancements"
             isSelected={options.includeArmorEnhancements}
             isDisabled={disabled}
-            onValueChange={(checked) => handleToggle('includeArmorEnhancements', checked)}
-          >
-            Include Enhancements
-          </Checkbox>
+            onChange={(checked) => handleToggle('includeArmorEnhancements', checked)}
+          />
         </div>
       </div>
 
       {/* Weapon Categories */}
       <div className="p-4 border border-stone bg-parchment/50">
         <CheckboxGroup
-          label="Weapon Categories"
-          orientation="horizontal"
-          color="default"
+          className="flex flex-row flex-wrap gap-4"
           value={options.weaponCategories}
           isDisabled={disabled}
-          onValueChange={handleWeaponCategories}
-          classNames={{
-            label: "text-sm font-semibold text-stone",
-          }}
+          onChange={handleWeaponCategories}
         >
-          <Checkbox value="light">Light</Checkbox>
-          <Checkbox value="medium">Medium</Checkbox>
-          <Checkbox value="heavy">Heavy</Checkbox>
+          <Label className="text-sm font-semibold text-stone">Weapon Categories</Label>
+          <CheckboxItem value="light" label="Light" />
+          <CheckboxItem value="medium" label="Medium" />
+          <CheckboxItem value="heavy" label="Heavy" />
         </CheckboxGroup>
       </div>
 
       {/* Weapon Types */}
       <div className="p-4 border border-stone bg-parchment/50">
         <CheckboxGroup
-          label="Weapon Types"
-          orientation="horizontal"
-          color="default"
+          className="flex flex-row flex-wrap gap-4"
           value={options.weaponTypes}
           isDisabled={disabled}
-          onValueChange={handleWeaponTypes}
-          classNames={{
-            label: "text-sm font-semibold text-stone",
-          }}
+          onChange={handleWeaponTypes}
         >
-          <Checkbox value="melee">Melee</Checkbox>
-          <Checkbox value="ranged">Ranged</Checkbox>
+          <Label className="text-sm font-semibold text-stone">Weapon Types</Label>
+          <CheckboxItem value="melee" label="Melee" />
+          <CheckboxItem value="ranged" label="Ranged" />
         </CheckboxGroup>
       </div>
 
       {/* Armor Categories */}
       <div className="p-4 border border-stone bg-parchment/50">
         <CheckboxGroup
-          label="Armor Categories"
-          orientation="horizontal"
-          color="default"
+          className="flex flex-row flex-wrap gap-4"
           value={options.armorCategories}
           isDisabled={disabled}
-          onValueChange={handleArmorCategories}
-          classNames={{
-            label: "text-sm font-semibold text-stone",
-          }}
+          onChange={handleArmorCategories}
         >
-          <Checkbox value="light">Light</Checkbox>
-          <Checkbox value="medium">Medium</Checkbox>
-          <Checkbox value="heavy">Heavy</Checkbox>
+          <Label className="text-sm font-semibold text-stone">Armor Categories</Label>
+          <CheckboxItem value="light" label="Light" />
+          <CheckboxItem value="medium" label="Medium" />
+          <CheckboxItem value="heavy" label="Heavy" />
         </CheckboxGroup>
       </div>
 
       {/* Tiers */}
       <div className="p-4 border border-stone bg-parchment/50">
         <CheckboxGroup
-          label="Tiers"
-          orientation="horizontal"
-          color="default"
+          className="flex flex-row flex-wrap gap-4"
           value={options.tiers.map(t => t.toString())}
           isDisabled={disabled}
-          onValueChange={handleTiers}
-          classNames={{
-            label: "text-sm font-semibold text-stone",
-          }}
+          onChange={handleTiers}
         >
-          <Checkbox value="1">Tier 1</Checkbox>
-          <Checkbox value="2">Tier 2</Checkbox>
-          <Checkbox value="3">Tier 3</Checkbox>
+          <Label className="text-sm font-semibold text-stone">Tiers</Label>
+          <CheckboxItem value="1" label="Tier 1" />
+          <CheckboxItem value="2" label="Tier 2" />
+          <CheckboxItem value="3" label="Tier 3" />
         </CheckboxGroup>
       </div>
     </div>

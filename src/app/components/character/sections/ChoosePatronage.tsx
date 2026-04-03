@@ -4,8 +4,7 @@ import ExternalLink from '@/app/components/common/ExternalLink';
 import { CARDINALS } from '@/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setPatronage } from "@/lib/slices/characterSlice";
-import {Select, SelectItem} from "@heroui/react";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
+import { Select, Label, ListBox, FieldError, Table } from "@heroui/react";
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useState, useRef, useEffect, useCallback } from 'react';
@@ -42,34 +41,33 @@ const ChoosePatronage = ({
 		const cardinal = patronages.find((c) => c._id === patronageId);
 		if (cardinal != undefined && cardinal.effects) {
 			const patronageEffects = (
-				<Table
-					removeWrapper
-					aria-label={`${cardinal.title} Patronage Effects`}
-					className="mt-8">
-					<TableHeader>
-						{["Name","Description"].map((tc) => (
-							<TableColumn
-								key={tc}
-								className="bg-transparent border-b-2 pl-0">
-								{tc}
-							</TableColumn>
-						))}
-					</TableHeader>
-					<TableBody>
-						{(cardinal.effects).map((effect, index) => (
-							<TableRow key={`effect-${index}`}>
-								<TableCell className="align-top w-1/3 pl-0">
-									{effect.entry && effect.entry.slug ? <ExternalLink
-									href={`https://atom-magic.com/codex/entries/${effect.entry.slug.current}`} name={effect.title ? effect.title :""} />:effect.title}
-								</TableCell>
-								<TableCell className="pl-0 prose prose-sm">
-									<Markdown remarkPlugins={[remarkGfm]}>
-										{effect?.description ?? ""}
-									</Markdown>
-								</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
+				<Table>
+					<Table.ScrollContainer>
+						<Table.Content aria-label={`${cardinal.title} Patronage Effects`} className="mt-8">
+							<Table.Header>
+								{["Name","Description"].map((tc) => (
+									<Table.Column key={tc} id={tc} className="bg-transparent border-b-2 pl-0">
+										{tc}
+									</Table.Column>
+								))}
+							</Table.Header>
+							<Table.Body>
+								{(cardinal.effects).map((effect, index) => (
+									<Table.Row key={`effect-${index}`} id={`effect-${index}`}>
+										<Table.Cell className="align-top w-1/3 pl-0">
+											{effect.entry && effect.entry.slug ? <ExternalLink
+											href={`https://atom-magic.com/codex/entries/${effect.entry.slug.current}`} name={effect.title ? effect.title :""} />:effect.title}
+										</Table.Cell>
+										<Table.Cell className="pl-0 prose prose-sm">
+											<Markdown remarkPlugins={[remarkGfm]}>
+												{effect?.description ?? ""}
+											</Markdown>
+										</Table.Cell>
+									</Table.Row>
+								))}
+							</Table.Body>
+						</Table.Content>
+					</Table.ScrollContainer>
 				</Table>
 			);
 			setDetailsUpdated(curDetailsUpdated => !curDetailsUpdated);
@@ -92,11 +90,10 @@ const ChoosePatronage = ({
 		}
 	}, [currentPatronage, updateDetailsForPatronage]);
 
-	const handleSelectChange = (event: React.ChangeEvent) => {
-		let val = (event.target as HTMLInputElement).value;
-		if(val !== "") {
-			dispatch(setPatronage(val));
-			updateDetailsForPatronage(val);
+	const handleSelectChange = (val: React.Key | null) => {
+		if (val) {
+			dispatch(setPatronage(String(val)));
+			updateDetailsForPatronage(String(val));
 		}
 	};
 
@@ -114,20 +111,30 @@ const ChoosePatronage = ({
 					<div className="m-auto w-full">
 						<Select
 							isRequired
-							isInvalid={incompleteFields && incompleteFields !== "init" ? true : false}
-							errorMessage="Please select a patronage."
-							variant="bordered"
-							radius="none"
-							label="Patronage"
+							isInvalid={!!(incompleteFields && incompleteFields !== "init")}
+							value={currentPatronage ?? ""}
+							onChange={handleSelectChange}
 							placeholder="Select a Patron"
 							className="w-96 mt-8"
-							selectedKeys={currentPatronage ? [currentPatronage] : []}
-							onChange={(event) => handleSelectChange(event)}>
-							{patronages.map((patron) => (
-						  		<SelectItem key={patron._id}>
-									{patron.title}
-						  		</SelectItem>
-							))}
+						>
+							<Label>Patronage</Label>
+							<Select.Trigger>
+								<Select.Value />
+								<Select.Indicator />
+							</Select.Trigger>
+							{!!(incompleteFields && incompleteFields !== "init") && (
+								<FieldError>Please select a patronage.</FieldError>
+							)}
+							<Select.Popover>
+								<ListBox>
+									{patronages.map((patron) => (
+										<ListBox.Item key={patron._id} id={patron._id} textValue={patron.title ?? ""}>
+											{patron.title}
+											<ListBox.ItemIndicator />
+										</ListBox.Item>
+									))}
+								</ListBox>
+							</Select.Popover>
 						</Select>
 					</div>
 				</div>

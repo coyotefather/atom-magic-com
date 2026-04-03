@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import NextImage from "next/image";
 import { mdiArrowDownBoldCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import { Button, Link, Image, useDisclosure } from "@heroui/react";
+import { Button, useOverlayState } from "@heroui/react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import ErrorDialog from '@/app/components/common/ErrorDialog';
 
@@ -28,7 +28,10 @@ const Section = ({
 		children: React.ReactNode
 	}) => {
 
-	const {isOpen, onOpen, onOpenChange} = useDisclosure();
+	const overlayState = useOverlayState();
+	const isOpen = overlayState.isOpen;
+	const onOpen = overlayState.open;
+	const onOpenChange = (open: boolean) => open ? overlayState.open() : overlayState.close();
 	const sectionRef = useRef(null);
 	const buttonRef = useRef(null);
 	const bottomRef = useRef<null | HTMLDivElement>(null);
@@ -121,13 +124,9 @@ const Section = ({
 									<div className="absolute -top-2 left-1/2 -translate-x-1/2 w-[calc(100%+16px)] h-4 bg-white" />
 									<Button
 										ref={buttonRef}
-										onClick={handleClick}
-										radius="none"
-										size="lg"
+										onPress={handleClick}
 										isIconOnly={nextExpanded}
-										endContent={buttonGraphic}
 										isDisabled={nextExpanded}
-										disableRipple={true}
 										className={clsx("font-extrabold relative z-10 marcellus",
 											{
 												'uppercase tracking-widest px-6 py-2 bg-gold text-black border-2 border-oxblood hover:bg-brightgold transition-colors': nextExpanded === false
@@ -136,7 +135,7 @@ const Section = ({
 												'cursor-default bg-white border-2 border-stone': nextExpanded === true
 											},
 										)}>
-										{ nextExpanded ? "" : "CONTINUE"}
+										{ nextExpanded ? buttonGraphic : <>CONTINUE{buttonGraphic}</>}
 									</Button>
 								</div>
 							</CSSTransition>

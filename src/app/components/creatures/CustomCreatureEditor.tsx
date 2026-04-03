@@ -10,7 +10,7 @@ import {
 	mdiDownload,
 	mdiContentCopy,
 } from '@mdi/js';
-import { Checkbox } from '@heroui/react';
+import { Checkbox, Label } from '@heroui/react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import {
 	selectCustomCreature,
@@ -535,22 +535,24 @@ const CustomCreatureEditor = ({
 					</div>
 					<div className="flex items-center gap-6">
 						<Checkbox
+							id="isSwarm"
 							isSelected={creature.isSwarm}
-							onValueChange={(val) =>
-								dispatch(setCreatureIsSwarm(val))
-							}
-							radius="none"
+							onChange={(val) => dispatch(setCreatureIsSwarm(val))}
 						>
-							<span className="text-sm">Swarm</span>
+							<Checkbox.Control><Checkbox.Indicator /></Checkbox.Control>
+							<Checkbox.Content>
+								<Label htmlFor="isSwarm" className="text-sm">Swarm</Label>
+							</Checkbox.Content>
 						</Checkbox>
 						<Checkbox
+							id="isUnique"
 							isSelected={creature.isUnique}
-							onValueChange={(val) =>
-								dispatch(setCreatureIsUnique(val))
-							}
-							radius="none"
+							onChange={(val) => dispatch(setCreatureIsUnique(val))}
 						>
-							<span className="text-sm">Unique</span>
+							<Checkbox.Control><Checkbox.Indicator /></Checkbox.Control>
+							<Checkbox.Content>
+								<Label htmlFor="isUnique" className="text-sm">Unique</Label>
+							</Checkbox.Content>
 						</Checkbox>
 					</div>
 				</div>
