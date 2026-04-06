@@ -61,6 +61,7 @@ export default buildConfig({
   plugins: [
     vercelBlobStorage({
       enabled: true,
+      access: 'private',
       collections: {
         media: true,
       },
