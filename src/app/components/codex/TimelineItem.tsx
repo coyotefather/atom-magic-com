@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import Icon from '@mdi/react';
 import { mdiCircleMedium } from '@mdi/js';
 import Link from 'next/link';
+import type { Timeline } from '../../../../payload-types';
 
 const TimelineItem = ({
 	t,
@@ -9,32 +10,7 @@ const TimelineItem = ({
 	iconPaths,
 	count,
 }: {
-	t: {
-		_id: string;
-		title: string | null;
-		URL: string | null;
-		year: number | null;
-		major: boolean | null;
-		icon:
-			| 'person'
-			| 'people'
-			| 'map'
-			| 'waves'
-			| 'mountain'
-			| 'swords'
-			| 'shield'
-			| 'tree'
-			| 'bird'
-			| 'wolf'
-			| 'snake'
-			| 'fire'
-			| 'poison'
-			| 'hammer'
-			| 'atom'
-			| 'nuke'
-			| null;
-		description: string | null;
-	};
+	t: Timeline;
 	index: number;
 	iconPaths: Map<string, string>;
 	count: number;
@@ -56,7 +32,7 @@ const TimelineItem = ({
 	const isRubiconEvent = t.year === 0;
 	const isMajor = t.major === true;
 
-	let iconSize = isRubiconEvent ? 2 : isMajor ? 1.25 : 0.875;
+	const iconSize = isRubiconEvent ? 2 : isMajor ? 1.25 : 0.875;
 
 	return (
 		<div className="flex flex-row-reverse relative items-start justify-center gap-8 md:gap-16">
@@ -90,9 +66,9 @@ const TimelineItem = ({
 				)}
 
 				{/* Link */}
-				{t.URL && (
+				{t.url && (
 					<Link
-						href={t.URL}
+						href={t.url}
 						className={clsx(
 							'inline-block mt-2 text-gold hover:text-brightgold transition-colors no-underline',
 							{
