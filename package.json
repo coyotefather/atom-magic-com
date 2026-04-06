@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "migrate": "node --import tsx/esm scripts/migrate-from-sanity.ts"
   },
   "dependencies": {
     "@heroui/react": "^3.0.2",
