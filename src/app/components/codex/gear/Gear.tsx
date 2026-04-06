@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { GEAR_PAGE_QUERY_RESULT } from "../../../../../sanity.types";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type GEAR_PAGE_QUERY_RESULT = any[];
 import { Table, Select, Label, ListBox } from "@heroui/react";
 import Icon from '@mdi/react';
 import { mdiSortAscending } from '@mdi/js';

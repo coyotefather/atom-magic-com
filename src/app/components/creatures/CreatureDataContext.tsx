@@ -1,14 +1,11 @@
 'use client';
 
 import { createContext, useContext, ReactNode } from 'react';
-import type {
-	CREATURES_QUERY_RESULT,
-	CREATURE_FILTERS_QUERY_RESULT,
-} from '../../../../sanity.types';
+import type { NormedCreature, CreatureFilters } from '@/lib/creature-types';
 
 interface CreatureDataContextType {
-	creatures: CREATURES_QUERY_RESULT;
-	filters: CREATURE_FILTERS_QUERY_RESULT;
+	creatures: NormedCreature[];
+	filters: CreatureFilters;
 }
 
 const CreatureDataContext = createContext<CreatureDataContextType | null>(null);
@@ -19,8 +16,8 @@ export function CreatureDataProvider({
 	filters,
 }: {
 	children: ReactNode;
-	creatures: CREATURES_QUERY_RESULT;
-	filters: CREATURE_FILTERS_QUERY_RESULT;
+	creatures: NormedCreature[];
+	filters: CreatureFilters;
 }) {
 	return (
 		<CreatureDataContext.Provider value={{ creatures, filters }}>

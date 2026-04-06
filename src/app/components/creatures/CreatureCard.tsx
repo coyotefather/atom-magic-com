@@ -1,21 +1,17 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { urlFor } from '@/sanity/lib/image';
-import { CREATURES_QUERY_RESULT } from '../../../../sanity.types';
+import type { NormedCreature } from '@/lib/creature-types';
 import Icon from '@mdi/react';
 import { mdiShield, mdiShieldOutline, mdiSword, mdiOpenInNew, mdiHeart, mdiPencil } from '@mdi/js';
 import IconLabel from '@/app/components/common/IconLabel';
 
-type Creature = CREATURES_QUERY_RESULT[number];
-
 interface CreatureCardProps {
-	creature: Creature;
+	creature: NormedCreature;
 	isSelected?: boolean;
 	showCustomize?: boolean;
 }
 
-// Helper to display score value or n/a if null/undefined
 const displayScore = (value: number | null | undefined): string => {
 	return value != null ? String(value) : 'n/a';
 };
@@ -40,10 +36,10 @@ const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: C
 		>
 			{/* Header with image */}
 			<div className="relative h-48 bg-black/10">
-				{creature.mainImage?.asset && (
+				{creature.mainImageUrl && (
 					<Image
-						src={urlFor(creature.mainImage).width(600).height(400).url()}
-						alt={creature.mainImage.alt || creature.name || 'Creature image'}
+						src={creature.mainImageUrl}
+						alt={creature.name || 'Creature image'}
 						fill
 						className="object-cover"
 					/>
@@ -83,55 +79,33 @@ const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: C
 				{/* Stats grid */}
 				<div className="grid grid-cols-4 gap-2 mb-4">
 					<div className="text-center p-2 bg-white border border-stone/30">
-						<div className="text-xs text-stone uppercase tracking-wider mb-1">
-							PHY
-						</div>
-						<div className="marcellus text-lg text-black">
-							{displayScore(creature.physical)}
-						</div>
+						<div className="text-xs text-stone uppercase tracking-wider mb-1">PHY</div>
+						<div className="marcellus text-lg text-black">{displayScore(creature.physical)}</div>
 					</div>
 					<div className="text-center p-2 bg-white border border-stone/30">
-						<div className="text-xs text-stone uppercase tracking-wider mb-1">
-							INT
-						</div>
-						<div className="marcellus text-lg text-black">
-							{displayScore(creature.interpersonal)}
-						</div>
+						<div className="text-xs text-stone uppercase tracking-wider mb-1">INT</div>
+						<div className="marcellus text-lg text-black">{displayScore(creature.interpersonal)}</div>
 					</div>
 					<div className="text-center p-2 bg-white border border-stone/30">
-						<div className="text-xs text-stone uppercase tracking-wider mb-1">
-							ITE
-						</div>
-						<div className="marcellus text-lg text-black">
-							{displayScore(creature.intellect)}
-						</div>
+						<div className="text-xs text-stone uppercase tracking-wider mb-1">ITE</div>
+						<div className="marcellus text-lg text-black">{displayScore(creature.intellect)}</div>
 					</div>
 					<div className="text-center p-2 bg-white border border-stone/30">
-						<div className="text-xs text-stone uppercase tracking-wider mb-1">
-							PSY
-						</div>
-						<div className="marcellus text-lg text-black">
-							{displayScore(creature.psyche)}
-						</div>
+						<div className="text-xs text-stone uppercase tracking-wider mb-1">PSY</div>
+						<div className="marcellus text-lg text-black">{displayScore(creature.psyche)}</div>
 					</div>
 				</div>
 
 				{/* Combat stats */}
 				<div className="flex flex-wrap items-center gap-4 text-sm text-stone mb-4">
 					{creature.health != null && (
-						<IconLabel icon={mdiHeart} iconColor="text-oxblood">
-							{creature.health}
-						</IconLabel>
+						<IconLabel icon={mdiHeart} iconColor="text-oxblood">{creature.health}</IconLabel>
 					)}
 					{creature.physicalShield != null && creature.physicalShield > 0 && (
-						<IconLabel icon={mdiShield} iconColor="text-stone">
-							{creature.physicalShield}
-						</IconLabel>
+						<IconLabel icon={mdiShield} iconColor="text-stone">{creature.physicalShield}</IconLabel>
 					)}
 					{creature.psychicShield != null && creature.psychicShield > 0 && (
-						<IconLabel icon={mdiShieldOutline} iconColor="text-laurel">
-							{creature.psychicShield}
-						</IconLabel>
+						<IconLabel icon={mdiShieldOutline} iconColor="text-laurel">{creature.psychicShield}</IconLabel>
 					)}
 					{creature.armorCapacity != null && creature.armorCapacity > 0 && (
 						<div className="flex items-center gap-1">
@@ -144,15 +118,10 @@ const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: C
 				{/* Attacks */}
 				{creature.attacks && creature.attacks.length > 0 && (
 					<div className="mb-4">
-						<h4 className="text-xs text-stone uppercase tracking-wider mb-2">
-							Attacks
-						</h4>
+						<h4 className="text-xs text-stone uppercase tracking-wider mb-2">Attacks</h4>
 						<div className="space-y-1">
-							{creature.attacks.map((attack) => (
-								<div
-									key={attack._key}
-									className="flex items-center gap-2 text-sm"
-								>
+							{creature.attacks.map((attack, idx) => (
+								<div key={attack.id ?? idx} className="flex items-center gap-2 text-sm">
 									<Icon path={mdiSword} size={0.5} className="text-bronze" />
 									<span className="font-semibold">{attack.name}</span>
 									{attack.damage && (
@@ -167,15 +136,10 @@ const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: C
 				{/* Special abilities */}
 				{creature.specialAbilities && creature.specialAbilities.length > 0 && (
 					<div className="mb-4">
-						<h4 className="text-xs text-stone uppercase tracking-wider mb-2">
-							Special Abilities
-						</h4>
+						<h4 className="text-xs text-stone uppercase tracking-wider mb-2">Special Abilities</h4>
 						<div className="space-y-2">
-							{creature.specialAbilities.map((ability) => (
-								<div
-									key={ability._key}
-									className="text-sm bg-white p-2 border-l-2 border-bronze"
-								>
+							{creature.specialAbilities.map((ability, idx) => (
+								<div key={ability.id ?? idx} className="text-sm bg-white p-2 border-l-2 border-bronze">
 									<span className="font-semibold">{ability.name}</span>
 									{ability.description && (
 										<span className="text-stone"> — {ability.description}</span>
@@ -190,10 +154,7 @@ const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: C
 				{creature.environments && creature.environments.length > 0 && (
 					<div className="flex flex-wrap gap-1 mb-4">
 						{creature.environments.map((env, idx) => (
-							<span
-								key={idx}
-								className="px-2 py-0.5 text-xs bg-stone/10 text-stone"
-							>
+							<span key={idx} className="px-2 py-0.5 text-xs bg-stone/10 text-stone">
 								{env}
 							</span>
 						))}
@@ -203,14 +164,10 @@ const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: C
 				{/* Tags */}
 				<div className="flex items-center gap-2 mb-4">
 					{creature.isSwarm && (
-						<span className="px-2 py-0.5 text-xs bg-laurel/20 text-laurel">
-							Swarm
-						</span>
+						<span className="px-2 py-0.5 text-xs bg-laurel/20 text-laurel">Swarm</span>
 					)}
 					{creature.isUnique && (
-						<span className="px-2 py-0.5 text-xs bg-gold/20 text-gold">
-							Unique
-						</span>
+						<span className="px-2 py-0.5 text-xs bg-gold/20 text-gold">Unique</span>
 					)}
 				</div>
 
@@ -218,7 +175,7 @@ const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: C
 				<div className="flex flex-wrap items-center gap-4">
 					{creature.slug && (
 						<Link
-							href={`/codex/entries/${creature.slug.current}`}
+							href={`/codex/entries/${creature.slug}`}
 							className="inline-flex items-center gap-1 text-sm text-bronze hover:text-gold transition-colors"
 						>
 							View full Codex entry

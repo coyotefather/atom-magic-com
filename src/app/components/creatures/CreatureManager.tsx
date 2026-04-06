@@ -20,14 +20,11 @@ import FunctionButton from '@/app/components/common/FunctionButton';
 import CustomCreatureRoster from './CustomCreatureRoster';
 import CustomCreatureEditor from './CustomCreatureEditor';
 import CreaturePicker from './CreaturePicker';
-import {
-	CREATURES_QUERY_RESULT,
-	CREATURE_FILTERS_QUERY_RESULT,
-} from '../../../../sanity.types';
+import type { NormedCreature, CreatureFilters } from '@/lib/creature-types';
 
 interface CreatureManagerProps {
-	creatures: CREATURES_QUERY_RESULT;
-	filters: CREATURE_FILTERS_QUERY_RESULT;
+	creatures: NormedCreature[];
+	filters: CreatureFilters;
 }
 
 const initialCreature: CustomCreatureState = {
@@ -76,7 +73,7 @@ const CreatureManagerInner = ({ creatures, filters }: CreatureManagerProps) => {
 		}
 	}, [cloneId, creatures]);
 
-	const handleCloneFromCMS = (cmsCreature: CREATURES_QUERY_RESULT[number]) => {
+	const handleCloneFromCMS = (cmsCreature: NormedCreature) => {
 		const newId = createNewCreatureId();
 
 		const newCreature: CustomCreatureState = {

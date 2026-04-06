@@ -6,17 +6,12 @@ import { mdiPlus, mdiChevronDown, mdiChevronUp } from '@mdi/js';
 import FunctionButton from '@/app/components/common/FunctionButton';
 import { getChallengeLevelColor, THREAT_VALUES } from '@/lib/encounter-data';
 import { CustomCreatureSummary } from '@/lib/customCreaturePersistence';
-import {
-	CREATURES_QUERY_RESULT,
-	CREATURE_FILTERS_QUERY_RESULT,
-} from '../../../../sanity.types';
-
-type Creature = CREATURES_QUERY_RESULT[number];
+import type { NormedCreature, CreatureFilters } from '@/lib/creature-types';
 
 interface CreatureSelectorProps {
-	creatures: CREATURES_QUERY_RESULT;
-	filters: CREATURE_FILTERS_QUERY_RESULT;
-	onAddCreature: (creature: Creature) => void;
+	creatures: NormedCreature[];
+	filters: CreatureFilters;
+	onAddCreature: (creature: NormedCreature) => void;
 	customCreatures: CustomCreatureSummary[];
 	onAddCustomCreature: (creature: CustomCreatureSummary) => void;
 }

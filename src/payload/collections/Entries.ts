@@ -1,10 +1,15 @@
 import type { CollectionConfig } from 'payload'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { algoliaAfterChange, algoliaAfterDelete } from '../hooks/algoliaSync'
 
 export const Entries: CollectionConfig = {
   slug: 'entries',
   admin: {
     useAsTitle: 'title',
+  },
+  hooks: {
+    afterChange: [algoliaAfterChange],
+    afterDelete: [algoliaAfterDelete],
   },
   fields: [
     {

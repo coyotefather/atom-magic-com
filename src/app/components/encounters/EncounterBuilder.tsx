@@ -29,14 +29,11 @@ import {
 	getCreatureRoster,
 	CustomCreatureSummary,
 } from '@/lib/customCreaturePersistence';
-import {
-	CREATURES_QUERY_RESULT,
-	CREATURE_FILTERS_QUERY_RESULT,
-} from '../../../../sanity.types';
+import type { NormedCreature, CreatureFilters } from '@/lib/creature-types';
 
 interface EncounterBuilderProps {
-	creatures: CREATURES_QUERY_RESULT;
-	filters: CREATURE_FILTERS_QUERY_RESULT;
+	creatures: NormedCreature[];
+	filters: CreatureFilters;
 }
 
 const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
@@ -129,7 +126,7 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 	};
 
 	// Add creature to encounter
-	const handleAddCreature = (creature: CREATURES_QUERY_RESULT[number]) => {
+	const handleAddCreature = (creature: NormedCreature) => {
 		if (!currentEncounter) return;
 
 		const existingIdx = currentEncounter.creatures.findIndex(
