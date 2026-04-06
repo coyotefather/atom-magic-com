@@ -1,17 +1,5 @@
 import { Suspense } from 'react';
-import { sanityFetch } from '@/sanity/lib/client';
-import {
-	CULTURES_QUERY,
-	PATHS_QUERY,
-	PATRONAGES_QUERY,
-	DISCIPLINES_QUERY,
-} from '@/sanity/lib/queries';
-import {
-	CULTURES_QUERY_RESULT,
-	PATHS_QUERY_RESULT,
-	PATRONAGES_QUERY_RESULT,
-	DISCIPLINES_QUERY_RESULT,
-} from '../../../../../sanity.types';
+import { fetchCharacterData } from '@/lib/fetchCharacterData';
 import SharedCharacterPageContent from './SharedCharacterPageContent';
 
 // Loading fallback for Suspense boundary
@@ -28,21 +16,15 @@ function LoadingState() {
 }
 
 export default async function SharedCharacterPage() {
-	// Fetch Sanity data to resolve IDs to names
-	const [cultures, paths, patronages, disciplines] = await Promise.all([
-		sanityFetch<CULTURES_QUERY_RESULT>({ query: CULTURES_QUERY }),
-		sanityFetch<PATHS_QUERY_RESULT>({ query: PATHS_QUERY }),
-		sanityFetch<PATRONAGES_QUERY_RESULT>({ query: PATRONAGES_QUERY }),
-		sanityFetch<DISCIPLINES_QUERY_RESULT>({ query: DISCIPLINES_QUERY }),
-	]);
+	const data = await fetchCharacterData();
 
 	return (
 		<Suspense fallback={<LoadingState />}>
 			<SharedCharacterPageContent
-				cultures={cultures}
-				paths={paths}
-				patronages={patronages}
-				disciplines={disciplines}
+				cultures={data.cultures}
+				paths={data.paths}
+				patronages={data.patronages}
+				disciplines={data.disciplines}
 			/>
 		</Suspense>
 	);

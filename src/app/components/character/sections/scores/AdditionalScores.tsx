@@ -3,14 +3,12 @@ import { useEffect, useMemo } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { initAdditionalScores, setAdditionalScores } from "@/lib/slices/characterSlice";
 import ExternalLink from '@/app/components/common/ExternalLink';
-import {
-	ADDITIONAL_SCORES_QUERY_RESULT,
-} from "../../../../../../sanity.types";
+import type { NormedAdditionalScore } from '@/lib/character-types';
 
 const AdditionalScores = ({
 		additionalScores
 	}:{
-		additionalScores: ADDITIONAL_SCORES_QUERY_RESULT
+		additionalScores: NormedAdditionalScore[]
 	}) => {
 	const dispatch = useAppDispatch();
 	const scores = useAppSelector(state => state.character.scores);

@@ -1,9 +1,6 @@
 import CharacterGenerator from '@/app/components/character/CharacterGenerator';
 import LoadingPage from '@/app/components/global/LoadingPage';
-import { CHARACTER_MANAGER_QUERY } from '@/sanity/lib/queries';
-import { sanityFetch } from '@/sanity/lib/client';
-import { notFound } from 'next/navigation';
-import { CHARACTER_MANAGER_QUERY_RESULT } from '../../../../sanity.types';
+import { fetchCharacterData } from '@/lib/fetchCharacterData';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -12,23 +9,17 @@ export const metadata: Metadata = {
 };
 
 const Page = async () => {
-	const characterManager = await sanityFetch<CHARACTER_MANAGER_QUERY_RESULT>({
-		query: CHARACTER_MANAGER_QUERY,
-	});
-
-	if (!characterManager) {
-		return notFound();
-	}
+	const data = await fetchCharacterData();
 
 	return (
 		<main>
 			<LoadingPage />
 			<CharacterGenerator
-				cultures={characterManager.cultures}
-				paths={characterManager.paths}
-				patronages={characterManager.patronages}
-				disciplines={characterManager.disciplines}
-				scores={characterManager.scores}
+				cultures={data.cultures}
+				paths={data.paths}
+				patronages={data.patronages}
+				disciplines={data.disciplines}
+				scores={data.scores}
 			/>
 		</main>
 	);

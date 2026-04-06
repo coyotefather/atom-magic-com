@@ -3,9 +3,7 @@ import { Table, Accordion, Chip } from "@heroui/react";
 import Icon from '@mdi/react';
 import { mdiBankCircleOutline } from '@mdi/js';
 import clsx from 'clsx';
-import {
-	GEAR_QUERY_RESULT,
-} from "../../../../../../sanity.types";
+import type { CharacterGearItem } from '@/lib/gear-data';
 
 const columns = [
 	{
@@ -29,7 +27,7 @@ const columns = [
 const GearTable = ({
 		gear
 	}: {
-		gear: GEAR_QUERY_RESULT,
+		gear: CharacterGearItem[],
 	}) => {
 
 	return (

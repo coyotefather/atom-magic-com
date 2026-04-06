@@ -26,15 +26,14 @@ import { useCharacterPersistence } from '@/lib/hooks/useCharacterPersistence';
 import { useCharacterValidation } from '@/lib/hooks/useCharacterValidation';
 import { useSectionVisibility } from '@/lib/hooks/useSectionVisibility';
 
-import {
-	CULTURES_QUERY_RESULT,
-	SCORES_QUERY_RESULT,
-	ADDITIONAL_SCORES_QUERY_RESULT,
-	PATHS_QUERY_RESULT,
-	PATRONAGES_QUERY_RESULT,
-	DISCIPLINES_QUERY_RESULT,
-	GEAR_QUERY_RESULT,
-} from "../../../../sanity.types";
+import type {
+	NormedCulture,
+	NormedScore,
+	NormedAdditionalScore,
+	NormedPath,
+	NormedPatronage,
+	NormedDiscipline,
+} from '@/lib/character-types';
 
 interface Modifier {
 	_id: string,
@@ -54,15 +53,13 @@ const Sections = ({
 		paths,
 		patronages,
 		disciplines,
-		gear,
 	}:{
-		cultures: CULTURES_QUERY_RESULT,
-		scores: SCORES_QUERY_RESULT,
-		additionalScores: ADDITIONAL_SCORES_QUERY_RESULT,
-		paths: PATHS_QUERY_RESULT,
-		patronages: PATRONAGES_QUERY_RESULT,
-		disciplines: DISCIPLINES_QUERY_RESULT,
-		gear: GEAR_QUERY_RESULT,
+		cultures: NormedCulture[],
+		scores: NormedScore[],
+		additionalScores: NormedAdditionalScore[],
+		paths: NormedPath[],
+		patronages: NormedPatronage[],
+		disciplines: NormedDiscipline[],
 	}) => {
 	const character = useAppSelector(state => state.character);
 	const {

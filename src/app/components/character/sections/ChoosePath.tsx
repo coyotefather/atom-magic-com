@@ -8,15 +8,13 @@ import { Select, Label, ListBox, FieldError, Table } from "@heroui/react";
 import { useState, useRef, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import {
-	PATHS_QUERY_RESULT,
-} from "../../../../../sanity.types";
+import type { NormedPath } from '@/lib/character-types';
 
 const ChoosePath = ({
 		paths,
 		incompleteFields
 	}: {
-		paths: PATHS_QUERY_RESULT,
+		paths: NormedPath[],
 		incompleteFields: string
 	}) => {
 	const detailsRef = useRef(null);

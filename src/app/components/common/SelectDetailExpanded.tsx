@@ -8,6 +8,7 @@ import { remarkDefinitionList } from 'remark-definition-list';
 import remarkHeadingId from 'remark-heading-id';
 import NextImage from "next/image";
 import clsx from 'clsx';
+import { RichText } from '@/app/components/common/RichText';
 
 
 const SelectDetail = ({
@@ -19,10 +20,23 @@ const SelectDetail = ({
 	}: {
 		imagePath: string,
 		name: string,
-		description: string,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		description: string | Record<string, unknown> | null | undefined,
 		disabled: boolean,
 		children: React.ReactNode
 	}) => {
+
+	const renderDescription = (desc: typeof description) => {
+		if (!desc) return null;
+		if (typeof desc === 'string') {
+			return (
+				<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>
+					{desc}
+				</Markdown>
+			);
+		}
+		return <RichText content={desc} />;
+	};
 
 	let image = (<></>);
 	if(imagePath !== "") {
@@ -50,9 +64,7 @@ const SelectDetail = ({
 					)}>
 						<h3 className="marcellus text-3xl border-b-2 mb-4">{name}</h3>
 						<div className="prose prose-sm">
-							<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>
-								{description}
-							</Markdown>
+							{renderDescription(description)}
 						</div>
 					</div>
 					<div className="flex justify-around">
@@ -75,9 +87,7 @@ const SelectDetail = ({
 					className="opacity-5 mx-auto"
 					alt="Atom Magic Circle" />
 				<div className="text-center m-8 text-sm opacity-75">
-					<Markdown remarkPlugins={[remarkGfm, remarkExtendedTable, remarkDefinitionList, [remarkHeadingId, {defaults: true, uniqueDefaults: true }]]}>
-						{description}
-					</Markdown>
+					{renderDescription(description)}
 				</div>
 			</div>
 		</>
