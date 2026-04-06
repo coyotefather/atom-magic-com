@@ -117,8 +117,7 @@ const AdditionalScores = ({
 						{addScores.map( (s) => (
 							<div key={s._id} className="w-full flex gap-4 mb-4 justify-between">
 								<div className="w-36 text-md align-top pl-0 align-start">
-									{s.entry && s.entry.slug ? <ExternalLink href={`https://atom-magic.com/codex/entries/${s.entry.slug.current}`}
-									name={s.title ? s.title : ""} />:s.title}
+									{s.title}
 								</div>
 								<div className="w-1/2 text-md align-top pl-0 align-top">
 									{s.description}

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
-import type { NormedAdditionalScore } from '../character-types';
+import type { NormedAdditionalScore, NormedScore } from '../character-types';
 import { CharacterGearItem } from '../gear-data';
 import { saveCharacterToStorage, clearCharacterFromStorage } from '../characterPersistence';
 
@@ -125,12 +125,12 @@ export const characterSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-	initScore: (state, action: PayloadAction<SanityScore[]>) => {
+	initScore: (state, action: PayloadAction<NormedScore[]>) => {
 		if(state.scores.length === 0) {
 			let subs: LocalSubscore[];
 			let scoreAverage: number;
 			let subscoreCount: number;
-			action.payload.forEach( (score: SanityScore) => {
+			action.payload.forEach( (score: NormedScore) => {
 				subs = [];
 				scoreAverage = 0;
 				subscoreCount = 0;
@@ -143,7 +143,7 @@ export const characterSlice = createSlice({
 								_id: s._id,
 								title: s.title,
 								description: s.description,
-								value: s.defaultValue
+								value: s.defaultValue ?? null
 							}
 						);
 					});

@@ -117,7 +117,7 @@ const Sections = ({
 		if(path.modifiers) {
 			path.modifiers.map( (m) => {
 				if(m.modifierSubscore && m.modifierSubscore._id && m.modifierSubscore.score && path._id === character.path) {
-					modifiers.path.push({ _id: m.modifierSubscore._id, parent_id: m.modifierSubscore.score._id, value: m.modifierValue });
+					modifiers.path.push({ _id: m.modifierSubscore._id, parent_id: m.modifierSubscore.score._id, value: m.modifierValue ?? null });
 				}
 			});
 		}

@@ -50,7 +50,7 @@ const ChooseCulture = ({
 								))}
 							</Table.Header>
 							<Table.Body>
-								{chosenCulture.aspects.map((aspect) => (
+								{(chosenCulture.aspects ?? []).map((aspect) => (
 									<Table.Row key={String(aspect.aspectId)} id={String(aspect.aspectId)}>
 										<Table.Cell className="align-top min-w-44 pl-0">
 											<ExternalLink

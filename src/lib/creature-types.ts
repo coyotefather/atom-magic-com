@@ -65,10 +65,10 @@ export function normalizeCreature(doc: Record<string, unknown>): NormedCreature 
 
 export function deriveFilters(creatures: NormedCreature[]): CreatureFilters {
 	const challengeLevels = [
-		...new Set(creatures.map((c) => c.challengeLevel).filter((v): v is string => Boolean(v))),
+		...new Set(creatures.map((c) => c.challengeLevel).filter(Boolean) as string[]),
 	]
 	const creatureTypes = [
-		...new Set(creatures.map((c) => c.creatureType).filter((v): v is string => Boolean(v))),
+		...new Set(creatures.map((c) => c.creatureType).filter(Boolean) as string[]),
 	]
 	const environments = [
 		...new Set(creatures.flatMap((c) => c.environments ?? [])),

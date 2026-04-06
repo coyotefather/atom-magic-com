@@ -4,11 +4,11 @@ import { useState, useMemo } from 'react';
 import { mdiClose } from '@mdi/js';
 import CreatureFilters from './CreatureFilters';
 import FunctionButton from '@/app/components/common/FunctionButton';
-import type { NormedCreature, CreatureFilters } from '@/lib/creature-types';
+import type { NormedCreature, CreatureFilters as CreatureFiltersType } from '@/lib/creature-types';
 
 interface CreaturePickerProps {
 	creatures: NormedCreature[];
-	filters: CreatureFilters;
+	filters: CreatureFiltersType;
 	isOpen: boolean;
 	onClose: () => void;
 	onSelect: (creature: NormedCreature) => void;

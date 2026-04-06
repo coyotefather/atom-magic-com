@@ -50,7 +50,7 @@ const ChoosePath = ({
 								))}
 							</Table.Header>
 							<Table.Body>
-								{chosenPath.modifiers.map((m, index) => (
+								{(chosenPath.modifiers ?? []).map((m, index) => (
 									<Table.Row key={`path-modifier-${index}`} id={`path-modifier-${index}`}>
 										<Table.Cell className="text-base pl-0">
 											{m.modifierSubscore && m.modifierSubscore.score ? m.modifierSubscore.score.title : ""}

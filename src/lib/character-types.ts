@@ -86,7 +86,7 @@ export interface NormedPatronage {
 export interface NormedTechnique {
   _id: string
   id: number
-  title: string
+  title: string | null
   latin?: string | null
   cooldown?: number | null
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

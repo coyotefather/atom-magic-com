@@ -11,7 +11,7 @@ const SEARCHABLE_COLLECTIONS = ['entries', 'creatures', 'disciplines', 'techniqu
 
 async function performBulkReindex() {
 	const payload = await getPayloadClient();
-	const records: object[] = [];
+	const records: Record<string, unknown>[] = [];
 
 	for (const collection of SEARCHABLE_COLLECTIONS) {
 		const result = await payload.find({ collection, limit: 500, depth: 0 });

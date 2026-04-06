@@ -43,19 +43,24 @@ export async function fetchCharacterData() {
   }))
 
   // Normalize paths with modifiers subscores
-  const paths = pathsRes.docs.map(p => norm({
-    ...p as Path,
-    modifiers: (p.modifiers ?? []).map(m => ({
-      ...m,
-      modifierSubscore: typeof m.modifierSubscore === 'number'
-        ? { _id: String(m.modifierSubscore), id: m.modifierSubscore, score: null }
-        : norm({ ...(m.modifierSubscore as Subscore), score: (m.modifierSubscore as Subscore).score
-            ? (typeof (m.modifierSubscore as Subscore).score === 'number'
-              ? { _id: String((m.modifierSubscore as Subscore).score), id: (m.modifierSubscore as Subscore).score }
-              : norm((m.modifierSubscore as Subscore).score as Score))
-            : null }),
-    })),
-  }))
+  const paths = (pathsRes.docs.map(p => {
+    const modifiers = (p.modifiers ?? []).map(m => {
+      const rawSub = m.modifierSubscore
+      if (!rawSub || typeof rawSub === 'number') {
+        const id = typeof rawSub === 'number' ? rawSub : 0
+        return { ...m, modifierSubscore: { _id: String(id), id, score: null } }
+      }
+      const sub = rawSub as Subscore
+      const rawScore = sub.score
+      const normedScore = !rawScore
+        ? null
+        : typeof rawScore === 'number'
+          ? { _id: String(rawScore), id: rawScore as number, title: null }
+          : norm(rawScore as Score)
+      return { ...m, modifierSubscore: norm({ ...sub, score: normedScore }) }
+    })
+    return norm({ ...p as Path, modifiers })
+  })) as import('./character-types').NormedPath[]
 
   // Normalize patronages with effects entries
   const patronages = patronagesRes.docs.map(p => norm({
