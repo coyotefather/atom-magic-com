@@ -321,7 +321,7 @@ export interface Path {
   id: number;
   title: string;
   latin?: string | null;
-  slug: string;
+  slug?: string | null;
   mainImage?: (number | null) | Media;
   modifiers?:
     | {
@@ -450,7 +450,7 @@ export interface Score {
 export interface Discipline {
   id: number;
   title: string;
-  slug: string;
+  slug?: string | null;
   mainImage?: (number | null) | Media;
   paths?: (number | Path)[] | null;
   techniques?: (number | Technique)[] | null;
@@ -511,7 +511,7 @@ export interface Technique {
   id: number;
   title: string;
   latin?: string | null;
-  slug: string;
+  slug?: string | null;
   mainImage?: (number | null) | Media;
   /**
    * Rounds before this technique can be used again.

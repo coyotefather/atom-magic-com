@@ -1,7 +1,9 @@
+import { config as dotenvConfig } from 'dotenv'
+dotenvConfig({ path: '.env.local' })
+
 import { createClient } from '@sanity/client'
-import { convertMarkdownToLexical } from '@payloadcms/richtext-lexical'
+import { convertMarkdownToLexical, sanitizeServerEditorConfig, defaultEditorConfig } from '@payloadcms/richtext-lexical'
 import { getPayload } from 'payload'
-import config from '../payload.config.js'
 import path from 'path'
 import fs from 'fs'
 
@@ -17,10 +19,14 @@ const sanity = createClient({
 
 // ---- Helpers ---------------------------------------------------------------
 
+// Populated in main() after Payload initializes
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let editorConfig: any
+
 /** Convert a markdown string to Lexical JSON, or return null if empty. */
 function md(markdown: string | null | undefined) {
   if (!markdown) return null
-  return convertMarkdownToLexical({ markdown })
+  return convertMarkdownToLexical({ markdown, editorConfig })
 }
 
 /** Build a Sanity CDN image URL from a Sanity image reference. */
@@ -92,7 +98,7 @@ async function migrateCategories(payload: Awaited<ReturnType<typeof getPayload>>
       collection: 'categories',
       data: {
         title: doc.title ?? '',
-        slug: doc.slug?.current ?? '',
+        slug: doc.slug?.current || undefined,
         description: doc.description ?? '',
       },
     })
@@ -176,7 +182,7 @@ async function migrateEntries(payload: Awaited<ReturnType<typeof getPayload>>) {
       collection: 'entries',
       data: {
         title: doc.title ?? '',
-        slug: doc.slug?.current ?? '',
+        slug: doc.slug?.current || undefined,
         description: doc.description ?? '',
         toc: md(doc.toc),
         entryBody: md(doc.entryBody),
@@ -212,7 +218,7 @@ async function migratePaths(payload: Awaited<ReturnType<typeof getPayload>>) {
       data: {
         title: doc.title ?? '',
         latin: doc.latin ?? '',
-        slug: doc.slug?.current ?? '',
+        slug: doc.slug?.current || undefined,
         description: md(doc.description),
         toc: md(doc.toc),
         entryBody: md(doc.entryBody),
@@ -246,7 +252,7 @@ async function migrateTechniques(payload: Awaited<ReturnType<typeof getPayload>>
       data: {
         title: doc.title ?? '',
         latin: doc.latin ?? '',
-        slug: doc.slug?.current ?? '',
+        slug: doc.slug?.current || undefined,
         cooldown: doc.cooldown,
         description: md(doc.description),
         toc: md(doc.toc),
@@ -278,7 +284,7 @@ async function migrateDisciplines(payload: Awaited<ReturnType<typeof getPayload>
       collection: 'disciplines',
       data: {
         title: doc.title ?? '',
-        slug: doc.slug?.current ?? '',
+        slug: doc.slug?.current || undefined,
         description: md(doc.description),
         toc: md(doc.toc),
         entryBody: md(doc.entryBody),
@@ -394,9 +400,9 @@ async function migrateAdditionalScores(payload: Awaited<ReturnType<typeof getPay
   const docs = await sanity.fetch<Array<{
     _id: string; title: string; description?: string; calculation: string;
     entry?: { _ref: string };
-    scores?: Array<{ _ref: string; _type: string }>;
+    scores?: Array<{ ref: string; docType: string }>;
     additionalCalculations?: Array<{ calculationType: string; value: number }>
-  }>>(`*[_type == "additionalScores"]{ _id, title, description, calculation, entry, scores, additionalCalculations }`)
+  }>>(`*[_type == "additionalScores"]{ _id, title, description, calculation, entry, "scores": scores[]{ "ref": _ref, "docType": @->._type }, additionalCalculations }`)
 
   for (const doc of docs) {
     const created = await payload.create({
@@ -407,8 +413,8 @@ async function migrateAdditionalScores(payload: Awaited<ReturnType<typeof getPay
         calculation: doc.calculation,
         entry: doc.entry?._ref ? idMap.get(doc.entry._ref) : undefined,
         scores: doc.scores?.map(s => ({
-          relationTo: s._type === 'score' ? 'scores' : 'subscores',
-          value: idMap.get(s._ref),
+          relationTo: s.docType === 'score' ? 'scores' : 'subscores',
+          value: idMap.get(s.ref),
         })).filter(s => s.value) ?? [],
         additionalCalculations: doc.additionalCalculations ?? [],
       },
@@ -439,7 +445,7 @@ async function migrateCreatures(payload: Awaited<ReturnType<typeof getPayload>>)
       collection: 'creatures',
       data: {
         name: doc.name ?? '',
-        slug: doc.slug?.current ?? '',
+        slug: doc.slug?.current || undefined,
         description: doc.description ?? '',
         physical: doc.physical ?? 10,
         interpersonal: doc.interpersonal ?? 10,
@@ -494,10 +500,35 @@ async function migrateTimeline(payload: Awaited<ReturnType<typeof getPayload>>) 
 
 // ---- Main orchestrator -----------------------------------------------------
 
+type PayloadInstance = Awaited<ReturnType<typeof getPayload>>
+
+async function clearAll(payload: PayloadInstance) {
+  console.log('Clearing existing data...')
+  const collections = [
+    'timeline', 'creatures', 'additional-scores', 'enhancements', 'patronages',
+    'cultures', 'disciplines', 'techniques', 'paths', 'entries',
+    'subscores', 'scores', 'categories', 'media',
+  ] as const
+  for (const col of collections) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { docs } = await (payload as any).find({ collection: col, limit: 1000, depth: 0 })
+    for (const doc of docs) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (payload as any).delete({ collection: col, id: doc.id })
+    }
+    if (docs.length > 0) console.log(`  Cleared ${docs.length} from ${col}`)
+  }
+  console.log('Done clearing.\n')
+}
+
 async function main() {
   console.log('Connecting to Payload...')
+  const { default: config } = await import('../payload.config.js')
   const payload = await getPayload({ config })
+  editorConfig = await sanitizeServerEditorConfig(defaultEditorConfig, payload.config)
   console.log('Connected.\n')
+
+  await clearAll(payload)
 
   try {
     await migrateCategories(payload)

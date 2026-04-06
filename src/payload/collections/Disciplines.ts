@@ -15,7 +15,6 @@ export const Disciplines: CollectionConfig = {
     {
       name: 'slug',
       type: 'text',
-      required: true,
     },
     {
       name: 'mainImage',

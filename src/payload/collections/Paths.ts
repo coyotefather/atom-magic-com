@@ -20,7 +20,6 @@ export const Paths: CollectionConfig = {
     {
       name: 'slug',
       type: 'text',
-      required: true,
     },
     {
       name: 'mainImage',

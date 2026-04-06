@@ -20,7 +20,6 @@ export const Techniques: CollectionConfig = {
     {
       name: 'slug',
       type: 'text',
-      required: true,
     },
     {
       name: 'mainImage',
