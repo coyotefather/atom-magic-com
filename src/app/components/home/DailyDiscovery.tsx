@@ -1,18 +1,17 @@
 'use client';
-import { Slug } from "../../../../sanity.types";
 import Link from 'next/link';
 import Markdown from 'react-markdown';
 import Icon from '@mdi/react';
 import { mdiCompass } from '@mdi/js';
 
-export type EntryById = {
-	title: string | null;
+export type DailyDiscoveryEntry = {
+	title: string;
 	description: string | null;
-	slug: Slug | null;
-} | null;
+	slug: string;
+};
 
-const DailyDiscovery = ({ entry }: { entry: EntryById }) => {
-	const { title, description, slug } = entry || {};
+const DailyDiscovery = ({ entry }: { entry: DailyDiscoveryEntry }) => {
+	const { title, description, slug } = entry;
 
 	let text = description ? description.substring(0, 350) : "...";
 	if (description && description.length > 350) {
@@ -48,7 +47,7 @@ const DailyDiscovery = ({ entry }: { entry: EntryById }) => {
 
 						<div className="md:pt-12">
 							<Link
-								href={`/codex/entries/${slug?.current}`}
+								href={`/codex/entries/${slug}`}
 								className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white marcellus uppercase tracking-widest text-sm font-bold hover:bg-stone-dark transition-colors no-underline whitespace-nowrap"
 							>
 								Read More

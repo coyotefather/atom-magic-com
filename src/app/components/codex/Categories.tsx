@@ -1,10 +1,10 @@
-import { CATEGORIES_QUERY_RESULT } from '../../../../sanity.types';
+import type { Category as PayloadCategory } from '../../../../payload-types';
 import ContentCard from '@/app/components/common/ContentCard';
 
 const Categories = ({
 	categories,
 }: {
-	categories: CATEGORIES_QUERY_RESULT;
+	categories: PayloadCategory[];
 }) => {
 	return (
 		<section className="container px-6 md:px-8">
@@ -12,10 +12,10 @@ const Categories = ({
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 				{categories.map((c) => (
 					<ContentCard
-						key={c._id}
+						key={c.id}
 						title={c?.title ?? 'Category'}
 						description={c?.description ?? ''}
-						href={`/codex/categories/${c?.slug?.current}`}
+						href={`/codex/categories/${c?.slug}`}
 						variant="compact"
 					/>
 				))}

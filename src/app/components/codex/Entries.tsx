@@ -1,7 +1,13 @@
-import { ENTRIES_QUERY_RESULT } from '../../../../sanity.types';
 import Hit from '@/app/components/global/search/Hit';
 
-const Entries = ({ entries }: { entries: ENTRIES_QUERY_RESULT }) => {
+interface EntryItem {
+	id: string | number;
+	title: string;
+	slug: string;
+	type: string;
+}
+
+const Entries = ({ entries }: { entries: EntryItem[] }) => {
 	return (
 		<section className="container px-6 md:px-8">
 			<h3 className="marcellus text-2xl font-bold mb-6">Entries</h3>
@@ -13,8 +19,8 @@ const Entries = ({ entries }: { entries: ENTRIES_QUERY_RESULT }) => {
 							type: 'entry',
 							rev: '',
 							title: e?.title ?? 'Title',
-							path: `${e?.slug?.current}`,
-							description: e?.description ?? '',
+							path: e?.slug ?? '',
+							description: '',
 						}}
 					/>
 				))}
