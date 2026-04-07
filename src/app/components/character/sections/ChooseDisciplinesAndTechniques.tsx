@@ -3,6 +3,7 @@ import { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setDisciplines, setTechniques } from "@/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
+import { RichText } from '@/app/components/common/RichText';
 import type { NormedDiscipline } from '@/lib/character-types';
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
@@ -165,7 +166,7 @@ const ChooseDisciplinesAndTechniques = ({
 																	</div>
 																)}
 																<div className="text-sm w-full">
-																	<div>{t.description}</div>
+																	<RichText content={t.description} />
 																</div>
 															</div>
 														</Checkbox.Content>
@@ -221,7 +222,7 @@ const ChooseDisciplinesAndTechniques = ({
 																</div>
 															)}
 															<div className="text-sm w-full">
-																<div>{t.description}</div>
+																<RichText content={t.description} />
 															</div>
 														</div>
 													))}
