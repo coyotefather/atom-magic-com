@@ -1,16 +1,18 @@
 # Atom Magic Project Memory
 
 ## Project Overview
-Atom Magic is a Next.js website featuring the Vorago board game, Character Manager, and Codex (lore/rules). The site uses Sanity CMS for content management.
+Atom Magic is a Next.js website featuring the Vorago board game, Character Manager, and Codex (lore/rules). The site uses Payload CMS for content management.
 
 ## Tech Stack
 - **Framework**: Next.js 16 with App Router
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS 4
 - **State Management**: Redux Toolkit (react-redux)
-- **UI Components**: HeroUI (Checkbox, CheckboxGroup, Select, Table, Accordion, Chip, etc.)
+- **UI Components**: HeroUI v3 (Checkbox, CheckboxGroup, Select, Table, Accordion, Chip, etc.)
 - **Animation**: Motion (Framer Motion), react-transition-group
-- **CMS**: Sanity v5
+- **CMS**: Payload CMS v3 (Local API, self-hosted)
+- **Database**: PostgreSQL via Neon (Drizzle ORM, managed by Payload)
+- **Media**: Vercel Blob storage (via `@payloadcms/storage-vercel-blob`)
 - **Search**: Algolia (react-instantsearch)
 
 ## Project Structure
@@ -23,10 +25,11 @@ src/
 │   │   ├── character/      # Character Manager
 │   │   ├── map/            # Interactive world map
 │   │   └── ...
-│   ├── (studio)/           # Sanity Studio
+│   ├── (payload)/          # Payload CMS admin panel
+│   │   └── admin/          # Payload admin UI route
 │   ├── api/                # API routes
 │   │   ├── vorago-ai/      # AI opponent endpoint
-│   │   └── algolia/        # Algolia webhook
+│   │   └── algolia/        # Algolia bulk reindex endpoint
 │   └── components/
 │       ├── vorago/         # Vorago game components
 │       ├── character/      # Character Manager components
@@ -39,21 +42,81 @@ src/
 │   │   ├── voragoAIThunk.ts # AI turn execution logic
 │   │   └── characterSlice.ts # Character state
 │   ├── store.ts            # Redux store config
-│   ├── gear-data.ts        # Weapons, armor, enhancements data
+│   ├── payload.ts          # Payload Local API singleton (getPayloadClient)
+│   ├── fetchCharacterData.ts # Fetches all character data from Payload
+│   ├── character-types.ts  # NormedXxx types for character components
+│   ├── creature-types.ts   # NormedCreature, CreatureFilters, normalizeCreature()
+│   ├── gear-data.ts        # Weapons, armor, enhancements data (local)
 │   └── global-data.js      # Paths, cardinals, scores constants
-├── sanity/
-│   ├── schemaTypes/        # Sanity document schemas
-│   └── lib/queries.ts      # GROQ queries
+├── payload/
+│   ├── collections/        # Payload collection configs (Entries, Creatures, etc.)
+│   └── hooks/
+│       └── algoliaSync.ts  # afterChange/afterDelete hooks for Algolia
+├── payload-types.ts        # Auto-generated Payload types (do not edit)
+├── payload.config.ts       # Payload configuration
 └── markdown/               # Game rules reference (gitignored)
 ```
 
 ## Common Commands
 ```bash
 npm run dev                      # Start development server
-npm run build                    # Production build
-npx sanity typegen generate      # Regenerate Sanity types
-npx sanity schema extract        # Extract schema.json
+npm run build                    # Production build (use --webpack flag)
 ```
+
+## Payload CMS
+
+### Local API
+All data fetching uses the Payload Local API singleton — never HTTP:
+```typescript
+import { getPayloadClient } from '@/lib/payload';
+const payload = await getPayloadClient();
+const result = await payload.find({ collection: 'entries', limit: 100, depth: 2 });
+```
+
+### Collections
+| Collection | Slug | Admin title field | Notes |
+|---|---|---|---|
+| Entries | `entries` | `title` | Codex articles |
+| Creatures | `creatures` | `name` | Uses `name` not `title` |
+| Disciplines | `disciplines` | `title` | Magic schools |
+| Techniques | `techniques` | `title` | Magic techniques |
+| Paths | `paths` | `title` | Character paths (Theurgist, etc.) |
+| Cultures | `cultures` | `title` | Playable cultures |
+| Patronages | `patronages` | `title` | Patron deities/entities |
+| Scores | `scores` | `title` | Physical, Interpersonal, Intellect, Psyche |
+| Subscores | `subscores` | `title` | Sub-attributes under each score |
+| Additional Scores | `additional-scores` | `title` | Derived stats |
+| Enhancements | `enhancements` | `title` | Gear enhancements |
+| Categories | `categories` | `title` | Hierarchical codex categories |
+| Media | `media` | — | Image/file uploads (Vercel Blob) |
+| Users | `users` | — | Admin users |
+| Timeline | `timeline` | `title` | World timeline events |
+
+### Types
+Payload auto-generates types to `payload-types.ts`. Key differences from old Sanity types:
+- `id: number` (not `_id: string`) — character components need the `_id` shim
+- `slug: string` (not `{ current: string }`)
+- Rich text fields use Lexical JSON (render with `<RichText content={...} />`)
+- Creatures use `name` not `title`
+- `environments` is `Array<{ environment: string; id: string }>` not `string[]`
+
+### Normalized types (`src/lib/character-types.ts`, `src/lib/creature-types.ts`)
+Character components expect `_id: string`. Use the `NormedXxx` types from `character-types.ts` and fetch via `fetchCharacterData()`, which calls `norm()` to add `_id = String(id)` to every document.
+
+For creatures, use `normalizeCreature(doc)` from `creature-types.ts` which also flattens `environments[].environment → string[]` and resolves `mainImage.url`.
+
+### Algolia sync
+Incremental sync: Payload `afterChange`/`afterDelete` hooks in `src/payload/hooks/algoliaSync.ts` fire automatically on save/delete for Entries, Creatures, Disciplines, Techniques, Paths.
+
+Bulk reindex: `POST /api/algolia?reindex=true&secret=<ALGOLIA_ADMIN_SECRET>`
+
+### Rich text
+All long-form content (entryBody, toc, descriptions on disciplines/techniques/paths/cultures/patronages) is stored as Lexical JSON. Render with:
+```tsx
+import { RichText } from '@/app/components/common/RichText';
+<RichText content={doc.entryBody} />
+```
+The `RichText` component is at `src/app/components/common/RichText.tsx` and uses `@payloadcms/richtext-lexical/react`.
 
 ---
 
@@ -73,18 +136,21 @@ Multi-step character creation wizard with sections for basics, culture, path, pa
 ```typescript
 interface CharacterState {
   name, age, pronouns, description: string;
-  culture, path, patronage: string;  // Sanity document IDs
+  culture, path, patronage: string;  // Payload document IDs (as strings)
   scores: Score[];                    // Physical, Interpersonal, Intellect, Psyche
   additionalScores: AdditionalScore[];
-  disciplines, techniques: string[];  // Sanity document IDs
+  disciplines, techniques: string[];  // Payload document IDs (as strings)
   gear: CharacterGearItem[];          // Local gear format
   wealth: { silver, gold, lead, uranium };
   animalCompanion: { id, name, details };
 }
 ```
 
+### Data Fetching
+All character data is fetched server-side via `fetchCharacterData()` from `src/lib/fetchCharacterData.ts`. The character, generator, and shared pages call this and pass normalized data down to `<Sections />`.
+
 ### Gear System
-Gear is now local (not from Sanity) using `src/lib/gear-data.ts`:
+Gear is local (not from CMS) using `src/lib/gear-data.ts`:
 - **Weapons**: Standard (72) + Exotic (36) across light/medium/heavy, melee/ranged, tier 1/2/3
 - **Armor**: Standard (36) + Exotic (36) with capacity, penalties, shield bonuses
 - **Enhancements**: Generic (6) + Discipline-specific (14) with shield bonuses
@@ -131,25 +197,6 @@ A strategic circular board game where players race to move 3 stones to the cente
 Set `DEBUG_MODE = true` in `VoragoBoard.tsx` to show ring rotations and cell indices.
 
 ---
-
-## Sanity CMS
-
-### Document Types
-- `culture`, `path`, `patronage` - Character options
-- `discipline`, `technique`, `enhancement` - Magic system
-- `score`, `additionalScore`, `subscore` - Character stats
-- `gear` (deprecated - now using local gear-data.ts)
-- `entry` - Codex articles
-
-### Type Generation
-After schema changes:
-```bash
-npx sanity typegen generate
-```
-Types are exported as `QUERY_NAME_RESULT` format (e.g., `CULTURES_QUERY_RESULT`).
-
-### Markdown Fields
-Some fields use `sanity-plugin-markdown` for rich text (culture descriptions, patronage effects, etc.).
 
 ---
 
@@ -231,20 +278,18 @@ interface PageHeroProps {
 ---
 
 ## Recent Changes
+- **CMS migration**: Fully migrated from Sanity CMS to Payload CMS v3 (Local API, PostgreSQL via Neon, Vercel Blob for media)
 - Interactive world map at /map using Leaflet + CRS.Simple with tile layer and GeoJSON region overlay
 - Custom creatures can be added to encounters via tabbed Codex/Custom creature selector
 - Creature Manager feature: custom creature creation, editing, roster management, CMS cloning, .creatura file import/export
 - Unified PageHero component replaces 7 separate hero components
 - Standardized button styling (LinkButton, FunctionButton) with consistent padding and variants
 - All tool pages use `bg-parchment` background
-- Diagonal line pattern standardized across all heroes
 - Adventure Log feature added for session tracking
-- Gear system rebuilt with local TypeScript data (replaces Sanity gear)
+- Gear system rebuilt with local TypeScript data
 - Dynamic shield calculations in AdditionalScores
-- Gear rolling options UI with category/tier/type filters
 - Removed Feranos as playable culture (kept mysterious)
 - Turbopack root configured for nested project directory
-- Trapezoid styling removed, cards use classical borders
 
 ---
 
@@ -343,14 +388,10 @@ Props: `icon`, `children`, `label?`, `iconColor?`, `size?` (xs/sm/md/lg), `gap?`
 
 See `ROADMAP.md` for full tracking. Key items:
 
-### Quick Fixes (Completed)
-- ~~DEBUG_MODE~~ - Now uses `NEXT_PUBLIC_VORAGO_DEBUG` env variable
-- ~~Duplicate shield calc~~ - Extracted to `src/lib/utils/shield.ts`
-- ~~Random selection~~ - Extracted to `src/lib/utils/random.ts`
-- ~~Dead code~~ - Removed commented `ScoreUpdate` interface
-
 ### Remaining Items
 - **voragoSlice.ts** (800+ lines) - AI logic could be extracted to separate file (low priority)
+- **GearTable.tsx** - Still using old column layout from Sanity era; could be redesigned now that gear is local data
+- **Legacy gear codex page** (`/codex/gear/[slug]`) - Returns 404, can be deleted when convenient
 
 ---
 
@@ -542,5 +583,5 @@ import { mdiSword } from '@mdi/js';
 
 - Static assets (images, textures): `public/`
 - Map terrain icons (PNGs): `public/map-icons/`
-- Sanity CMS images: served via `cdn.sanity.io` — use `@sanity/image-url` builder
+- CMS media images: served via Vercel Blob — access via `(doc.mainImage as Media).url` after depth-resolving the relationship
 - **IMPORTANT**: If Figma MCP server returns a localhost source for an image or SVG, use that source directly — do not create placeholders

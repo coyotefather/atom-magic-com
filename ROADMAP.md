@@ -51,23 +51,16 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [ ] **Shareable creatures** - URL/QR sharing like characters
 - [x] **Import to encounters** - Use custom creatures in the Encounter Builder
 
-## CMS Migration: Sanity → Payload
+## CMS Migration: Sanity → Payload ✓ Complete
 
-Figma acquired Payload CMS, giving a strong incentive to migrate away from Sanity. **On hold** — waiting to see what Figma does with Payload (Cloud is currently paused for new sign-ups, markdown support is a notable gap). Revisit once Figma announces their roadmap.
-
-### Exploration (on hold)
-- [ ] **Audit current Sanity usage** - Inventory all document types, GROQ queries, webhook integrations (Algolia), Sanity Studio customizations, and `sanity.types` generated types that would need to be replicated
-- [ ] **Evaluate Payload feature parity** - Confirm Payload supports: rich text (markdown plugin), image/asset hosting, live preview, type generation, and a self-hosted or cloud option comparable to Sanity's plan
-
-### Migration tasks (once exploration is complete)
-- [ ] **Schema migration** - Recreate all Sanity schemas (`culture`, `path`, `patronage`, `discipline`, `technique`, `enhancement`, `score`, `additionalScore`, `subscore`, `entry`, `creature`) as Payload collections
-- [ ] **Data export/import** - Export content from Sanity (NDJSON) and write an import script for Payload
-- [ ] **Query layer** - Replace GROQ queries in `src/sanity/lib/queries.ts` with Payload REST/Local API equivalents
-- [ ] **Type generation** - Replace `npx sanity typegen generate` workflow with Payload's generated types
-- [ ] **Algolia webhook** - Rewire the Algolia reindex webhook to fire from Payload collection hooks instead of Sanity
-- [ ] **Sanity Studio removal** - Remove `src/app/(studio)` route and all `sanity` package dependencies
-- [ ] **Codex/creature pages** - Update all data-fetching in `src/sanity/` and page components to use Payload API
-- [ ] **Hosting decision** - Decide between Payload Cloud vs. self-hosting (Railway, Render, etc.)
+- [x] **Schema migration** - All Sanity schemas recreated as Payload collections
+- [x] **Data export/import** - Content migrated from Sanity via custom import scripts
+- [x] **Query layer** - All GROQ queries replaced with Payload Local API calls (`getPayloadClient()`)
+- [x] **Type generation** - `payload-types.ts` auto-generated; `NormedXxx` types in `src/lib/character-types.ts` for character components
+- [x] **Algolia sync** - `afterChange`/`afterDelete` hooks in `src/payload/hooks/algoliaSync.ts`; bulk reindex at `POST /api/algolia?reindex=true&secret=...`
+- [x] **Sanity Studio removal** - Removed `src/app/(studio)`, `src/sanity/`, `sanity.config.ts`, `sanity.types.ts`; uninstalled all Sanity packages
+- [x] **Codex/creature pages** - All data-fetching updated to Payload Local API
+- [x] **Hosting** - Payload self-hosted on Vercel (same app), PostgreSQL via Neon, media via Vercel Blob
 
 ## Site-wide
 
@@ -129,7 +122,7 @@ Figma acquired Payload CMS, giving a strong incentive to migrate away from Sanit
 - [x] **Component optimization** - Identify repeated UI patterns and extract into reusable components. Look for other performance optimizations.
 - [x] **UX & styling finalization** - Review and refine the user experience and visual consistency across all pages.
 - [x] **Algolia API optimization** - Review search implementation to minimize API calls and stay within plan limits.
-- [x] **Sanity API optimization** - Review CMS queries and caching to minimize API usage and stay within plan limits.
+- [x] **Sanity API optimization** - Moot; migrated to Payload CMS (self-hosted, no API limits).
 - [ ] **Accessibility audit** - Screen reader support, keyboard navigation, focus states
 - [ ] **Mobile UX pass** - Touch targets, swipe gestures for Vorago
 - [x] **Encounter Builder creature selector height** - The creature grid area is too short, making it hard to browse. Revisit the layout to show more creatures at once
@@ -142,7 +135,7 @@ Figma acquired Payload CMS, giving a strong incentive to migrate away from Sanit
 - [x] **Remove error details from API responses** - Algolia and Vorago AI routes now return generic errors to clients
 - [x] **Validate vorago-ai input** - Added difficulty whitelist and game state type validation
 - [ ] **CSRF protection** - Add CSRF tokens to form submissions (low priority for contact-only form)
-- [ ] **Content Security Policy** - Add CSP headers (requires testing with Sanity Studio, Algolia)
+- [ ] **Content Security Policy** - Add CSP headers (requires testing with Payload admin, Algolia, Vercel Blob)
 - [ ] **Redis rate limiting** - Replace in-memory rate limiting for production scale
 
 ## Code Quality & Technical Debt
@@ -203,6 +196,7 @@ Figma acquired Payload CMS, giving a strong incentive to migrate away from Sanit
 
 ## Completed
 
+- [x] CMS migration from Sanity v5 to Payload CMS v3 (Local API, Neon PostgreSQL, Vercel Blob)
 - [x] Character save/load to .persona files (formerly .solum)
 - [x] Character resume from browser storage
 - [x] Creature roller with filtering
