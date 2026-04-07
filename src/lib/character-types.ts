@@ -4,6 +4,7 @@
  * backwards compatibility with character components.
  */
 import type { Media } from '../../payload-types'
+import type { LexicalContent } from '@/app/components/common/RichText'
 
 export interface NormedSubscore {
   _id: string
@@ -11,8 +12,7 @@ export interface NormedSubscore {
   title: string
   subscoreId?: string | null
   defaultValue?: number | null
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  description?: any
+  description?: LexicalContent
   updatedAt: string
   createdAt: string
 }
@@ -23,8 +23,7 @@ export interface NormedScore {
   title: string
   scoreId?: string | null
   subscores: NormedSubscore[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  description?: any
+  description?: LexicalContent
   updatedAt: string
   createdAt: string
 }
@@ -48,8 +47,7 @@ export interface NormedPath {
     modifierValue?: number | null
     id?: string | null
   }> | null
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  description?: any
+  description?: LexicalContent
   updatedAt: string
   createdAt: string
 }
@@ -73,12 +71,10 @@ export interface NormedPatronage {
     title?: string | null
     titleLatin?: string | null
     entry?: NormedEntry | number | null
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    description?: any
+    description?: LexicalContent
     id?: string | null
   }> | null
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  description?: any
+  description?: LexicalContent
   updatedAt: string
   createdAt: string
 }
@@ -89,8 +85,7 @@ export interface NormedTechnique {
   title: string | null
   latin?: string | null
   cooldown?: number | null
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  description?: any
+  description?: LexicalContent
 }
 
 export interface NormedDiscipline {
@@ -100,8 +95,7 @@ export interface NormedDiscipline {
   slug?: string | null
   paths: Array<{ _id: string; id: number; title: string | null }>
   techniques: NormedTechnique[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  description?: any
+  description?: LexicalContent
   updatedAt: string
   createdAt: string
 }
@@ -115,12 +109,10 @@ export interface NormedCulture {
     aspectName?: string | null
     aspectId?: string | null
     aspectContentSlug?: string | null
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    aspectDescription?: any
+    aspectDescription?: LexicalContent
     id?: string | null
   }> | null
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  description?: any
+  description?: LexicalContent
   updatedAt: string
   createdAt: string
 }
@@ -137,8 +129,7 @@ export interface NormedAdditionalScore {
     value?: number | null
     id?: string | null
   }> | null
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  description?: any
+  description?: LexicalContent
   updatedAt: string
   createdAt: string
 }

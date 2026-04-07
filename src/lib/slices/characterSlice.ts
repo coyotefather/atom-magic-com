@@ -4,24 +4,9 @@ import type { NormedAdditionalScore, NormedScore } from '../character-types';
 import { CharacterGearItem } from '../gear-data';
 import { saveCharacterToStorage, clearCharacterFromStorage } from '../characterPersistence';
 
-interface SanityScore {
-	_id: string,
-	title: string | null,
-	subscores: SanitySubscore[] | null,
-	description: string | null
-};
-
-interface SanitySubscore {
-	_id: string,
-	title: string | null,
-	description: string | null,
-	defaultValue: number | null
-};
-
 interface LocalSubscore {
 	_id: string,
 	title: string | null,
-	description: string | null,
 	value: number | null
 };
 
@@ -31,10 +16,8 @@ interface Score {
 	subscores: {
 		_id: string,
 		title: string | null,
-		description: string | null,
 		value: number | null
 	}[],
-	description: string | null,
 	value: number | null
 };
 
@@ -142,7 +125,6 @@ export const characterSlice = createSlice({
 							{
 								_id: s._id,
 								title: s.title,
-								description: s.description,
 								value: s.defaultValue ?? null
 							}
 						);
@@ -153,7 +135,6 @@ export const characterSlice = createSlice({
 					_id: score._id,
 					title: score.title,
 					subscores: subs,
-					description: score.description,
 					value: scoreAverage
 				});
 			} );

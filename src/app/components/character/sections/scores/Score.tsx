@@ -20,12 +20,10 @@ const Score = ({
 		score: {
 			_id: string,
 			title: string | null,
-			description: string | null,
 			value: number | null,
 			subscores: {
 				_id: string,
 				title: string | null,
-				description: string | null,
 				value: number | null
 			}[],
 		},

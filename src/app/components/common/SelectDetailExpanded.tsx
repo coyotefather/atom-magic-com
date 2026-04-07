@@ -9,6 +9,7 @@ import remarkHeadingId from 'remark-heading-id';
 import NextImage from "next/image";
 import clsx from 'clsx';
 import { RichText } from '@/app/components/common/RichText';
+import type { LexicalContent } from '@/app/components/common/RichText';
 
 
 const SelectDetail = ({
@@ -20,8 +21,7 @@ const SelectDetail = ({
 	}: {
 		imagePath: string,
 		name: string,
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		description: string | Record<string, unknown> | null | undefined,
+		description: string | LexicalContent,
 		disabled: boolean,
 		children: React.ReactNode
 	}) => {
