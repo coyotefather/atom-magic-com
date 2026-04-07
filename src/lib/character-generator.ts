@@ -211,8 +211,7 @@ function generateTechniques(
 			// Find technique matching archetype keywords
 			const matchingTechniques = discipline.techniques.filter(t =>
 				archetype.techniqueKeywords.some(keyword =>
-					t.title?.toLowerCase().includes(keyword) ||
-					t.description?.toLowerCase().includes(keyword)
+					t.title?.toLowerCase().includes(keyword)
 				)
 			);
 

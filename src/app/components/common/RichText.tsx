@@ -1,8 +1,11 @@
 import { RichText as PayloadRichText } from '@payloadcms/richtext-lexical/react'
+import type { SerializedEditorState } from 'lexical'
+
+/** Payload Lexical rich text JSON. Must be rendered with <RichText content={...} /> — never directly in JSX. */
+export type LexicalContent = SerializedEditorState | null | undefined
 
 interface RichTextProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  content: any
+  content: LexicalContent
   className?: string
 }
 
