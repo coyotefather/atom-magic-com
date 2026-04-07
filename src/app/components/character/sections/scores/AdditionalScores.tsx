@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { initAdditionalScores, setAdditionalScores } from "@/lib/slices/characterSlice";
 import ExternalLink from '@/app/components/common/ExternalLink';
 import type { NormedAdditionalScore } from '@/lib/character-types';
+import { RichText } from '@/app/components/common/RichText';
 
 const AdditionalScores = ({
 		additionalScores
@@ -120,7 +121,7 @@ const AdditionalScores = ({
 									{s.title}
 								</div>
 								<div className="w-1/2 text-md align-top pl-0 align-top">
-									{s.description}
+									<RichText content={s.description} />
 								</div>
 								<div className="w-16 text-md text-base pl-0 flex justify-end">
 									{s.value}
