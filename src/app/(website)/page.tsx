@@ -1,29 +1,20 @@
 import Hero from '@/app/components/home/Hero';
 import FeatureCards from '@/app/components/home/FeatureCards';
 import DailyDiscovery from '@/app/components/home/DailyDiscovery';
-import { notFound } from "next/navigation";
-import { ENTRIES_COUNT_QUERY } from "@/sanity/lib/queries";
-import { sanityFetch } from "@/sanity/lib/client";
-import { groq } from "next-sanity";
-import {
-	ENTRIES_COUNT_QUERY_RESULT,
-	Slug
-} from "../../../sanity.types";
+import { getPayloadClient } from '@/lib/payload';
 import { createHash } from 'crypto';
 import Srand from 'seeded-rand';
 
-export type EntryById = {
-	title: string | null;
-	description: string | null;
-	slug: Slug | null;
-} | null;
-
 export default async function Home() {
-	let total = await sanityFetch<ENTRIES_COUNT_QUERY_RESULT>({
-		query: ENTRIES_COUNT_QUERY,
-	});
+	const payload = await getPayloadClient();
 
-	// Fallback if Sanity fetch fails - show page without Daily Discovery
+	const countResult = await payload.find({
+		collection: 'entries',
+		limit: 1,
+		depth: 0,
+	});
+	const total = countResult.totalDocs;
+
 	if (!total) {
 		return (
 			<main className="notoserif">
@@ -40,13 +31,15 @@ export default async function Home() {
 		.readUInt32BE();
 	const random = new Srand(seed).intInRange(0, total - 1);
 
-	const entry = await sanityFetch<EntryById>({
-		query: groq`*[_type == "entry"][${random}]{
-			title, description, slug
-		}`
+	const entryResult = await payload.find({
+		collection: 'entries',
+		limit: 1,
+		depth: 0,
+		page: Math.floor(random) + 1,
 	});
 
-	// If entry fetch fails, show page without Daily Discovery
+	const entry = entryResult.docs[0];
+
 	if (!entry) {
 		return (
 			<main className="notoserif">
@@ -60,7 +53,11 @@ export default async function Home() {
 		<main className="notoserif">
 			<Hero />
 			<FeatureCards />
-			<DailyDiscovery entry={entry} />
+			<DailyDiscovery entry={{
+				title: entry.title,
+				description: entry.description ?? null,
+				slug: entry.slug,
+			}} />
 		</main>
 	);
 }

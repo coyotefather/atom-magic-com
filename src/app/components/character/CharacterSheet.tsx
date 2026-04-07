@@ -1,20 +1,20 @@
 'use client';
 
 import { useAppSelector } from '@/lib/hooks';
-import {
-	CULTURES_QUERY_RESULT,
-	PATHS_QUERY_RESULT,
-	PATRONAGES_QUERY_RESULT,
-	DISCIPLINES_QUERY_RESULT,
-} from '../../../../sanity.types';
+import type {
+	NormedCulture,
+	NormedPath,
+	NormedPatronage,
+	NormedDiscipline,
+} from '@/lib/character-types';
 import { calculateGearShieldBonuses } from '@/lib/utils/shield';
 import { calculateScoreAverage } from '@/lib/utils/score';
 
 interface CharacterSheetProps {
-	cultures: CULTURES_QUERY_RESULT;
-	paths: PATHS_QUERY_RESULT;
-	patronages: PATRONAGES_QUERY_RESULT;
-	disciplines: DISCIPLINES_QUERY_RESULT;
+	cultures: NormedCulture[];
+	paths: NormedPath[];
+	patronages: NormedPatronage[];
+	disciplines: NormedDiscipline[];
 }
 
 const CharacterSheet = ({

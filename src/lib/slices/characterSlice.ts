@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
-import {
-	ADDITIONAL_SCORES_QUERY_RESULT,
-} from "../../../sanity.types";
+import type { NormedAdditionalScore, NormedScore } from '../character-types';
 import { CharacterGearItem } from '../gear-data';
 import { saveCharacterToStorage, clearCharacterFromStorage } from '../characterPersistence';
 
@@ -76,7 +74,7 @@ export interface CharacterState {
 	patronage: string,
 	scorePoints: number,
 	scores: Array<Score>,
-	additionalScores: ADDITIONAL_SCORES_QUERY_RESULT,
+	additionalScores: NormedAdditionalScore[],
 	disciplines: Array<string>,
 	techniques: Array<string>,
 	gear: CharacterGearItem[],
@@ -127,12 +125,12 @@ export const characterSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-	initScore: (state, action: PayloadAction<SanityScore[]>) => {
+	initScore: (state, action: PayloadAction<NormedScore[]>) => {
 		if(state.scores.length === 0) {
 			let subs: LocalSubscore[];
 			let scoreAverage: number;
 			let subscoreCount: number;
-			action.payload.forEach( (score: SanityScore) => {
+			action.payload.forEach( (score: NormedScore) => {
 				subs = [];
 				scoreAverage = 0;
 				subscoreCount = 0;
@@ -145,7 +143,7 @@ export const characterSlice = createSlice({
 								_id: s._id,
 								title: s.title,
 								description: s.description,
-								value: s.defaultValue
+								value: s.defaultValue ?? null
 							}
 						);
 					});
@@ -165,7 +163,7 @@ export const characterSlice = createSlice({
 	// setLoaded: (state, action: PayloadAction<boolean>) => {
 	// 	state.loaded = action.payload;
 	// },
-	initAdditionalScores: (state, action: PayloadAction<ADDITIONAL_SCORES_QUERY_RESULT>) => {
+	initAdditionalScores: (state, action: PayloadAction<NormedAdditionalScore[]>) => {
 		if(state.additionalScores.length === 0) {
 			state.additionalScores = action.payload;
 			//state.loaded = true;

@@ -1,4 +1,4 @@
-import { TIMELINE_QUERY_RESULT } from '../../../../sanity.types';
+import type { Timeline as TimelineType } from '../../../../payload-types';
 import TimelineItem from '@/app/components/codex/TimelineItem';
 import {
 	mdiHuman,
@@ -22,7 +22,7 @@ import {
 export default function Timeline({
 	timeline,
 }: {
-	timeline: TIMELINE_QUERY_RESULT;
+	timeline: TimelineType[];
 }) {
 	const iconPaths = new Map<string, string>();
 	iconPaths.set('person', mdiHuman);
@@ -54,7 +54,7 @@ export default function Timeline({
 					{/* Timeline items */}
 					{timeline.map((t, index) => (
 						<TimelineItem
-							key={t._id || index}
+							key={t.id}
 							t={t}
 							index={index}
 							iconPaths={iconPaths}

@@ -5,34 +5,23 @@ import { mdiDiceMultiple, mdiFormatListBulleted } from '@mdi/js';
 import CreatureFilters from './CreatureFilters';
 import CreatureCard from './CreatureCard';
 import FunctionButton from '@/app/components/common/FunctionButton';
-import {
-	CREATURES_QUERY_RESULT,
-	CREATURE_FILTERS_QUERY_RESULT,
-} from '../../../../sanity.types';
+import type { NormedCreature, CreatureFilters as CreatureFiltersType } from '@/lib/creature-types';
 
 interface CreatureRollerProps {
-	creatures: CREATURES_QUERY_RESULT;
-	filters: CREATURE_FILTERS_QUERY_RESULT;
+	creatures: NormedCreature[];
+	filters: CreatureFiltersType;
 }
 
 const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
-	const [selectedEnvironments, setSelectedEnvironments] = useState<string[]>(
-		[]
-	);
+	const [selectedEnvironments, setSelectedEnvironments] = useState<string[]>([]);
 	const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-	const [selectedChallengeLevels, setSelectedChallengeLevels] = useState<
-		string[]
-	>([]);
-	const [rolledCreature, setRolledCreature] = useState<
-		CREATURES_QUERY_RESULT[number] | null
-	>(null);
+	const [selectedChallengeLevels, setSelectedChallengeLevels] = useState<string[]>([]);
+	const [rolledCreature, setRolledCreature] = useState<NormedCreature | null>(null);
 	const [isRolling, setIsRolling] = useState(false);
 	const [showAll, setShowAll] = useState(false);
 
-	// Filter creatures based on selections
 	const filteredCreatures = useMemo(() => {
 		return creatures.filter((creature) => {
-			// Filter by challenge level
 			if (
 				selectedChallengeLevels.length > 0 &&
 				creature.challengeLevel &&
@@ -41,7 +30,6 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 				return false;
 			}
 
-			// Filter by creature type
 			if (
 				selectedTypes.length > 0 &&
 				creature.creatureType &&
@@ -50,9 +38,8 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 				return false;
 			}
 
-			// Filter by environment (creature must have at least one matching environment)
 			if (selectedEnvironments.length > 0) {
-				const creatureEnvs = creature.environments || [];
+				const creatureEnvs = creature.environments ?? [];
 				const hasMatchingEnv = creatureEnvs.some((env) =>
 					selectedEnvironments.includes(env)
 				);
@@ -71,13 +58,10 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 		setIsRolling(true);
 		setShowAll(false);
 
-		// Simulate rolling animation
 		let rollCount = 0;
 		const maxRolls = 10;
 		const rollInterval = setInterval(() => {
-			const randomIndex = Math.floor(
-				Math.random() * filteredCreatures.length
-			);
+			const randomIndex = Math.floor(Math.random() * filteredCreatures.length);
 			setRolledCreature(filteredCreatures[randomIndex]);
 			rollCount++;
 
@@ -111,26 +95,20 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 					onClearAll={handleClearAll}
 				/>
 
-				{/* Stats */}
 				<div className="mt-4 p-4 bg-black text-white">
 					<div className="flex items-center justify-between">
 						<span className="text-sm text-stone-light">Matching creatures:</span>
-						<span className="marcellus text-lg text-bronze">
-							{filteredCreatures.length}
-						</span>
+						<span className="marcellus text-lg text-bronze">{filteredCreatures.length}</span>
 					</div>
 					<div className="flex items-center justify-between mt-2">
 						<span className="text-sm text-stone-light">Total creatures:</span>
-						<span className="marcellus text-lg text-stone-light">
-							{creatures.length}
-						</span>
+						<span className="marcellus text-lg text-stone-light">{creatures.length}</span>
 					</div>
 				</div>
 			</aside>
 
 			{/* Main content */}
 			<main className="lg:col-span-3">
-				{/* Action buttons */}
 				<div className="flex flex-wrap gap-4 mb-8">
 					<FunctionButton
 						variant="primary"
@@ -155,23 +133,15 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 					</FunctionButton>
 				</div>
 
-				{/* Empty state */}
 				{filteredCreatures.length === 0 && (
 					<div className="bg-parchment border-2 border-stone p-12 text-center">
-						<p className="text-stone mb-4">
-							No creatures match your current filters.
-						</p>
-						<FunctionButton
-							variant="ghost"
-							onClick={handleClearAll}
-							className="hover:text-gold"
-						>
+						<p className="text-stone mb-4">No creatures match your current filters.</p>
+						<FunctionButton variant="ghost" onClick={handleClearAll} className="hover:text-gold">
 							Clear all filters
 						</FunctionButton>
 					</div>
 				)}
 
-				{/* Rolled creature display */}
 				{rolledCreature && !showAll && (
 					<div className="max-w-xl">
 						<h2 className="marcellus text-lg text-stone mb-4">
@@ -181,7 +151,6 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 					</div>
 				)}
 
-				{/* All matching creatures */}
 				{showAll && filteredCreatures.length > 0 && (
 					<div>
 						<h2 className="marcellus text-lg text-stone mb-4">
@@ -200,21 +169,15 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 					</div>
 				)}
 
-				{/* Initial state */}
 				{!rolledCreature && !showAll && filteredCreatures.length > 0 && (
 					<div className="bg-parchment border-2 border-stone p-12 text-center">
-						<Icon
-							path={mdiDiceMultiple}
-							size={3}
-							className="mx-auto text-stone/30 mb-4"
-						/>
+						<Icon path={mdiDiceMultiple} size={3} className="mx-auto text-stone/30 mb-4" />
 						<p className="text-stone mb-2">
 							Ready to roll from {filteredCreatures.length} creature
 							{filteredCreatures.length !== 1 ? 's' : ''}.
 						</p>
 						<p className="text-sm text-stone/70">
-							Use the filters to narrow your selection, then roll for a random
-							creature.
+							Use the filters to narrow your selection, then roll for a random creature.
 						</p>
 					</div>
 				)}

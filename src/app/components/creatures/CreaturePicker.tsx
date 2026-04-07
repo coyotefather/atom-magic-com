@@ -4,17 +4,14 @@ import { useState, useMemo } from 'react';
 import { mdiClose } from '@mdi/js';
 import CreatureFilters from './CreatureFilters';
 import FunctionButton from '@/app/components/common/FunctionButton';
-import {
-	CREATURES_QUERY_RESULT,
-	CREATURE_FILTERS_QUERY_RESULT,
-} from '../../../../sanity.types';
+import type { NormedCreature, CreatureFilters as CreatureFiltersType } from '@/lib/creature-types';
 
 interface CreaturePickerProps {
-	creatures: CREATURES_QUERY_RESULT;
-	filters: CREATURE_FILTERS_QUERY_RESULT;
+	creatures: NormedCreature[];
+	filters: CreatureFiltersType;
 	isOpen: boolean;
 	onClose: () => void;
-	onSelect: (creature: CREATURES_QUERY_RESULT[number]) => void;
+	onSelect: (creature: NormedCreature) => void;
 }
 
 const challengeLevelColors: Record<string, string> = {

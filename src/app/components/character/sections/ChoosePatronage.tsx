@@ -5,20 +5,17 @@ import { CARDINALS } from '@/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setPatronage } from "@/lib/slices/characterSlice";
 import { Select, Label, ListBox, FieldError, Table } from "@heroui/react";
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import {
-	PATRONAGES_QUERY_RESULT,
-} from "../../../../../sanity.types";
+import type { NormedPatronage } from '@/lib/character-types';
+import { RichText } from '@/app/components/common/RichText';
 
 const ChoosePatronage = ({
 		incompleteFields,
 		patronages,
 	}: {
 		incompleteFields: string,
-		patronages: PATRONAGES_QUERY_RESULT
+		patronages: NormedPatronage[]
 	}) => {
 	const detailsRef = useRef(null);
 	const dispatch = useAppDispatch();
@@ -55,13 +52,11 @@ const ChoosePatronage = ({
 								{(cardinal.effects).map((effect, index) => (
 									<Table.Row key={`effect-${index}`} id={`effect-${index}`}>
 										<Table.Cell className="align-top w-1/3 pl-0">
-											{effect.entry && effect.entry.slug ? <ExternalLink
-											href={`https://atom-magic.com/codex/entries/${effect.entry.slug.current}`} name={effect.title ? effect.title :""} />:effect.title}
+											{effect.entry && typeof effect.entry !== 'number' && effect.entry.slug ? <ExternalLink
+											href={`https://atom-magic.com/codex/entries/${effect.entry.slug}`} name={effect.title ? effect.title :""} />:effect.title}
 										</Table.Cell>
 										<Table.Cell className="pl-0 prose prose-sm">
-											<Markdown remarkPlugins={[remarkGfm]}>
-												{effect?.description ?? ""}
-											</Markdown>
+											<RichText content={effect?.description} />
 										</Table.Cell>
 									</Table.Row>
 								))}

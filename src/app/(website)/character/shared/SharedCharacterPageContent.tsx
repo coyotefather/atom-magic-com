@@ -25,18 +25,18 @@ import {
 	getCharacterById,
 } from '@/lib/characterPersistence';
 import FunctionButton from '@/app/components/common/FunctionButton';
-import {
-	CULTURES_QUERY_RESULT,
-	PATHS_QUERY_RESULT,
-	PATRONAGES_QUERY_RESULT,
-	DISCIPLINES_QUERY_RESULT,
-} from '../../../../../sanity.types';
+import type {
+	NormedCulture,
+	NormedPath,
+	NormedPatronage,
+	NormedDiscipline,
+} from '@/lib/character-types';
 
 interface SharedCharacterPageContentProps {
-	cultures: CULTURES_QUERY_RESULT;
-	paths: PATHS_QUERY_RESULT;
-	patronages: PATRONAGES_QUERY_RESULT;
-	disciplines: DISCIPLINES_QUERY_RESULT;
+	cultures: NormedCulture[];
+	paths: NormedPath[];
+	patronages: NormedPatronage[];
+	disciplines: NormedDiscipline[];
 }
 
 export default function SharedCharacterPageContent({

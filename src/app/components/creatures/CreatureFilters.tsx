@@ -1,9 +1,9 @@
 'use client';
-import { CREATURE_FILTERS_QUERY_RESULT } from '../../../../sanity.types';
+import type { CreatureFilters } from '@/lib/creature-types';
 import FunctionButton from '@/app/components/common/FunctionButton';
 
 interface CreatureFiltersProps {
-	filters: CREATURE_FILTERS_QUERY_RESULT;
+	filters: CreatureFilters;
 	selectedEnvironments: string[];
 	selectedTypes: string[];
 	selectedChallengeLevels: string[];
@@ -101,49 +101,45 @@ const CreatureFilters = ({
 				</div>
 
 				{/* Creature Type */}
-				{filters.creatureTypes && filters.creatureTypes.length > 0 && (
+				{filters.creatureTypes.length > 0 && (
 					<div>
 						<h3 className="marcellus text-sm uppercase tracking-wider text-stone mb-3">
 							Creature Type
 						</h3>
 						<div className="flex flex-wrap gap-2">
-							{filters.creatureTypes
-								.filter((type): type is string => type !== null)
-								.map((type) => (
-									<FunctionButton
-										key={type}
-										variant="chip"
-										size="sm"
-										isActive={selectedTypes.includes(type)}
-										onClick={() => handleTypeToggle(type)}
-									>
-										{type}
-									</FunctionButton>
-								))}
+							{filters.creatureTypes.map((type) => (
+								<FunctionButton
+									key={type}
+									variant="chip"
+									size="sm"
+									isActive={selectedTypes.includes(type)}
+									onClick={() => handleTypeToggle(type)}
+								>
+									{type}
+								</FunctionButton>
+							))}
 						</div>
 					</div>
 				)}
 
 				{/* Environments */}
-				{filters.environments && filters.environments.length > 0 && (
+				{filters.environments.length > 0 && (
 					<div>
 						<h3 className="marcellus text-sm uppercase tracking-wider text-stone mb-3">
 							Environment
 						</h3>
 						<div className="flex flex-wrap gap-2">
-							{filters.environments
-								.filter((env): env is string => env !== null)
-								.map((env) => (
-									<FunctionButton
-										key={env}
-										variant="chip"
-										size="sm"
-										isActive={selectedEnvironments.includes(env)}
-										onClick={() => handleEnvironmentToggle(env)}
-									>
-										{env}
-									</FunctionButton>
-								))}
+							{filters.environments.map((env) => (
+								<FunctionButton
+									key={env}
+									variant="chip"
+									size="sm"
+									isActive={selectedEnvironments.includes(env)}
+									onClick={() => handleEnvironmentToggle(env)}
+								>
+									{env}
+								</FunctionButton>
+							))}
 						</div>
 					</div>
 				)}

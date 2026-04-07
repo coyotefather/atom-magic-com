@@ -1,11 +1,10 @@
 'use client';
-import { Slug } from "../../../../sanity.types";
 import Markdown from 'react-markdown'
 
 export type EntryById = {
   title: string | null;
   description: string | null;
-  slug: Slug | null;
+  slug: string | null;
 } | null;
 
 const RandomEntry = ({
@@ -29,7 +28,7 @@ const RandomEntry = ({
 					{text}
 				</Markdown>
 			</div>
-			<a className="block my-8" href={`/codex/entries/${slug?.current}`}>
+			<a className="block my-8" href={`/codex/entries/${slug}`}>
 				<button
 					className="gold-gradient font-extrabold uppercase tracking-widest p-2 pl-4 pr-4 border-black border-2"
 					type="button">

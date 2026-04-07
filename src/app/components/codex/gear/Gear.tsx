@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { GEAR_PAGE_QUERY_RESULT } from "../../../../../sanity.types";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type GEAR_PAGE_QUERY_RESULT = any[];
 import { Table, Select, Label, ListBox } from "@heroui/react";
 import Icon from '@mdi/react';
 import { mdiSortAscending } from '@mdi/js';
@@ -69,8 +70,9 @@ export default function Gear({
 				};
 				unsortedGear.push(thisGear);
 
-				g.paths && g.paths.map( p => {
-					p.title && !pathList.some( thisp => thisp._id === p._id ) ? pathList.push({ _id: p._id, title: p.title}) : undefined;
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				g.paths && g.paths.map( (p: any) => {
+					p.title && !pathList.some( (thisp: Path) => thisp._id === p._id ) ? pathList.push({ _id: p._id, title: p.title}) : undefined;
 				});
 				setPaths(pathList);
 			});
@@ -82,7 +84,8 @@ export default function Gear({
 
 				switch(filter.column) {
 					case "paths":
-						g.paths && g.paths.map( p => {
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						g.paths && g.paths.map( (p: any) => {
 							p._id === filter.value || filter.value === "all" ? add = true : undefined;
 						});
 						break;

@@ -2,9 +2,7 @@
 import Score from '@/app/components/character/sections/scores/Score';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { initScore } from "@/lib/slices/characterSlice";
-import {
-	SCORES_QUERY_RESULT,
-} from "../../../../../../sanity.types";
+import type { NormedScore } from '@/lib/character-types';
 import { useEffect } from 'react';
 
 interface Modifier {
@@ -22,7 +20,7 @@ const Scores = ({
 		scores,
 		modifiers
 	}: {
-		scores: SCORES_QUERY_RESULT,
+		scores: NormedScore[],
 		modifiers: Modifiers
 	}) => {
 

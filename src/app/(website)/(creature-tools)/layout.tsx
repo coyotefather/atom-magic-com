@@ -1,12 +1,5 @@
-import { sanityFetch } from '@/sanity/lib/client';
-import {
-	CREATURES_QUERY,
-	CREATURE_FILTERS_QUERY,
-} from '@/sanity/lib/queries';
-import {
-	CREATURES_QUERY_RESULT,
-	CREATURE_FILTERS_QUERY_RESULT,
-} from '../../../../sanity.types';
+import { getPayloadClient } from '@/lib/payload';
+import { normalizeCreature, deriveFilters } from '@/lib/creature-types';
 import { CreatureDataProvider } from '@/app/components/creatures/CreatureDataContext';
 
 export default async function CreatureToolsLayout({
@@ -14,17 +7,12 @@ export default async function CreatureToolsLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	// Fetch creature data once for all pages in this route group
-	const [creatures, filters] = await Promise.all([
-		sanityFetch<CREATURES_QUERY_RESULT>({
-			query: CREATURES_QUERY,
-			tags: ['creatures'],
-		}),
-		sanityFetch<CREATURE_FILTERS_QUERY_RESULT>({
-			query: CREATURE_FILTERS_QUERY,
-			tags: ['creature-filters'],
-		}),
-	]);
+	const payload = await getPayloadClient();
+	const result = await payload.find({ collection: 'creatures', limit: 500, depth: 1 });
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const creatures = result.docs.map((doc) => normalizeCreature(doc as any));
+	const filters = deriveFilters(creatures);
 
 	return (
 		<CreatureDataProvider creatures={creatures} filters={filters}>

@@ -1,4 +1,5 @@
 import withSerwistInit from '@serwist/next';
+import { withPayload } from '@payloadcms/next/withPayload';
 
 const withSerwist = withSerwistInit({
   swSrc: 'src/app/sw.ts',
@@ -19,7 +20,7 @@ const nextConfig = {
   turbopack: {
     root: import.meta.dirname,
   },
-  async headers() {
+  headers() {
     return [
       {
         // Apply security headers to all routes
@@ -51,4 +52,4 @@ const nextConfig = {
   },
 };
 
-export default withSerwist(nextConfig);
+export default withPayload(withSerwist(nextConfig));

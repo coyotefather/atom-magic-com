@@ -146,7 +146,7 @@ const CustomCreatureEditor = ({
 						<span>
 							Based on:{' '}
 							<Link
-								href={`/codex/entries/${basedOnCreature.slug?.current}`}
+								href={`/codex/entries/${basedOnCreature.slug}`}
 								className="text-bronze hover:text-gold underline"
 							>
 								{basedOnCreature.name}

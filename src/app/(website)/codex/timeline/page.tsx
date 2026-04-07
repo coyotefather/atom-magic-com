@@ -1,7 +1,5 @@
 import { notFound } from 'next/navigation';
-import { TIMELINE_QUERY } from '@/sanity/lib/queries';
-import { sanityFetch } from '@/sanity/lib/client';
-import { TIMELINE_QUERY_RESULT } from '../../../../../sanity.types';
+import { getPayloadClient } from '@/lib/payload';
 import Timeline from '@/app/components/codex/Timeline';
 import PageHero from '@/app/components/common/PageHero';
 import { mdiCalendarClock } from '@mdi/js';
@@ -10,10 +8,14 @@ import Icon from '@mdi/react';
 import { mdiArrowLeft } from '@mdi/js';
 
 export default async function Page() {
-	const timeline = await sanityFetch<TIMELINE_QUERY_RESULT>({
-		query: TIMELINE_QUERY,
+	const payload = await getPayloadClient();
+	const result = await payload.find({
+		collection: 'timeline',
+		sort: '-year',
+		limit: 500,
 	});
-	if (!timeline) {
+
+	if (!result.docs.length) {
 		return notFound();
 	}
 
@@ -26,9 +28,8 @@ export default async function Page() {
 				accentColor="laurel"
 				theme="light"
 			/>
-			<Timeline timeline={timeline} />
+			<Timeline timeline={result.docs} />
 
-			{/* Footer */}
 			<section className="bg-parchment border-t-2 border-stone">
 				<div className="container px-6 md:px-8 py-6">
 					<Link

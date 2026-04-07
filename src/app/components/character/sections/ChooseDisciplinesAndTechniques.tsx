@@ -3,16 +3,14 @@ import { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setDisciplines, setTechniques } from "@/lib/slices/characterSlice";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
-import {
-	DISCIPLINES_QUERY_RESULT,
-} from "../../../../../sanity.types";
+import type { NormedDiscipline } from '@/lib/character-types';
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { Checkbox, Label } from "@heroui/react";
 
 interface ChooseDisciplinesAndTechniquesProps {
 	incompleteFields: string;
-	disciplines: DISCIPLINES_QUERY_RESULT;
+	disciplines: NormedDiscipline[];
 }
 
 const ChooseDisciplinesAndTechniques = ({
@@ -53,7 +51,7 @@ const ChooseDisciplinesAndTechniques = ({
 				...disc,
 				techniques: selectedTechniques
 			};
-		}).filter(Boolean) as DISCIPLINES_QUERY_RESULT;
+		}).filter(Boolean) as NormedDiscipline[];
 	}, [characterDisciplines, characterTechniques, disciplines]);
 
 	// Memoized handlers

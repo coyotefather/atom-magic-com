@@ -3,14 +3,12 @@ import { useEffect, useMemo } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { initAdditionalScores, setAdditionalScores } from "@/lib/slices/characterSlice";
 import ExternalLink from '@/app/components/common/ExternalLink';
-import {
-	ADDITIONAL_SCORES_QUERY_RESULT,
-} from "../../../../../../sanity.types";
+import type { NormedAdditionalScore } from '@/lib/character-types';
 
 const AdditionalScores = ({
 		additionalScores
 	}:{
-		additionalScores: ADDITIONAL_SCORES_QUERY_RESULT
+		additionalScores: NormedAdditionalScore[]
 	}) => {
 	const dispatch = useAppDispatch();
 	const scores = useAppSelector(state => state.character.scores);
@@ -119,8 +117,7 @@ const AdditionalScores = ({
 						{addScores.map( (s) => (
 							<div key={s._id} className="w-full flex gap-4 mb-4 justify-between">
 								<div className="w-36 text-md align-top pl-0 align-start">
-									{s.entry && s.entry.slug ? <ExternalLink href={`https://atom-magic.com/codex/entries/${s.entry.slug.current}`}
-									name={s.title ? s.title : ""} />:s.title}
+									{s.title}
 								</div>
 								<div className="w-1/2 text-md align-top pl-0 align-top">
 									{s.description}

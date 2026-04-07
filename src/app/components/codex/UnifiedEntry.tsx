@@ -1,13 +1,8 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { remarkExtendedTable } from 'remark-extended-table';
-import { remarkDefinitionList } from 'remark-definition-list';
-import remarkHeadingId from 'remark-heading-id';
-import { urlFor } from '@/sanity/lib/image';
-import { UNIFIED_ENTRY_QUERY_RESULT } from '../../../../sanity.types';
+import { RichText } from '@/app/components/common/RichText';
+import type { Entry, Creature, Discipline, Technique, Path, Category, Media } from '../../../../payload-types';
 import Breadcrumbs from '@/app/components/common/Breadcrumbs';
 import TableOfContents from '@/app/components/codex/TableOfContents';
 import Icon from '@mdi/react';
@@ -25,74 +20,66 @@ const displayScore = (value: number | null | undefined): string => {
 	return value != null ? String(value) : 'n/a';
 };
 
-// Type guards for different document types
-function isCreature(
-	entry: UNIFIED_ENTRY_QUERY_RESULT
-): entry is Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'creature' }> {
-	return entry?._type === 'creature';
+type EntryCollectionType = 'entries' | 'creatures' | 'disciplines' | 'techniques' | 'paths';
+type UnifiedDoc = Entry | Creature | Discipline | Technique | Path;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getMainImage(doc: UnifiedDoc): Media | null {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const img = (doc as any).mainImage;
+	if (img && typeof img === 'object' && 'url' in img) return img as Media;
+	return null;
 }
 
-function isDiscipline(
-	entry: UNIFIED_ENTRY_QUERY_RESULT
-): entry is Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'discipline' }> {
-	return entry?._type === 'discipline';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getCategory(doc: UnifiedDoc): Category | null {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const cat = (doc as any).category;
+	if (cat && typeof cat === 'object' && 'slug' in cat) return cat as Category;
+	return null;
 }
 
-function isTechnique(
-	entry: UNIFIED_ENTRY_QUERY_RESULT
-): entry is Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'technique' }> {
-	return entry?._type === 'technique';
-}
-
-function isPath(
-	entry: UNIFIED_ENTRY_QUERY_RESULT
-): entry is Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'path' }> {
-	return entry?._type === 'path';
-}
-
-function isEntry(
-	entry: UNIFIED_ENTRY_QUERY_RESULT
-): entry is Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'entry' }> {
-	return entry?._type === 'entry';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getCategoryAncestors(cat: Category): Array<{ title: string; url: string }> {
+	const parents: Array<{ title: string; url: string }> = [];
+	const walk = (c: Category) => {
+		if (c.parent && typeof c.parent === 'object' && 'slug' in c.parent) {
+			walk(c.parent as Category);
+		}
+		parents.push({ title: c.title, url: `/codex/categories/${c.slug}` });
+	};
+	if (cat.parent && typeof cat.parent === 'object' && 'slug' in cat.parent) {
+		walk(cat.parent as Category);
+	}
+	parents.push({ title: cat.title, url: `/codex/categories/${cat.slug}` });
+	return parents;
 }
 
 export function UnifiedEntry({
 	entry,
+	entryType,
 }: {
-	entry: UNIFIED_ENTRY_QUERY_RESULT;
+	entry: UnifiedDoc;
+	entryType: EntryCollectionType;
 }) {
 	if (!entry) return null;
 
-	const { title, mainImage, entryBody, toc, category } = entry;
+	// Get display title (Creature uses 'name', others use 'title')
+	const displayTitle = entryType === 'creatures'
+		? (entry as Creature).name
+		: (entry as Entry | Path | Discipline | Technique).title;
+
+	const mainImage = getMainImage(entry);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const entryBody = (entry as any).entryBody ?? null;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const toc = (entry as any).toc ?? null;
+	const category = getCategory(entry);
 
 	// Build breadcrumb trail
-	let parents = [{ title: 'Home', url: '/' }];
-
+	const parents = [{ title: 'Home', url: '/' }];
 	if (category) {
-		if (category.parent) {
-			if (category.parent.parent) {
-				if (category.parent.parent.parent) {
-					parents.push({
-						title: '' + category.parent.parent.parent.title,
-						url:
-							'/codex/categories/' +
-							category.parent.parent.parent?.slug?.current,
-					});
-				}
-				parents.push({
-					title: '' + category.parent.parent.title,
-					url: '/codex/categories/' + category.parent.parent?.slug?.current,
-				});
-			}
-			parents.push({
-				title: '' + category.parent.title,
-				url: '/codex/categories/' + category.parent?.slug?.current,
-			});
-		}
-		parents.push({
-			title: '' + category.title,
-			url: '/codex/categories/' + category?.slug?.current,
-		});
+		parents.push(...getCategoryAncestors(category));
 	}
 
 	return (
@@ -100,7 +87,7 @@ export function UnifiedEntry({
 			{/* Breadcrumb bar */}
 			<div className="bg-black border-b-2 border-gold">
 				<div className="container px-6 md:px-8 py-4">
-					<Breadcrumbs currentPage={title ?? ''} parents={parents} />
+					<Breadcrumbs currentPage={displayTitle ?? ''} parents={parents} />
 				</div>
 			</div>
 
@@ -114,14 +101,14 @@ export function UnifiedEntry({
 							<div className="h-1 bg-gold" />
 
 							{/* Image */}
-							{mainImage?.asset && (
+							{mainImage?.url && (
 								<div className="border-b-2 border-stone">
 									<Image
 										className="w-full h-48 object-cover"
-										src={urlFor(mainImage).width(400).height(300).url()}
+										src={mainImage.url}
 										width={400}
 										height={300}
-										alt={mainImage.alt || title || ''}
+										alt={mainImage.alt || displayTitle || ''}
 									/>
 								</div>
 							)}
@@ -136,11 +123,11 @@ export function UnifiedEntry({
 								)}
 
 								{/* Type-specific sidebar content */}
-								{isCreature(entry) && <CreatureSidebar entry={entry} />}
-								{isDiscipline(entry) && <DisciplineSidebar entry={entry} />}
-								{isTechnique(entry) && <TechniqueSidebar entry={entry} />}
-								{isPath(entry) && <PathSidebar entry={entry} />}
-								{isEntry(entry) && <EntrySidebar entry={entry} />}
+								{entryType === 'creatures' && <CreatureSidebar entry={entry as Creature} />}
+								{entryType === 'disciplines' && <DisciplineSidebar entry={entry as Discipline} />}
+								{entryType === 'techniques' && <TechniqueSidebar entry={entry as Technique} />}
+								{entryType === 'paths' && <PathSidebar entry={entry as Path} />}
+								{entryType === 'entries' && <EntrySidebar entry={entry as Entry} />}
 							</div>
 						</div>
 					</aside>
@@ -148,28 +135,19 @@ export function UnifiedEntry({
 					{/* Main content */}
 					<section className="md:col-span-2">
 						<h1 className="marcellus text-3xl md:text-4xl text-black mb-6 pb-4 border-b-2 border-gold">
-							{title}
+							{displayTitle}
 						</h1>
 
 						{/* Type-specific header content */}
-						{isCreature(entry) && <CreatureHeader entry={entry} />}
-						{isDiscipline(entry) && <DisciplineHeader entry={entry} />}
-						{isTechnique(entry) && <TechniqueHeader entry={entry} />}
-						{isPath(entry) && <PathHeader entry={entry} />}
+						{entryType === 'creatures' && <CreatureHeader entry={entry as Creature} />}
+						{entryType === 'disciplines' && <DisciplineHeader entry={entry as Discipline} />}
+						{entryType === 'techniques' && <TechniqueHeader />}
+						{entryType === 'paths' && <PathHeader />}
 
 						{/* Main body content */}
 						{entryBody && (
 							<div className="prose prose-stone prose-lg max-w-none first-letter:text-4xl first-letter:font-bold first-letter:mr-1 first-letter:float-left first-letter:marcellus">
-								<Markdown
-									remarkPlugins={[
-										remarkGfm,
-										remarkExtendedTable,
-										remarkDefinitionList,
-										[remarkHeadingId, { defaults: true, uniqueDefaults: true }],
-									]}
-								>
-									{entryBody}
-								</Markdown>
+								<RichText content={entryBody} />
 							</div>
 						)}
 					</section>
@@ -195,11 +173,7 @@ export function UnifiedEntry({
 }
 
 // Creature-specific components
-function CreatureSidebar({
-	entry,
-}: {
-	entry: Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'creature' }>;
-}) {
+function CreatureSidebar({ entry }: { entry: Creature }) {
 	const challengeLevelColors: Record<string, string> = {
 		harmless: 'text-stone-dark',
 		trivial: 'text-stone',
@@ -273,8 +247,8 @@ function CreatureSidebar({
 						Attacks
 					</dt>
 					<dd className="space-y-1">
-						{entry.attacks.map((attack) => (
-							<div key={attack._key} className="flex items-center gap-2 text-black">
+						{entry.attacks.map((attack, idx) => (
+							<div key={attack.id ?? idx} className="flex items-center gap-2 text-black">
 								<Icon path={mdiSword} size={0.5} className="text-bronze" />
 								<span className="font-semibold">{attack.name}</span>
 								{attack.damage && (
@@ -318,8 +292,8 @@ function CreatureSidebar({
 					</dt>
 					<dd className="flex flex-wrap gap-1">
 						{entry.environments.map((env, idx) => (
-							<span key={idx} className="px-2 py-0.5 text-xs bg-stone/10">
-								{env}
+							<span key={env.id ?? idx} className="px-2 py-0.5 text-xs bg-stone/10">
+								{env.environment}
 							</span>
 						))}
 					</dd>
@@ -329,24 +303,16 @@ function CreatureSidebar({
 	);
 }
 
-function CreatureHeader({
-	entry,
-}: {
-	entry: Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'creature' }>;
-}) {
-	if (
-		!entry.specialAbilities ||
-		entry.specialAbilities.length === 0
-	)
-		return null;
+function CreatureHeader({ entry }: { entry: Creature }) {
+	if (!entry.specialAbilities || entry.specialAbilities.length === 0) return null;
 
 	return (
 		<div className="mb-8 p-4 bg-parchment border-2 border-stone">
 			<h2 className="marcellus text-lg text-black mb-3">Special Abilities</h2>
 			<div className="space-y-2">
-				{entry.specialAbilities.map((ability) => (
+				{entry.specialAbilities.map((ability, idx) => (
 					<div
-						key={ability._key}
+						key={ability.id ?? idx}
 						className="text-sm bg-white p-3 border-l-2 border-bronze"
 					>
 						<span className="font-semibold">{ability.name}</span>
@@ -361,53 +327,49 @@ function CreatureHeader({
 }
 
 // Discipline-specific components
-function DisciplineSidebar({
-	entry,
-}: {
-	entry: Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'discipline' }>;
-}) {
+function DisciplineSidebar({ entry }: { entry: Discipline }) {
+	const paths = (entry.paths ?? []).filter((p): p is Path => typeof p === 'object');
+	const techniques = (entry.techniques ?? []).filter((t): t is Technique => typeof t === 'object');
+
 	return (
 		<dl className="divide-y divide-stone/30 text-sm">
 			{/* Paths */}
-			{entry.paths && entry.paths.length > 0 && (
+			{paths.length > 0 && (
 				<div className="flex flex-col py-2 first:pt-0">
 					<dt className="text-stone text-xs uppercase tracking-wider mb-1">
 						Available to
 					</dt>
 					<dd className="text-black">
-						{entry.paths.map((p) => p.title).join(', ')}
+						{paths.map((p) => p.title).join(', ')}
 					</dd>
 				</div>
 			)}
 
 			{/* Technique count */}
-			{entry.techniques && entry.techniques.length > 0 && (
+			{techniques.length > 0 && (
 				<div className="flex flex-col py-2">
 					<dt className="text-stone text-xs uppercase tracking-wider mb-1">
 						Techniques
 					</dt>
-					<dd className="text-black">{entry.techniques.length}</dd>
+					<dd className="text-black">{techniques.length}</dd>
 				</div>
 			)}
 		</dl>
 	);
 }
 
-function DisciplineHeader({
-	entry,
-}: {
-	entry: Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'discipline' }>;
-}) {
-	if (!entry.techniques || entry.techniques.length === 0) return null;
+function DisciplineHeader({ entry }: { entry: Discipline }) {
+	const techniques = (entry.techniques ?? []).filter((t): t is Technique => typeof t === 'object');
+	if (techniques.length === 0) return null;
 
 	return (
 		<div className="mb-8 p-4 bg-parchment border-2 border-stone">
 			<h2 className="marcellus text-lg text-black mb-3">Techniques</h2>
 			<div className="space-y-2">
-				{entry.techniques.map((tech) => (
+				{techniques.map((tech) => (
 					<Link
-						key={tech._id}
-						href={tech.slug ? `/codex/entries/${tech.slug.current}` : '#'}
+						key={tech.id}
+						href={tech.slug ? `/codex/entries/${tech.slug}` : '#'}
 						className="block text-sm bg-white p-3 border-l-2 border-laurel hover:border-gold transition-colors no-underline"
 					>
 						<span className="font-semibold text-black">{tech.title}</span>
@@ -428,14 +390,9 @@ function DisciplineHeader({
 }
 
 // Technique-specific components
-function TechniqueSidebar({
-	entry,
-}: {
-	entry: Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'technique' }>;
-}) {
+function TechniqueSidebar({ entry }: { entry: Technique }) {
 	return (
 		<dl className="divide-y divide-stone/30 text-sm">
-			{/* Latin name */}
 			{entry.latin && (
 				<div className="flex flex-col py-2 first:pt-0">
 					<dt className="text-stone text-xs uppercase tracking-wider mb-1">
@@ -444,8 +401,6 @@ function TechniqueSidebar({
 					<dd className="text-black italic">{entry.latin}</dd>
 				</div>
 			)}
-
-			{/* Cooldown */}
 			{entry.cooldown && (
 				<div className="flex flex-col py-2">
 					<dt className="text-stone text-xs uppercase tracking-wider mb-1">
@@ -461,24 +416,14 @@ function TechniqueSidebar({
 	);
 }
 
-function TechniqueHeader({
-	entry,
-}: {
-	entry: Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'technique' }>;
-}) {
-	// Techniques don't have special header content beyond the sidebar
+function TechniqueHeader() {
 	return null;
 }
 
 // Path-specific components
-function PathSidebar({
-	entry,
-}: {
-	entry: Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'path' }>;
-}) {
+function PathSidebar({ entry }: { entry: Path }) {
 	return (
 		<dl className="divide-y divide-stone/30 text-sm">
-			{/* Latin name */}
 			{entry.latin && (
 				<div className="flex flex-col py-2 first:pt-0">
 					<dt className="text-stone text-xs uppercase tracking-wider mb-1">
@@ -487,27 +432,24 @@ function PathSidebar({
 					<dd className="text-black italic">{entry.latin}</dd>
 				</div>
 			)}
-
-			{/* Modifiers */}
 			{entry.modifiers && entry.modifiers.length > 0 && (
 				<div className="flex flex-col py-2">
 					<dt className="text-stone text-xs uppercase tracking-wider mb-1">
 						Score Modifiers
 					</dt>
 					<dd className="space-y-1">
-						{entry.modifiers.map((mod, idx) => (
-							<div key={idx} className="text-black">
-								{mod.modifierSubscore?.title}:{' '}
-								<span
-									className={
-										(mod.modifierValue || 0) > 0 ? 'text-laurel' : 'text-oxblood'
-									}
-								>
-									{(mod.modifierValue || 0) > 0 ? '+' : ''}
-									{mod.modifierValue}
-								</span>
-							</div>
-						))}
+						{entry.modifiers.map((mod, idx) => {
+							const sub = typeof mod.modifierSubscore === 'object' ? mod.modifierSubscore : null;
+							return (
+								<div key={idx} className="text-black">
+									{sub?.title}:{' '}
+									<span className={(mod.modifierValue || 0) > 0 ? 'text-laurel' : 'text-oxblood'}>
+										{(mod.modifierValue || 0) > 0 ? '+' : ''}
+										{mod.modifierValue}
+									</span>
+								</div>
+							);
+						})}
 					</dd>
 				</div>
 			)}
@@ -515,24 +457,16 @@ function PathSidebar({
 	);
 }
 
-function PathHeader({
-	entry,
-}: {
-	entry: Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'path' }>;
-}) {
-	// Paths don't have special header content beyond the sidebar
+function PathHeader() {
 	return null;
 }
 
-// Entry-specific components (regular entries)
-function EntrySidebar({
-	entry,
-}: {
-	entry: Extract<UNIFIED_ENTRY_QUERY_RESULT, { _type: 'entry' }>;
-}) {
+// Entry-specific components (regular codex entries)
+function EntrySidebar({ entry }: { entry: Entry }) {
+	const author = typeof entry.author === 'object' ? entry.author : null;
+
 	return (
 		<dl className="divide-y divide-stone/30 text-sm">
-			{/* Card details */}
 			{entry.cardDetails?.map((d, index) => (
 				<div key={`${d.detailName}-${index}`} className="flex flex-col py-2 first:pt-0">
 					<dt className="text-stone text-xs uppercase tracking-wider mb-1">
@@ -542,17 +476,15 @@ function EntrySidebar({
 				</div>
 			))}
 
-			{/* Author */}
 			<div className="flex flex-col py-2">
 				<dt className="text-stone text-xs uppercase tracking-wider mb-1">
 					Author
 				</dt>
 				<dd className="text-black">
-					{entry.author?.name ?? 'An unknown scribe'}
+					{author?.name ?? 'An unknown scribe'}
 				</dd>
 			</div>
 
-			{/* Published date */}
 			<div className="flex flex-col py-2">
 				<dt className="text-stone text-xs uppercase tracking-wider mb-1">
 					Last Updated

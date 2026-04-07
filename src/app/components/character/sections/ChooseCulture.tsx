@@ -4,19 +4,16 @@ import ExternalLink from '@/app/components/common/ExternalLink';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setCulture } from "@/lib/slices/characterSlice";
 import { Select, Label, ListBox, FieldError, Table } from "@heroui/react";
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import {
-	CULTURES_QUERY_RESULT,
-} from "../../../../../sanity.types";
+import type { NormedCulture } from '@/lib/character-types';
+import { RichText } from '@/app/components/common/RichText';
 
 const ChooseCulture = ({
 		cultures,
 		incompleteFields
 	}: {
-		cultures: CULTURES_QUERY_RESULT,
+		cultures: NormedCulture[],
 		incompleteFields: string
 	}) => {
 
@@ -53,16 +50,14 @@ const ChooseCulture = ({
 								))}
 							</Table.Header>
 							<Table.Body>
-								{chosenCulture.aspects.map((aspect) => (
+								{(chosenCulture.aspects ?? []).map((aspect) => (
 									<Table.Row key={String(aspect.aspectId)} id={String(aspect.aspectId)}>
 										<Table.Cell className="align-top min-w-44 pl-0">
 											<ExternalLink
 											href={`https://atom-magic.com/codex/${aspect.aspectContentSlug}`} name={aspect.aspectName ? aspect.aspectName : ""} />
 										</Table.Cell>
 										<Table.Cell className="pl-0 prose prose-sm">
-											<Markdown remarkPlugins={[remarkGfm]}>
-												{aspect.aspectDescription}
-											</Markdown>
+											<RichText content={aspect.aspectDescription} />
 										</Table.Cell>
 									</Table.Row>
 								))}

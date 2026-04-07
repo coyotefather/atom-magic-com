@@ -7,13 +7,13 @@ import { CharacterState } from './slices/characterSlice';
 import { Archetype, getArchetypeById, ARCHETYPES } from './archetype-data';
 import { rollGear, GearRollingOptions, getRandomElement } from './gear-data';
 import { ANIMAL_COMPANIONS } from './global-data';
-import {
-	CULTURES_QUERY_RESULT,
-	PATHS_QUERY_RESULT,
-	PATRONAGES_QUERY_RESULT,
-	DISCIPLINES_QUERY_RESULT,
-	SCORES_QUERY_RESULT,
-} from '../../sanity.types';
+import type {
+	NormedCulture,
+	NormedPath,
+	NormedPatronage,
+	NormedDiscipline,
+	NormedScore,
+} from './character-types';
 
 // Types for generator options
 export interface LockedFields {
@@ -30,11 +30,11 @@ export interface GeneratorOptions {
 }
 
 export interface GeneratorData {
-	cultures: CULTURES_QUERY_RESULT;
-	paths: PATHS_QUERY_RESULT;
-	patronages: PATRONAGES_QUERY_RESULT;
-	disciplines: DISCIPLINES_QUERY_RESULT;
-	scores: SCORES_QUERY_RESULT;
+	cultures: NormedCulture[];
+	paths: NormedPath[];
+	patronages: NormedPatronage[];
+	disciplines: NormedDiscipline[];
+	scores: NormedScore[];
 }
 
 // Helper to get random integer in range (inclusive)
@@ -57,7 +57,7 @@ function getWeightedScore(baseMin: number, baseMax: number, weight: number): num
  * Generate a random culture
  */
 function generateCulture(
-	cultures: CULTURES_QUERY_RESULT,
+	cultures: NormedCulture[],
 	locked?: string
 ): string {
 	if (locked) return locked;
@@ -69,7 +69,7 @@ function generateCulture(
  * Generate a random path
  */
 function generatePath(
-	paths: PATHS_QUERY_RESULT,
+	paths: NormedPath[],
 	locked?: string,
 	preference?: string,
 	archetype?: Archetype
@@ -91,7 +91,7 @@ function generatePath(
  * Generate a random patronage
  */
 function generatePatronage(
-	patronages: PATRONAGES_QUERY_RESULT,
+	patronages: NormedPatronage[],
 	locked?: string
 ): string {
 	if (locked) return locked;
@@ -103,7 +103,7 @@ function generatePatronage(
  * Generate random scores with optional archetype weighting
  */
 function generateScores(
-	scoresData: SCORES_QUERY_RESULT,
+	scoresData: NormedScore[],
 	archetype?: Archetype
 ): CharacterState['scores'] {
 	const weights = archetype?.scoreWeights || { physical: 1, interpersonal: 1, intellect: 1, psyche: 1 };
@@ -143,7 +143,7 @@ function generateScores(
  * Generate disciplines based on path and archetype
  */
 function generateDisciplines(
-	disciplines: DISCIPLINES_QUERY_RESULT,
+	disciplines: NormedDiscipline[],
 	pathId: string,
 	archetype?: Archetype
 ): string[] {
@@ -194,7 +194,7 @@ function generateDisciplines(
  * Generate techniques for selected disciplines
  */
 function generateTechniques(
-	disciplines: DISCIPLINES_QUERY_RESULT,
+	disciplines: NormedDiscipline[],
 	selectedDisciplineIds: string[],
 	archetype?: Archetype
 ): string[] {

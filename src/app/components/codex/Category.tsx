@@ -1,4 +1,4 @@
-import { CATEGORY_QUERY_RESULT } from '../../../../sanity.types';
+import type { Category as PayloadCategory } from '../../../../payload-types';
 import Header from '@/app/components/common/Header';
 import Entries from '@/app/components/codex/Entries';
 import Categories from '@/app/components/codex/Categories';
@@ -6,8 +6,23 @@ import Link from 'next/link';
 import Icon from '@mdi/react';
 import { mdiArrowLeft } from '@mdi/js';
 
-export function Category({ category }: { category: CATEGORY_QUERY_RESULT }) {
-	const { title, description, entries, children } = category || {};
+interface EntryItem {
+	id: string | number;
+	title: string;
+	slug: string;
+	type: string;
+}
+
+export function Category({
+	category,
+	children,
+	entries,
+}: {
+	category: PayloadCategory;
+	children: PayloadCategory[];
+	entries: EntryItem[];
+}) {
+	const { title, description } = category;
 
 	return (
 		<article className="notoserif bg-white">

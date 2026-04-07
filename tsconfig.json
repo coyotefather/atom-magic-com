@@ -29,6 +29,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@payload-config": [
+        "./payload.config.ts"
       ]
     },
     "target": "ES2017"
@@ -41,6 +44,7 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "scripts"
   ]
 }

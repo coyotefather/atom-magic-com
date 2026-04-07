@@ -1,29 +1,20 @@
 import Sections from '@/app/components/character/Sections';
 import LoadingPage from '@/app/components/global/LoadingPage';
-import { CHARACTER_MANAGER_QUERY } from '@/sanity/lib/queries';
-import { sanityFetch } from '@/sanity/lib/client';
-import { notFound } from 'next/navigation';
-import { CHARACTER_MANAGER_QUERY_RESULT } from '../../../../sanity.types';
+import { fetchCharacterData } from '@/lib/fetchCharacterData';
 
 const Page = async () => {
-	const characterManager = await sanityFetch<CHARACTER_MANAGER_QUERY_RESULT>({
-		query: CHARACTER_MANAGER_QUERY,
-	});
-	if (!characterManager) {
-		return notFound();
-	}
+	const data = await fetchCharacterData();
 
 	return (
 		<main>
 			<LoadingPage />
 			<Sections
-				cultures={characterManager.cultures}
-				scores={characterManager.scores}
-				additionalScores={characterManager.additionalScores}
-				paths={characterManager.paths}
-				patronages={characterManager.patronages}
-				disciplines={characterManager.disciplines}
-				gear={characterManager.gear}
+				cultures={data.cultures}
+				scores={data.scores}
+				additionalScores={data.additionalScores}
+				paths={data.paths}
+				patronages={data.patronages}
+				disciplines={data.disciplines}
 			/>
 		</main>
 	);

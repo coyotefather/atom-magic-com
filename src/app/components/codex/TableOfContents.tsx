@@ -1,9 +1,10 @@
-import Markdown from 'react-markdown'
+import { RichText } from '@/app/components/common/RichText';
 
 const TableOfContents = ({
 	toc
 }: {
-	toc: string | null | undefined
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	toc: any | null | undefined
 }) => {
 	return (
 		<div className="bg-black text-white w-full border-b-1 border-white">
@@ -11,9 +12,7 @@ const TableOfContents = ({
 				Contents
 			</div>
 			<div className="text-white">
-				<Markdown>
-					{toc}
-				</Markdown>
+				<RichText content={toc} />
 			</div>
 		</div>
 	);
