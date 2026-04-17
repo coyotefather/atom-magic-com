@@ -64,6 +64,7 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     users: UserAuthOperations;
+    'payload-mcp-api-keys': PayloadMcpApiKeyAuthOperations;
   };
   blocks: {};
   collections: {
@@ -82,6 +83,7 @@ export interface Config {
     creatures: Creature;
     enhancements: Enhancement;
     timeline: Timeline;
+    'payload-mcp-api-keys': PayloadMcpApiKey;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -104,6 +106,7 @@ export interface Config {
     creatures: CreaturesSelect<false> | CreaturesSelect<true>;
     enhancements: EnhancementsSelect<false> | EnhancementsSelect<true>;
     timeline: TimelineSelect<false> | TimelineSelect<true>;
+    'payload-mcp-api-keys': PayloadMcpApiKeysSelect<false> | PayloadMcpApiKeysSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -119,13 +122,31 @@ export interface Config {
   widgets: {
     collections: CollectionsWidget;
   };
-  user: User;
+  user: User | PayloadMcpApiKey;
   jobs: {
     tasks: unknown;
     workflows: unknown;
   };
 }
 export interface UserAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface PayloadMcpApiKeyAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -825,6 +846,285 @@ export interface Timeline {
   createdAt: string;
 }
 /**
+ * API keys control which collections, resources, tools, and prompts MCP clients can access
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-mcp-api-keys".
+ */
+export interface PayloadMcpApiKey {
+  id: number;
+  /**
+   * The user that the API key is associated with.
+   */
+  user: number | User;
+  /**
+   * A useful label for the API key.
+   */
+  label?: string | null;
+  /**
+   * The purpose of the API key.
+   */
+  description?: string | null;
+  entries?: {
+    /**
+     * Allow clients to find entries.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create entries.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update entries.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete entries.
+     */
+    delete?: boolean | null;
+  };
+  creatures?: {
+    /**
+     * Allow clients to find creatures.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create creatures.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update creatures.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete creatures.
+     */
+    delete?: boolean | null;
+  };
+  disciplines?: {
+    /**
+     * Allow clients to find disciplines.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create disciplines.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update disciplines.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete disciplines.
+     */
+    delete?: boolean | null;
+  };
+  techniques?: {
+    /**
+     * Allow clients to find techniques.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create techniques.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update techniques.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete techniques.
+     */
+    delete?: boolean | null;
+  };
+  paths?: {
+    /**
+     * Allow clients to find paths.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create paths.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update paths.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete paths.
+     */
+    delete?: boolean | null;
+  };
+  cultures?: {
+    /**
+     * Allow clients to find cultures.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create cultures.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update cultures.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete cultures.
+     */
+    delete?: boolean | null;
+  };
+  patronages?: {
+    /**
+     * Allow clients to find patronages.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create patronages.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update patronages.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete patronages.
+     */
+    delete?: boolean | null;
+  };
+  scores?: {
+    /**
+     * Allow clients to find scores.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create scores.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update scores.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete scores.
+     */
+    delete?: boolean | null;
+  };
+  subscores?: {
+    /**
+     * Allow clients to find subscores.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create subscores.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update subscores.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete subscores.
+     */
+    delete?: boolean | null;
+  };
+  additionalScores?: {
+    /**
+     * Allow clients to find additional-scores.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create additional-scores.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update additional-scores.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete additional-scores.
+     */
+    delete?: boolean | null;
+  };
+  enhancements?: {
+    /**
+     * Allow clients to find enhancements.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create enhancements.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update enhancements.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete enhancements.
+     */
+    delete?: boolean | null;
+  };
+  categories?: {
+    /**
+     * Allow clients to find categories.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create categories.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update categories.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete categories.
+     */
+    delete?: boolean | null;
+  };
+  timeline?: {
+    /**
+     * Allow clients to find timeline.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create timeline.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update timeline.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete timeline.
+     */
+    delete?: boolean | null;
+  };
+  media?: {
+    /**
+     * Allow clients to find media.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create media.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update media.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete media.
+     */
+    delete?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+  collection: 'payload-mcp-api-keys';
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -907,12 +1207,21 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'timeline';
         value: number | Timeline;
+      } | null)
+    | ({
+        relationTo: 'payload-mcp-api-keys';
+        value: number | PayloadMcpApiKey;
       } | null);
   globalSlug?: string | null;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'payload-mcp-api-keys';
+        value: number | PayloadMcpApiKey;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -922,10 +1231,15 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: number;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'payload-mcp-api-keys';
+        value: number | PayloadMcpApiKey;
+      };
   key?: string | null;
   value?:
     | {
@@ -1247,6 +1561,132 @@ export interface TimelineSelect<T extends boolean = true> {
   url?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-mcp-api-keys_select".
+ */
+export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
+  user?: T;
+  label?: T;
+  description?: T;
+  entries?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  creatures?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  disciplines?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  techniques?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  paths?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  cultures?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  patronages?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  scores?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  subscores?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  additionalScores?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  enhancements?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  categories?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  timeline?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  media?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
