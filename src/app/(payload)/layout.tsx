@@ -3,6 +3,7 @@ import config from '@payload-config'
 import { RootLayout, handleServerFunctions } from '@payloadcms/next/layouts'
 import { importMap } from './admin/importMap'
 import React from 'react'
+import '@payloadcms/ui/styles.css'
 
 export default async function PayloadLayout({ children }: { children: React.ReactNode }) {
   const serverFunction: ServerFunctionClient = async (args) => {
