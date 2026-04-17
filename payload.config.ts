@@ -2,6 +2,7 @@ import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -67,6 +68,24 @@ export default buildConfig({
         media: true,
       },
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
+    mcpPlugin({
+      collections: {
+        entries: { enabled: true },
+        creatures: { enabled: true },
+        disciplines: { enabled: true },
+        techniques: { enabled: true },
+        paths: { enabled: true },
+        cultures: { enabled: true },
+        patronages: { enabled: true },
+        scores: { enabled: true },
+        subscores: { enabled: true },
+        'additional-scores': { enabled: true },
+        enhancements: { enabled: true },
+        categories: { enabled: true },
+        timeline: { enabled: true },
+        media: { enabled: true },
+      },
     }),
   ],
 })
