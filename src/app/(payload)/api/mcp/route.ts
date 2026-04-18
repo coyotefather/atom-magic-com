@@ -28,5 +28,13 @@ export async function POST(req: NextRequest): Promise<Response> {
     body: bodyText,
   }) as unknown as NextRequest
 
-  return (postHandler as unknown as (req: NextRequest) => Promise<Response>)(freshReq)
+  // REST_POST handlers expect (request, { params: { slug } }) — the slug maps
+  // to the path segment after /api, so "mcp" routes to the /api/mcp endpoint.
+  type HandlerArgs = { params: Promise<{ slug: string[] }> }
+  const args: HandlerArgs = { params: Promise.resolve({ slug: ['mcp'] }) }
+
+  return (postHandler as unknown as (req: NextRequest, args: HandlerArgs) => Promise<Response>)(
+    freshReq,
+    args,
+  )
 }
