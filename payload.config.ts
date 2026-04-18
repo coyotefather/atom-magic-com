@@ -87,28 +87,37 @@ export default buildConfig({
         media: { enabled: true },
       },
       overrideAuth: async (req, getDefaultSettings) => {
-        // Pre-read the body using Next.js native req.text() before createRequestFromPayloadRequest
-        // wraps it in a new undici Request. Without this, req.json() in mcp-handler hangs
-        // because the NextRequest ReadableStream is not compatible with undici's json() reader.
+        const log = (...args: unknown[]) => console.log('[MCP overrideAuth]', ...args)
+        log('called, method:', req.method, 'has body:', !!req.body)
         if (req.method?.toUpperCase() === 'POST' && req.body) {
           try {
+            const ownBodyDesc = Object.getOwnPropertyDescriptor(req, 'body')
+            log('own body descriptor:', JSON.stringify(ownBodyDesc))
+            log('reading body via req.text()...')
             const bodyText = await req.text?.() ?? ''
+            log('body read, length:', bodyText.length, 'preview:', bodyText.slice(0, 80))
             const bodyBytes = new TextEncoder().encode(bodyText)
-            Object.defineProperty(req, 'body', {
-              get() {
-                return new ReadableStream({
-                  start(controller) {
-                    controller.enqueue(bodyBytes)
-                    controller.close()
-                  }
-                })
-              },
-              configurable: true,
-            })
-          } catch {
-            // proceed without override if pre-reading fails
+            try {
+              Object.defineProperty(req, 'body', {
+                get() {
+                  return new ReadableStream({
+                    start(controller) {
+                      controller.enqueue(bodyBytes)
+                      controller.close()
+                    }
+                  })
+                },
+                configurable: true,
+              })
+              log('body property overridden successfully')
+            } catch (defineErr) {
+              log('defineProperty FAILED:', String(defineErr))
+            }
+          } catch (readErr) {
+            log('body pre-reading FAILED:', String(readErr))
           }
         }
+        log('calling getDefaultSettings...')
         return getDefaultSettings()
       },
     }),
