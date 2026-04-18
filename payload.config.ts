@@ -86,6 +86,31 @@ export default buildConfig({
         timeline: { enabled: true },
         media: { enabled: true },
       },
+      overrideAuth: async (req, getDefaultSettings) => {
+        // Pre-read the body using Next.js native req.text() before createRequestFromPayloadRequest
+        // wraps it in a new undici Request. Without this, req.json() in mcp-handler hangs
+        // because the NextRequest ReadableStream is not compatible with undici's json() reader.
+        if (req.method?.toUpperCase() === 'POST' && req.body) {
+          try {
+            const bodyText = await req.text?.() ?? ''
+            const bodyBytes = new TextEncoder().encode(bodyText)
+            Object.defineProperty(req, 'body', {
+              get() {
+                return new ReadableStream({
+                  start(controller) {
+                    controller.enqueue(bodyBytes)
+                    controller.close()
+                  }
+                })
+              },
+              configurable: true,
+            })
+          } catch {
+            // proceed without override if pre-reading fails
+          }
+        }
+        return getDefaultSettings()
+      },
     }),
   ],
 })
