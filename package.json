@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
-    "migrate": "node --import tsx/esm scripts/migrate-from-sanity.ts"
+    "migrate": "node --import tsx/esm scripts/migrate-from-sanity.ts",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@heroui/react": "^3.0.2",
@@ -74,6 +75,7 @@
     "eslint": "^10.2.0",
     "eslint-config-next": "^16.2.4",
     "jsdom": "^29.0.2",
+    "patch-package": "^8.0.1",
     "postcss": "^8.5.10",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.2.2",
