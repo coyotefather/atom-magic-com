@@ -24,7 +24,12 @@ export async function POST(req: NextRequest): Promise<Response> {
   }) as unknown as NextRequest
 
   Object.defineProperty(freshReq, 'body', {
-    get: () => bodyBytes,
+    get: () => new ReadableStream({
+      start(controller) {
+        controller.enqueue(bodyBytes)
+        controller.close()
+      },
+    }),
     configurable: true,
   })
 
