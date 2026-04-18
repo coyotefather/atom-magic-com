@@ -86,40 +86,6 @@ export default buildConfig({
         timeline: { enabled: true },
         media: { enabled: true },
       },
-      overrideAuth: async (req, getDefaultSettings) => {
-        const log = (...args: unknown[]) => console.log('[MCP overrideAuth]', ...args)
-        log('called, method:', req.method, 'has body:', !!req.body)
-        if (req.method?.toUpperCase() === 'POST' && req.body) {
-          try {
-            const ownBodyDesc = Object.getOwnPropertyDescriptor(req, 'body')
-            log('own body descriptor:', JSON.stringify(ownBodyDesc))
-            log('reading body via req.text()...')
-            const bodyText = await req.text?.() ?? ''
-            log('body read, length:', bodyText.length, 'preview:', bodyText.slice(0, 80))
-            const bodyBytes = new TextEncoder().encode(bodyText)
-            try {
-              Object.defineProperty(req, 'body', {
-                get() {
-                  return new ReadableStream({
-                    start(controller) {
-                      controller.enqueue(bodyBytes)
-                      controller.close()
-                    }
-                  })
-                },
-                configurable: true,
-              })
-              log('body property overridden successfully')
-            } catch (defineErr) {
-              log('defineProperty FAILED:', String(defineErr))
-            }
-          } catch (readErr) {
-            log('body pre-reading FAILED:', String(readErr))
-          }
-        }
-        log('calling getDefaultSettings...')
-        return getDefaultSettings()
-      },
     }),
   ],
 })
