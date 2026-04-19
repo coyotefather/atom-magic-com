@@ -445,7 +445,6 @@ export interface Score {
    * Stable identifier used in saved characters. Do not change after creation.
    */
   scoreId?: string | null;
-  subscores?: (number | Subscore)[] | null;
   description?: {
     root: {
       type: string;
@@ -1099,24 +1098,6 @@ export interface PayloadMcpApiKey {
      */
     delete?: boolean | null;
   };
-  media?: {
-    /**
-     * Allow clients to find media.
-     */
-    find?: boolean | null;
-    /**
-     * Allow clients to create media.
-     */
-    create?: boolean | null;
-    /**
-     * Allow clients to update media.
-     */
-    update?: boolean | null;
-    /**
-     * Allow clients to delete media.
-     */
-    delete?: boolean | null;
-  };
   updatedAt: string;
   createdAt: string;
   enableAPIKey?: boolean | null;
@@ -1450,7 +1431,6 @@ export interface PatronagesSelect<T extends boolean = true> {
 export interface ScoresSelect<T extends boolean = true> {
   title?: T;
   scoreId?: T;
-  subscores?: T;
   description?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1667,14 +1647,6 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
         delete?: T;
       };
   timeline?:
-    | T
-    | {
-        find?: T;
-        create?: T;
-        update?: T;
-        delete?: T;
-      };
-  media?:
     | T
     | {
         find?: T;
