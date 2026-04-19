@@ -1,15 +1,19 @@
 import { algoliasearch } from 'algoliasearch';
 import { getPayloadClient } from '@/lib/payload';
 
-const algoliaClient = algoliasearch(
-	process.env.ALGOLIA_APP_ID!,
-	process.env.ALGOLIA_API_KEY!,
-);
-const indexName = process.env.ALGOLIA_INDEX_NAME!;
+function getAlgoliaClient() {
+	const appId = process.env.ALGOLIA_APP_ID
+	const apiKey = process.env.ALGOLIA_API_KEY
+	if (!appId || !apiKey) return null
+	return algoliasearch(appId, apiKey)
+}
 
 const SEARCHABLE_COLLECTIONS = ['entries', 'creatures', 'disciplines', 'techniques', 'paths'] as const;
 
 async function performBulkReindex() {
+	const client = getAlgoliaClient()
+	if (!client) throw new Error('Algolia is not configured')
+	const indexName = process.env.ALGOLIA_INDEX_NAME ?? ''
 	const payload = await getPayloadClient();
 	const records: Record<string, unknown>[] = [];
 
@@ -28,7 +32,7 @@ async function performBulkReindex() {
 		}
 	}
 
-	await algoliaClient.saveObjects({ indexName, objects: records });
+	await client.saveObjects({ indexName, objects: records });
 
 	return { message: `Bulk reindex complete. Indexed ${records.length} documents.` };
 }

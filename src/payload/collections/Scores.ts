@@ -6,6 +6,12 @@ export const Scores: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
   },
+  access: {
+    read: () => true,
+    create: ({ req }) => Boolean(req.user),
+    update: ({ req }) => Boolean(req.user),
+    delete: ({ req }) => Boolean(req.user),
+  },
   fields: [
     {
       name: 'title',
@@ -19,12 +25,6 @@ export const Scores: CollectionConfig = {
       admin: {
         description: 'Stable identifier used in saved characters. Do not change after creation.',
       },
-    },
-    {
-      name: 'subscores',
-      type: 'relationship',
-      relationTo: 'subscores',
-      hasMany: true,
     },
     {
       name: 'description',

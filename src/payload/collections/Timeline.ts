@@ -6,6 +6,12 @@ export const Timeline: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'year', 'major'],
   },
+  access: {
+    read: () => true,
+    create: ({ req }) => Boolean(req.user),
+    update: ({ req }) => Boolean(req.user),
+    delete: ({ req }) => Boolean(req.user),
+  },
   fields: [
     {
       name: 'title',

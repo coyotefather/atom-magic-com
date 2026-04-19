@@ -84,7 +84,8 @@ export default buildConfig({
         enhancements: { enabled: true },
         categories: { enabled: true },
         timeline: { enabled: true },
-        media: { enabled: true },
+        // media: { enabled: true },   // re-enable only if needed
+        // users intentionally excluded — never expose via MCP
       },
     }),
   ],

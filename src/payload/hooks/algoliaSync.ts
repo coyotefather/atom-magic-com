@@ -1,15 +1,20 @@
 import { algoliasearch } from 'algoliasearch'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
-const algoliaClient = algoliasearch(
-	process.env.ALGOLIA_APP_ID!,
-	process.env.ALGOLIA_API_KEY!,
-)
-const indexName = process.env.ALGOLIA_INDEX_NAME!
+function getAlgoliaClient() {
+	const appId = process.env.ALGOLIA_APP_ID
+	const apiKey = process.env.ALGOLIA_API_KEY
+	if (!appId || !apiKey) return null
+	return algoliasearch(appId, apiKey)
+}
+
+const indexName = process.env.ALGOLIA_INDEX_NAME ?? ''
 
 export const algoliaAfterChange: CollectionAfterChangeHook = async ({ doc, collection }) => {
+	const client = getAlgoliaClient()
+	if (!client) return
 	try {
-		await algoliaClient.saveObject({
+		await client.saveObject({
 			indexName,
 			body: {
 				objectID: String(doc.id),
@@ -25,8 +30,10 @@ export const algoliaAfterChange: CollectionAfterChangeHook = async ({ doc, colle
 }
 
 export const algoliaAfterDelete: CollectionAfterDeleteHook = async ({ id }) => {
+	const client = getAlgoliaClient()
+	if (!client) return
 	try {
-		await algoliaClient.deleteObject({ indexName, objectID: String(id) })
+		await client.deleteObject({ indexName, objectID: String(id) })
 	} catch (err) {
 		console.error('Algolia afterDelete sync error:', err instanceof Error ? err.message : err)
 	}

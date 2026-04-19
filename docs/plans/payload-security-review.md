@@ -31,21 +31,21 @@ access: {
 },
 ```
 
-- [ ] Entries
-- [ ] Creatures
-- [ ] Disciplines
-- [ ] Techniques
-- [ ] Paths
-- [ ] Cultures
-- [ ] Patronages
-- [ ] Scores
-- [ ] Subscores
-- [ ] AdditionalScores
-- [ ] Enhancements
-- [ ] Categories
-- [ ] Timeline
-- [ ] Media
-- [ ] Users (stricter rules above)
+- [x] Entries
+- [x] Creatures
+- [x] Disciplines
+- [x] Techniques
+- [x] Paths
+- [x] Cultures
+- [x] Patronages
+- [x] Scores
+- [x] Subscores
+- [x] AdditionalScores
+- [x] Enhancements
+- [x] Categories
+- [x] Timeline
+- [x] Media
+- [x] Users (stricter rules above)
 
 ---
 
@@ -73,7 +73,7 @@ export async function getPayloadClient() {
 }
 ```
 
-- [ ] Update `src/lib/payload.ts`
+- [x] Update `src/lib/payload.ts`
 
 ---
 
@@ -94,9 +94,9 @@ mcpPlugin({
 })
 ```
 
-- [ ] Remove `users` from mcpPlugin config
-- [ ] Decide on `media` (keep or remove)
-- [ ] Verify plugin requires Bearer token auth (it does — API keys in admin)
+- [x] Remove `users` from mcpPlugin config
+- [x] Decide on `media` (removed from MCP — no current use case)
+- [x] Verify plugin requires Bearer token auth (it does — API keys in admin)
 
 ---
 
@@ -117,12 +117,12 @@ Slug fields are the primary lookup key but have no DB unique constraint or index
 },
 ```
 
-- [ ] Entries
-- [ ] Creatures
-- [ ] Disciplines
-- [ ] Techniques
-- [ ] Paths
-- [ ] Categories
+- [x] Entries
+- [x] Creatures
+- [x] Disciplines
+- [x] Techniques
+- [x] Paths
+- [x] Categories
 - [ ] Run `payload migrate` after to apply schema changes
 
 ---
@@ -134,7 +134,7 @@ Slug fields are the primary lookup key but have no DB unique constraint or index
 
 **Fix:** Remove the `subscores` field from `Scores.ts`. No data migration needed — the field is never queried.
 
-- [ ] Remove `subscores` from `Scores.ts`
+- [x] Remove `subscores` from `Scores.ts`
 
 ---
 
@@ -158,5 +158,5 @@ const client = getAlgoliaClient()
 if (!client) return  // silently skip in envs without Algolia
 ```
 
-- [ ] Update `src/payload/hooks/algoliaSync.ts`
-- [ ] Update `src/app/api/algolia/route.ts`
+- [x] Update `src/payload/hooks/algoliaSync.ts`
+- [x] Update `src/app/api/algolia/route.ts`

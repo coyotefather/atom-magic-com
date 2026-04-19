@@ -54,12 +54,12 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 ## Payload CMS — Security & Code Quality
 → Full plan: [docs/plans/payload-security-review.md](docs/plans/payload-security-review.md)
 
-- [ ] **Access control on all collections** — REST API currently fully open; add `req.user` guards to create/update/delete on all collections (critical)
-- [ ] **Payload singleton race condition** — assign Promise (not value) to global to prevent concurrent cold-start double-init
-- [ ] **Restrict MCP plugin** — remove `users` from mcpPlugin config; verify Bearer token auth is enforced
-- [ ] **Slug uniqueness + indexes** — add `unique: true, index: true` to slug fields across 6 collections; run migration
-- [ ] **Remove redundant `Scores.subscores` relationship** — field is never queried; creates editor data-integrity trap
-- [ ] **Guard Algolia env vars** — lazy-init client with null check to fail gracefully in preview deploys
+- [x] **Access control on all collections** — REST API currently fully open; add `req.user` guards to create/update/delete on all collections (critical)
+- [x] **Payload singleton race condition** — assign Promise (not value) to global to prevent concurrent cold-start double-init
+- [x] **Restrict MCP plugin** — remove `users` from mcpPlugin config; verify Bearer token auth is enforced
+- [ ] **Slug uniqueness + indexes** — added `unique: true, index: true` to slug fields across 6 collections; **run `payload migrate` to apply to DB**
+- [x] **Remove redundant `Scores.subscores` relationship** — field is never queried; creates editor data-integrity trap
+- [x] **Guard Algolia env vars** — lazy-init client with null check to fail gracefully in preview deploys
 
 ## Performance Optimization (post-Payload migration)
 → Full plan: [docs/plans/performance-optimization.md](docs/plans/performance-optimization.md)
