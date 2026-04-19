@@ -51,6 +51,31 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 - [ ] **Shareable creatures** - URL/QR sharing like characters
 - [x] **Import to encounters** - Use custom creatures in the Encounter Builder
 
+## Payload CMS — Security & Code Quality
+→ Full plan: [docs/plans/payload-security-review.md](docs/plans/payload-security-review.md)
+
+- [ ] **Access control on all collections** — REST API currently fully open; add `req.user` guards to create/update/delete on all collections (critical)
+- [ ] **Payload singleton race condition** — assign Promise (not value) to global to prevent concurrent cold-start double-init
+- [ ] **Restrict MCP plugin** — remove `users` from mcpPlugin config; verify Bearer token auth is enforced
+- [ ] **Slug uniqueness + indexes** — add `unique: true, index: true` to slug fields across 6 collections; run migration
+- [ ] **Remove redundant `Scores.subscores` relationship** — field is never queried; creates editor data-integrity trap
+- [ ] **Guard Algolia env vars** — lazy-init client with null check to fail gracefully in preview deploys
+
+## Performance Optimization (post-Payload migration)
+→ Full plan: [docs/plans/performance-optimization.md](docs/plans/performance-optimization.md)
+
+RES dropped from high to 28. Root cause: CDN-cached Sanity calls replaced by live Payload + Neon DB queries.
+
+- [ ] **Add Vercel Blob to `remotePatterns`** — images currently served unoptimized (no WebP/AVIF) (critical)
+- [ ] **Remove `force-dynamic` from Codex index** — no server data; forced cold start on every visit
+- [ ] **Add `revalidate` to homepage, timeline, character, generator pages** — near-static data, no need for live DB on every request
+- [ ] **Cache `fetchCharacterData`** — 7 parallel DB queries per request; same result for all callers
+- [ ] **Parallelize entry slug lookup** — currently 5 sequential DB queries; replace with `Promise.all`
+- [ ] **Cache creature tools layout** — 500-doc query uncached; add `unstable_cache` + `revalidateTag`
+- [ ] **Constrain Neon pool for serverless** — add `max: 1`; evaluate Neon HTTP driver
+- [ ] **Remove `'use client'` from Entry/UnifiedEntry/PageHero** — pure render components; unnecessary client boundary
+- [ ] **Lazy-load `styled-components` consumer** — runtime CSS-in-JS causing CLS
+
 ## CMS Migration: Sanity → Payload ✓ Complete
 
 - [x] **Schema migration** - All Sanity schemas recreated as Payload collections
