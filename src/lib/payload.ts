@@ -1,11 +1,15 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
-let payloadInstance: Awaited<ReturnType<typeof getPayload>> | null = null
+declare global {
+  // eslint-disable-next-line no-var
+  var _payloadInstance: ReturnType<typeof getPayload> | undefined
+}
 
 export async function getPayloadClient() {
-  if (!payloadInstance) {
-    payloadInstance = await getPayload({ config })
+  if (!global._payloadInstance) {
+    // Assign the Promise immediately so concurrent callers share one in-flight init
+    global._payloadInstance = getPayload({ config })
   }
-  return payloadInstance
+  return global._payloadInstance
 }

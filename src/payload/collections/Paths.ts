@@ -7,6 +7,12 @@ export const Paths: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
   },
+  access: {
+    read: () => true,
+    create: ({ req }) => Boolean(req.user),
+    update: ({ req }) => Boolean(req.user),
+    delete: ({ req }) => Boolean(req.user),
+  },
   hooks: {
     afterChange: [algoliaAfterChange],
     afterDelete: [algoliaAfterDelete],
@@ -25,6 +31,8 @@ export const Paths: CollectionConfig = {
     {
       name: 'slug',
       type: 'text',
+      unique: true,
+      index: true,
     },
     {
       name: 'mainImage',

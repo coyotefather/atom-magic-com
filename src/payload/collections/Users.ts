@@ -5,6 +5,12 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
   },
+  access: {
+    read: ({ req }) => Boolean(req.user),
+    create: () => false,
+    update: ({ req, id }) => req.user?.id === id,
+    delete: ({ req }) => Boolean(req.user),
+  },
   auth: true,
   fields: [
     {

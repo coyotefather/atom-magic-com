@@ -7,6 +7,12 @@ export const Creatures: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
   },
+  access: {
+    read: () => true,
+    create: ({ req }) => Boolean(req.user),
+    update: ({ req }) => Boolean(req.user),
+    delete: ({ req }) => Boolean(req.user),
+  },
   hooks: {
     afterChange: [algoliaAfterChange],
     afterDelete: [algoliaAfterDelete],
@@ -21,6 +27,8 @@ export const Creatures: CollectionConfig = {
       name: 'slug',
       type: 'text',
       required: true,
+      unique: true,
+      index: true,
     },
     {
       name: 'description',
