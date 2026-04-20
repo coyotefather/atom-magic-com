@@ -29,7 +29,7 @@ images: {
 },
 ```
 
-- [ ] Update `next.config.mjs`
+- [x] Update `next.config.mjs`
 
 ---
 
@@ -38,7 +38,7 @@ images: {
 
 `export const dynamic = 'force-dynamic'` is set but the page has zero server-side data fetching — only a client-side Algolia `<Search />` component. Every `/codex` visit triggers a serverless cold start instead of being served from Vercel CDN edge.
 
-- [ ] Remove `export const dynamic = 'force-dynamic'` from `codex/page.tsx`
+- [x] Remove `export const dynamic = 'force-dynamic'` from `codex/page.tsx`
 
 ---
 
@@ -61,10 +61,10 @@ export const revalidate = 3600
 export const revalidate = 3600
 ```
 
-- [ ] `src/app/(website)/page.tsx` — `revalidate = 86400`
-- [ ] `src/app/(website)/codex/timeline/page.tsx` — `revalidate = 3600`
-- [ ] `src/app/(website)/character/page.tsx` — `revalidate = 3600`
-- [ ] `src/app/(website)/generator/page.tsx` — `revalidate = 3600`
+- [x] `src/app/(website)/page.tsx` — `revalidate = 86400`
+- [x] `src/app/(website)/codex/timeline/page.tsx` — `revalidate = 3600`
+- [x] `src/app/(website)/character/page.tsx` — `revalidate = 3600`
+- [x] `src/app/(website)/generator/page.tsx` — `revalidate = 3600`
 
 ---
 
@@ -82,7 +82,7 @@ export async function fetchCharacterData() {
 
 Alternatively use `unstable_cache` from `next/cache` if `'use cache'` is not yet stable in this Next.js version.
 
-- [ ] Add caching to `fetchCharacterData`
+- [x] Add caching to `fetchCharacterData`
 
 ---
 
@@ -109,9 +109,9 @@ async function findEntryBySlug(slug: string) {
 
 Also add `export const revalidate = 3600` to these pages so ISR handles cache misses rather than live DB queries.
 
-- [ ] Parallelize `findEntryBySlug` in `codex/entries/[slug]/page.tsx`
-- [ ] Parallelize the lookup in `codex/categories/[slug]/page.tsx`
-- [ ] Add `revalidate = 3600` to both pages
+- [x] Parallelize `findEntryBySlug` in `codex/entries/[slug]/page.tsx`
+- [x] Parallelize the lookup in `codex/categories/[slug]/page.tsx`
+- [x] Add `revalidate = 3600` to both pages
 
 ---
 
@@ -146,7 +146,7 @@ export const invalidateCreatureCache: CollectionAfterChangeHook = async () => {
 }
 ```
 
-- [ ] Add `unstable_cache` to creature tools layout
+- [x] Add `unstable_cache` to creature tools layout
 - [ ] Add `revalidateTag('creatures')` afterChange hook to Creatures collection
 
 ---
@@ -167,7 +167,7 @@ db: postgresAdapter({
 
 Longer term: consider migrating to `@neondatabase/serverless` with the HTTP transport (no TCP cold-start).
 
-- [ ] Add `max: 1` to pool config
+- [x] Add `max: 1` to pool config
 - [ ] Evaluate Neon HTTP driver migration
 
 ---
@@ -179,9 +179,9 @@ Longer term: consider migrating to `@neondatabase/serverless` with the HTTP tran
 
 Both are pure render components with no hooks or event handlers. `'use client'` forces their entire tree (including Lexical `RichText`) to ship as JS, delays LCP, and prevents streaming.
 
-- [ ] Audit `Entry.tsx` — remove `'use client'` if no hooks/browser APIs
-- [ ] Audit `UnifiedEntry.tsx` — same
-- [ ] If any child needs interactivity, split it into its own client component
+- [x] Audit `Entry.tsx` — remove `'use client'` if no hooks/browser APIs
+- [x] Audit `UnifiedEntry.tsx` — same
+- [x] If any child needs interactivity, split it into its own client component
 
 ---
 
@@ -190,7 +190,7 @@ Both are pure render components with no hooks or event handlers. `'use client'` 
 
 Used on nearly every public page. If it has no hooks or browser APIs, removing `'use client'` eliminates a client boundary at the top of `<main>` on every page and reduces the MDI icon bundle shipped to the client.
 
-- [ ] Audit `PageHero.tsx` — remove `'use client'` if no hooks needed
+- [x] Audit `PageHero.tsx` — remove `'use client'` if no hooks needed
 
 ---
 
