@@ -1,3 +1,5 @@
+export const revalidate = 3600
+
 import { notFound } from 'next/navigation';
 import { getPayloadClient } from '@/lib/payload';
 import { Category } from '@/app/components/codex/Category';
@@ -30,28 +32,19 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 		depth: 0,
 	});
 
-	// Find all entries in this category across collections
+	// Find all entries in this category across collections in parallel
 	const SEARCHABLE_COLLECTIONS = ['entries', 'creatures', 'disciplines', 'techniques', 'paths'] as const;
-	const entries: Array<{ id: string | number; title: string; slug: string; type: string }> = [];
-
-	for (const col of SEARCHABLE_COLLECTIONS) {
-		const colResult = await payload.find({
-			collection: col,
-			where: { category: { equals: category.id } },
-			limit: 96,
-			depth: 0,
-		});
-		for (const doc of colResult.docs) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const d = doc as any;
-			entries.push({
-				id: doc.id,
-				title: d.title ?? d.name ?? '',
-				slug: d.slug ?? '',
-				type: col,
-			});
-		}
-	}
+	const colResults = await Promise.all(
+		SEARCHABLE_COLLECTIONS.map(col =>
+			payload.find({ collection: col, where: { category: { equals: category.id } }, limit: 96, depth: 0 })
+				.then(r => r.docs.map(doc => {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					const d = doc as any;
+					return { id: doc.id, title: d.title ?? d.name ?? '', slug: d.slug ?? '', type: col };
+				}))
+		)
+	);
+	const entries: Array<{ id: string | number; title: string; slug: string; type: string }> = colResults.flat();
 
 	return (
 		<main>

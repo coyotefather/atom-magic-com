@@ -3,8 +3,6 @@ import ContentCard from '@/app/components/common/ContentCard';
 import { Search } from '@/app/components/global/search/Search';
 import { mdiSword, mdiBookOpenVariant, mdiCalendarClock, mdiBookOpenPageVariant } from '@mdi/js';
 
-export const dynamic = 'force-dynamic';
-
 const Page = async () => {
 	const categories = [
 		{

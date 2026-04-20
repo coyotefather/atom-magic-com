@@ -1,3 +1,5 @@
+export const revalidate = 3600
+
 import Sections from '@/app/components/character/Sections';
 import LoadingPage from '@/app/components/global/LoadingPage';
 import { fetchCharacterData } from '@/lib/fetchCharacterData';

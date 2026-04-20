@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache'
 import { getPayloadClient } from './payload'
 import type { Score, Subscore, AdditionalScore, Discipline, Technique, Path } from '../../payload-types'
 
@@ -6,7 +7,8 @@ function norm<T extends { id: number }>(doc: T): T & { _id: string } {
   return { ...doc, _id: String(doc.id) }
 }
 
-export async function fetchCharacterData() {
+export const fetchCharacterData = unstable_cache(
+  async function fetchCharacterData() {
   const payload = await getPayloadClient()
 
   const [culturesRes, pathsRes, patronagesRes, disciplinesRes, scoresRes, subscoresRes, additionalScoresRes] =
@@ -97,4 +99,7 @@ export async function fetchCharacterData() {
     subscores: subscoresRes.docs.map(norm),
     additionalScores,
   }
-}
+},
+['character-data'],
+{ revalidate: 3600 },
+)

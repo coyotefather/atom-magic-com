@@ -5,6 +5,8 @@ import { getPayloadClient } from '@/lib/payload';
 import { createHash } from 'crypto';
 import Srand from 'seeded-rand';
 
+export const revalidate = 86400
+
 export default async function Home() {
 	const payload = await getPayloadClient();
 
