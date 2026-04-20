@@ -66,15 +66,17 @@ A tool for GMs to create, customize, and manage creatures - analogous to the Cha
 
 RES dropped from high to 28. Root cause: CDN-cached Sanity calls replaced by live Payload + Neon DB queries.
 
-- [ ] **Add Vercel Blob to `remotePatterns`** — images currently served unoptimized (no WebP/AVIF) (critical)
-- [ ] **Remove `force-dynamic` from Codex index** — no server data; forced cold start on every visit
-- [ ] **Add `revalidate` to homepage, timeline, character, generator pages** — near-static data, no need for live DB on every request
-- [ ] **Cache `fetchCharacterData`** — 7 parallel DB queries per request; same result for all callers
-- [ ] **Parallelize entry slug lookup** — currently 5 sequential DB queries; replace with `Promise.all`
-- [ ] **Cache creature tools layout** — 500-doc query uncached; add `unstable_cache` + `revalidateTag`
-- [ ] **Constrain Neon pool for serverless** — add `max: 1`; evaluate Neon HTTP driver
-- [ ] **Remove `'use client'` from Entry/UnifiedEntry/PageHero** — pure render components; unnecessary client boundary
+- [x] **Add Vercel Blob to `remotePatterns`** — images currently served unoptimized (no WebP/AVIF) (critical)
+- [x] **Remove `force-dynamic` from Codex index** — no server data; forced cold start on every visit
+- [x] **Add `revalidate` to homepage, timeline, character, generator pages** — near-static data, no need for live DB on every request
+- [x] **Cache `fetchCharacterData`** — 7 parallel DB queries per request; same result for all callers
+- [x] **Parallelize entry slug lookup** — 5 sequential DB queries replaced with `Promise.all`
+- [x] **Cache creature tools layout** — 500-doc query wrapped in `unstable_cache` with `creatures` tag
+- [x] **Constrain Neon pool for serverless** — `max: 1` added
+- [x] **Remove `'use client'` from Entry/UnifiedEntry/PageHero** — pure render components; unnecessary client boundary removed
+- [ ] **Add `revalidateTag('creatures')` hook** — creature cache doesn't auto-invalidate on CMS save yet
 - [ ] **Lazy-load `styled-components` consumer** — runtime CSS-in-JS causing CLS
+- [ ] **Evaluate Neon HTTP driver** — eliminate TCP cold-start entirely
 
 ## CMS Migration: Sanity → Payload ✓ Complete
 

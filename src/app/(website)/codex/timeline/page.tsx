@@ -1,3 +1,5 @@
+export const revalidate = 3600
+
 import { notFound } from 'next/navigation';
 import { getPayloadClient } from '@/lib/payload';
 import Timeline from '@/app/components/codex/Timeline';

@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { algoliaAfterChange, algoliaAfterDelete } from '../hooks/algoliaSync'
+import { invalidateCreatureCache } from '../hooks/creatureCache'
 
 export const Creatures: CollectionConfig = {
   slug: 'creatures',
@@ -14,8 +15,8 @@ export const Creatures: CollectionConfig = {
     delete: ({ req }) => Boolean(req.user),
   },
   hooks: {
-    afterChange: [algoliaAfterChange],
-    afterDelete: [algoliaAfterDelete],
+    afterChange: [algoliaAfterChange, invalidateCreatureCache],
+    afterDelete: [algoliaAfterDelete, invalidateCreatureCache],
   },
   fields: [
     {
