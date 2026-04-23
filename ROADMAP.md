@@ -200,7 +200,7 @@ RES dropped from high to 28. Root cause: CDN-cached Sanity calls replaced by liv
 ### Documentation
 - [x] **Document state management patterns** - When to use Redux vs Context API (added to CLAUDE.md)
 - [x] **Document component naming conventions** - Clarify naming patterns and suffixes (added to CLAUDE.md)
-- [ ] **Codebase commenting pass** — Add thorough, descriptive comments throughout the app so any file is understandable without prior context. Priority areas: Redux slices (voragoSlice, characterSlice, customCreatureSlice), complex hooks, Payload collection configs, utility functions, and any non-obvious data transformation logic. Goal: a developer (or the original author returning after a break) can open any file and understand what it does, why it exists, and how it fits into the larger system.
+- [ ] **Codebase commenting pass** — Add thorough, descriptive comments throughout the app assuming the reader has minimal context — including for things that may seem obvious. Every file should have a top-level comment explaining what it is and why it exists. Functions, hooks, reducers, and data structures should explain what they do, what their inputs/outputs mean, and how they fit into the larger system. Priority areas: Redux slices (voragoSlice, characterSlice, customCreatureSlice), complex hooks, Payload collection configs, utility functions, and data transformation logic. Goal: a developer (or the original author returning after a break) can open any file cold and fully understand it.
 
 ## Testing Infrastructure
 
