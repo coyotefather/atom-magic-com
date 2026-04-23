@@ -279,6 +279,8 @@ interface PageHeroProps {
 
 ## Recent Changes
 - **CMS migration**: Fully migrated from Sanity CMS to Payload CMS v3 (Local API, PostgreSQL via Neon, Vercel Blob for media)
+- **Payload security hardening**: Access control on all 15 collections, slug unique indexes + migration, Algolia lazy init, MCP plugin scoped (users/media excluded), singleton race condition fixed
+- **Performance optimization**: ISR revalidation on near-static pages, `unstable_cache` on creature layout + `fetchCharacterData`, parallelized slug lookups, `'use client'` removed from pure render components, creature cache auto-invalidates via `afterChange` hook
 - Interactive world map at /map using Leaflet + CRS.Simple with tile layer and GeoJSON region overlay
 - Custom creatures can be added to encounters via tabbed Codex/Custom creature selector
 - Creature Manager feature: custom creature creation, editing, roster management, CMS cloning, .creatura file import/export
@@ -500,6 +502,19 @@ src/app/components/
 ## Figma MCP Integration Rules
 
 These rules govern all Figma-to-code and code-to-Figma workflows.
+
+### Setup & Skills
+
+The Figma plugin (`figma@claude-plugins-official`) is installed globally and provides:
+- **MCP tools**: `get_design_context`, `get_metadata`, `get_screenshot`, `use_figma` (code execution), `authenticate`
+- **Skills**: `figma:figma-use`, `figma:figma-implement-design`, `figma:figma-generate-design`, `figma:figma-generate-library`, `figma:figma-create-design-system-rules`, `figma:figma-create-new-file`, `figma:figma-code-connect`
+
+**MANDATORY: Invoke `Skill("figma:figma-use")` before every `use_figma` call.** The skill provides critical API context. Without it, common errors occur (wrong method signatures, invalid enum values, async patterns).
+
+### Design System File
+
+Figma file: **"Atom Magic — Design System"** (key: `NOJ9ybTsaubW6DKkdTeA6u`)  
+Published as a shared library. All components are available to page capture files in the Atom Magic Figma project.
 
 ### Required Figma-to-Code Flow
 
