@@ -72,9 +72,9 @@ RES dropped from high to 28. Root cause: CDN-cached Sanity calls replaced by liv
 - [x] **Cache `fetchCharacterData`** — 7 parallel DB queries per request; same result for all callers
 - [x] **Parallelize entry slug lookup** — 5 sequential DB queries replaced with `Promise.all`
 - [x] **Cache creature tools layout** — 500-doc query wrapped in `unstable_cache` with `creatures` tag
-- [x] **Constrain Neon pool for serverless** — `max: 1` added
+- [x] **Constrain Neon pool for serverless** — `max: 1` added then reverted (breaks parallel static generation at build time; serverless-only concern)
 - [x] **Remove `'use client'` from Entry/UnifiedEntry/PageHero** — pure render components; unnecessary client boundary removed
-- [ ] **Add `revalidateTag('creatures')` hook** — creature cache doesn't auto-invalidate on CMS save yet
+- [x] **Add `revalidateTag('creatures')` hook** — `src/payload/hooks/creatureCache.ts` fires on afterChange/afterDelete
 - [ ] **Lazy-load `styled-components` consumer** — runtime CSS-in-JS causing CLS
 - [ ] **Evaluate Neon HTTP driver** — eliminate TCP cold-start entirely
 
@@ -218,6 +218,7 @@ RES dropped from high to 28. Root cause: CDN-cached Sanity calls replaced by liv
 - [x] **Component tests** - Key interactive components (CoinSelector, CharacterRoster)
 - [x] **E2E tests with Playwright** - Critical user flows (create character, play Vorago game)
 - [ ] **Testing revisit** — After map, campaign management, and creature stat block features are complete, revisit component and E2E coverage for new flows
+- [ ] **Review and update all tests** — Audit existing Vitest unit tests and Playwright E2E tests for accuracy against current codebase; update stale assertions, add missing coverage for features added since initial test setup (creature manager, adventure log, campaign dashboard)
 
 ---
 
