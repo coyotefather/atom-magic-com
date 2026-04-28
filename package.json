@@ -16,7 +16,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@heroui/react": "^3.0.2",
+    "@heroui/react": "^3.0.3",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@payloadcms/db-postgres": "^3.83.0",
