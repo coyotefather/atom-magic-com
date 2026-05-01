@@ -1,3 +1,9 @@
+/**
+ * page.tsx — World Map (/map)
+ *
+ * Interactive Leaflet map of Solum. The map is entirely client-rendered
+ * (tile layer, SVG overlays, region click handlers) via `<MapClientContainer />`.
+ */
 import PageHero from '@/app/components/common/PageHero';
 import MapClientContainer from '@/app/components/map/MapContainer';
 import { mdiMap } from '@mdi/js';

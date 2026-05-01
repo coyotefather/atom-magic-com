@@ -1,3 +1,11 @@
+/**
+ * page.tsx — Codex Entry (/codex/entries/[slug])
+ *
+ * Resolves a slug across five Payload collections (entries, creatures, disciplines,
+ * techniques, paths) in parallel and renders the matching document via
+ * `<UnifiedEntry />`. Generates static params for all slugs across all collections.
+ * Revalidates hourly.
+ */
 export const revalidate = 3600
 
 import { notFound } from 'next/navigation';

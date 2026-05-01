@@ -1,3 +1,10 @@
+/**
+ * page.tsx — Encounter Builder (/encounters)
+ *
+ * GM tool for assembling combat encounters, calculating threat/difficulty, and
+ * saving encounters to localStorage. CMS creature data comes from parent layout
+ * context. Renders `EncounterBuilderWrapper` (dynamic import, ssr: false).
+ */
 import { Metadata } from 'next';
 import PageHero from '@/app/components/common/PageHero';
 import { mdiSwordCross } from '@mdi/js';

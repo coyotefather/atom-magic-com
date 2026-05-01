@@ -1,3 +1,9 @@
+/**
+ * page.tsx — Codex Category (/codex/categories/[slug])
+ *
+ * Fetches a single Payload category by slug (depth: 2 to resolve parent, entries,
+ * and subcategories). Generates static params for all categories. Revalidates hourly.
+ */
 export const revalidate = 3600
 
 import { notFound } from 'next/navigation';

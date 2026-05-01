@@ -1,3 +1,13 @@
+/**
+ * layout.tsx — Root layout for all public-facing pages
+ *
+ * Configures the global font stack (Marcellus SC, Noto Serif, Lapideum local)
+ * and wraps the app in all context providers in order:
+ * ThemeProvider → OfflineProvider → RollProvider → NavBar + content + Footer
+ *
+ * Also mounts Vercel Analytics, Speed Insights, and a top-level ErrorBoundary.
+ * Redux StoreProvider and HeroUI HeroProvider are nested inside the content area.
+ */
 import type { Metadata } from "next";
 import { Marcellus_SC, Noto_Serif } from "next/font/google";
 import localFont from 'next/font/local'

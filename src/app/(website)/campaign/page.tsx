@@ -1,3 +1,10 @@
+/**
+ * page.tsx — Campaign Dashboard (/campaign)
+ *
+ * Top-level campaign container that groups a party of characters and links to
+ * Adventure Log sessions. One campaign stored at a time in localStorage.
+ * Rendered client-side only via `CampaignClientContainer` (ssr: false).
+ */
 import { Metadata } from 'next';
 import PageHero from '@/app/components/common/PageHero';
 import { mdiMapMarkerMultiple } from '@mdi/js';

@@ -1,4 +1,10 @@
-import { Search } from '@/app/components/global/search/Search'; // change this with the path to your <Search> component
+/**
+ * page.tsx — Algolia Search (/search)
+ *
+ * Full-page Algolia search for the Codex. Uses `force-dynamic` to avoid caching
+ * (search results depend on the query param and must always be fresh).
+ */
+import { Search } from '@/app/components/global/search/Search';
 
 export const dynamic = 'force-dynamic';
 

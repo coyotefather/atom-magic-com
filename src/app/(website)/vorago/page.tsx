@@ -1,3 +1,11 @@
+/**
+ * page.tsx — Vorago Game (/vorago)
+ *
+ * The Vorago board game page. Manages the game lifecycle: Setup screen →
+ * Game board (VoragoBoard + CoinSelector + GameStatus + StoneTray) → Win screen.
+ * All game state lives in Redux. The AI thinking overlay blocks input during
+ * the AI turn. A "Tips" popup provides quick how-to-play hints in-game.
+ */
 'use client';
 
 import PageHero from '@/app/components/common/PageHero';

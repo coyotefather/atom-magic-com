@@ -1,3 +1,9 @@
+/**
+ * page.tsx — Adventure Log (/adventure-log)
+ *
+ * Session-based game journal for tracking rolls, character actions, and story
+ * notes during play. Sessions and entries are stored in localStorage.
+ */
 import { Metadata } from 'next';
 import PageHero from '@/app/components/common/PageHero';
 import { mdiBookOpenPageVariantOutline } from '@mdi/js';

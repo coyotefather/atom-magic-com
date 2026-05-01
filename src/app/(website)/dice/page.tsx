@@ -1,3 +1,9 @@
+/**
+ * page.tsx — Dice Roller (/dice)
+ *
+ * Thin wrapper that renders the `<DiceRoller />` component. The dice roller
+ * broadcasts results via `RollContext` so the Adventure Log can capture them.
+ */
 import DiceRoller from '@/app/components/dice/DiceRoller';
 
 export const metadata = {

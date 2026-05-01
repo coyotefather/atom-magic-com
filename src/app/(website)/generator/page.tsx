@@ -1,3 +1,10 @@
+/**
+ * page.tsx — Character Generator (/generator)
+ *
+ * Fetches all CMS character data server-side and passes it to
+ * `<CharacterGenerator />` for random NPC/starting-character generation.
+ * A `<LoadingPage />` overlay covers the initial Redux hydration. Revalidates hourly.
+ */
 export const revalidate = 3600
 
 import CharacterGenerator from '@/app/components/character/CharacterGenerator';
