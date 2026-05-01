@@ -1,3 +1,16 @@
+/**
+ * FeatureCards.tsx
+ *
+ * A row of three feature highlight cards on the homepage, linking to the main
+ * site sections: Codex (lore), Character Manager, and Vorago (game). Each card
+ * shows an MDI icon, title, and short description, with a gold border on hover.
+ *
+ * The `FeatureCard` sub-component is reusable — the parent `FeatureCards`
+ * renders a fixed set of three hard-coded cards for the three primary features.
+ *
+ * Used by:
+ *   - `src/app/(website)/page.tsx` (homepage)
+ */
 'use client';
 import Link from 'next/link';
 import Icon from '@mdi/react';

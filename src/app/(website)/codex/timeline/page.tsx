@@ -1,3 +1,10 @@
+/**
+ * page.tsx — World History Timeline (/codex/timeline)
+ *
+ * Fetches all timeline events from Payload, sorted by year descending, and
+ * renders them via the `<Timeline />` component. Events use year 0 = conflagratum
+ * magnum (the founding event of the Atom Magic world). Revalidates hourly.
+ */
 export const revalidate = 3600
 
 import { notFound } from 'next/navigation';

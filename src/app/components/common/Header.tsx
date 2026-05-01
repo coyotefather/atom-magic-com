@@ -1,3 +1,24 @@
+/**
+ * Header.tsx
+ *
+ * A simple black page header bar used on content-heavy pages (not to be
+ * confused with the site-wide navigation header in Nav.tsx). Renders a
+ * full-width black band with a white Marcellus h1 heading and a Noto Serif
+ * description slot (children). A bottom border separates it from the page
+ * content below.
+ *
+ * This component predates the unified PageHero component and is still used
+ * on older pages. For new pages prefer PageHero, which supports accent
+ * colors, icons, and three layout variants.
+ *
+ * Props:
+ *   - name: string        — the h1 heading text
+ *   - children: ReactNode — optional descriptive content (subtitle, chips, etc.)
+ *
+ * Used by:
+ *   - Older codex and content pages that haven't been migrated to PageHero
+ */
+
 const Header = ({
 		name,
 		//breadcrumbs,

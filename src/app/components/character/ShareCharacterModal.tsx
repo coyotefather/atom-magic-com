@@ -1,3 +1,32 @@
+/**
+ * ShareCharacterModal.tsx
+ *
+ * A modal dialog that lets the user share their character with someone else via a
+ * URL link or a QR code. The character data is serialized and LZ-compressed into
+ * the URL by `generateShareUrl()` from `src/lib/characterSharing.ts`, so no server
+ * roundtrip or account is required — the entire character is encoded in the URL.
+ *
+ * The modal offers two sharing methods:
+ *   1. "Copy Link" — copies the share URL to the clipboard. The button briefly
+ *      changes to "Copied!" with a checkmark for 2 seconds as visual confirmation,
+ *      and an ARIA live region announces the copy for screen readers.
+ *   2. "Download QR" — renders the share URL as a QR code (via `qrcode.react`),
+ *      then converts the SVG to a PNG canvas and triggers a browser download. The
+ *      downloaded filename is derived from the character's name.
+ *
+ * If the character data is too large to fit in a URL (e.g., very long description
+ * or many gear items), `generateShareUrl()` may return null. In that case, the modal
+ * shows an error state with advice to shorten the description or gear.
+ *
+ * Props:
+ *   - isOpen: whether the modal is currently visible
+ *   - onClose: callback to close the modal
+ *   - character: the full CharacterState to encode and share
+ *
+ * Used by:
+ *   - Sections.tsx (triggered by the "Share" button in the editor toolbar)
+ *   - CharacterRoster.tsx (triggered by the share icon on each character card)
+ */
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';

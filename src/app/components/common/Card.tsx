@@ -1,3 +1,26 @@
+/**
+ * Card.tsx
+ *
+ * A simple image + text card used to promote a feature or section of the
+ * site. Renders a fixed-height image at the top, followed by a title,
+ * short description paragraph, and a navigational LinkButton.
+ *
+ * Styling follows the classical design system: sharp corners (no border-radius),
+ * a stone-colored border, white background. The image area is 160 px tall and
+ * uses `object-cover` so any aspect ratio fills cleanly.
+ *
+ * Props:
+ *   - image: { src, alt, width, height, priority } — passed directly to
+ *     next/image; set `priority: true` for above-the-fold cards
+ *   - button: { href, variant, text } — navigation link rendered as a
+ *     LinkButton; use "primary" for gold fill or "secondary" for outlined
+ *   - title: string        — card heading
+ *   - description: string  — short body text (Noto Serif styling)
+ *
+ * Used by:
+ *   - Homepage feature grid and similar promotional sections
+ */
+
 import Image from 'next/image';
 import LinkButton from '@/app/components/common/LinkButton';
 

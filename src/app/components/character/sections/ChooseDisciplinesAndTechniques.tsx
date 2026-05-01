@@ -1,3 +1,44 @@
+/**
+ * ChooseDisciplinesAndTechniques.tsx
+ *
+ * The sixth wizard section where the player selects the magic disciplines and
+ * techniques their character will know. Disciplines are the broad schools of atomic
+ * magic (e.g., Kinetic, Thermal, Psychic); techniques are specific abilities within
+ * each discipline.
+ *
+ * Rules enforced by this component:
+ *   - A character may choose a maximum of 2 disciplines.
+ *   - A character may choose a maximum of 4 techniques total (across both disciplines).
+ *   - Only disciplines associated with the character's chosen path are shown. If no
+ *     path is selected, a placeholder message instructs the user to choose a path first.
+ *   - When the character's path changes after disciplines have been chosen, all
+ *     selected disciplines and techniques are cleared automatically (handled by a
+ *     useEffect that tracks path changes, skipping the initial mount to avoid clearing
+ *     on load).
+ *   - When a discipline is unchecked, all techniques belonging to it are also removed.
+ *
+ * Layout is the standard split two-column panel:
+ *   Left: Explanatory text plus a nested checkbox list — discipline checkboxes
+ *         at the top level, technique checkboxes indented beneath each selected
+ *         discipline (only visible when the parent discipline is checked).
+ *         Techniques show their Latin name (lapideum font) and a `<RichText>`
+ *         description inline, so the player can read them without leaving the page.
+ *   Right: An animated `SelectDetailExpanded` panel summarizing chosen disciplines
+ *          and their selected techniques with full descriptions. Animates on any
+ *          change to the selection.
+ *
+ * Checkboxes are disabled at their maximum (2 disciplines / 4 techniques) to
+ * prevent over-selection without requiring an explicit error message.
+ *
+ * Props:
+ *   - disciplines: NormedDiscipline[] — all disciplines from Payload CMS, each
+ *     containing a `paths` array and a `techniques` array with descriptions.
+ *   - incompleteFields: validation error string; shown if user advances without
+ *     selecting at least one discipline and one technique.
+ *
+ * Used by:
+ *   - Sections.tsx (sixth wizard section, unlocked after the scores sections)
+ */
 'use client';
 import { useEffect, useRef, useMemo, useCallback } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'

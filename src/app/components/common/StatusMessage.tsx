@@ -1,3 +1,33 @@
+/**
+ * StatusMessage.tsx
+ *
+ * A feedback message component for surfacing operation results — form
+ * submissions, save confirmations, validation errors, and informational
+ * notices. It maps four semantic states to the project's design palette:
+ *   - "success"  — laurel green (check-circle icon)
+ *   - "error"    — oxblood red (alert-circle icon)
+ *   - "warning"  — bronze amber (alert-circle icon)
+ *   - "info"     — gold (information icon)
+ *
+ * Two display sizes:
+ *   - "inline" (default) — compact horizontal bar; icon on the left, message
+ *     on the right. Intended for inline form feedback (e.g., below an input).
+ *   - "full"             — centered block with a large icon above the text,
+ *     an optional bold title, and an optional `children` slot for action
+ *     buttons or links. Intended for page-level outcomes (e.g., after a
+ *     contact form submission).
+ *
+ * Both sizes use a tinted background and matching 2px border derived from the
+ * variant color — no rounded corners (classical aesthetic).
+ *
+ * Props: see StatusMessageProps interface in the file.
+ *
+ * Used by:
+ *   - Contact form (success/error after submission)
+ *   - Character Manager (save/load feedback)
+ *   - Any form or action that needs to surface a result to the user
+ */
+
 import Icon from '@mdi/react';
 import { mdiCheckCircle, mdiAlertCircle, mdiInformation } from '@mdi/js';
 

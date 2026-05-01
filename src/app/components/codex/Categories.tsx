@@ -1,3 +1,17 @@
+/**
+ * Categories.tsx
+ *
+ * Renders a grid of Codex category cards. Each card links to the category's
+ * page (`/codex/categories/{slug}`) and shows the category name. Used on the
+ * Codex landing page to show top-level categories, and inside the Category
+ * component to show subcategories.
+ *
+ * Data is passed as a prop (fetched server-side via Payload Local API).
+ *
+ * Used by:
+ *   - `src/app/(website)/codex/page.tsx`
+ *   - `src/app/components/codex/Category.tsx`
+ */
 import type { Category as PayloadCategory } from '../../../../payload-types';
 import ContentCard from '@/app/components/common/ContentCard';
 

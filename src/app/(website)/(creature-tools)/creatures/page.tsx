@@ -1,3 +1,10 @@
+/**
+ * page.tsx — Creature Roller (/creatures)
+ *
+ * GM tool for randomly selecting creatures by environment, challenge, and type.
+ * Creature data is provided by the parent (creature-tools)/layout.tsx via context.
+ * Renders `CreatureRollerWrapper` (dynamic import, ssr: false).
+ */
 import { Metadata } from 'next';
 import PageHero from '@/app/components/common/PageHero';
 import { mdiDiceMultiple } from '@mdi/js';

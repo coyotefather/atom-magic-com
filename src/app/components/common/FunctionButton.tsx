@@ -1,3 +1,41 @@
+/**
+ * FunctionButton.tsx
+ *
+ * The primary interactive button component for all click-handler actions in
+ * the project. Use this whenever the button executes a JavaScript function
+ * (as opposed to navigating — use LinkButton for navigation).
+ *
+ * Supports seven visual variants to cover every common UI pattern:
+ *   - "primary"   — gold fill, black text; the main call-to-action style
+ *   - "secondary" — gold outline, transparent fill; secondary actions
+ *   - "danger"    — oxblood fill, white text; destructive actions (delete, remove)
+ *   - "ghost"     — no border/background; understated text buttons or icon buttons
+ *   - "chip"      — small bordered pill for toggleable filter chips
+ *   - "tab"       — bordered tab-style toggle for switching between modes/views
+ *   - "toggle"    — compact icon-only toggle (e.g. lock/unlock ring in Vorago)
+ *
+ * The `chip`, `tab`, `ghost`, and `toggle` variants support an `isActive` prop
+ * that switches between active and inactive color styles without remounting.
+ *
+ * "primary", "secondary", and "danger" use HeroUI's Button under the hood
+ * (for accessible press handling). The remaining variants render as plain
+ * <button> elements with Tailwind classes only.
+ *
+ * All variants share Marcellus font, uppercase tracking, and sharp corners
+ * (`radius="none"` equivalent via Tailwind — no rounded classes applied).
+ *
+ * Three size presets: "sm", "md" (default), "lg" — control padding, font
+ * size, and icon size together.
+ *
+ * Props: see FunctionButtonProps interface in the file for the full list.
+ *
+ * Used by:
+ *   - Character Manager wizard (Continue, Roll, Reset, section controls)
+ *   - Vorago game UI (coin actions, ring controls)
+ *   - Creature Manager (save, delete, clone buttons)
+ *   - ErrorDialog, Section, and other common components
+ */
+
 'use client';
 import { Button } from "@heroui/react";
 import clsx from 'clsx';

@@ -1,3 +1,40 @@
+/**
+ * ContentCard.tsx
+ *
+ * A navigational card component used to link to sections, tools, or Codex
+ * articles. The entire card is a Next.js Link, so clicking anywhere on it
+ * navigates to `href`.
+ *
+ * Visual structure:
+ *   - A thin colored accent line runs across the very top of the card
+ *     (thickens slightly on hover).
+ *   - An optional MDI icon is shown in a bordered square.
+ *   - A Marcellus heading that turns gold on hover.
+ *   - An optional description paragraph.
+ *   - An optional "Enter →" arrow at the bottom that slides right on hover.
+ *
+ * Three size variants control padding and typographic scale:
+ *   - "default"  — standard card (p-6/p-8, 24px icon container, text-2xl title)
+ *   - "compact"  — dense layout (p-4, 40px icon, text-lg title)
+ *   - "large"    — prominent card (p-8, 56px icon, text-3xl title)
+ *
+ * Props:
+ *   - title: string          — card heading
+ *   - description?: string   — optional body text
+ *   - href: string           — navigation target
+ *   - icon?: string          — MDI icon path (optional)
+ *   - accentColor?: string   — CSS color value for the top accent bar and icon
+ *                              (defaults to var(--color-gold))
+ *   - variant?: 'default' | 'compact' | 'large'
+ *   - showArrow?: boolean    — whether to show the "Enter →" footer (default true)
+ *   - className?: string     — additional classes on the outer Link wrapper
+ *
+ * Used by:
+ *   - Homepage feature grid
+ *   - Codex landing page (discipline/culture listings)
+ *   - Tools index page
+ */
+
 'use client';
 import Link from 'next/link';
 import Icon from '@mdi/react';

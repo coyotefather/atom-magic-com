@@ -1,3 +1,17 @@
+/**
+ * TableOfContents.tsx
+ *
+ * Renders the table of contents for a Codex entry. The `toc` field in Payload
+ * is a separate Lexical rich text field (distinct from `entryBody`) intended to
+ * hold a structured list of section links. Rendered with a dark background to
+ * visually separate it from the main content.
+ *
+ * If `toc` is null or undefined, renders nothing (or an empty container).
+ *
+ * Used by:
+ *   - `src/app/components/codex/Entry.tsx`
+ *   - `src/app/components/codex/UnifiedEntry.tsx`
+ */
 import { RichText } from '@/app/components/common/RichText';
 
 const TableOfContents = ({

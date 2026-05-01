@@ -1,3 +1,9 @@
+/**
+ * page.tsx — Offline Fallback (/offline)
+ *
+ * Shown by the service worker when the user tries to navigate to a page that
+ * isn't cached while offline. Provides a "Go Home" link back to the root.
+ */
 import PageHero from '@/app/components/common/PageHero';
 import LinkButton from '@/app/components/common/LinkButton';
 import { mdiWifiOff } from '@mdi/js';

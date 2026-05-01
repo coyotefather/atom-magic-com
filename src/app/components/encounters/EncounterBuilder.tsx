@@ -1,3 +1,44 @@
+/**
+ * EncounterBuilder.tsx
+ *
+ * Top-level orchestrator for the Encounter Builder feature. Arranges a
+ * two-column layout: a sidebar roster of saved encounters (`EncounterRoster`)
+ * and a main editing area that contains the encounter name/party-size header,
+ * the creature selector, the creature list, and the threat summary.
+ *
+ * All encounter data is persisted to localStorage via the functions in
+ * `src/lib/encounterPersistence.ts`. The active encounter is loaded on mount
+ * and saved automatically after every mutation.
+ *
+ * Core editing operations:
+ *   - New encounter         — creates a blank `Encounter` object and saves it.
+ *   - Select encounter      — loads the encounter from localStorage.
+ *   - Delete encounter      — removes it from localStorage and deselects.
+ *   - Rename                — updates the encounter name on every keystroke.
+ *   - Party size ± buttons  — clamps between 1 and 12 players.
+ *   - Add creature          — either increments the existing entry's quantity
+ *                             or appends a new `EncounterCreature` row. Works
+ *                             for both CMS and custom creatures.
+ *   - Quantity change ± 1   — reduces to zero triggers removal.
+ *   - Remove creature       — filters the creature out of the list.
+ *   - Clear all creatures   — empties the creature list.
+ *   - Copy summary          — generates a plain-text encounter summary
+ *                             (`generateEncounterSummary`) and copies it to
+ *                             the clipboard, with a "Copied!" confirmation.
+ *
+ * Threat calculation (from `encounter-data.ts`):
+ *   - `calculateTotalThreat` — sum of each creature's threat value × quantity.
+ *   - `calculateThreatPerPlayer` — total ÷ party size.
+ *   - `getDifficultyRating` / `getDifficultyLabel` — converts the per-player
+ *     threat to a named difficulty tier (Trivial, Easy, Moderate, Hard, Deadly).
+ *
+ * Custom creatures are loaded from localStorage on mount and passed to
+ * `CreatureSelector`; they are not re-fetched after mount.
+ *
+ * Used by:
+ *   - src/app/(website)/(creature-tools)/encounters/page.tsx
+ */
+
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import Icon from '@mdi/react';

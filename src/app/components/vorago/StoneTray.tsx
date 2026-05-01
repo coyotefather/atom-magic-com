@@ -1,3 +1,28 @@
+/**
+ * StoneTray.tsx
+ *
+ * Displays the unplaced stones for both players as a row of coloured circles.
+ * Stones that have already been placed on the board are hidden from the tray;
+ * a small "(N placed)" count appears once at least one stone is on the board.
+ *
+ * Player 1 stones are rendered in bronze, Player 2 in oxblood (matching the
+ * colours used on the board itself). A vertical divider separates the two
+ * players' trays.
+ *
+ * Clicking (or pressing Enter/Space on) a stone belonging to the active player
+ * dispatches `selectUnplacedStone`, marking it as the selected stone in Redux.
+ * The stone must then be placed on the board via VoragoBoard. Stones belonging
+ * to the other player, or stones clicked when the current player has already
+ * moved, are ignored.
+ *
+ * The component maps from the filtered display-index back to the original index
+ * in the stone array so that `selectUnplacedStone` receives the correct index
+ * even after some stones have been placed and are no longer visible.
+ *
+ * Used by:
+ *   - src/app/(website)/vorago/page.tsx (rendered below the board)
+ */
+
 'use client';
 
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';

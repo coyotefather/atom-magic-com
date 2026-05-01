@@ -1,3 +1,25 @@
+/**
+ * AnnotationLayer.tsx
+ *
+ * Renders hand-drawn decorative annotations on top of the map. Currently draws
+ * two types of marks using RoughJS (for a pencil-sketch aesthetic):
+ *   1. A dashed route line connecting all capital cities in order, suggesting
+ *      a trade or travel route across Solum.
+ *   2. Rough warning circles centered on each Terrae Mortuae region polygon,
+ *      visually flagging the dangerous dead lands.
+ * Also renders a small italic "Unexplored?" text label in the far east.
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom Leaflet pane
+ * ("annotationPane", z-index 445). RoughJS generates SVG elements imperatively
+ * into a <g> ref; the SVG uses the same pixel coordinate space as all other
+ * overlay layers (lng * 32, -lat * 32 maps GeoJSON coordinates to SVG pixels).
+ *
+ * The layer has a `visible` prop that gates rendering — SolumMap.tsx provides a
+ * toggle button whose state (persisted to localStorage) drives this prop.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect, useRef } from 'react';

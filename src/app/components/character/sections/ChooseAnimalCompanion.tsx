@@ -1,3 +1,36 @@
+/**
+ * ChooseAnimalCompanion.tsx
+ *
+ * An optional wizard section that lets the player assign a named animal companion to
+ * their character. Animal companions are purely roleplaying additions — they do not
+ * affect scores or combat stats, but are stored in the character's Redux state
+ * (`animalCompanion: { id, name, details }`) and exported with the character.
+ *
+ * Selection is a two-step cascade:
+ *   1. "Animal Family" dropdown — picks a broad taxonomic group (Canidae, Felidae,
+ *      Rodentia, Primates, Aves, Reptilia, Other) from a hard-coded list.
+ *   2. "Animal" dropdown — narrows to specific animals within that family, populated
+ *      from the `ANIMAL_COMPANIONS` constant in `global-data.ts`.
+ *   3. "Name" text field — becomes enabled once an animal type is chosen, letting the
+ *      player give their companion a personal name.
+ *   4. "Details" textarea — free-form text for backstory, personality, etc.
+ *
+ * The right panel shows an animated `SelectDetailExpanded` preview that updates
+ * whenever the animal ID or name changes (the `detailsUpdated` boolean toggle is used
+ * as the CSSTransition key to trigger the fade-grow animation).
+ *
+ * All four fields dispatch `setAnimalCompanion()` to Redux via a single `useEffect`
+ * that watches `animalId`, `animalType`, `name`, and `description`.
+ *
+ * This section is marked optional in the wizard — the Section's `incomplete` prop is
+ * always an empty string, meaning it will never block advancing to WrapUp.
+ *
+ * Props:
+ *   - incompleteFields: validation error string (always empty; section is optional)
+ *
+ * Used by:
+ *   - Sections.tsx (ninth wizard section, after ManageWealth)
+ */
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';

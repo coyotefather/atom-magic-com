@@ -1,3 +1,41 @@
+/**
+ * ManageGear.tsx
+ *
+ * The seventh wizard section where the player rolls their starting gear. Rather than
+ * presenting a manual selection UI, this section uses a random-roll system: the player
+ * configures filters (weapon/armor categories, exotic items, enhancements, tiers) and
+ * clicks "Roll Gear" to receive a randomized loadout within those constraints.
+ *
+ * The gear pool is entirely local (no CMS calls) — all weapons, armor, and enhancements
+ * are defined in `src/lib/gear-data.ts`. The `rollGear(options)` function selects random
+ * items from the filtered pool and returns a `RolledGear` object.
+ *
+ * Layout is the standard split two-column panel:
+ *   Left: Explanatory text, a `GearRollingOptions` filter panel, and the "Roll Gear"
+ *         button. If no valid filter combination is selected, the button is disabled
+ *         with a hint. Validation error ("Please roll gear") shows if the user tries
+ *         to advance without rolling.
+ *   Right: An animated `SelectDetailExpanded` with a `RolledGearDisplay` showing the
+ *          rolled weapon and armor (with any enhancements).
+ *
+ * After rolling, the `RolledGear` result is mapped to a `CharacterGearItem[]` and
+ * dispatched to Redux via `setGear()`. The CharacterGearItem format is more compact
+ * than RolledGear — it stores only what is needed for the character sheet and shield
+ * calculations (damage, capacity, shield bonuses, enhancement name/description).
+ *
+ * When a character is loaded from the roster (characterGear is already populated but
+ * rolledGear state is null), a `useEffect` reconstructs a RolledGear display object
+ * from the stored CharacterGearItem array so the right panel shows the correct gear.
+ * Some fields that aren't stored in CharacterGearItem (e.g., weapon.type, discipline)
+ * are filled with reasonable defaults.
+ *
+ * Props:
+ *   - incompleteFields: validation error string; shown if user advances without
+ *     rolling gear
+ *
+ * Used by:
+ *   - Sections.tsx (seventh wizard section, unlocked after ChooseDisciplinesAndTechniques)
+ */
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'

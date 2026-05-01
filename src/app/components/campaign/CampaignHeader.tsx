@@ -1,3 +1,16 @@
+/**
+ * CampaignHeader.tsx
+ *
+ * Displays and edits the campaign's name, description, and creation date.
+ * Both the name and description are inline-editable (toggle between display
+ * and input modes on click). Also provides a Delete Campaign button.
+ *
+ * Changes bubble up via callbacks to CampaignDashboard, which persists them
+ * to localStorage.
+ *
+ * Used by:
+ *   - `src/app/components/campaign/CampaignDashboard.tsx`
+ */
 'use client';
 import { useState } from 'react';
 import Icon from '@mdi/react';

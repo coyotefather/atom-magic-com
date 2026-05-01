@@ -1,3 +1,30 @@
+/**
+ * CreatureRoller.tsx
+ *
+ * A random-creature generator tool for GMs. Shows a filter sidebar
+ * (`CreatureFilters`) on the left and a roll area on the right. The user
+ * narrows the pool by environment, creature type, and challenge level, then
+ * clicks "Roll Random Creature" to pick one at random from the filtered list.
+ *
+ * The roll is animated: the displayed creature cycles through 10 rapid random
+ * selections at 100 ms intervals before settling on a final result, giving a
+ * slot-machine feel. The rolled creature is shown as a full `CreatureCard` with
+ * the `showCustomize` flag enabled so the user can immediately fork it into a
+ * custom creature.
+ *
+ * A "Show All Matches" toggle switches between the single-result view and a
+ * grid of all creatures that pass the current filters, useful for browsing
+ * before rolling.
+ *
+ * Props:
+ *   - `creatures` — Full list of CMS creatures (from `CreatureDataContext` or
+ *                   passed in directly from the page).
+ *   - `filters`   — Available filter values derived from the creature list.
+ *
+ * Used by:
+ *   - src/app/(website)/(creature-tools)/creatures/page.tsx
+ */
+
 'use client';
 import { useState, useMemo } from 'react';
 import Icon from '@mdi/react';

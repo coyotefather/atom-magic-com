@@ -1,3 +1,55 @@
+/**
+ * PageHero.tsx
+ *
+ * The unified page hero component used at the top of every major page.
+ * It replaced seven separate hero components and ensures visual consistency
+ * across the site. Every hero shows a MDI icon, a Marcellus h1 heading, and
+ * an optional description. An accent color drives the icon, border, and
+ * decorative element colors.
+ *
+ * Three layout variants:
+ *
+ *   "full" (default)
+ *     Centered, tall layout (py-12/py-16). Includes a subtle diagonal
+ *     background pattern, a 1 px accent line at the very top, a 64×64 px
+ *     icon box, large heading (text-4xl/5xl), description, decorative diamond
+ *     divider, and an optional CTA link. Used on major section landing pages
+ *     (Codex, Map, Timeline, Creatures, etc.).
+ *
+ *   "compact"
+ *     Minimal horizontal layout (py-4, 40×40 px icon). No description or
+ *     decorative elements. Used when the hero scrolls out of view and is
+ *     replaced by a smaller sticky header — the Character Manager and Vorago
+ *     pages swap between "full" and "compact" based on scroll position.
+ *
+ *   "inline"
+ *     Horizontal layout with description (py-8/py-12, 48×48 px icon). Sits
+ *     between "full" and "compact" — used on tool pages (Dice Roller, Loot
+ *     Roller, Quick Reference, Tools index) where a tall centered hero would
+ *     waste space.
+ *
+ * Two themes:
+ *   "dark" (default) — black background, white heading, light stone description
+ *   "light"          — parchment background, black heading, dark stone description
+ *
+ * Five accent colors: 'gold' | 'oxblood' | 'laurel' | 'bronze' | 'stone'
+ * Each maps to a set of Tailwind border/text/bg/divider classes defined in
+ * the `colorClasses` lookup table.
+ *
+ * Props:
+ *   - title: string           — h1 heading text
+ *   - description?: string    — optional subtitle / tagline
+ *   - icon: string            — MDI icon path (from @mdi/js)
+ *   - accentColor: AccentColor — color theme for icon, border, decorations
+ *   - variant?: 'full' | 'compact' | 'inline'  (default: 'full')
+ *   - theme?: 'dark' | 'light'                 (default: 'dark')
+ *   - cta?: { label, href }   — optional call-to-action link button
+ *                               (full variant only; rendered as a gold LinkButton)
+ *
+ * Used by:
+ *   - Every major page in the (website) route group
+ */
+
 import Icon from '@mdi/react';
 import Link from 'next/link';
 

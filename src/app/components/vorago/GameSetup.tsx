@@ -1,3 +1,27 @@
+/**
+ * GameSetup.tsx
+ *
+ * Pre-game configuration screen shown before the Vorago board is displayed.
+ * Allows the player to set their name, choose an opponent type (vs AI or vs a
+ * second human at the same device), and — if playing vs AI — select a
+ * difficulty level (easy / medium / hard).
+ *
+ * When the Start Game button is pressed, the component dispatches three Redux
+ * actions in sequence: `setPlayerNames`, `setAIMode`, and `newGame`, which
+ * initialises the full board state. It then calls the `onStart` prop to tell
+ * the parent page to switch from the setup view to the board view.
+ *
+ * If the device is offline (detected via `useOffline()`), the AI difficulty
+ * controls are replaced with an offline warning and the Start Game button is
+ * disabled, because the AI opponent calls a server-side API route.
+ *
+ * A short "Quick Rules" summary is displayed below the form so new players
+ * understand the core loop before the game begins.
+ *
+ * Used by:
+ *   - src/app/(website)/vorago/page.tsx
+ */
+
 'use client';
 
 import { useAppDispatch } from '@/lib/hooks';

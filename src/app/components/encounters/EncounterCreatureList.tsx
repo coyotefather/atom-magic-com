@@ -1,3 +1,30 @@
+/**
+ * EncounterCreatureList.tsx
+ *
+ * Displays the list of creatures currently in the active encounter. Each row
+ * shows the creature name, a "Custom" badge if the creature originates from
+ * the user's local roster rather than the CMS, the challenge level badge, and
+ * the per-creature threat point value. Inline +/− buttons let the GM adjust
+ * quantity. Decrementing to zero removes the creature (handled by the parent
+ * via `onQuantityChange`). A remove (×) button on each row allows direct
+ * deletion.
+ *
+ * The right side of each row shows the total threat contribution for that
+ * creature type (threat-per-unit × quantity), so the GM can see at a glance
+ * which creatures are driving the encounter's difficulty.
+ *
+ * When the encounter has no creatures, an empty-state message is shown.
+ *
+ * Props:
+ *   - `creatures`       — Array of `EncounterCreature` objects for the current
+ *                         encounter.
+ *   - `onQuantityChange`— Called with `(creatureId, delta)` (+1 or -1).
+ *   - `onRemove`        — Called with `creatureId` to delete the entire row.
+ *
+ * Used by:
+ *   - src/app/components/encounters/EncounterBuilder.tsx
+ */
+
 'use client';
 import { mdiPlus, mdiMinus, mdiClose } from '@mdi/js';
 import FunctionButton from '@/app/components/common/FunctionButton';

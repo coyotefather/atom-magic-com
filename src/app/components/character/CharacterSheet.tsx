@@ -1,3 +1,37 @@
+/**
+ * CharacterSheet.tsx
+ *
+ * A print-only character sheet that renders a full physical layout of the active
+ * character. It is always rendered in the DOM but hidden from screen via
+ * `hidden print:block` — when the user clicks "Print Character" in WrapUp.tsx,
+ * `window.print()` is called and this component becomes the sole visible element.
+ *
+ * The sheet is styled for US Letter paper (max-w-[8.5in]) using print-appropriate
+ * black-and-white styling (no Tailwind dark mode, no colored backgrounds). It
+ * intentionally avoids the project's standard parchment/gold palette since those
+ * don't translate well to print.
+ *
+ * Content rendered:
+ *   - Header: name, age, pronouns, description
+ *   - Core identity: culture, path, patronage (names resolved from ID via props)
+ *   - Combat stats: Physical Shield, Psychic Shield, Armor Capacity
+ *   - Scores: all four score categories with their subscores and calculated averages
+ *   - Disciplines and techniques (with Latin names where available)
+ *   - Gear: weapons, armor, and enhancement in a three-column layout
+ *   - Wealth: silver/gold/lead/uranium denominations
+ *   - Animal companion name and details
+ *   - Footer with site URL and print date
+ *
+ * Shield values are computed live: Physical Shield = avg(Physical subscores) +
+ * gear bonuses, Psychic Shield = avg(Psyche subscores) + gear bonuses.
+ *
+ * Props:
+ *   - cultures, paths, patronages, disciplines — needed to resolve stored IDs to
+ *     human-readable names (the Redux state stores IDs, not names)
+ *
+ * Used by:
+ *   - Sections.tsx (rendered at the bottom of the character wizard, always present)
+ */
 'use client';
 
 import { useAppSelector } from '@/lib/hooks';

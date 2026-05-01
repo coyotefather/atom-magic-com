@@ -1,3 +1,33 @@
+/**
+ * RolledGearDisplay.tsx
+ *
+ * A card-style display component that renders the result of a gear roll in a
+ * human-readable format. This is what appears in the right panel of ManageGear after
+ * the player clicks "Roll Gear" (inside the `SelectDetailExpanded` wrapper).
+ *
+ * It renders two sub-components defined in this file:
+ *   - `WeaponDisplay`: shows the weapon name, category/type/tier chips (exotic badge
+ *     if applicable), damage value, description, and any weapon enhancement in a
+ *     gold-bordered inset box.
+ *   - `ArmorDisplay`: shows the armor name, category/tier chips (exotic badge if
+ *     applicable), capacity, penalties, description, and any armor enhancement.
+ *
+ * Both sub-components use the `IconLabel` common component for the header row
+ * (sword icon for weapons, shield icon for armor).
+ *
+ * If neither weapon nor armor is present in the `RolledGear` object (e.g., the
+ * filters were too restrictive), a fallback message is shown.
+ *
+ * The `RolledGear` type from `gear-data.ts` contains optional `weapon`, `armor`,
+ * `weaponEnhancement`, and `armorEnhancement` fields — this component handles all
+ * combinations (weapon only, armor only, both, with or without enhancements).
+ *
+ * Props:
+ *   - rolledGear: RolledGear — the result object from `rollGear()` in gear-data.ts
+ *
+ * Used by:
+ *   - ManageGear.tsx (rendered in the right panel after a successful gear roll)
+ */
 'use client';
 import { Chip } from "@heroui/react";
 import Icon from '@mdi/react';

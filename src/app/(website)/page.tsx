@@ -1,3 +1,10 @@
+/**
+ * page.tsx — Homepage (/)
+ *
+ * Fetches a "Daily Discovery" Codex entry — a stable random entry seeded by
+ * the current date (SHA-1 of the day number) so the same entry shows all day.
+ * Falls back gracefully if there are no Codex entries. Revalidates every 24h.
+ */
 import Hero from '@/app/components/home/Hero';
 import FeatureCards from '@/app/components/home/FeatureCards';
 import DailyDiscovery from '@/app/components/home/DailyDiscovery';

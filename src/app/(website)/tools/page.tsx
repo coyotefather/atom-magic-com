@@ -1,3 +1,10 @@
+/**
+ * page.tsx — Tools Hub (/tools)
+ *
+ * Directory page listing all available GM/player tools with descriptions and
+ * links: Character Generator, Dice Roller, Creature Roller, Encounter Builder,
+ * Creature Manager, Loot Roller, Adventure Log, Quick Reference, Campaign Dashboard.
+ */
 import Link from 'next/link';
 import Icon from '@mdi/react';
 import { mdiDice6, mdiBookOpenPageVariant, mdiDiceMultiple, mdiTreasureChest, mdiAccountCog, mdiArrowRight, mdiSwordCross, mdiBookOpenPageVariantOutline, mdiTools, mdiPaw, mdiMapMarkerMultiple } from '@mdi/js';

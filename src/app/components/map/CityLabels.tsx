@@ -1,3 +1,23 @@
+/**
+ * CityLabels.tsx
+ *
+ * Renders city and capital settlement markers on the map as SVG dot + text
+ * pairs. Capitals are always visible (larger dot, larger label). Non-capital
+ * cities only appear at the maximum zoom level (MAP_CONFIG.MAX_ZOOM) to avoid
+ * cluttering the view when zoomed out.
+ *
+ * City positions come from MAP_CITIES in map-data.ts, which already stores
+ * pre-computed svgX/svgY coordinates in the SVG pixel space. A `capital`
+ * boolean flag on each city entry drives the two rendering tiers.
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom pane
+ * ("capitalLabelsPane", z-index 520, pointer-events none). The component
+ * listens to Leaflet's `zoomend` event via useMapEvent to update the zoom
+ * state and conditionally show/hide non-capital labels.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

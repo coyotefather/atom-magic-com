@@ -1,3 +1,37 @@
+/**
+ * CoinSelector.tsx
+ *
+ * Displays the current player's 13 Cardinal Coins and handles all coin activation
+ * logic for the Vorago game. Each coin is a clickable tile showing a CoinSVG,
+ * the Cardinal name, and a short description. Coins that cannot be used right
+ * now are clearly marked with status badges.
+ *
+ * Coin states:
+ *   - Cooldown  — the player used this coin last round; it is locked out for one round.
+ *   - N/A       — the coin's effect has no valid target on the current board state
+ *                 (e.g., Gamma "remove bridge" when no bridges exist). Computed
+ *                 via a memoized `inapplicableCoins` set to avoid expensive re-checks.
+ *   - Already used — the player already used their coin this turn.
+ *   - Active    — the player has selected this coin but the action is not yet resolved
+ *                 (e.g., waiting for the user to click a cell or pick a ring).
+ *
+ * Multi-step coin flows that require additional UI:
+ *   - Ring-targeted coins (Vertigo/spin, Cadence/reset, Anathema/lock, Polyphony/unlock)
+ *     show an inline ring-selector panel instead of the coin grid.
+ *   - Magna (disable a coin) shows an inline coin-selector panel listing all available
+ *     coins for the user to choose one to ban next round.
+ *   - Charlatan (copy opponent's last coin) resolves immediately or delegates to one of
+ *     the above flows depending on what the copied coin does.
+ *   - Board-targeted coins (Sovereign, Arcadia, Rubicon, Gamma, Aura, Spectrum) simply
+ *     set a message and wait for the user to click a cell on VoragoBoard.
+ *
+ * When the user finishes a coin's action, `completeCoinAction` is dispatched which
+ * marks `hasUsedCoin = true` in the Redux state, allowing GameStatus to auto-end the turn.
+ *
+ * Used by:
+ *   - src/app/(website)/vorago/page.tsx (rendered in the sidebar alongside the board)
+ */
+
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';

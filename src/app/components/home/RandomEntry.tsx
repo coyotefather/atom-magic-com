@@ -1,3 +1,16 @@
+/**
+ * RandomEntry.tsx
+ *
+ * Homepage section that shows a random Codex entry selected server-side. Renders
+ * the entry title and up to 300 characters of its description (with ellipsis if
+ * truncated) as a link to the full entry.
+ *
+ * Very similar to DailyDiscovery but without the compass icon and with a slightly
+ * shorter excerpt length.
+ *
+ * Used by:
+ *   - `src/app/(website)/page.tsx` (homepage, currently may be unused or replaced)
+ */
 'use client';
 import Markdown from 'react-markdown'
 

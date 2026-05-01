@@ -1,4 +1,15 @@
-// Encounter persistence using localStorage
+/**
+ * encounterPersistence.ts
+ *
+ * Functions for saving and loading Encounter Builder encounters in localStorage.
+ *
+ * Uses the same roster pattern as characters, creatures, and sessions:
+ *   - Roster index: `atom-magic-encounters` — summary list of all encounters
+ *   - Individual encounters: `atom-magic-encounter-{uuid}` — full encounter data
+ *
+ * Used by:
+ *   - `src/app/components/encounters/EncounterBuilder.tsx`
+ */
 
 import {
 	Encounter,

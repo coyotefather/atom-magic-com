@@ -1,3 +1,16 @@
+/**
+ * DailyDiscovery.tsx
+ *
+ * Homepage section that highlights a single "Daily Discovery" Codex entry —
+ * a randomly selected entry chosen server-side each day. Displays the entry's
+ * title and a 350-character excerpt of its description with a link to read more.
+ *
+ * The entry data is fetched server-side by the homepage and passed in as a prop,
+ * so this component is purely presentational.
+ *
+ * Used by:
+ *   - `src/app/(website)/page.tsx` (homepage)
+ */
 'use client';
 import Link from 'next/link';
 import Markdown from 'react-markdown';

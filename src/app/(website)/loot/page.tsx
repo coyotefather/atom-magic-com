@@ -1,3 +1,9 @@
+/**
+ * page.tsx — Loot Roller (/loot)
+ *
+ * GM tool for generating randomized post-encounter treasure: weapons, armor,
+ * coins by wealth level, and miscellaneous items. Uses local gear/loot data.
+ */
 import { mdiTreasureChest } from '@mdi/js';
 import PageHero from '@/app/components/common/PageHero';
 import LootRoller from '@/app/components/tools/LootRoller';

@@ -1,3 +1,24 @@
+/**
+ * LakesLayer.tsx
+ *
+ * Renders lake polygons on the map with a hand-crafted watercolor aesthetic.
+ * Each lake gets two RoughJS passes:
+ *   1. A smooth, solid grey-blue fill (roughness 0) for the water surface.
+ *   2. A slightly wobbly stroke outline (roughness 0.3) in a darker teal-grey
+ *      to suggest a hand-drawn shoreline.
+ *
+ * Lake polygon data comes from LAKE_POLYGONS in lib/lake-data.ts, which
+ * provides pre-built SVG path strings already in the SVG coordinate space
+ * (no coordinate conversion needed here).
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom pane ("lakePane",
+ * z-index 200). RoughJS writes SVG elements imperatively into a <g> ref.
+ * The component renders nothing if LAKE_POLYGONS is empty, so it has no
+ * cost when lake data has not been generated.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect, useRef } from 'react';

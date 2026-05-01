@@ -1,3 +1,14 @@
+/**
+ * Hero.tsx
+ *
+ * Full-width homepage hero section. Dark background (`bg-black`) with a subtle
+ * gold dot-grid pattern and decorative horizontal lines. Contains the site
+ * tagline, a short description of Atom Magic, and two CTA buttons (Get Started,
+ * Enter the Codex).
+ *
+ * Used by:
+ *   - `src/app/(website)/page.tsx` (homepage, appears at the top of the page)
+ */
 'use client';
 import Link from 'next/link';
 import NextImage from 'next/image';

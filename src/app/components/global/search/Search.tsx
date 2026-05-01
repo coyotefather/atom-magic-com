@@ -1,3 +1,19 @@
+/**
+ * Search.tsx
+ *
+ * Full-page Algolia-powered search UI for the Codex. Wraps `react-instantsearch`'s
+ * `InstantSearchNext` with a custom search box, hit list, pagination, and
+ * hits-per-page selector.
+ *
+ * A cached search client (`cachedSearchClient`) is used to avoid redundant
+ * Algolia API calls across navigations within the same session.
+ *
+ * When the user is offline (`OfflineContext`), a warning banner is shown and
+ * search is effectively unavailable.
+ *
+ * Used by:
+ *   - `src/app/(website)/codex/page.tsx` (full codex search page)
+ */
 'use client';
 
 import { Hits, Stats } from 'react-instantsearch';

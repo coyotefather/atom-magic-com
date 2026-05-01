@@ -1,3 +1,16 @@
+/**
+ * PartyRoster.tsx
+ *
+ * Displays the campaign's current party members and lets the GM add or remove
+ * characters. Reads the full character roster from localStorage on mount to
+ * populate the "add character" picker — only characters not already in the party
+ * appear as add options.
+ *
+ * Changes bubble up via `onAdd` / `onRemove` callbacks to CampaignDashboard.
+ *
+ * Used by:
+ *   - `src/app/components/campaign/CampaignDashboard.tsx`
+ */
 'use client';
 import { useState, useEffect } from 'react';
 import Icon from '@mdi/react';

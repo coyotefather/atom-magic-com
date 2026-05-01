@@ -1,3 +1,34 @@
+/**
+ * RegionOverlay.tsx
+ *
+ * The primary interaction layer for the map. Renders all region boundaries as
+ * transparent (invisible) GeoJSON polygons that capture mouse events. This
+ * separation of concerns means the visual border drawing (RoughBorders) and
+ * the hit-testing (this layer) are independent.
+ *
+ * Behavior per region polygon:
+ *   - Tooltip on hover: shows region name + description via a Leaflet sticky
+ *     tooltip positioned above the cursor.
+ *   - Hover highlight: subtle dark fill (5% opacity) and slightly bolder
+ *     outline while the cursor is over a region.
+ *   - Click: calls onRegionFocus(regionId, bounds) which triggers the map to
+ *     zoom in (via MapViewController) and opens RegionFocusPanel.
+ *
+ * The base style uses a dashed outline (dashArray: '8 5') at 35% opacity,
+ * making the boundaries just visible enough to guide the eye without competing
+ * with the RoughBorders hand-drawn strokes.
+ *
+ * The component short-circuits to null if REGION_BOUNDARIES contains only
+ * empty/placeholder coordinate arrays, so it is safe during development before
+ * real GeoJSON data is loaded.
+ *
+ * Rendering technique: react-leaflet <GeoJSON> component (uses Leaflet's
+ * native GeoJSON layer, which renders to an SVG pane automatically). No
+ * custom pane is created — this uses Leaflet's default overlay pane.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { GeoJSON } from 'react-leaflet';

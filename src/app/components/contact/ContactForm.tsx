@@ -1,3 +1,21 @@
+/**
+ * ContactForm.tsx
+ *
+ * The contact form on the Contact page. Submits to `POST /api/contact` and
+ * displays success/error feedback using the StatusMessage component.
+ *
+ * Client-side protections:
+ * - Honeypot field (`website`) hidden from real users; if filled, the submit is
+ *   silently rejected on the server
+ * - Privacy consent checkbox required before submission
+ * - Offline guard using OfflineContext — disables submission when no network
+ *
+ * Server-side protections are in `src/app/api/contact/route.ts` (rate limiting,
+ * HTML sanitization, field validation).
+ *
+ * Used by:
+ *   - `src/app/(website)/contact/page.tsx`
+ */
 'use client';
 
 import { useState } from 'react';

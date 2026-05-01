@@ -1,3 +1,27 @@
+/**
+ * GameStatus.tsx
+ *
+ * Compact status bar displayed at the top of the Vorago game UI. Shows the
+ * current round number, whose turn it is, and the current score for both
+ * players. Two checkmark indicators (Move / Coin) show at a glance which of
+ * the two required actions the active player has completed this turn.
+ *
+ * Beyond rendering, this component drives two critical game-loop effects:
+ *
+ *   1. Auto-end turn — when both `hasMovedStone` and `hasUsedCoin` are true,
+ *      the turn is automatically ended (with a 500 ms delay for visual
+ *      feedback) by dispatching `endTurn`. A `turnEndedRef` guard prevents
+ *      double-dispatch if the effect re-fires before the delay resolves.
+ *
+ *   2. AI turn trigger — when it is the AI player's turn (turn === 2 and
+ *      isAI is true) and neither action has been taken yet, the component
+ *      dispatches `executeAITurn` after a 500 ms delay so the AI's move
+ *      appears to the human player as a brief thinking pause.
+ *
+ * Used by:
+ *   - src/app/(website)/vorago/page.tsx (rendered in the game header bar)
+ */
+
 'use client';
 
 import { useEffect, useRef } from 'react';

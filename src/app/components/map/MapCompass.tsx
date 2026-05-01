@@ -1,3 +1,26 @@
+/**
+ * MapCompass.tsx
+ *
+ * Decorative compass rose and title block fixed in the top-left corner of the
+ * map viewport. Renders as a plain HTML <div> positioned absolutely over the
+ * Leaflet container — it is not a Leaflet layer and does not participate in the
+ * pane/overlay system.
+ *
+ * Contains three visual elements:
+ *   1. An 8-pointed SVG compass star with cardinal and intercardinal points.
+ *      The north point is taller and fully opaque for quick orientation.
+ *   2. The map title "SOLUM" in Marcellus SC.
+ *   3. A subtitle "350 POST RUINAM" (the in-world year, meaning "350 years
+ *      after the Ruination") in a smaller serif font.
+ *
+ * The component has pointer-events: none so it does not interfere with map
+ * panning/clicking. Styling uses inline styles (not Tailwind) because this
+ * component does not need to respond to theme changes.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered outside the Leaflet MapContainer, as a sibling
+ *     div inside the relative wrapper)
+ */
 /** Compass rose + title block, fixed in the map's top-left corner. */
 const MapCompass = () => {
 	return (

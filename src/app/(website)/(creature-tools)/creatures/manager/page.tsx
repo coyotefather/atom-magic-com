@@ -1,3 +1,10 @@
+/**
+ * page.tsx — Creature Manager (/creatures/manager)
+ *
+ * Full CRUD interface for custom creature creation, editing, cloning from CMS,
+ * and file import/export. CMS creature data comes from parent layout context.
+ * Renders `CreatureManagerWrapper` (dynamic import, ssr: false).
+ */
 import { Metadata } from 'next';
 import PageHero from '@/app/components/common/PageHero';
 import { mdiPaw } from '@mdi/js';

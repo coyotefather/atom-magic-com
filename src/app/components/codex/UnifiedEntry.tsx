@@ -1,3 +1,19 @@
+/**
+ * UnifiedEntry.tsx
+ *
+ * A generic Codex entry renderer that handles multiple Payload document types
+ * in a single component: Entry, Creature, Discipline, Technique, and Path.
+ *
+ * Each document type has different fields — this component normalizes them
+ * into a common display pattern: image, breadcrumb, title, stat blocks (for
+ * creatures), description/body rich text, and cross-links to related docs.
+ *
+ * Used for the unified `/codex/entries/[slug]` route which resolves slugs
+ * across multiple CMS collections.
+ *
+ * Used by:
+ *   - `src/app/(website)/codex/entries/[slug]/page.tsx` (primary entry renderer)
+ */
 import Image from 'next/image';
 import Link from 'next/link';
 import { RichText } from '@/app/components/common/RichText';

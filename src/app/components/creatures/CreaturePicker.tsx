@@ -1,3 +1,30 @@
+/**
+ * CreaturePicker.tsx
+ *
+ * A full-screen modal overlay that lets the user browse and select a CMS
+ * creature to use as the starting point for a custom creature. Displays a
+ * filterable, scrollable grid of creature cards (name, type, challenge level,
+ * short description) with a "Select" button on each.
+ *
+ * The modal includes the `CreatureFilters` panel so the user can narrow down
+ * the list by challenge level, creature type, and environment before picking.
+ * Filtered results are memoized to avoid recomputing on every keystroke.
+ *
+ * Props:
+ *   - `creatures` — Full list of CMS creatures (passed in from the parent to
+ *                   avoid re-fetching).
+ *   - `filters`   — Available filter values derived from the creature list.
+ *   - `isOpen`    — Controls visibility; returns null when false.
+ *   - `onClose`   — Called when the user dismisses the modal (backdrop click
+ *                   or close button).
+ *   - `onSelect`  — Called with the chosen `NormedCreature` when the user
+ *                   clicks "Select". The parent is responsible for cloning the
+ *                   creature into a custom creature and closing the modal.
+ *
+ * Used by:
+ *   - src/app/components/creatures/CreatureManager.tsx ("Start from Existing")
+ */
+
 'use client';
 
 import { useState, useMemo } from 'react';

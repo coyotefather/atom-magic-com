@@ -1,3 +1,33 @@
+/**
+ * SessionRoster.tsx
+ *
+ * Sidebar panel listing all of the user's saved Adventure Log sessions. Each
+ * session is shown as a clickable card displaying the session name, entry
+ * count, key-event count (shown with a star icon when > 0), an optional
+ * campaign badge (if `campaignId` is set), and the last-modified timestamp.
+ *
+ * The active session is highlighted with a bronze border and a left-edge
+ * accent bar. A delete button (visible on hover) removes the session
+ * immediately with no confirm step.
+ *
+ * A "New Session" button at the bottom delegates to `onNew`.
+ *
+ * This component is purely presentational — all state lives in the parent
+ * `AdventureLogBuilder`. It receives the session list and callbacks for every
+ * action.
+ *
+ * Props:
+ *   - `sessions`        — Array of `SessionSummary` objects (lightweight
+ *                         summaries, not full session data).
+ *   - `activeSessionId` — ID of the currently selected session.
+ *   - `onSelect`        — Called with the session ID when a card is clicked.
+ *   - `onDelete`        — Called with the session ID when delete is clicked.
+ *   - `onNew`           — Called when "New Session" is clicked.
+ *
+ * Used by:
+ *   - src/app/components/adventure-log/AdventureLogBuilder.tsx
+ */
+
 'use client';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiDelete, mdiStar, mdiMapMarkerMultiple } from '@mdi/js';

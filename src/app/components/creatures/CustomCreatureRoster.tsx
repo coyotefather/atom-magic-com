@@ -1,3 +1,33 @@
+/**
+ * CustomCreatureRoster.tsx
+ *
+ * Sidebar panel listing all of the user's locally-saved custom creatures.
+ * Reads the creature roster from localStorage on mount via `getCreatureRoster()`
+ * and displays each creature as a `CustomCreatureSummaryCard`.
+ *
+ * Interactions:
+ *   - Select   — clicking a card loads the full creature data from localStorage
+ *                into the Redux `customCreature` slice and notifies the parent
+ *                via `onCreatureSelected(id)`.
+ *   - Export   — a download button (visible on hover) triggers `exportCreatureToFile`,
+ *                saving the creature as a `.creatura` JSON file.
+ *   - Delete   — a delete button (visible on hover) requires a two-step confirm
+ *                (click once → "Confirm / Cancel" buttons appear inline). On
+ *                confirm, the creature is removed from localStorage and Redux state
+ *                is cleared if the deleted creature was active.
+ *   - Import   — an "Import" button opens a hidden `<input type="file">` filtered
+ *                to `.creatura` files. The file is parsed by `importCreatureFromFile`,
+ *                saved to localStorage, loaded into Redux, and added to the roster.
+ *   - New      — delegates to the `onNewCreature` prop (handled by CreatureManager).
+ *
+ * The roster is purely driven by localStorage; it does not subscribe to Redux.
+ * The parent component (`CreatureManager`) forces a re-mount via a `rosterKey`
+ * whenever it makes a mutation.
+ *
+ * Used by:
+ *   - src/app/components/creatures/CreatureManager.tsx
+ */
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';

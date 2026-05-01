@@ -1,3 +1,9 @@
+/**
+ * page.tsx — Quick Reference (/quick-reference)
+ *
+ * Accordion-based cheat sheet for common game rules: dice notation, combat flow,
+ * shields/armor, damage types, difficulty levels. All content is hard-coded.
+ */
 import { mdiBookOpenPageVariant } from '@mdi/js';
 import QuickReference from '@/app/components/tools/QuickReference';
 import PageHero from '@/app/components/common/PageHero';

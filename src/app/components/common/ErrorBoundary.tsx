@@ -1,3 +1,33 @@
+/**
+ * ErrorBoundary.tsx
+ *
+ * A React class-based error boundary that catches unhandled JavaScript errors
+ * thrown during rendering in its child subtree. Without a boundary like this,
+ * a single render-time error would unmount the entire React tree and show a
+ * blank page.
+ *
+ * When an error is caught the boundary either:
+ *   1. Renders the `fallback` prop (if provided) — allows callers to show a
+ *      custom recovery UI.
+ *   2. Falls back to a built-in error card (styled with the project's stone/
+ *      oxblood palette) that shows the error message in a collapsible
+ *      <details> element and offers two actions:
+ *        - "Try Again" — resets the error state so React re-renders the children
+ *        - "Refresh Page" — reloads the browser tab
+ *
+ * The caught error is also logged to `console.error` for server/browser
+ * monitoring tools to capture.
+ *
+ * Props:
+ *   - children: ReactNode   — the component subtree to protect
+ *   - fallback?: ReactNode  — optional custom UI to display instead of the
+ *                             default error card
+ *
+ * Used by:
+ *   - Feature sections (Character Manager, Vorago, Creature Manager) as a
+ *     safety net around complex interactive UIs
+ */
+
 'use client';
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';

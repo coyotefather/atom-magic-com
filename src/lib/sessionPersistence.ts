@@ -1,4 +1,20 @@
-// Session persistence using localStorage
+/**
+ * sessionPersistence.ts
+ *
+ * Functions for saving and loading Adventure Log sessions in localStorage.
+ *
+ * Sessions are the top-level container in the Adventure Log — each session is
+ * a named play session (e.g., "Session 12 — The Siege of Vortis"). Log entries
+ * (rolls, actions, notes) are stored within their parent session.
+ *
+ * Storage uses the same roster pattern as characters and creatures:
+ *   - Roster index: `atom-magic-sessions` — summary list of all sessions
+ *   - Individual sessions: `atom-magic-session-{uuid}` — full session with entries
+ *   - Active session: tracked by `activeSessionId` in the roster
+ *
+ * Used by:
+ *   - `src/app/components/adventure-log/AdventureLog.tsx`
+ */
 
 import {
 	Session,

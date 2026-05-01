@@ -1,3 +1,9 @@
+/**
+ * page.tsx — Contact (/contact)
+ *
+ * Contact form page. The `CONTACT_EMAIL` env var is read server-side and passed
+ * as a prop to the form (so it doesn't appear in client-side source).
+ */
 import PageHero from '@/app/components/common/PageHero';
 import ContactForm from '@/app/components/contact/ContactForm';
 import { mdiEmail } from '@mdi/js';

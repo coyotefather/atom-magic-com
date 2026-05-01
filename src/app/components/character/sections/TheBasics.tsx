@@ -1,3 +1,37 @@
+/**
+ * TheBasics.tsx
+ *
+ * The first real wizard section (after CharacterOptions) where the player enters
+ * fundamental personal details about their character. None of these fields affect
+ * game-mechanical scores — they are purely for roleplaying and identification purposes.
+ *
+ * Fields:
+ *   - Name (required): dispatches `setCharacterName()` to Redux. Shows a validation
+ *     error ("Please enter a name.") if the user tries to advance with an empty name.
+ *   - Age (optional): numeric field, dispatches `setCharacterAge()`.
+ *   - Pronouns (optional): free text, dispatches `setCharacterPronouns()`.
+ *   - Description (optional): multi-line textarea, dispatches `setCharacterDescription()`.
+ *
+ * Layout is the standard split two-column panel:
+ *   Left: The input form (name + age + pronouns on one row, description below).
+ *   Right: An animated `SelectDetailExpanded` preview that shows the entered name,
+ *          a subtitle line of "age, pronouns" (or just one if the other is missing),
+ *          and the description text. The preview panel remains in its disabled/empty
+ *          state until `detailsUpdated` becomes true (i.e., the user has typed
+ *          something), at which point it animates in via the fade-grow transition.
+ *
+ * All dispatch calls happen inline in the input event handlers (not via useEffect),
+ * so Redux state is updated keystroke-by-keystroke — the character is auto-saved
+ * as the user types.
+ *
+ * Props:
+ *   - incompleteFields: validation error string from `useCharacterValidation`; set to
+ *     "init" on first render (suppresses the error display) and to a non-empty
+ *     message after the user clicks to advance with an empty name field.
+ *
+ * Used by:
+ *   - Sections.tsx (first content section, always expanded at the top of the wizard)
+ */
 'use client';
 import { useState, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'

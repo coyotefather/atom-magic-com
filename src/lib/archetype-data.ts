@@ -1,6 +1,39 @@
 /**
- * Archetype definitions for the character generator
- * Maps character roles to preferred disciplines and score weightings
+ * archetype-data.ts
+ *
+ * Archetype definitions used by the character generator to produce thematically
+ * coherent random characters. An archetype describes a *role* (e.g., Healer,
+ * Blaster, Mentalist) and influences how the generator picks disciplines,
+ * techniques, and distributes scores.
+ *
+ * ## How archetypes work
+ * Each archetype carries three influence vectors:
+ *   - `disciplines`: ordered list of discipline titles to prefer when picking the
+ *     character's disciplines from the CMS list. The generator tries these in
+ *     order before falling back to random.
+ *   - `techniqueKeywords`: keywords to match against technique descriptions when
+ *     filtering the technique pool for this archetype's flavor.
+ *   - `scoreWeights`: relative multipliers (0.6–1.5) applied to each core score
+ *     when randomly distributing score points. Higher weight = more points flow
+ *     to that score. All four weights sum to roughly 4.0 but the generator
+ *     normalizes them, so the absolute values don't matter — only the ratios.
+ *   - `pathPreference` (optional): if set, the generator will prefer this path
+ *     (Theurgist / Iconoclast / Autodidact) when one isn't already chosen.
+ *
+ * ## Special archetype: 'any'
+ * The first entry has id `'any'` with uniform weights and empty discipline/keyword
+ * lists. Selecting 'any' in the generator UI produces a fully random character
+ * with no archetype bias.
+ *
+ * ## Path-linked archetypes
+ * Three archetypes have pathPreference set:
+ *   - scholar → Theurgist (academy-trained, intellect-heavy)
+ *   - heretic → Iconoclast (forbidden disciplines, psyche-heavy)
+ *   - wildtalent → Autodidact (instinctive, physical/psyche split)
+ *
+ * Used by:
+ *   - `src/lib/character-generator.ts` (applies weights during generation)
+ *   - `src/app/components/character/sections/GeneratorOptions.tsx` (archetype picker)
  */
 
 export interface Archetype {

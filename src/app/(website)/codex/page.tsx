@@ -1,3 +1,10 @@
+/**
+ * page.tsx — Codex Landing (/codex)
+ *
+ * The Codex home page. Shows a grid of top-level category cards (Gameplay, Lore,
+ * Creatures, Tools) and the full Algolia-powered search box below. Categories are
+ * hard-coded here; entries within each category are fetched per-category page.
+ */
 import PageHero from '@/app/components/common/PageHero';
 import ContentCard from '@/app/components/common/ContentCard';
 import { Search } from '@/app/components/global/search/Search';

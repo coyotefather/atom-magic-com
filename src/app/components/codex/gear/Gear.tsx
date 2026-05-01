@@ -1,3 +1,19 @@
+/**
+ * Gear.tsx
+ *
+ * Legacy codex page component for displaying gear items in a filterable table.
+ * This component is from the Sanity CMS era and uses the old `GEAR_PAGE_QUERY_RESULT`
+ * type (typed as `any[]` since Sanity types were removed). The route that uses
+ * this component (`/codex/gear/[slug]`) currently returns 404 and can be
+ * deleted when convenient.
+ *
+ * NOTE: This is NOT the Character Manager's gear roller — that lives in
+ * `src/app/components/character/sections/ManageGear.tsx` and uses data from
+ * `src/lib/gear-data.ts`.
+ *
+ * Used by:
+ *   - `src/app/(website)/codex/gear/[slug]/page.tsx` (legacy, currently 404)
+ */
 'use client';
 import { useState, useEffect } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

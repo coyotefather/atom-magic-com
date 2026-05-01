@@ -1,3 +1,38 @@
+/**
+ * Score.tsx
+ *
+ * Renders one of the four primary score categories (Physical, Interpersonal,
+ * Intellect, or Psyche) as a headed group of subscore controls. Each score
+ * category has a title, an aggregate value (shown in the heading's float-right),
+ * and a list of individual subscores managed by `SubScore` components.
+ *
+ * Responsibilities:
+ *   - Renders the category title and its current aggregate value.
+ *   - Iterates over the category's subscores and renders a `SubScore` for each,
+ *     passing down the relevant path and gear modifiers filtered to that subscore's ID.
+ *   - Displays "Score points available: X/800" at the bottom of the group so the
+ *     player knows how many points remain to distribute across this category.
+ *
+ * The path modifier filtering works as follows: `Sections.tsx` builds a flat
+ * `modifiers.path` array containing { _id: subscoreId, parent_id: scoreId, value }.
+ * Score.tsx receives only the slice of that array where `parent_id === score._id`,
+ * then further filters to the specific `subscore._id` before passing to SubScore.
+ * This way each SubScore only sees modifiers relevant to it.
+ *
+ * Note: An elective score control (1–10 scale) and its point display are currently
+ * commented out in the JSX. The commented-out code is left as a placeholder for a
+ * future feature.
+ *
+ * Props:
+ *   - score: the score object from Redux state (id, title, value, subscores array)
+ *   - scoreValue: the pre-computed aggregate value for the score (passed from Scores)
+ *   - pathModifiers: Modifier[] filtered to this score's parent_id
+ *   - gearModifiers: Modifier[] filtered to this score's parent_id
+ *   - availablePoints: how many points remain to distribute (from Redux scorePoints)
+ *
+ * Used by:
+ *   - Scores.tsx (one Score rendered per entry in character.scores array)
+ */
 'use client';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiMinus } from '@mdi/js';

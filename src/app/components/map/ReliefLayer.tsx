@@ -1,3 +1,38 @@
+/**
+ * ReliefLayer.tsx
+ *
+ * Places terrain icons (mountains, hills, trees, dunes, swamps, etc.) across
+ * the map using a sparse, Tolkien-style illustration approach rather than
+ * a dense coverage. Icons come from two sources:
+ *   1. Custom hand-drawn SVG icons stored in lib/custom-relief-symbols.ts
+ *      (trees, hills, grass — types that benefit from an illustrated look).
+ *   2. Original Azgaar Fantasy Map Generator SVG symbol defs from
+ *      lib/relief-data.ts (mountains, dunes, swamps, volcanoes, cacti — types
+ *      with no custom replacement yet).
+ *
+ * The placement pipeline runs once at module load (not in a render cycle):
+ *   1. Start with RELIEF_PLACEMENTS (raw Azgaar icon positions).
+ *   2. Thin each terrain type by a KEEP_RATE fraction, using a deterministic
+ *      position hash so thinning is stable across renders.
+ *   3. Remove any icon whose center falls within a label clearance zone
+ *      (computed from LABEL_CONFIGS) so icons don't overlap region name text.
+ *   4. Remove icons too close to region borders (within 3.5 SVG units).
+ *   5. Scale each icon by a SIZE_SCALE multiplier for its terrain type.
+ *   6. Swap live-tree custom types to dead-tree (tree-e) if the placement
+ *      falls inside a Terrae Mortuae polygon.
+ *   7. Run a greedy overlap rejection pass to ensure a minimum 1 SVG-unit gap
+ *      between icon bounding boxes.
+ *
+ * The entire pane gets a sepia + brightness CSS filter to blend the icons into
+ * the parchment color palette.
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom pane ("reliefPane",
+ * z-index 250, CSS filter applied). All accepted placements are rendered as
+ * SVG <use> elements referencing <symbol> defs in a <defs> block.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

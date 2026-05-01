@@ -1,3 +1,27 @@
+/**
+ * RegionLabels.tsx
+ *
+ * Renders the name of each political/geographic region on the map as SVG text.
+ * Multi-word names are split and stacked vertically (one word per tspan), with
+ * the stack centered on the pre-computed label position. This matches the
+ * traditional cartographic style where long region names wrap across their
+ * territory.
+ *
+ * Label positions and sizes are pre-computed in lib/label-config.ts
+ * (LABEL_CONFIGS) rather than calculated at runtime, so they are stable and can
+ * be manually adjusted. Each config entry has svgX, svgY, fontSize, and a
+ * regionId tying it back to MAP_REGIONS.
+ *
+ * When a region is focused (focusedRegionId prop is set), only that region's
+ * label is shown, reducing visual noise while the detail panel is open.
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom pane
+ * ("regionLabelsPane", z-index 500, pointer-events none). Text is uppercase
+ * Marcellus in oxblood red (#8B2500) with wide letter-spacing.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

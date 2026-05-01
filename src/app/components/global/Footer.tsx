@@ -1,3 +1,14 @@
+/**
+ * Footer.tsx
+ *
+ * Site-wide footer rendered at the bottom of every page. Contains three link
+ * columns (Main, Tools, Info), the Atom Magic logo, and a copyright line.
+ * Active links are highlighted using `usePathname()` so the current section
+ * is visually distinguished.
+ *
+ * Used by:
+ *   - `src/app/(website)/layout.tsx` (wraps all public pages)
+ */
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';

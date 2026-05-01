@@ -1,3 +1,10 @@
+/**
+ * page.tsx — Shared Character View (/character/shared)
+ *
+ * Renders a read-only character received via the `?c=` URL query parameter.
+ * The client component `SharedCharacterPageContent` decompresses the LZ-encoded
+ * character data and renders the sheet. Uses Suspense for the URL-param read.
+ */
 import { Suspense } from 'react';
 import { fetchCharacterData } from '@/lib/fetchCharacterData';
 import SharedCharacterPageContent from './SharedCharacterPageContent';

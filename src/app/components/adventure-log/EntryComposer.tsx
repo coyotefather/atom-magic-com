@@ -1,3 +1,43 @@
+/**
+ * EntryComposer.tsx
+ *
+ * Tabbed input panel for creating new Adventure Log entries. The three tabs
+ * correspond to the three entry types:
+ *
+ *   Roll tab:
+ *     Manually compose a dice roll entry or enable "auto-capture" mode.
+ *     Auto-capture, when on, subscribes to dice rolls from the Dice Roller via
+ *     `RollContext` (managed by the parent `AdventureLogBuilder`) so rolls
+ *     appear in the log without the user having to switch to this tab. The
+ *     manual form lets the user pick number of dice, die type, and modifier;
+ *     clicking "Roll & Add" generates actual random values, computes the total,
+ *     and creates a `RollLogEntry` via `createRollEntry`. The roll context
+ *     field (free text) describes what the roll was for.
+ *
+ *   Action tab (default):
+ *     A `CharacterPicker` to attribute the action to a character, plus a
+ *     textarea for the narrative description. Submits a `ActionLogEntry`.
+ *
+ *   Note tab:
+ *     A free-text textarea for GM notes, with an optional category dropdown
+ *     (populated from `NOTE_CATEGORIES` in `adventure-log-data.ts`). Submits
+ *     a `NoteLogEntry`.
+ *
+ * All three forms reset their text fields after submission but retain the
+ * selected character/die-type so the user can quickly add multiple entries
+ * in sequence.
+ *
+ * Props:
+ *   - `onAddEntry`           — Called with the constructed entry object to add
+ *                              it to the current session.
+ *   - `autoCaptureEnabled`   — Controls the toggle state of the auto-capture
+ *                              switch on the Roll tab.
+ *   - `onAutoCaptureToggle`  — Called when the toggle is clicked.
+ *
+ * Used by:
+ *   - src/app/components/adventure-log/AdventureLogBuilder.tsx
+ */
+
 'use client';
 import { useState } from 'react';
 import Icon from '@mdi/react';

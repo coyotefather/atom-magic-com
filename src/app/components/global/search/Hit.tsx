@@ -1,3 +1,17 @@
+/**
+ * Hit.tsx
+ *
+ * A single Algolia search result card. Renders the hit's title and description
+ * as a link to the corresponding Codex page. Distinguishes between category hits
+ * (folder icon, links to `/codex/categories/{path}`) and entry hits (document
+ * icon, links to `/codex/entries/{path}`).
+ *
+ * Memoized with `React.memo` to avoid re-renders when the parent search state
+ * updates but this specific hit hasn't changed.
+ *
+ * Used by:
+ *   - `src/app/components/global/search/Search.tsx` (via `<Hits renderItem={Hit} />`)
+ */
 import { memo } from 'react';
 import Link from 'next/link';
 import Icon from '@mdi/react';

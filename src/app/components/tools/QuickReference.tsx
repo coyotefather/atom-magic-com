@@ -1,3 +1,16 @@
+/**
+ * QuickReference.tsx
+ *
+ * An accordion-based quick reference card for common game rules. Organized
+ * into collapsible sections covering: dice notation, combat flow, shield/armor
+ * mechanics, damage types, difficulty levels, and other common table lookups.
+ *
+ * Intended for GMs to keep open at the table during play. All content is
+ * hard-coded here — no CMS data needed.
+ *
+ * Used by:
+ *   - `src/app/(website)/tools/quick-reference/page.tsx`
+ */
 'use client';
 
 import { useState } from 'react';

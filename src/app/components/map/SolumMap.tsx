@@ -1,3 +1,43 @@
+/**
+ * SolumMap.tsx
+ *
+ * Root component for the interactive world map of Solum. Owns all top-level
+ * map state and composes every visual layer into a single Leaflet MapContainer.
+ *
+ * Map setup:
+ *   - Uses Leaflet's CRS.Simple coordinate reference system (no geographic
+ *     projection). Coordinates are plain pixel values derived from the SVG
+ *     source: x = lng * 32, y = -lat * 32, giving a canvas of
+ *     MAP_CONFIG.SVG_WIDTH × MAP_CONFIG.SVG_HEIGHT pixels at max zoom.
+ *   - maxBounds padded 10% with viscosity 1.0, so the user cannot pan outside
+ *     the map.
+ *   - ZoomConstraint (inner component) dynamically sets minZoom on mount to
+ *     the exact level where the full map fits the viewport, preventing
+ *     excessive zoom-out.
+ *
+ * State managed here:
+ *   - `focusedRegion` — the currently selected region (id + bounds). Passed to
+ *     MapViewController (which animates the camera), RegionFocusPanel (which
+ *     shows region info), SpotlightMask (which darkens the non-focused area),
+ *     and RegionLabels (which filters labels to the focused region only).
+ *   - `annotationsVisible` — whether AnnotationLayer renders. Persisted to
+ *     localStorage. A pencil-icon toggle button in the bottom-left corner
+ *     controls this.
+ *   - `isMounted` — guards against SSR/hydration issues; the map only renders
+ *     after the component mounts in the browser.
+ *
+ * Layer render order (see full stack in component body):
+ *   CoastlineShadow → BiomeFillLayer → OceanContours → OceanLabels →
+ *   GridLayer → GrainOverlay → LakesLayer → ReliefLayer → RegionOverlay →
+ *   RoughBorders → RegionShadows → RiversLayer → AnnotationLayer →
+ *   RegionLabels → CityLabels → (SpotlightMask when focused)
+ *
+ * MapCompass and RegionFocusPanel are rendered outside the MapContainer in a
+ * relative wrapper div, overlaid using absolute positioning at z-index 1000.
+ *
+ * Used by:
+ *   - MapContainer.tsx (lazy-loaded with SSR disabled via next/dynamic)
+ */
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';

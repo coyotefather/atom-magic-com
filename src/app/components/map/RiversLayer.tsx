@@ -1,3 +1,26 @@
+/**
+ * RiversLayer.tsx
+ *
+ * Renders river paths across the map as semi-transparent dark filled shapes.
+ * River data comes from RIVER_PATHS in lib/river-data.ts, which contains
+ * pre-built SVG path strings (Bézier curves) exported from Azgaar Fantasy Map
+ * Generator. The paths already encode varying river widths — wider near river
+ * mouths, narrower at headwaters.
+ *
+ * Plain SVG paths are used instead of RoughJS here because the Azgaar Bézier
+ * curves are already organic-looking; adding RoughJS roughness on top would
+ * only distort the carefully shaped curves.
+ *
+ * Paths are filled (not stroked) at 55% opacity in near-black (#1a1a1a), which
+ * produces a dark ink-blue appearance on the parchment background.
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom pane ("riverPane",
+ * z-index 420). River path strings are used directly as SVG `d` attributes.
+ * The component renders nothing if RIVER_PATHS is empty.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -5,11 +28,6 @@ import { SVGOverlay, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MAP_CONFIG } from '@/lib/map-data';
 import { RIVER_PATHS } from '@/lib/river-data';
-
-/**
- * Renders Azgaar river paths as plain SVG filled shapes.
- * The Azgaar Bézier curves are already organic-looking; Rough.js distorts them.
- */
 const RiversLayer = () => {
 	const map = useMap();
 	const [paneReady, setPaneReady] = useState(false);

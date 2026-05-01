@@ -1,3 +1,17 @@
+/**
+ * Timeline.tsx
+ *
+ * Renders the world history Timeline page. Displays all timeline events from
+ * Payload CMS in chronological order with their dates (relative to year 0,
+ * "conflagratum magnum"), titles, descriptions, and category icons.
+ *
+ * Event categories map to MDI icons (e.g., `mdiSwordCross` for wars, `mdiFire`
+ * for disasters). The `iconPaths` map is built here and passed down to each
+ * `TimelineItem` so it doesn't need to import icons individually.
+ *
+ * Used by:
+ *   - `src/app/(website)/codex/timeline/page.tsx`
+ */
 import type { Timeline as TimelineType } from '../../../../payload-types';
 import TimelineItem from '@/app/components/codex/TimelineItem';
 import {

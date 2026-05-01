@@ -1,3 +1,37 @@
+/**
+ * ManageWealth.tsx
+ *
+ * The eighth wizard section where the player rolls their character's starting wealth.
+ * Like gear, wealth is randomly determined rather than manually assigned, reflecting
+ * the tabletop RPG convention of rolling for starting resources.
+ *
+ * The Atom Magic wealth system has four denominations, each rolled on a different range:
+ *   - Silver: 1–99 (common currency)
+ *   - Gold: 1–9 (valuable currency)
+ *   - Lead: 1–19 (common crafting resource)
+ *   - Uranium: 1–9 (rare magical resource)
+ *
+ * Denomination data (names, descriptions, types) comes from the `WEALTH` constant in
+ * `global-data.ts`. The random values are generated with a local `getRandomInt(min, max)`
+ * helper (inclusive min, exclusive max, per MDN convention).
+ *
+ * Once the roll button is clicked:
+ *   1. Four random values are generated.
+ *   2. `setWealth(rolledWealth)` is dispatched to Redux.
+ *   3. The right panel updates with an animated HeroUI Table showing all four
+ *      denominations with name, description, type, and quantity columns.
+ *   4. The "Roll Wealth" button becomes disabled (`isDisabled={detailsUpdated}`) so it
+ *      can only be rolled once (re-rolling would require a page refresh).
+ *
+ * Note: The component is exported as `ManageGear` in the source — this is a naming
+ * inconsistency left from an early copy-paste; the component is for wealth management.
+ *
+ * Props:
+ *   - incompleteFields: validation error string; shown if user advances without rolling
+ *
+ * Used by:
+ *   - Sections.tsx (eighth wizard section, unlocked after ManageGear)
+ */
 'use client';
 import { useState, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'

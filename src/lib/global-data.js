@@ -1,3 +1,58 @@
+/**
+ * global-data.js
+ *
+ * Static constants used across many parts of the app. This file intentionally
+ * stays as plain JavaScript (not TypeScript) because it was the original data
+ * file before TypeScript was fully adopted; it mixes CMS-mirrored structures
+ * with UI-specific data.
+ *
+ * ## NAVIGATION_LINKS
+ * The top-level nav links rendered by the Header component. The `extended` flag
+ * marks links that appear only in an expanded/mobile nav drawer rather than the
+ * primary bar.
+ *
+ * ## SCORES
+ * Canonical structure for the four core scores (Physical, Interpersonal,
+ * Intellect, Psyche). Each score has four standard subscores (`children`) plus
+ * one elective subscore. This mirrors the Payload CMS Scores/Subscores collections
+ * but is kept here as a flat JS template for components that need the shape
+ * without fetching from the CMS (e.g., score initialisation in Redux state,
+ * the character generator seed).
+ *
+ * ## PATHS
+ * The three character paths with Latin names, MDI icons, flavor text, and the
+ * per-subscore modifier arrays (+5/-5 adjustments applied at character creation).
+ * This duplicates some data from the Payload `paths` collection but is kept
+ * here because the modifier array structure is needed client-side in Redux
+ * and would require a deep Payload fetch to reconstruct at runtime.
+ *
+ * ## CARDINALS
+ * All 13 patron entities (Anathema, Aura, Arcadia, Cadence, Charlatan, Gamma,
+ * Magna, Mnemonic, Polyphony, Rubicon, Sovereign, Spectrum, Vertigo). Each
+ * Cardinal has a sigil SVG path, Latin name, epithet, and two patronage effects.
+ * NOTE: Most effect names/descriptions are stubs — they mirror the Payload
+ * `patronages` collection which carries the canonical effect data. This local
+ * copy is used for display contexts where the CMS isn't available (e.g., the
+ * Vorago coin labels).
+ *
+ * ## GEAR (legacy)
+ * Path-keyed starting weapon and armor items (theurgist/iconoclast/autodidact).
+ * These are the items available at character *creation* — distinct from the full
+ * gear roller in `gear-data.ts`. Each item has a shieldBonus and per-subscore
+ * modifiers rather than a damage die and capacity.
+ * NOTE: this format is from an earlier system; the active gear roller uses
+ * `gear-data.ts` instead.
+ *
+ * ## WEALTH
+ * Currency and resource types used in the character manager's wealth section.
+ * VIG is the exchange rate in gold (silver = 0.001g, gold = 1g, lead = 2g,
+ * uranium = 5g per lb).
+ *
+ * ## ANIMAL_COMPANIONS
+ * Taxonomic groupings of animal companion options (Canidae, Felidae, Rodentia,
+ * Primates, Aves, Reptilia, Other). Rendered as grouped selects in the character
+ * manager's companion section.
+ */
 import { mdiBookshelf, mdiScriptText, mdiHeadCog, mdiAtom } from '@mdi/js';
 
 export const NAVIGATION_LINKS = [

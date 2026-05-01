@@ -1,3 +1,25 @@
+/**
+ * AdjustScores.tsx
+ *
+ * A purely informational section that appears at the top of the scores area to
+ * explain the scoring system before the player interacts with the actual score
+ * controls. It contains no interactive elements and manages no state.
+ *
+ * The text explains:
+ *   - Each of the four score categories has its own pool of points.
+ *   - Points can be redistributed within a category (subtract from one subscore,
+ *     gain points to add to another in that same category).
+ *   - One score (the elective) is on a 1–10 scale and has cascading effects.
+ *   - A link to the Codex article on scoring is provided for further reading.
+ *
+ * This section uses the dark variant Section wrapper (`variant="dark"`) in
+ * Sections.tsx, making it appear with a dark background to visually separate the
+ * scores area from the selection sections above and below.
+ *
+ * Used by:
+ *   - Sections.tsx (first of the three score-related sections, rendered when
+ *     `showAdjustScoresAndScores` becomes true)
+ */
 import ExternalLink from '@/app/components/common/ExternalLink';
 
 const AdjustScores = () => {

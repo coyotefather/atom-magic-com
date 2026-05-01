@@ -1,3 +1,25 @@
+/**
+ * GrainOverlay.tsx
+ *
+ * Applies two stacked SVG filter effects over the entire map to simulate an
+ * aged parchment/paper texture:
+ *   1. "paper-blotch" — large-scale fractal noise at low frequency, producing
+ *      subtle dark blotches that mimic ink stains or moisture marks on old maps.
+ *   2. "paper-grain" — fine high-frequency fractal noise that adds a paper
+ *      fiber texture on top.
+ *
+ * Both filters produce warm brownish tones (rgba channels tuned in the
+ * feColorMatrix) at roughly 7–10% opacity, so they are almost imperceptible
+ * individually but together give the map a tactile, hand-crafted feel.
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom pane ("grainPane",
+ * z-index 170). Two full-canvas <rect> elements each reference one of the
+ * SVG filters defined in a <defs> block. No external images are required —
+ * everything is generated procedurally by the browser's SVG filter pipeline.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

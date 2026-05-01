@@ -1,3 +1,41 @@
+/**
+ * CustomCreatureEditor.tsx
+ *
+ * The main editing form for a single custom creature. Reads creature state from
+ * the Redux `customCreature` slice and dispatches fine-grained update actions
+ * on every field change. All edits are auto-saved to localStorage 500 ms after
+ * the last change (debounced via a `useRef` timeout).
+ *
+ * Form sections:
+ *   - Basic Info   — name, description, creature type, challenge level.
+ *   - Scores       — physical, interpersonal, intellect, psyche (number inputs,
+ *                    1–100).
+ *   - Combat       — health, physical shield, psychic shield, armor capacity.
+ *   - Attacks      — dynamic list of name + damage string pairs; each row has
+ *                    an inline remove button.
+ *   - Special Abilities — dynamic list of name + description pairs.
+ *   - Tags         — free-text environment tags (add via input + Enter or Add
+ *                    button, remove via ×), plus Swarm and Unique checkboxes.
+ *
+ * If the creature was cloned from a CMS creature (`basedOnId` is set), a
+ * "Based on: <name>" reference link appears at the top, pointing to the
+ * creature's Codex entry. If the original CMS creature no longer exists in the
+ * data, the name is shown as plain italic text as a fallback.
+ *
+ * Action buttons at the bottom:
+ *   - Start from Existing — opens the CMS creature picker in the parent.
+ *   - Export              — downloads the creature as a `.creatura` JSON file.
+ *   - Delete              — removes the creature (calls the `onDelete` prop).
+ *
+ * Props:
+ *   - `creatureId`         — The localStorage key for the creature being edited.
+ *   - `onDelete`           — Callback invoked after the user confirms deletion.
+ *   - `onStartFromExisting`— Callback that opens the `CreaturePicker` modal.
+ *
+ * Used by:
+ *   - src/app/components/creatures/CreatureManager.tsx
+ */
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
