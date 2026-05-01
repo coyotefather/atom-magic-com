@@ -1,3 +1,22 @@
+/**
+ * GridLayer.tsx
+ *
+ * Draws a faint cartographic grid over the entire map (land and ocean alike),
+ * mimicking the latitude/longitude graticule lines found on historical maps.
+ * The grid is rendered as a repeating SVG pattern of 48×48 SVG-pixel cells
+ * with very low-opacity lines (6% black), so it is visible but unobtrusive.
+ *
+ * The 48 SVG-pixel cell size corresponds to 1.5 GeoJSON degrees given the
+ * coordinate scale factor of 32 px/degree used throughout the map.
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom pane ("gridPane",
+ * z-index 160). A single <rect> covers the full canvas and references an SVG
+ * <pattern> defined in <defs>. No external data is needed — the grid is purely
+ * geometric.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

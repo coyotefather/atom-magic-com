@@ -1,3 +1,26 @@
+/**
+ * CoastlineShadow.tsx
+ *
+ * Paints all region polygons as solid parchment-colored fills (#EDE8D5) to
+ * create the "land" surface of the map. A CSS drop-shadow filter applied to
+ * the Leaflet pane itself produces a soft coastal glow around the entire
+ * landmass where it meets the (empty, ocean-colored) background.
+ *
+ * This layer intentionally draws no stroke lines — border drawing is handled
+ * separately by RoughBorders.tsx. The pane drop-shadow is what creates the
+ * visible coastline edge effect.
+ *
+ * RoughJS is used to render the polygons (via rc.path), but roughness is set
+ * to 0 so the shapes are geometrically exact; only the fill and shadow matter.
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom pane
+ * ("coastlineShadowPane", z-index 140) with a CSS drop-shadow filter on the
+ * pane element. RoughJS writes SVG elements imperatively into a <g> ref.
+ * Coordinates use the standard (lng * 32, -lat * 32) SVG pixel transform.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect, useRef } from 'react';

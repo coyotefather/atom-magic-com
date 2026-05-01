@@ -1,3 +1,28 @@
+/**
+ * RegionFocusPanel.tsx
+ *
+ * The information panel that slides into the top-right corner of the map when
+ * the user clicks on a region polygon. It shows:
+ *   - The region's name as a heading.
+ *   - A biome composition breakdown: a colored swatch, biome name, and
+ *     percentage coverage for each biome present in the region. Data comes
+ *     from REGION_BIOMES and BIOME_LEGEND in map-data.ts.
+ *   - An optional "View in Codex" link button that navigates to the region's
+ *     Codex entry if a `codexSlug` is defined for the region.
+ *   - A close button (FunctionButton ghost variant) that calls onClose.
+ *
+ * This is a plain React component — it has no Leaflet context. It is
+ * positioned absolutely over the map using Tailwind classes (top-4 right-4
+ * z-[1000]), rendered as a sibling to the MapContainer inside SolumMap.tsx's
+ * relative wrapper div.
+ *
+ * The panel only renders when SolumMap has a non-null focusedRegion. If the
+ * regionId is not found in MAP_REGIONS, the component returns null safely.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered outside the Leaflet MapContainer, conditionally
+ *     when focusedRegion is set)
+ */
 'use client';
 
 import { MAP_REGIONS, BIOME_LEGEND, REGION_BIOMES } from '@/lib/map-data';

@@ -1,3 +1,28 @@
+/**
+ * RoughBorders.tsx
+ *
+ * Draws the visible borders between regions using RoughJS to produce a
+ * hand-drawn ink line aesthetic. Each region boundary polygon ring is
+ * converted to an SVG path and passed to RoughJS with low roughness (0.5)
+ * and slight bowing (0.6), giving the borders a slightly wobbly quality that
+ * evokes a cartographer's quill rather than a computer-generated line.
+ *
+ * This layer only draws strokes (fill: none) — the solid land fill is
+ * handled by CoastlineShadow and the colored biome fills by BiomeFillLayer.
+ *
+ * RoughJS generates SVG elements imperatively (not declaratively), so the
+ * component uses refs to a <g> and <svg> element and replaces child nodes on
+ * mount. The rough elements are generated once (when paneReady becomes true)
+ * and are static thereafter.
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom pane
+ * ("roughBorderPane", z-index 410, above RegionOverlay at ~400 but below
+ * RiversLayer at 420). Coordinates use the (lng * 32, -lat * 32) SVG pixel
+ * transform. Handles both Polygon and MultiPolygon GeoJSON geometry types.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -5,10 +30,6 @@ import { SVGOverlay, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import rough from 'roughjs';
 import { MAP_CONFIG, REGION_BOUNDARIES } from '@/lib/map-data';
-
-/**
- * Converts a GeoJSON coordinate ring ([lng, lat] pairs) to an SVG path string.
- */
 function ringToSvgPath(ring: number[][]): string {
 	return ring.map((coord, i) => {
 		const x = coord[0] * 32;

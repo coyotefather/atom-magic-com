@@ -1,3 +1,27 @@
+/**
+ * OceanContours.tsx
+ *
+ * Draws concentric depth contour lines in the ocean areas to suggest
+ * bathymetric depth, similar to isobath lines on nautical charts. Contours
+ * are colored in a warm brown (#6B5B3E) and fade out progressively at greater
+ * depths: depth level 1 (nearest the coast) is the heaviest and most opaque;
+ * depth level 12 is a hairline at near-invisible opacity.
+ *
+ * Each contour ring is rendered through RoughJS with low roughness (0.25) and
+ * slight bowing (0.4) so lines look slightly hand-drawn rather than perfectly
+ * mechanical. The CONTOUR_STYLES lookup table maps depth integers to stroke
+ * weight and opacity values.
+ *
+ * Contour data comes from OCEAN_CONTOURS in map-data.ts, which is a GeoJSON
+ * FeatureCollection where each feature has a `depth` integer property.
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom pane ("contourPane",
+ * z-index 150). RoughJS writes SVG elements imperatively into a <g> ref.
+ * Coordinates use the (lng * 32, -lat * 32) SVG pixel transform.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect, useRef } from 'react';

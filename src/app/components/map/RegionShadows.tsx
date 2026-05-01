@@ -1,13 +1,28 @@
+/**
+ * RegionShadows.tsx
+ *
+ * Adds a soft shadow/vignette effect along all region border lines by
+ * rendering the same REGION_BOUNDARIES GeoJSON with a thick (weight 6),
+ * nearly transparent (4% opacity) dark stroke and no fill. The wide stroke
+ * bleeds inward on both sides of each border, creating a subtle darkening
+ * near territory edges that adds depth without drawing a hard line.
+ *
+ * This is separate from RoughBorders (which draws the visible ink lines) and
+ * from RegionOverlay (which handles mouse interaction). RegionShadows is
+ * purely decorative shading.
+ *
+ * Rendering technique: react-leaflet <GeoJSON> component rendered into a
+ * custom Leaflet pane ("regionShadowPane", z-index 395). The `interactive`
+ * prop is set to false so this layer does not absorb mouse events.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect } from 'react';
 import { GeoJSON, useMap } from 'react-leaflet';
 import { REGION_BOUNDARIES } from '@/lib/map-data';
-
-/**
- * Renders thick semi-transparent strokes along region borders to create
- * a subtle inner shadow / vignette effect at territory edges.
- */
 const RegionShadows = () => {
 	const map = useMap();
 	const [paneReady, setPaneReady] = useState(false);

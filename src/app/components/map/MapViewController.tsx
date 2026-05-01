@@ -1,3 +1,28 @@
+/**
+ * MapViewController.tsx
+ *
+ * Headless controller component (renders null) that manages the map's animated
+ * view transitions when the user focuses on a region or clears focus. It lives
+ * inside the Leaflet MapContainer so it has access to the map instance via
+ * the useMap() hook.
+ *
+ * Behavior:
+ *   - When focusedRegion changes to a non-null value, saves the current
+ *     center/zoom, then animates the map to fitBounds() of the focused
+ *     region with 40px padding.
+ *   - When focusedRegion becomes null (focus cleared), animates back to the
+ *     previously saved center and zoom.
+ *   - Pressing Escape calls onClearFocus to exit region focus mode.
+ *   - Clicking on an empty area of the map (a click that did not propagate
+ *     from a region feature) also calls onClearFocus.
+ *
+ * The saved view is stored in a ref (not state) so that restoring it doesn't
+ * cause a re-render, and prevFocusRef tracks the last focusedRegion value to
+ * distinguish "newly focused" from "re-renders with the same focus".
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useEffect, useRef } from 'react';

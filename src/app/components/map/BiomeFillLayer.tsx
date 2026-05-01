@@ -1,3 +1,25 @@
+/**
+ * BiomeFillLayer.tsx
+ *
+ * Fills each region polygon with a subtle, parchment-tinted color that
+ * corresponds to its dominant biome (e.g., warm ochre for hot desert, sage
+ * green for temperate forest). The Terrae Mortuae dead lands receive a
+ * distinct dark olive fill to reinforce their visual separation from
+ * inhabitable regions.
+ *
+ * Colors are keyed against Azgaar Fantasy Map Generator biome IDs (integers
+ * 1–12) stored in the REGION_BIOMES data. All fills are rendered at 30%
+ * opacity so the tile layer beneath shows through.
+ *
+ * Rendering technique: Leaflet SVGOverlay inside a custom pane
+ * ("biomeFillPane", z-index 145). Each region boundary feature from
+ * REGION_BOUNDARIES is converted to an SVG <path> using the coordinate
+ * transform (lng * 32, -lat * 32). Handles both Polygon and MultiPolygon
+ * GeoJSON geometry types.
+ *
+ * Used by:
+ *   - SolumMap.tsx (rendered inside the Leaflet MapContainer)
+ */
 'use client';
 
 import { useState, useEffect } from 'react';
