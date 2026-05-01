@@ -1,3 +1,33 @@
+/**
+ * GearTable.tsx
+ *
+ * A HeroUI Table that displays a list of `CharacterGearItem` objects in a compact
+ * tabular format. Used wherever gear needs to be shown in a structured list rather
+ * than the card-style `RolledGearDisplay`.
+ *
+ * Three columns:
+ *   - Name: The item name, wrapped in an expandable HeroUI Accordion. Expanding reveals
+ *     type/category/tier/exotic chips and the item's description text. This lets the
+ *     table stay compact while still exposing full item details on demand.
+ *   - Stats: Damage (for weapons), Capacity (for armor), penalties text, and any
+ *     non-zero Physical/Psychic shield bonuses. Positive shield bonuses are displayed
+ *     in green (laurel), negative in red (oxblood).
+ *   - Enhancement: If the item has an attached enhancement, shows its name and
+ *     description. Empty for unenhanced items.
+ *
+ * This component is purely presentational — it takes a `CharacterGearItem[]` and
+ * renders it; all data management happens in ManageGear.tsx.
+ *
+ * Note: This table layout dates from the Sanity CMS era and could be redesigned now
+ * that gear is local TypeScript data (see CLAUDE.md "Known Technical Debt").
+ *
+ * Props:
+ *   - gear: CharacterGearItem[] — the list of gear items to display
+ *
+ * Used by:
+ *   - Potentially used for a gear summary view; currently gear is previewed via
+ *     RolledGearDisplay in ManageGear.tsx instead of this table.
+ */
 'use client';
 import { Table, Accordion, Chip } from "@heroui/react";
 import clsx from 'clsx';

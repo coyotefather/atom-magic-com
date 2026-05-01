@@ -1,3 +1,28 @@
+/**
+ * WrapUp.tsx
+ *
+ * The final section of the Character Manager wizard, shown after all other sections
+ * have been completed. It presents two actions for finishing the character:
+ *
+ *   1. "Print Character" — calls `window.print()`, which hides all screen-only
+ *      elements and reveals the print-only `CharacterSheet` component (rendered in
+ *      Sections.tsx) that produces a clean US Letter character sheet.
+ *
+ *   2. "Download .persona" — calls `exportCharacterToFile(character)` from
+ *      `characterPersistence.ts`, which serializes the full Redux CharacterState to
+ *      JSON and triggers a browser download as a `.persona` file. This file can later
+ *      be imported via CharacterOptions or CharacterRoster to restore the character.
+ *
+ * The component reads character state directly from Redux (using `useSelector`) so it
+ * always has the current data at the moment of export without needing props.
+ *
+ * The section uses the same parchment background as CharacterOptions for a visual
+ * bookend — the wizard starts and ends with a parchment panel between white content
+ * sections.
+ *
+ * Used by:
+ *   - Sections.tsx (tenth and final wizard section, unlocked after ChooseAnimalCompanion)
+ */
 'use client';
 import { useRef } from 'react';
 import { useSelector } from 'react-redux';

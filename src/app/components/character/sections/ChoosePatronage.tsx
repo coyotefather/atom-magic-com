@@ -1,3 +1,39 @@
+/**
+ * ChoosePatronage.tsx
+ *
+ * The fourth wizard section where the player optionally selects a Cardinal patron for
+ * their character. Cardinals are powerful cosmic entities in the Atom Magic setting
+ * (e.g., Anathema, Aura, Arcadia). Pledging patronage does not modify base scores
+ * directly but grants the character access to special effects that apply during play.
+ *
+ * Although marked as "required" in the HeroUI Select (so validation will flag it if
+ * skipped), the section is effectively optional in lore — the validation message
+ * prompts completion to keep the roster data consistent.
+ *
+ * Layout is the standard split two-column panel:
+ *   Left: Explanatory text, a HeroUI Select dropdown listing all patronages from
+ *         Payload CMS. Shows a validation error ("Please select a patronage.") if
+ *         the user tries to advance without making a selection.
+ *   Right: An animated `SelectDetailExpanded` panel showing the selected patron's
+ *          full title and epithet (e.g., "Anathema, The Destroyer"), description,
+ *          and a HeroUI Table of their patronage effects. Each effect row shows the
+ *          effect name (linked to its Codex entry if available) and a `<RichText>`
+ *          description.
+ *
+ * When a patronage is selected:
+ *   1. `setPatronage(id)` is dispatched to Redux.
+ *   2. `updateDetailsForPatronage()` re-renders the right panel.
+ *
+ * The details panel re-renders reactively when `character.patronage` changes from
+ * an external source (e.g., loading a saved character from the roster).
+ *
+ * Props:
+ *   - patronages: NormedPatronage[] — all patronage options from Payload CMS
+ *   - incompleteFields: validation error string
+ *
+ * Used by:
+ *   - Sections.tsx (fourth wizard section, unlocked after ChoosePath)
+ */
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';

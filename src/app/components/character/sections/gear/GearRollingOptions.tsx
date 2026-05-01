@@ -1,3 +1,39 @@
+/**
+ * GearRollingOptions.tsx
+ *
+ * A filter panel that controls what goes into the random gear pool when the player
+ * clicks "Roll Gear" in ManageGear. Every checkbox group here maps directly to a
+ * field in the `GearRollingOptions` type from `gear-data.ts`, which is what
+ * `rollGear()` reads to filter the weapon/armor tables.
+ *
+ * Filter groups:
+ *   - Weapons section: toggle "Include Exotic" and "Include Enhancements"
+ *   - Armor section: toggle "Include Exotic" and "Include Enhancements"
+ *   - Weapon Categories (multi-select): light, medium, heavy
+ *   - Weapon Types (multi-select): melee, ranged
+ *   - Armor Categories (multi-select): light, medium, heavy
+ *   - Tiers (multi-select): 1, 2, 3
+ *
+ * At least one option must be selected in each of the four multi-select groups
+ * (weapon categories, weapon types, armor categories, tiers) for the Roll button
+ * in ManageGear to be enabled. GearRollingOptions itself doesn't enforce this — it
+ * is purely a controlled display component. ManageGear calls `hasValidOptions()` to
+ * check before enabling the roll button.
+ *
+ * The `disabled` prop globally disables all checkboxes (e.g., while a roll is in
+ * progress, though this is not currently used in practice).
+ *
+ * The local `CheckboxItem` sub-component is a wrapper that reduces boilerplate for
+ * HeroUI's compound Checkbox pattern (Control → Indicator, Content → Label).
+ *
+ * Props:
+ *   - options: GearRollingOptionsType — current filter state (controlled component)
+ *   - onChange: (options) => void — called with the full updated options on any change
+ *   - disabled?: globally disable all checkboxes
+ *
+ * Used by:
+ *   - ManageGear.tsx (rendered in the left panel above the Roll button)
+ */
 'use client';
 import { Checkbox, CheckboxGroup, Label } from "@heroui/react";
 import {

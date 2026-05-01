@@ -1,3 +1,42 @@
+/**
+ * AdditionalScores.tsx
+ *
+ * Displays derived combat stats and other calculated scores that are based on the
+ * character's four primary scores. This section appears below the Scores section
+ * and updates reactively as the player adjusts subscores.
+ *
+ * Two categories of scores are shown:
+ *
+ *   1. Shield scores (hard-coded display, dynamically calculated):
+ *      - Physical Shield = Physical score value + gear physical shield bonuses
+ *      - Psychic Shield = Psyche score value + gear psychic shield bonuses
+ *      Gear bonuses are summed from `character.gear` items including both direct
+ *      armor bonuses (item.physicalShieldBonus) and enhancement bonuses
+ *      (item.enhancement.physicalShieldBonus). This is recalculated on every render
+ *      via `useMemo` so it stays in sync as gear is rolled and scores are adjusted.
+ *
+ *   2. CMS-defined additional scores (from Payload `additional-scores` collection):
+ *      - Initialized from the `additionalScores` prop via `initAdditionalScores()`.
+ *      - Recalculated via `setAdditionalScores()` whenever `character.scores` changes
+ *        (the calculation logic lives in `characterSlice.ts`).
+ *      - Rendered with their title, `<RichText>` description, and computed value.
+ *
+ * The layout is a two-column split matching the rest of the scores sections: left
+ * column has an explanatory paragraph, right column has the score list.
+ *
+ * Note: Shield values shown here use the score's `.value` (which is the average of
+ * subscores computed by the slice), not a manual subscore average. This is slightly
+ * different from how CharacterSheet calculates shields (which uses
+ * `calculateScoreAverage(score.subscores)` directly) — both should give the same
+ * number if the slice is kept in sync.
+ *
+ * Props:
+ *   - additionalScores: NormedAdditionalScore[] — CMS-defined additional scores
+ *     (e.g., Initiative, Movement) fetched server-side
+ *
+ * Used by:
+ *   - Sections.tsx (third of the three score-related sections, rendered after Scores)
+ */
 'use client';
 import { useEffect, useMemo } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'

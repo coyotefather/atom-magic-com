@@ -1,3 +1,31 @@
+/**
+ * CharacterRoster.tsx
+ *
+ * A management panel that lists all saved characters stored in localStorage. This
+ * is the first thing a returning user sees when visiting the Character Manager — it
+ * lets them pick up where they left off rather than always starting a new character.
+ *
+ * Responsibilities:
+ *   - On mount, runs `migrateToMultiCharacter()` to upgrade any legacy single-character
+ *     localStorage data to the newer multi-character roster format.
+ *   - Renders a `CharacterSummaryCard` for each saved character, with an "Active" badge
+ *     on whichever character is currently loaded into Redux.
+ *   - Selecting a character loads it into Redux via `loadCharacter()` and calls the
+ *     `onCharacterSelected` callback so the parent can switch to the editor view.
+ *   - "New Character" clears Redux state, assigns a fresh ID, and calls `onNewCharacter`.
+ *   - Delete requires a two-step confirmation (first click shows Confirm/Cancel) to
+ *     prevent accidental deletion.
+ *   - Share button opens a `ShareCharacterModal` for the selected character.
+ *   - Import button accepts `.persona` or `.solum` files via a hidden file input,
+ *     parses them with `importCharacterFromFile()`, and adds them to the roster.
+ *
+ * Props:
+ *   - onCharacterSelected(characterId): called after loading a character from the roster
+ *   - onNewCharacter(): called after initializing a blank new character
+ *
+ * Used by:
+ *   - Sections.tsx (shown when `showRoster` is true, before the editor sections appear)
+ */
 'use client';
 
 import { useState, useEffect, useRef } from 'react';

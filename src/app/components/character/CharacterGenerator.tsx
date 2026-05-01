@@ -1,3 +1,34 @@
+/**
+ * CharacterGenerator.tsx
+ *
+ * A rapid NPC/character generation tool that creates a fully built character
+ * in one click, as an alternative to stepping through the Character Manager wizard
+ * manually. Useful for game masters who need NPCs quickly, or players who want a
+ * random starting point they can then refine.
+ *
+ * Two modes:
+ *   - Easy mode: Pick an archetype (from `archetype-data.ts`) and optionally a path
+ *     preference, then hit Generate. The archetype influences which disciplines and
+ *     techniques are selected.
+ *   - Advanced mode: Lock any combination of culture, path, and patronage to fixed
+ *     values while leaving the rest randomized. Useful when you know one thing about
+ *     the character but want the rest filled in.
+ *
+ * Generation is handled by `generateCharacter()` from `src/lib/character-generator.ts`.
+ * The resulting CharacterState is previewed in a `CharacterSummaryCard` plus an
+ * extended details panel (disciplines, techniques, gear, wealth, scores).
+ *
+ * From the preview panel the user can:
+ *   - "Save to Roster" — persists to localStorage via `characterPersistence.ts`
+ *   - "Edit in Manager" — loads the character into Redux and navigates to /character
+ *
+ * Props:
+ *   - cultures, paths, patronages, disciplines, scores — all pre-fetched server-side
+ *     and passed as NormedXxx arrays from `character-types.ts`
+ *
+ * Used by:
+ *   - src/app/(website)/character/generator/page.tsx (the /character/generator route)
+ */
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';

@@ -1,3 +1,39 @@
+/**
+ * ChoosePath.tsx
+ *
+ * The third wizard section where the player selects their character's path. A path
+ * represents how the character came to practice atomic magic: Theurgist (academy
+ * trained), Iconoclast (heretical self-teaching), or Autodidact (wild talent). The
+ * choice affects which disciplines are available and applies modifiers to subscores.
+ *
+ * Layout is the standard split two-column panel:
+ *   Left: Explanatory text, a HeroUI Select dropdown to pick the path. Shows a
+ *         validation error ("Please select a path.") if the user tries to advance
+ *         without making a selection.
+ *   Right: An animated `SelectDetailExpanded` panel showing the selected path's
+ *          name, description, and a HeroUI Table of its score modifiers (Score,
+ *          Subscore, Modifier columns). Positive modifiers are displayed in green
+ *          (laurel), negative modifiers in red (oxblood).
+ *
+ * When a path is selected:
+ *   1. `setPath(id)` is dispatched to Redux.
+ *   2. `updateDetailsForPath()` re-renders the right panel with the modifier table.
+ *
+ * Path modifiers are computed here and shown for reference, but they are actually
+ * applied in `Sections.tsx` (which reads paths + character.path from Redux and builds
+ * the `modifiers.path` array passed to the Scores section). This component only
+ * displays them for informational purposes.
+ *
+ * The details panel re-renders reactively when the Redux `character.path` changes
+ * from an external source (e.g., loading a saved character from the roster).
+ *
+ * Props:
+ *   - paths: NormedPath[] — all available paths from Payload CMS
+ *   - incompleteFields: validation error string
+ *
+ * Used by:
+ *   - Sections.tsx (third wizard section, unlocked after ChooseCulture)
+ */
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';

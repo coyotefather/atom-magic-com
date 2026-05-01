@@ -1,3 +1,31 @@
+/**
+ * CharacterSummaryCard.tsx
+ *
+ * A compact, clickable card that summarizes a single saved character. Used anywhere
+ * the roster is displayed — both in the `CharacterRoster` management panel and in the
+ * `CharacterGenerator` preview panel.
+ *
+ * Displays:
+ *   - Character name (truncated if long)
+ *   - Completion status icon: green checkmark if complete, clock if still in progress
+ *   - Identity line: path · culture
+ *   - Combat stats row: Physical Shield, Psychic Shield, Armor Capacity, discipline/technique count
+ *   - Patronage name (if set), truncated and right-aligned
+ *   - "Active" badge when `isActive` is true (highlights the border in gold)
+ *
+ * The card accepts a `CharacterSummary` object (from `characterPersistence.ts`), which
+ * is a lightweight snapshot of the full character — just the fields needed for this
+ * display without loading the entire CharacterState.
+ *
+ * Props:
+ *   - character: CharacterSummary — the roster entry to display
+ *   - isActive?: whether this character is currently loaded (changes border color)
+ *   - onClick?: click handler for selecting the character
+ *
+ * Used by:
+ *   - CharacterRoster.tsx (one card per saved character in the roster list)
+ *   - CharacterGenerator.tsx (preview of a freshly generated character)
+ */
 'use client';
 
 import Icon from '@mdi/react';

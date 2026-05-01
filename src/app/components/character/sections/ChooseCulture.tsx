@@ -1,3 +1,40 @@
+/**
+ * ChooseCulture.tsx
+ *
+ * The second wizard section (after TheBasics) where the player selects their
+ * character's culture. Culture is one of the core identity choices — it determines
+ * which two "aspects" the character gains, each of which has a game-mechanical effect.
+ *
+ * The list of available cultures comes from Payload CMS, passed in as `NormedCulture[]`
+ * from the server. Feranos is intentionally excluded (it is not a playable culture).
+ *
+ * Layout is a split two-column panel:
+ *   Left: Explanatory text, a HeroUI Select dropdown to pick the culture. Shows a
+ *         validation error ("Please select a culture.") if the user tries to advance
+ *         without making a selection.
+ *   Right: An animated `SelectDetailExpanded` panel showing the selected culture's
+ *          name, description, and a HeroUI Table of its two aspects (aspect name
+ *          linking to the Codex entry, plus a `<RichText>` description).
+ *
+ * When a culture is selected:
+ *   1. `setCulture(id)` is dispatched to Redux.
+ *   2. `updateDetailsForCulture()` re-renders the right panel with the new culture's data.
+ *
+ * The details panel also re-renders reactively when the Redux `character.culture` changes
+ * from an external source (e.g., when loading a saved character from the roster), so
+ * the right panel always stays in sync with the stored state.
+ *
+ * The `detailsUpdated` boolean toggle is used as the CSSTransition key to trigger the
+ * fade-grow animation whenever the selection changes.
+ *
+ * Props:
+ *   - cultures: NormedCulture[] — all available playable cultures from Payload CMS
+ *   - incompleteFields: validation error string ("init" on first render, non-empty
+ *     after the user tries to advance without selecting)
+ *
+ * Used by:
+ *   - Sections.tsx (second wizard section, unlocked after TheBasics)
+ */
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import ExternalLink from '@/app/components/common/ExternalLink';

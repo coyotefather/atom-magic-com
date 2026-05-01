@@ -1,3 +1,55 @@
+/**
+ * Sections.tsx
+ *
+ * The main orchestrator for the Character Manager. This component owns the overall
+ * page layout and controls which wizard sections are visible at any given time. It is
+ * the top-level client component that the character page server component renders,
+ * and receives all CMS data (cultures, paths, patronages, disciplines, scores) as props.
+ *
+ * The wizard flows through these sections in order:
+ *   CharacterOptions → TheBasics → ChooseCulture → ChoosePath → ChoosePatronage →
+ *   AdjustScores + Scores + AdditionalScores → ChooseDisciplinesAndTechniques →
+ *   ManageGear → ManageWealth → ChooseAnimalCompanion → WrapUp
+ *
+ * Each section is wrapped in a `<Section>` shell that handles expand/collapse, the
+ * "continue" button for advancing to the next section, and validation error display.
+ * Sections reveal sequentially — a section is only shown once all previous required
+ * sections are complete (managed by `useSectionVisibility`).
+ *
+ * State management is split across three custom hooks:
+ *   - `useCharacterPersistence`: handles roster display, the legacy resume prompt
+ *     (migrating old single-character localStorage to multi-character format), and
+ *     switching between the roster view and the editor view.
+ *   - `useCharacterValidation`: derives incomplete-field messages for each section
+ *     (e.g., basicsIncomplete, cultureIncomplete) that are passed to individual
+ *     sections to show validation errors.
+ *   - `useSectionVisibility`: tracks which sections are currently expanded, with
+ *     auto-expansion logic when loading an existing character with progress.
+ *
+ * Path modifiers (subscore adjustments granted by the chosen path) are computed here
+ * and passed down to the Scores section — they're derived from paths prop + Redux
+ * character.path state.
+ *
+ * The progress indicator and its step calculations (completedSteps, currentStep) are
+ * also computed here and passed to ProgressIndicator.
+ *
+ * A share modal (`ShareCharacterModal`) is wired to the "Share" button in the
+ * editor header. A print-only `CharacterSheet` is always rendered at the bottom
+ * so that `window.print()` from WrapUp works correctly.
+ *
+ * Props:
+ *   - cultures: NormedCulture[]
+ *   - scores: NormedScore[]
+ *   - additionalScores: NormedAdditionalScore[]
+ *   - paths: NormedPath[]
+ *   - patronages: NormedPatronage[]
+ *   - disciplines: NormedDiscipline[]
+ *   (All fetched server-side via fetchCharacterData() and passed from the page component)
+ *
+ * Used by:
+ *   - src/app/(website)/character/page.tsx (the main /character route)
+ *   - src/app/(website)/character/shared/page.tsx (the /character/shared route for URL-shared characters)
+ */
 'use client';
 import { useMemo, useState } from 'react';
 import Section from '@/app/components/common/Section';

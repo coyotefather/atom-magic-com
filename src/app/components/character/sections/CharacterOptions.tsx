@@ -1,3 +1,34 @@
+/**
+ * CharacterOptions.tsx
+ *
+ * The landing section that appears at the very top of the Character Manager before
+ * any wizard steps are shown. It presents four actions as cards so the user
+ * understands their options at a glance rather than landing directly in a form.
+ *
+ * The four actions are:
+ *   1. "New Character" — scrolls the user down to the TheBasics section to start filling
+ *      in a blank character. No state changes occur; the wizard sections below are
+ *      already present in the DOM.
+ *   2. "Manage Character" — calls `buttonFunction()` (provided by Sections.tsx as
+ *      `showAllSections`), which expands all sections at once and scrolls down. Used
+ *      when returning to an existing character loaded from the roster.
+ *   3. "Import Character" — opens a hidden file input accepting `.persona`, `.solum`,
+ *      or `.json` files. On success, `importCharacterFromFile()` parses the file and
+ *      dispatches `loadCharacter()` to Redux, then calls `buttonFunction()`.
+ *   4. "Generate Character" — calls `buttonFunction()` to show all sections and scrolls
+ *      down. (Note: the actual random generation happens in the CharacterGenerator page
+ *      at /character/generator — this card simply expands the wizard.)
+ *
+ * The `CharacterOptionCard` sub-component is a reusable card layout with icon, title,
+ * description, and a gold action button. It is defined locally in this file.
+ *
+ * Props:
+ *   - buttonFunction(): called by Manage, Generate, and Import to expand wizard sections
+ *   - onImportSuccess?(): optional callback after a successful file import
+ *
+ * Used by:
+ *   - Sections.tsx (always-expanded first Section at the top of the wizard)
+ */
 'use client';
 import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
