@@ -1,7 +1,39 @@
+/**
+ * label-config.ts
+ *
+ * Computes the screen positions, angles, and font sizes for region name labels
+ * and capital markers on the interactive world map. Exported as pre-computed
+ * arrays (LABEL_CONFIGS, CAPITAL_CONFIGS, CITY_CONFIGS) so the map component
+ * doesn't need to do geometry math on every render.
+ *
+ * ## How label placement works
+ * 1. For each region in REGION_BOUNDARIES (GeoJSON MultiPolygon), the centroid
+ *    of the largest polygon ring is computed and converted from Leaflet LatLng
+ *    space to SVG pixel coordinates (dividing by DIVISOR = 32 = 2^maxZoom).
+ * 2. A PCA-derived angle is computed from the polygon ring points to align the
+ *    label with the region's elongation axis. Angles are capped at ±25° to avoid
+ *    labels becoming unreadable on highly diagonal regions.
+ * 3. LABEL_OVERRIDES provides per-region manual angle/position tweaks for regions
+ *    where the computed placement looks wrong (e.g., Cassis Major at 80° PCA).
+ *
+ * ## SVG coordinate space
+ * All svgX/svgY values are in the tile-layer's SVG coordinate space
+ * (0 0 1438 755), matching the space used by the GeoJSON overlay in
+ * `src/app/components/map/RegionOverlay.tsx`. The DIVISOR converts from
+ * Leaflet's pixel space at maxZoom to SVG space.
+ *
+ * ## LabelBBox
+ * Used for overlap detection — each label has a bounding box (cx, cy, halfW,
+ * halfH, angle) so the map component can skip labels that collide with others.
+ *
+ * Used by:
+ *   - `src/app/components/map/RegionOverlay.tsx` (renders SVG text labels)
+ *   - `src/app/components/map/CapitalMarkers.tsx` (renders capital dot markers)
+ */
 import { MAP_REGIONS, MAP_CAPITALS, REGION_BOUNDARIES, MAP_CITIES } from '@/lib/map-data';
 import type { Position } from 'geojson';
 
-const DIVISOR = 32; // 2^maxZoom
+const DIVISOR = 32; // 2^maxZoom — converts Leaflet pixel coords to SVG space
 
 // ---------------------------------------------------------------------------
 // Interfaces

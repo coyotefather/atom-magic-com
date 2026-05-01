@@ -1,4 +1,49 @@
-// Gear data extracted from markdown tables for character gear rolling
+/**
+ * gear-data.ts
+ *
+ * Static gear data for the Character Manager's gear rolling system.
+ * All weapon, armor, and enhancement data lives here as TypeScript constants —
+ * this is entirely local (not from the CMS) so it loads instantly without a
+ * network round-trip.
+ *
+ * ## Weapon pools
+ * - STANDARD_WEAPONS (72 items): no special ability text, just category/type/tier/damage
+ * - EXOTIC_WEAPONS (36 items): exotic weapons have a `description` field with special
+ *   combat rules (reach, entangle, armor piercing, etc.)
+ *
+ * ## Armor pools
+ * - STANDARD_ARMOR (36 items): straightforward capacity + penalties, no shield bonuses
+ * - EXOTIC_ARMOR (36 items): some exotic armors grant physicalShieldBonus or
+ *   psychicShieldBonus, which feed into the shield calculation in utils/shield.ts
+ *
+ * ## Enhancement pools
+ * - GENERIC_ENHANCEMENTS (6): available to all characters regardless of discipline
+ * - DISCIPLINE_ARMOR_ENHANCEMENTS (14): discipline-specific armor enhancements,
+ *   displayed in the gear section when a character has the matching discipline
+ *
+ * ## Tier system
+ * Tier 1 = standard quality, Tier 2 = Quality prefix (+1 die step), Tier 3 = Masterwork (+2 die steps).
+ * Damage die progression: d4 → d6 → d8 → d10 → d12 → d20.
+ * Armor capacity progression by category: light 15/20/25, medium 25/35/45, heavy 40/55/70.
+ *
+ * ## rollGear()
+ * Takes a GearRollingOptions and returns a RolledGear with one weapon, one armor,
+ * and (optionally) one enhancement for each. Exotic and enhancement pools are opt-in
+ * via the options flags.
+ *
+ * ## CharacterGearItem
+ * The serialized format stored in character Redux state. Flattens weapon/armor fields
+ * into a single shape and can embed a single optional enhancement.
+ *
+ * Note: There is a separate legacy GEAR constant in global-data.js — that holds
+ * the path-keyed starting gear items used during character creation, not the full
+ * gear roller pool.
+ *
+ * Used by:
+ *   - `src/app/components/character/sections/ManageGear.tsx` (gear rolling UI)
+ *   - `src/lib/slices/characterSlice.ts` (gear state shape)
+ *   - `src/lib/utils/shield.ts` (reads physicalShieldBonus/psychicShieldBonus)
+ */
 
 export type WeaponCategory = 'light' | 'medium' | 'heavy';
 export type WeaponType = 'melee' | 'ranged';
