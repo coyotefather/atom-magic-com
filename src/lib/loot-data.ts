@@ -1,4 +1,19 @@
-// Miscellaneous loot items for the loot roller
+/**
+ * loot-data.ts
+ *
+ * Static data for the Loot Roller tool — a GM utility that randomly generates
+ * treasure and equipment found by players after encounters or during exploration.
+ *
+ * The loot roller draws from this file to produce randomized treasure hauls.
+ * Items are categorized by rarity (common/uncommon/rare) which affects how
+ * frequently they appear in rolls.
+ *
+ * Value is expressed as a string (e.g., "5g") rather than a number to allow
+ * for ranges and non-numeric expressions ("variable", "priceless").
+ *
+ * Used by:
+ *   - `src/app/components/dice/LootRoller.tsx` (or equivalent loot rolling UI)
+ */
 
 export interface MiscItem {
   name: string;

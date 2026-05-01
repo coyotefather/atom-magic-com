@@ -1,4 +1,28 @@
-// Encounter Builder data types and utility functions
+/**
+ * encounter-data.ts
+ *
+ * Data types, constants, and utility functions for the Encounter Builder.
+ *
+ * The Encounter Builder is a GM tool that lets users assemble groups of creatures
+ * into named encounters and assess their difficulty against a given party size.
+ *
+ * Threat system:
+ *   Each creature has a "challenge level" (harmless → deadly). The Encounter Builder
+ *   assigns a numeric "threat point" value to each challenge level (see THREAT_VALUES).
+ *   The total threat of an encounter is the sum of all creature threat points × quantity.
+ *   Dividing total threat by party size gives "threat per player", which maps to a
+ *   difficulty rating via DIFFICULTY_THRESHOLDS.
+ *
+ *   Example: 3 "moderate" creatures (4 pts each = 12 total) vs 3 players = 4 pts/player → "hard"
+ *
+ * Persistence:
+ *   Encounters are saved to localStorage via `encounterPersistence.ts`.
+ *   Each encounter gets a UUID and is stored similarly to characters and creatures.
+ *
+ * Used by:
+ *   - `src/app/components/encounters/EncounterBuilder.tsx`
+ *   - `src/lib/encounterPersistence.ts`
+ */
 
 // Threat point values for each challenge level
 export const THREAT_VALUES: Record<string, number> = {

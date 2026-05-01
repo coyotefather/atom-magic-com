@@ -1,3 +1,20 @@
+/**
+ * campaignPersistence.ts
+ *
+ * Functions for saving and loading campaign data in localStorage.
+ *
+ * A Campaign is the top-level container for a long-running game — it groups
+ * sessions and tracks the party's character roster. The Adventure Log sessions
+ * are associated with a campaign, allowing a GM to organize multiple play
+ * sessions under one "campaign" umbrella.
+ *
+ * Only one campaign is stored at a time (not a roster) — single-campaign design
+ * chosen for simplicity. The campaign is stored at `atom-magic-campaign`.
+ *
+ * Used by:
+ *   - `src/app/components/adventure-log/AdventureLog.tsx`
+ */
+
 import {
 	Session,
 	SessionSummary,

@@ -1,4 +1,38 @@
-// Adventure Log data types and utility functions
+/**
+ * adventure-log-data.ts
+ *
+ * Data types and utility functions for the Adventure Log feature.
+ *
+ * What the Adventure Log is:
+ *   A session-by-session log for tabletop RPG play. GMs and players can track
+ *   dice rolls, character actions, and story notes within named "sessions".
+ *   Multiple sessions are organized into a roster.
+ *
+ * Three log entry types:
+ *   - `roll`   — A dice roll result (from the Dice Roller or manually entered).
+ *                Stores die type, number of dice, modifier, individual rolls, total.
+ *   - `action` — A character action description (free text, e.g., "Varro kicked down the door").
+ *   - `note`   — A GM note categorized as story/npc/discovery/combat/other.
+ *
+ * Key event flag:
+ *   Any entry can be marked `isKeyEvent: true` to flag it for the "Previously on..."
+ *   export — a summary of the most important moments from a session, useful for
+ *   recapping at the start of the next session.
+ *
+ * Character linking:
+ *   Entries can optionally link to a saved character via `characterId`, showing
+ *   the character's name alongside the entry. This is optional — entries can also
+ *   store a free-text `characterName` without a saved character link.
+ *
+ * Persistence:
+ *   Sessions are saved to localStorage via `sessionPersistence.ts`.
+ *   Individual entries are stored as part of their parent Session object.
+ *
+ * Used by:
+ *   - `src/app/components/adventure-log/AdventureLog.tsx`
+ *   - `src/lib/sessionPersistence.ts`
+ *   - `src/lib/RollContext.tsx` (broadcasts rolls that the log can capture)
+ */
 
 export type EntryType = 'roll' | 'action' | 'note';
 export type NoteCategory = 'story' | 'npc' | 'discovery' | 'combat' | 'other';
