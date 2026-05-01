@@ -1,3 +1,33 @@
+/**
+ * EncounterRoster.tsx
+ *
+ * Sidebar panel listing all saved encounters. Each encounter is shown as a
+ * clickable summary card displaying the encounter name, the number of
+ * creatures, party size, total threat points, and the computed difficulty
+ * label (colour-coded from trivial to deadly). The active encounter is
+ * highlighted with a bronze border and a left-edge accent bar.
+ *
+ * A delete button (visible on hover) removes an encounter immediately with no
+ * confirm step (deletion is handled by the parent). A "New Encounter" button
+ * at the bottom delegates to `onNew`.
+ *
+ * This component is purely presentational — all state lives in the parent
+ * `EncounterBuilder`. It receives the list of encounters and callbacks for
+ * every action.
+ *
+ * Props:
+ *   - `encounters`        — All saved encounters to display.
+ *   - `activeEncounterId` — ID of the currently selected encounter (for
+ *                           highlighting).
+ *   - `onSelect`          — Called with the encounter ID when a card is clicked.
+ *   - `onDelete`          — Called with the encounter ID when the delete button
+ *                           is clicked.
+ *   - `onNew`             — Called when the "New Encounter" button is clicked.
+ *
+ * Used by:
+ *   - src/app/components/encounters/EncounterBuilder.tsx
+ */
+
 'use client';
 import { mdiPlus, mdiDelete } from '@mdi/js';
 import FunctionButton from '@/app/components/common/FunctionButton';

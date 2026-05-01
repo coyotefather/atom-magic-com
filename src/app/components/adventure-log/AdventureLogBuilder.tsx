@@ -1,3 +1,36 @@
+/**
+ * AdventureLogBuilder.tsx
+ *
+ * Top-level orchestrator for the Adventure Log feature. Arranges a two-column
+ * layout: a session roster sidebar (`SessionRoster`) and a main area containing
+ * the session name input, entry composer, log entry list, and export panel.
+ *
+ * Sessions and their entries are persisted to localStorage via the functions in
+ * `src/lib/sessionPersistence.ts`. The active session is loaded on mount and
+ * saved automatically after every mutation.
+ *
+ * Core operations:
+ *   - New session    — creates a blank `Session` object and saves it.
+ *   - Select session — loads the session from localStorage.
+ *   - Delete session — removes it from localStorage and deselects.
+ *   - Rename         — updates the session name on every keystroke.
+ *   - Add entry      — appended to `session.entries` and saved immediately.
+ *   - Toggle key event — flips `entry.isKeyEvent` (starred entries appear in
+ *                        the session export).
+ *   - Delete entry   — filters the entry out of the list and saves.
+ *
+ * Auto-capture from the Dice Roller:
+ *   When `autoCaptureEnabled` is true and a session is active, the component
+ *   subscribes to `RollContext.onRollCaptured`. Every roll broadcast by the
+ *   Dice Roller is automatically converted into a `RollLogEntry` and appended
+ *   to the current session, without the user having to switch tabs. The
+ *   subscription is cleaned up when the session changes or auto-capture is
+ *   toggled off.
+ *
+ * Used by:
+ *   - src/app/(website)/tools/adventure-log/page.tsx
+ */
+
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import Icon from '@mdi/react';

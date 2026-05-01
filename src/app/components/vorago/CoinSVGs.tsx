@@ -1,4 +1,23 @@
-// Vorago Coin SVG Components
+/**
+ * CoinSVGs.tsx
+ *
+ * Renders a single Vorago Cardinal Coin as an inline SVG. Each coin is styled
+ * with either a gold or silver radial gradient, and depicts an atom symbol
+ * (concentric circles and multi-directional spoke lines) that visually evokes
+ * the atomic magic theme of the game.
+ *
+ * Color is determined by the Cardinal's aspect:
+ *   - `umos` → gold gradient (only Aura)
+ *   - `um` or `os` → silver gradient (all other Cardinals)
+ *
+ * Also exports `getCoinAspect(coinTitle)`, a helper that maps a Cardinal name
+ * (e.g. "Mnemonic", "Gamma") to its aspect string so callers don't need to
+ * hard-code the mapping themselves.
+ *
+ * Used by:
+ *   - src/app/components/vorago/CoinSelector.tsx (one SVG per coin in the grid)
+ */
+
 // Simplified atom symbol design with gold or silver gradient based on Cardinal Force aspect
 
 import React from 'react';

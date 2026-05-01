@@ -1,3 +1,33 @@
+/**
+ * CreatureFilters.tsx
+ *
+ * A controlled filter panel used across all creature-browsing UIs. Renders
+ * three toggle-chip groups — Challenge Level, Creature Type, and Environment —
+ * populated from the `filters` prop (a `CreatureFilters` object derived at
+ * fetch time from the full creature list).
+ *
+ * Each chip is a multi-select toggle: clicking it again deselects it. A
+ * "Clear All" button appears only when at least one filter is active. All
+ * state is owned by the parent; this component is fully controlled via the
+ * `selected*` and `onChange*` props.
+ *
+ * Props:
+ *   - `filters`                  — Available filter values (all unique types,
+ *                                  environments, challenge levels in the data).
+ *   - `selectedEnvironments`     — Currently active environment filters.
+ *   - `selectedTypes`            — Currently active creature-type filters.
+ *   - `selectedChallengeLevels`  — Currently active challenge-level filters.
+ *   - `onEnvironmentChange`      — Called with the new array when environments change.
+ *   - `onTypeChange`             — Called with the new array when types change.
+ *   - `onChallengeLevelChange`   — Called with the new array when levels change.
+ *   - `onClearAll`               — Called when the user clicks "Clear All".
+ *
+ * Used by:
+ *   - src/app/components/creatures/CreatureRoller.tsx
+ *   - src/app/components/creatures/CreaturePicker.tsx
+ *   - src/app/components/encounters/CreatureSelector.tsx (inline version)
+ */
+
 'use client';
 import type { CreatureFilters } from '@/lib/creature-types';
 import FunctionButton from '@/app/components/common/FunctionButton';

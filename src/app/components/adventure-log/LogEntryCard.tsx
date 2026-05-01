@@ -1,3 +1,34 @@
+/**
+ * LogEntryCard.tsx
+ *
+ * Renders a single log entry as a compact card. The card's left border colour
+ * and icon vary by entry type:
+ *   - `roll`   → gold border, dice icon
+ *   - `action` → bronze border, lightning bolt icon
+ *   - `note`   → laurel/green border, note icon
+ *
+ * Content layout per type:
+ *   - `roll`   — dice notation (e.g. "2d6+3"), large total, optional context
+ *                label, and individual roll values as small chips.
+ *   - `action` — character attribution in the header row, then the description
+ *                text.
+ *   - `note`   — optional category badge (colour-coded via `getNoteCategoryColor`),
+ *                then the note content pre-wrapped to preserve line breaks.
+ *
+ * All cards share a header row showing the timestamp and character name (if set).
+ * A star toggle button in the top-right marks/unmarks the entry as a key event
+ * (key events are included in the session export). A close/delete button also
+ * appears on hover via the `group-hover` pattern.
+ *
+ * Props:
+ *   - `entry`             — The `LogEntry` union type (roll | action | note).
+ *   - `onToggleKeyEvent`  — Called with `entry.id` to flip the key-event flag.
+ *   - `onDelete`          — Called with `entry.id` to remove the entry.
+ *
+ * Used by:
+ *   - src/app/components/adventure-log/LogEntryList.tsx
+ */
+
 'use client';
 import Icon from '@mdi/react';
 import { mdiDiceMultiple, mdiLightningBolt, mdiNoteText, mdiStar, mdiStarOutline, mdiClose } from '@mdi/js';

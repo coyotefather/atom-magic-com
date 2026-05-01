@@ -1,3 +1,23 @@
+/**
+ * CustomCreatureSummaryCard.tsx
+ *
+ * Compact, single-line summary card for a custom creature, intended for use
+ * in the roster sidebar. Displays the creature's name, challenge level badge
+ * (colour-coded), creature type, and three quick-reference icon+value pairs:
+ * health (heart), attack count (sword), and special ability count (star).
+ *
+ * When `isActive` is true, a bronze left-border accent and a white background
+ * highlight the card as the currently selected creature.
+ *
+ * Receives a `CustomCreatureSummary` (a lightweight summary shape from
+ * `customCreaturePersistence.ts`) rather than the full `CustomCreatureState`,
+ * so the roster can render all cards without loading every creature's full
+ * data from localStorage.
+ *
+ * Used by:
+ *   - src/app/components/creatures/CustomCreatureRoster.tsx
+ */
+
 'use client';
 
 import { mdiHeart, mdiSword, mdiStarFourPoints } from '@mdi/js';

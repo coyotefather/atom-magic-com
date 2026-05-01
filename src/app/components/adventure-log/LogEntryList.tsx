@@ -1,3 +1,25 @@
+/**
+ * LogEntryList.tsx
+ *
+ * Renders the full list of log entries for the active session, sorted with the
+ * most recent entry at the top (descending by `timestamp`). Each entry is
+ * rendered as a `LogEntryCard`.
+ *
+ * When there are no entries, shows a plain empty-state message prompting the
+ * user to add their first roll, action, or note.
+ *
+ * Sorting is done on a shallow copy of the entries array so that the original
+ * session state (which stores entries in insertion order) is not mutated.
+ *
+ * Props:
+ *   - `entries`          — The session's full entries array (unsorted).
+ *   - `onToggleKeyEvent` — Forwarded to each `LogEntryCard`.
+ *   - `onDelete`         — Forwarded to each `LogEntryCard`.
+ *
+ * Used by:
+ *   - src/app/components/adventure-log/AdventureLogBuilder.tsx
+ */
+
 'use client';
 import { LogEntry } from '@/lib/adventure-log-data';
 import LogEntryCard from './LogEntryCard';

@@ -1,3 +1,35 @@
+/**
+ * CharacterPicker.tsx
+ *
+ * A controlled form widget for selecting or entering a character name, used
+ * in the Adventure Log's entry composer to attribute rolls and actions to a
+ * specific character.
+ *
+ * Behaviour:
+ *   - On mount, reads the user's saved character roster from localStorage via
+ *     `getRoster()` and populates a `<select>` element.
+ *   - Saved characters appear under an "optgroup" so they are visually separated
+ *     from the "Other (type name)..." option.
+ *   - Selecting a saved character emits `{ characterId, characterName }` via
+ *     `onChange`.
+ *   - Selecting "Other" reveals a free-text `<input>` for entering an NPC or
+ *     guest player's name. Only `characterName` (no ID) is emitted in this case.
+ *   - Selecting the empty/placeholder option emits `{}` (no character attached).
+ *
+ * The component detects on mount whether the current `value` is a custom-name
+ * entry (has `characterName` but no `characterId`) and pre-selects "Other" with
+ * the custom name pre-filled, so re-editing an existing entry shows the correct
+ * state.
+ *
+ * Props:
+ *   - `value`       — Current character selection (`{ characterId?, characterName? }`).
+ *   - `onChange`    — Called with the new value whenever the selection changes.
+ *   - `placeholder` — Optional select placeholder text (default: "Select character...").
+ *
+ * Used by:
+ *   - src/app/components/adventure-log/EntryComposer.tsx (Roll and Action tabs)
+ */
+
 'use client';
 import { useState, useEffect } from 'react';
 import { getRoster, CharacterSummary } from '@/lib/characterPersistence';

@@ -1,3 +1,28 @@
+/**
+ * CreatureCard.tsx
+ *
+ * Full-detail display card for a single CMS creature (`NormedCreature`). Used
+ * wherever the site needs to show a creature's complete stat block — image,
+ * description, four core scores (PHY / INT / ITE / PSY), combat stats (health,
+ * physical shield, psychic shield, armor capacity), attacks, special abilities,
+ * environment tags, and swarm/unique flags.
+ *
+ * Props:
+ *   - `creature`      — A normalized CMS creature object (see `NormedCreature`
+ *                       in `src/lib/creature-types.ts`).
+ *   - `isSelected`    — When true, applies a bronze highlight border to indicate
+ *                       this is the currently rolled / active creature.
+ *   - `showCustomize` — When true, renders a "Customize" link that deep-links
+ *                       to the Creature Manager with `?clone=<id>` so the user
+ *                       can fork this CMS creature into a custom one.
+ *
+ * Challenge level is colour-coded from harmless (stone/grey) through to deadly
+ * (oxblood). Stats that are null or undefined are displayed as "n/a".
+ *
+ * Used by:
+ *   - src/app/components/creatures/CreatureRoller.tsx (result + "show all" list)
+ */
+
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';

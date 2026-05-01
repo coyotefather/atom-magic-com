@@ -1,3 +1,34 @@
+/**
+ * CreatureSelector.tsx
+ *
+ * Collapsible panel within the Encounter Builder that lets the GM add creatures
+ * to the current encounter. Presents two tabs:
+ *
+ *   - Codex Creatures  — CMS-sourced creatures filtered by challenge level,
+ *                        creature type, and environment. Filter chips are
+ *                        rendered inline (not using the shared `CreatureFilters`
+ *                        component) because the selector needs tighter layout
+ *                        control. Results are shown in a capped-height scrollable
+ *                        grid of compact cards. Each card shows the creature name,
+ *                        challenge level badge, and the threat-point value
+ *                        (from `THREAT_VALUES` in `encounter-data.ts`).
+ *
+ *   - Custom Creatures — The user's locally-saved custom creatures (loaded from
+ *                        localStorage via `getCreatureRoster()`). Same compact
+ *                        card layout. If no custom creatures exist, a link to the
+ *                        Creature Manager is shown.
+ *
+ * Clicking any creature card invokes `onAddCreature` or `onAddCustomCreature`,
+ * which tells the parent `EncounterBuilder` to add the creature to the active
+ * encounter (or increment its quantity if already present).
+ *
+ * The entire panel can be collapsed via the header toggle to save screen space
+ * once creatures have been added.
+ *
+ * Used by:
+ *   - src/app/components/encounters/EncounterBuilder.tsx
+ */
+
 'use client';
 import { useState, useMemo } from 'react';
 import Link from 'next/link';

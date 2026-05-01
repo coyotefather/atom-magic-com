@@ -1,3 +1,44 @@
+/**
+ * CreatureManager.tsx
+ *
+ * Top-level orchestrator for the custom creature creation and editing feature.
+ * Arranges a two-column layout: a sidebar roster of all locally-saved custom
+ * creatures (`CustomCreatureRoster`) and a main editor pane
+ * (`CustomCreatureEditor`). When no creature is selected, a prompt with a
+ * "New Creature" button is shown in place of the editor.
+ *
+ * The component handles four workflows:
+ *
+ *   1. New creature — generates a UUID, creates a blank `CustomCreatureState`,
+ *      persists it to localStorage via `saveCreatureById`, and loads it into
+ *      the Redux `customCreature` slice.
+ *
+ *   2. Select existing — loads the creature data from localStorage into Redux
+ *      so the editor reflects the chosen creature.
+ *
+ *   3. Clone from CMS — copies a `NormedCreature` from the Payload CMS into a
+ *      new `CustomCreatureState`, preserving all stats and recording `basedOnId`
+ *      for the "Based on" reference link in the editor. This can be triggered
+ *      either via the "Start from Existing" button (which opens `CreaturePicker`)
+ *      or via the `?clone=<id>` URL query parameter (e.g., coming from the
+ *      "Customize" link on a `CreatureCard`). The URL parameter is only
+ *      processed once per mount via a `useRef` guard.
+ *
+ *   4. Delete — removes the creature from localStorage, clears Redux state,
+ *      and deselects it.
+ *
+ * A `rosterKey` integer is incremented after any mutation to force
+ * `CustomCreatureRoster` to re-mount and re-read localStorage, since the
+ * roster does not subscribe to Redux.
+ *
+ * Wrapped in `<Suspense>` because it uses `useSearchParams()` (which reads the
+ * `?clone` URL parameter), which requires a Suspense boundary in Next.js App
+ * Router.
+ *
+ * Used by:
+ *   - src/app/(website)/(creature-tools)/creatures/manager/page.tsx
+ */
+
 'use client';
 
 import { useState, useEffect, useRef, Suspense } from 'react';
