@@ -1,3 +1,13 @@
+/**
+ * CustomPagination.tsx
+ *
+ * Styled pagination controls for the Algolia search results page. Wraps the
+ * `usePagination` hook from `react-instantsearch` with custom first/prev/next/last
+ * chevron buttons. Disabled states are applied when at the start or end of results.
+ *
+ * Used by:
+ *   - `src/app/components/global/search/Search.tsx`
+ */
 import React from 'react';
 import Icon from '@mdi/react';
 import {

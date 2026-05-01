@@ -1,3 +1,16 @@
+/**
+ * Category.tsx
+ *
+ * The full page view for a single Codex category. Shows the category name and
+ * description, then lists any subcategories (using the Categories component)
+ * and any direct entries (using the Entries component).
+ *
+ * Breadcrumb navigation is shown if the category has a parent. Data is passed
+ * as a prop from the Next.js page route.
+ *
+ * Used by:
+ *   - `src/app/(website)/codex/categories/[slug]/page.tsx`
+ */
 import type { Category as PayloadCategory } from '../../../../payload-types';
 import Header from '@/app/components/common/Header';
 import Entries from '@/app/components/codex/Entries';

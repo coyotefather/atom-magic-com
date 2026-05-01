@@ -1,3 +1,22 @@
+/**
+ * CampaignDashboard.tsx
+ *
+ * Main orchestrator for the Campaign feature. A campaign is the top-level
+ * container for a long-running game — it groups a party of characters and
+ * links to their Adventure Log sessions.
+ *
+ * State is persisted in localStorage via `campaignPersistence.ts`. Only one
+ * campaign is stored at a time (single-campaign design). On mount, loads the
+ * existing campaign or offers a "Create Campaign" flow.
+ *
+ * Sub-components:
+ * - CampaignHeader: campaign name/description editor with delete
+ * - PartyRoster: add/remove characters to the campaign party
+ * - SessionLinker: link/unlink Adventure Log sessions to the campaign
+ *
+ * Used by:
+ *   - `src/app/components/campaign/CampaignClientContainer.tsx`
+ */
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import Icon from '@mdi/react';

@@ -1,3 +1,19 @@
+/**
+ * LoadingPage.tsx
+ *
+ * Animated loading overlay shown while the Character Manager's Redux state is
+ * hydrating from localStorage. Displays an Atom Magic logo with a fade-in/out
+ * transition — the "hello" state is visible until Redux `character.loaded` is
+ * true, at which point it transitions to the "goodbye" (hidden) state.
+ *
+ * Uses `react-transition-group` SwitchTransition + CSSTransition for the swap
+ * animation. The `loadedCheck` local state prevents a flash on first render by
+ * waiting one tick after mount before reading the Redux loaded flag.
+ *
+ * Used by:
+ *   - `src/app/(website)/character/page.tsx` (shown before CharacterManager mounts)
+ *   - `src/app/(website)/generator/page.tsx`
+ */
 'use client';
 import NextImage from "next/image";
 import { useState, useEffect, useRef } from 'react';

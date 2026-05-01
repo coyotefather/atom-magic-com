@@ -1,3 +1,16 @@
+/**
+ * Entries.tsx
+ *
+ * Renders a grid of Codex entry cards. Reuses the Algolia `Hit` component for
+ * each entry card even in non-search contexts, since Hit renders a consistent
+ * entry card layout with icon, title, and description excerpt.
+ *
+ * Data is passed as a prop — the `type` field on each entry is used by Hit to
+ * determine the icon and link path.
+ *
+ * Used by:
+ *   - `src/app/components/codex/Category.tsx` (entries within a category)
+ */
 import Hit from '@/app/components/global/search/Hit';
 
 interface EntryItem {

@@ -1,3 +1,17 @@
+/**
+ * TimelineItem.tsx
+ *
+ * A single event in the world history timeline. Renders the event date (in the
+ * game world's calendar), an icon representing the event category, the event
+ * title, and a description. Items alternate left/right alignment based on their
+ * index for a zigzag timeline layout.
+ *
+ * The `iconPaths` Map is passed from Timeline.tsx to avoid individual icon
+ * imports in each item.
+ *
+ * Used by:
+ *   - `src/app/components/codex/Timeline.tsx`
+ */
 import clsx from 'clsx';
 import Icon from '@mdi/react';
 import { mdiCircleMedium } from '@mdi/js';

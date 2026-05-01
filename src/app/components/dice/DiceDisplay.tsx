@@ -1,3 +1,15 @@
+/**
+ * DiceDisplay.tsx
+ *
+ * The large visual die result display in the Dice Roller. Shows the current
+ * roll result (or null if nothing has been rolled yet).
+ *
+ * While `isRolling` is true, it animates through random numbers at 50ms
+ * intervals to simulate a tumbling die before settling on the final value.
+ *
+ * Used by:
+ *   - `src/app/components/dice/DiceRoller.tsx`
+ */
 'use client';
 
 import { useEffect, useState } from 'react';

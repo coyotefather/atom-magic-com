@@ -1,3 +1,12 @@
+/**
+ * GearPaths.tsx
+ *
+ * Renders the character paths (Theurgist, Iconoclast, Autodidact) that a
+ * legacy codex gear item is available to. Used by the legacy Gear.tsx component.
+ *
+ * Used by:
+ *   - `src/app/components/codex/gear/Gear.tsx` (legacy gear codex page)
+ */
 const GearPaths = ({
 		paths
 	}:{

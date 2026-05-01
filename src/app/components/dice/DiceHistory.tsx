@@ -1,3 +1,16 @@
+/**
+ * DiceHistory.tsx
+ *
+ * Displays the roll history log for the current Dice Roller session. Shows
+ * each past roll with its notation (e.g., "2d6+3"), the total result, and
+ * the time it was rolled. Renders in reverse chronological order (newest first).
+ *
+ * History is kept in component state in DiceRoller — it's session-only and not
+ * persisted to localStorage.
+ *
+ * Used by:
+ *   - `src/app/components/dice/DiceRoller.tsx`
+ */
 'use client';
 
 import { RollResult } from './DiceRoller';

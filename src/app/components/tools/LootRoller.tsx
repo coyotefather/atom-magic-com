@@ -1,3 +1,21 @@
+/**
+ * LootRoller.tsx
+ *
+ * A GM tool for generating random treasure loot after encounters. Combines
+ * three roll types:
+ * - Coins: draws from COIN_TABLES by wealth level (poor/modest/comfortable/wealthy/rich),
+ *   rolling random amounts of silver, gold, lead, and uranium
+ * - Gear: draws from STANDARD_WEAPONS + EXOTIC_WEAPONS + STANDARD_ARMOR + EXOTIC_ARMOR
+ *   (same pools as the Character Manager's gear roller)
+ * - Misc items: draws from MISC_ITEMS (categorized as common/uncommon/rare)
+ *
+ * Each category can be toggled on/off independently. Results accumulate in a
+ * "loot bag" list so the GM can roll multiple times and review all results
+ * before clearing them.
+ *
+ * Used by:
+ *   - `src/app/(website)/tools/loot/page.tsx`
+ */
 'use client';
 
 import { useState, useCallback } from 'react';

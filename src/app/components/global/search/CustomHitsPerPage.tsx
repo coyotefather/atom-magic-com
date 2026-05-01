@@ -1,3 +1,13 @@
+/**
+ * CustomHitsPerPage.tsx
+ *
+ * A styled hits-per-page selector for the Algolia search results page. Wraps
+ * the `useHitsPerPage` hook from `react-instantsearch`. Renders as a row of
+ * selectable number options (e.g., 10 / 25 / 50).
+ *
+ * Used by:
+ *   - `src/app/components/global/search/Search.tsx`
+ */
 import React from 'react';
 import { useHitsPerPage, UseHitsPerPageProps } from 'react-instantsearch';
 

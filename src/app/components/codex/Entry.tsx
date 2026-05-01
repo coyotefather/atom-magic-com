@@ -1,3 +1,18 @@
+/**
+ * Entry.tsx
+ *
+ * Full page view for a single Codex entry (a lore article). Renders:
+ * - Breadcrumb navigation back to the entry's parent category
+ * - Main image (if present, from Vercel Blob via depth-resolved Media relation)
+ * - Entry title and optional table of contents (Lexical rich text)
+ * - Entry body (Lexical rich text via `<RichText />`)
+ * - Linked discipline, technique, path, or culture references as chips
+ *
+ * Data is passed as a fully resolved Payload Entry document (depth: 2).
+ *
+ * Used by:
+ *   - `src/app/(website)/codex/entries/[slug]/page.tsx`
+ */
 import Image from 'next/image';
 import Link from 'next/link';
 import { RichText } from '@/app/components/common/RichText';

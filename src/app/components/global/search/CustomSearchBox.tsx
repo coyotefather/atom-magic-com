@@ -1,3 +1,16 @@
+/**
+ * CustomSearchBox.tsx
+ *
+ * A styled, debounced search input for the Algolia InstantSearch UI. Wraps
+ * the `useSearchBox` hook from `react-instantsearch` with a 300ms debounce
+ * to avoid firing a search API call on every keystroke.
+ *
+ * Shows a stalled indicator (spinner/icon) when the search client hasn't
+ * returned results yet.
+ *
+ * Used by:
+ *   - `src/app/components/global/search/Search.tsx`
+ */
 import React, { useState, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import Icon from '@mdi/react';

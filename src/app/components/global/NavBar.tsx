@@ -1,3 +1,17 @@
+/**
+ * NavBar.tsx
+ *
+ * Top navigation bar rendered at the top of every public page. Contains:
+ * - The Atom Magic logo (links to homepage)
+ * - Primary navigation links (from NAVIGATION_LINKS, `extended: false` only)
+ * - ThemeToggle for dark/light mode
+ *
+ * The extended links (Contact, Store) are filtered out of the primary bar
+ * and only appear in the mobile/expanded `Nav` component.
+ *
+ * Used by:
+ *   - `src/app/(website)/layout.tsx`
+ */
 import Image from 'next/image';
 import Link from 'next/link';
 import Nav from '@/app/components/common/Nav';

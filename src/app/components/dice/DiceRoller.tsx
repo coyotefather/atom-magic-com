@@ -1,3 +1,20 @@
+/**
+ * DiceRoller.tsx
+ *
+ * The main Dice Roller tool. Lets users pick a die type (d4–d20), number of
+ * dice, and a modifier, then roll for a total. Supports multi-die rolls with
+ * individual die results shown alongside the total.
+ *
+ * After rolling, it broadcasts the result via `RollContext` so that other
+ * components (e.g., the Adventure Log's EntryComposer) can listen for rolls
+ * and auto-populate their inputs.
+ *
+ * Re-exports `DieType` and `RollResult` types from `RollContext` for backwards
+ * compatibility (these types were previously defined here).
+ *
+ * Used by:
+ *   - `src/app/(website)/dice/page.tsx`
+ */
 'use client';
 
 import { useState, useCallback } from 'react';

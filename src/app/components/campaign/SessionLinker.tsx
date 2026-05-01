@@ -1,3 +1,17 @@
+/**
+ * SessionLinker.tsx
+ *
+ * Lets the GM link and unlink Adventure Log sessions to the current campaign.
+ * Displays two lists: "Linked Sessions" (sessions already associated with this
+ * campaign) and "Available Sessions" (all other sessions). Clicking a session
+ * expands it to show its log entries for context.
+ *
+ * Changes bubble up via `onLink` / `onUnlink` callbacks to CampaignDashboard,
+ * which calls `campaignPersistence.ts` to update the session's campaignId.
+ *
+ * Used by:
+ *   - `src/app/components/campaign/CampaignDashboard.tsx`
+ */
 'use client';
 import { useState, useEffect } from 'react';
 import Icon from '@mdi/react';
