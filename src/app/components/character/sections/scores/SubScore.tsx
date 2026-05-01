@@ -1,3 +1,50 @@
+/**
+ * SubScore.tsx
+ *
+ * The individual subscore control — the atomic unit of score adjustment in the
+ * Character Manager. Each subscore (e.g., Strength, Agility within Physical) is
+ * rendered as a row with a label, a minus button, the current calculated value,
+ * and a plus button. Below the value row is a collapsible "Modifiers" accordion
+ * that breaks down how the displayed number was reached.
+ *
+ * Three layers of value are tracked in local state:
+ *   - `baseSubscoreValue`: the raw points the player has allocated to this subscore
+ *     (starts at the value from Redux, incremented/decremented by +/– buttons).
+ *   - `pathModifierTotal`: sum of all path modifiers affecting this subscore
+ *     (computed in a useEffect watching the `pathModifiers` prop).
+ *   - `gearModifierTotal`: sum of all gear modifiers affecting this subscore
+ *     (computed in a useEffect watching the `gearModifiers` prop).
+ *   - `calcSubscoreValue` = baseSubscoreValue + pathModifierTotal + gearModifierTotal
+ *     (the displayed final value).
+ *
+ * The Modifiers accordion shows:
+ *   - Base Score: baseSubscoreValue
+ *   - Elective Modifier: always 0 (placeholder for a future feature)
+ *   - Path Modifier: pathModifierTotal (colored green/red based on sign)
+ *   - Gear Modifier: gearModifierTotal (colored green/red based on sign)
+ *
+ * Increment/decrement constraints:
+ *   - Capped at 100 (max subscore value).
+ *   - Cannot go below 0.
+ *   - Incrementing requires `availablePoints > 0` (the shared point budget).
+ *   - Each click dispatches `setSubscore()` to update Redux and `setScorePoints()`
+ *     to adjust the shared budget.
+ *
+ * The component uses `select-none` to prevent accidental text selection when
+ * clicking the +/– buttons rapidly.
+ *
+ * Props:
+ *   - subscore: display name of the subscore
+ *   - value: initial value from Redux (or null if not yet set)
+ *   - subscore_id: Redux ID for this subscore
+ *   - parent_id: Redux ID of the parent score category (needed for setSubscore)
+ *   - pathModifiers: Modifier[] — path modifiers applying to this specific subscore
+ *   - gearModifiers: Modifier[] — gear modifiers applying to this specific subscore
+ *   - availablePoints: remaining point budget (from Redux scorePoints)
+ *
+ * Used by:
+ *   - Score.tsx (one SubScore per entry in score.subscores array)
+ */
 'use client';
 import clsx from 'clsx';
 import { Accordion } from "@heroui/react";
