@@ -1,3 +1,46 @@
+/**
+ * characterSharing.ts
+ *
+ * Functions for sharing a character via a compressed URL.
+ *
+ * How character sharing works:
+ *   1. The user clicks "Share Character" in the Character Manager.
+ *   2. `generateShareUrl()` strips derived fields, serializes the character
+ *      to JSON, compresses it with LZ-string, and encodes it as a URL query parameter.
+ *   3. The resulting URL (`/character/shared?c=...`) can be sent to anyone.
+ *   4. When the recipient opens the URL, the shared page decompresses and validates
+ *      the `?c=` parameter and loads the character into a read-only view.
+ *
+ * Why LZ-string compression?
+ *   A full CharacterState is too large (several KB) to put in a URL uncompressed.
+ *   LZ-string compresses it significantly and encodes the result as URL-safe characters.
+ *   The `compressToEncodedURIComponent` / `decompressFromEncodedURIComponent` pair
+ *   handles this round-trip safely.
+ *
+ * Security — why validation matters:
+ *   The URL payload could be crafted by anyone, not just the app. The recipient
+ *   page must not blindly render whatever is in the URL. `validateCharacterStructure()`
+ *   type-checks every field before the data is accepted:
+ *     - Strings are validated and length-capped
+ *     - Reference IDs (culture, path, patronage, disciplines) must match the expected
+ *       UUID/slug pattern
+ *     - Numeric values (scores, wealth) are range-checked
+ *     - Array items are individually validated
+ *
+ * Derived fields are stripped before sharing and re-added on load:
+ *   `additionalScores` and `scorePoints` are computed from other fields — they
+ *   don't need to be in the URL payload. `reinitializeDerivedFields()` adds them
+ *   back with safe defaults when the shared character is loaded.
+ *
+ * Size limit:
+ *   The compressed payload must be ≤ 8KB (`MAX_PAYLOAD_SIZE`). Extremely detailed
+ *   characters (many disciplines, long descriptions) might hit this limit.
+ *
+ * Used by:
+ *   - Share button in Character Manager (generates the URL)
+ *   - `/character/shared/page.tsx` (reads and renders the shared character)
+ */
+
 import lzstring from 'lz-string';
 import { CharacterState } from './slices/characterSlice';
 

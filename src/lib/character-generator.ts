@@ -1,6 +1,39 @@
 /**
- * Character Generator
- * Generates random characters with optional archetype and locked field support
+ * character-generator.ts
+ *
+ * Generates a fully random character for the Character Manager's generator mode.
+ *
+ * The Character Manager has two entry points:
+ *   1. The standard creation wizard (user fills in each section manually)
+ *   2. The character generator (this file) — creates a complete character in one click
+ *
+ * Generator modes:
+ *   - `easy`: The user selects an "archetype" (a flavor-focused preset like "Warrior"
+ *     or "Scholar"). The archetype biases the score distribution and prefers certain
+ *     disciplines and techniques. The generator handles everything else randomly.
+ *
+ *   - `advanced`: The user optionally locks specific fields (culture, path, patronage)
+ *     and the generator randomizes everything else. No archetype bias is applied.
+ *
+ * Archetype system:
+ *   Archetypes are defined in `archetype-data.ts`. Each archetype has:
+ *     - `scoreWeights`: multipliers for each of the four core scores (e.g., a Warrior
+ *       gets `physical: 1.4` so their physical subscores are generated higher)
+ *     - `disciplines`: preferred discipline names (e.g., ["Kinetic", "Physical"])
+ *     - `techniqueKeywords`: keywords to match preferred techniques within disciplines
+ *     - `pathPreference`: which Path fits this archetype best
+ *
+ * Generation order (disciplines must be selected before techniques):
+ *   1. Path (determines which disciplines are available)
+ *   2. Disciplines (filtered to those available for the chosen path)
+ *   3. Techniques (one per discipline, biased by archetype keywords)
+ *   4. Scores (subscores randomized 20-80, weighted by archetype)
+ *   5. Gear (random weapon + armor with optional enhancements)
+ *   6. Culture, Patronage, Wealth, Animal Companion (fully random)
+ *
+ * Used by:
+ *   - `src/app/(website)/character/generator/page.tsx`
+ *   - The generator UI at `/character/generator`
  */
 
 import { CharacterState } from './slices/characterSlice';
