@@ -1,3 +1,52 @@
+/**
+ * Section.tsx
+ *
+ * A collapsible wizard step container used in the Character Manager creation
+ * flow. Each character creation step (choose culture, choose path, set scores,
+ * etc.) is wrapped in a Section so that only one step is visible at a time and
+ * the user must complete each step before advancing.
+ *
+ * Behavior:
+ *   - When `expanded` is false the section is hidden entirely (zero-height,
+ *     `hidden` class applied).
+ *   - When `expanded` is true the section content is visible, with a bottom
+ *     border separating it from the next step.
+ *   - A "CONTINUE" button floats centered on the bottom border. When clicked:
+ *       - If `incomplete` is a non-empty string (required field names), an
+ *         ErrorDialog modal fires instead of advancing.
+ *       - If all required fields are filled, `expandFunction` is called to
+ *         expand the next section, then the page smoothly scrolls to the
+ *         newly revealed content using double-rAF (waits for DOM paint).
+ *   - When `nextExpanded` is true the button switches from "CONTINUE" to a
+ *     small Atom Magic circle icon, indicating the user has already passed
+ *     this step and cannot re-activate it from here.
+ *
+ * Four background/style variants via the `variant` prop:
+ *   - "light"     — standard white background with container padding
+ *   - "dark"      — black background, white text
+ *   - "gradient"  — applies the project's standard-gradient utility class
+ *   - "dual"      — white background with a black border
+ *
+ * Transitions: uses react-transition-group's SwitchTransition + CSSTransition
+ * so sections fade in/out smoothly when their expanded state changes.
+ *
+ * Props:
+ *   - expanded: boolean        — whether this section is currently visible
+ *   - nextExpanded: boolean    — whether the NEXT section is already open
+ *                                (changes the continue button to a passive icon)
+ *   - incomplete: string       — name(s) of missing required fields; empty string
+ *                                means all required fields are complete
+ *   - variant: string          — visual style ('light' | 'dark' | 'gradient' | 'dual')
+ *   - clickCheck: Function     — called with true/false to notify parent whether
+ *                                validation failed
+ *   - showExpandButton: boolean — whether the continue button is shown at all
+ *   - expandFunction: Function  — called to expand the next section
+ *   - children: ReactNode       — the section's form content
+ *
+ * Used by:
+ *   - src/app/components/character/Sections.tsx (orchestrates all wizard steps)
+ */
+
 'use client';
 import { useState, useRef } from 'react';
 import clsx from 'clsx';

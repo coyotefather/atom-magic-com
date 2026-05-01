@@ -1,3 +1,33 @@
+/**
+ * IconLabel.tsx
+ *
+ * A small layout utility that pairs an MDI icon with text in a consistent,
+ * flex-aligned row. It exists to eliminate the repetitive
+ * `flex items-center gap-* text-*` boilerplate that would otherwise be
+ * copy-pasted across dozens of stat displays, labels, and metadata lines.
+ *
+ * Three content modes:
+ *   1. Icon + value only       — pass `children`, omit `label`
+ *   2. Icon + label + value    — pass both; label renders bold with a colon separator
+ *   3. Icon only               — omit both (useful when icon conveys meaning alone)
+ *
+ * Four size presets control both the icon size and the companion text size:
+ *   - "xs" — 0.5 icon, text-xs
+ *   - "sm" — 0.625 icon, text-sm (default)
+ *   - "md" — 0.75 icon, text-base
+ *   - "lg" — 1.0 icon, text-lg
+ *
+ * The wrapper element defaults to `div` (block) but can be changed to `span`
+ * for inline use inside paragraphs or table cells.
+ *
+ * Props: see IconLabelProps interface in the file.
+ *
+ * Used by:
+ *   - Character sheet stat rows (scores, shields, armor)
+ *   - Creature stat blocks
+ *   - Gear and enhancement detail displays
+ */
+
 import Icon from '@mdi/react';
 
 type Size = 'xs' | 'sm' | 'md' | 'lg';

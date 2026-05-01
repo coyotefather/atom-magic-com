@@ -1,3 +1,27 @@
+/**
+ * Breadcrumbs.tsx
+ *
+ * Navigation breadcrumb trail showing the user's current location within a
+ * page hierarchy. Renders a horizontal list of ancestor pages (each as a
+ * clickable gold link) followed by the current page title (plain, non-linked
+ * text). A "/" separator appears after every ancestor link.
+ *
+ * The entire nav sits on a black pill background so it can be placed on any
+ * background color without clashing.
+ *
+ * Exports two components:
+ *   - BreadcrumbItem  — a single crumb (link or plain text) with optional separator.
+ *   - Breadcrumbs (default) — the full trail, composed from a `parents` array
+ *     plus a `currentPage` string.
+ *
+ * Props (Breadcrumbs):
+ *   - currentPage: string    — label for the active (non-linked) page
+ *   - parents: { title, url }[] — ordered list of ancestor pages; rendered in
+ *     the order supplied, each followed by a separator
+ *
+ * Used by:
+ *   - Codex entry pages (src/app/(website)/codex/...)
+ */
 
 import clsx from 'clsx';
 

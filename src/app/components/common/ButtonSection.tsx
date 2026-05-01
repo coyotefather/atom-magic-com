@@ -1,3 +1,27 @@
+/**
+ * ButtonSection.tsx
+ *
+ * A full-width two-column content block pairing a heading + body content on
+ * the left with a single action button centered on the right. Supports a
+ * `dark` variant that applies a black background with white text.
+ *
+ * This is a presentational layout component — it wraps arbitrary children
+ * alongside a labeled call-to-action. The button is rendered as a
+ * FunctionButton with the `primary` variant.
+ *
+ * Props:
+ *   - variant: string       — pass "dark" for black bg / white text; any
+ *                             other value leaves the background unstyled
+ *   - name: string          — section heading text
+ *   - buttonText: string    — label rendered inside the button
+ *   - buttonIcon: string    — MDI icon path displayed inside the button
+ *   - buttonFunction: Function — onClick handler invoked when the button is pressed
+ *   - children: ReactNode   — body content placed below the heading
+ *
+ * Used by:
+ *   - Homepage and other marketing pages that need a text block + CTA pairing
+ */
+
 'use client';
 import clsx from 'clsx';
 import FunctionButton from '@/app/components/common/FunctionButton';

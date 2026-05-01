@@ -1,3 +1,46 @@
+/**
+ * SelectDetailExpanded.tsx
+ *
+ * The expanded version of the selection detail panel used in the Character
+ * Manager wizard. Shows a rich detail view for the currently selected item
+ * (culture, path, patronage, etc.) and a placeholder when nothing is selected.
+ *
+ * When an item IS selected (`disabled = false`):
+ *   - Renders a gold-bordered card with a Marcellus heading.
+ *   - Description can be either a plain string (rendered as Markdown with GFM,
+ *     extended tables, definition lists, and heading IDs) or a Payload Lexical
+ *     JSON object (rendered via the RichText component).
+ *   - If `imagePath` is provided, an image (150×150 px) fills the right column
+ *     and the text area spans 2 of 3 columns; otherwise text spans all 3.
+ *   - The `children` slot renders below the description — used to inject extra
+ *     controls or stats relevant to the selected item.
+ *
+ * When nothing is selected yet (`disabled = true`):
+ *   - Shows a large, near-invisible (5% opacity) Atom Magic circle as a
+ *     placeholder image, plus a small faded version of the description text
+ *     so the user can preview what info will appear once they make a selection.
+ *
+ * Differences from the simpler SelectDetail.tsx:
+ *   - Supports both Markdown strings AND Lexical rich text (not just plain text)
+ *   - Uses a sigil image instead of an MDI icon
+ *   - Has a `children` slot for injecting additional UI
+ *   - Styled with a gold border (rather than being borderless)
+ *
+ * Props:
+ *   - imagePath: string          — path to the item's sigil/image; empty string
+ *                                  hides the image column
+ *   - name: string               — heading for the selected item
+ *   - description: string | LexicalContent — body text (Markdown string or
+ *                                  Payload Lexical JSON)
+ *   - disabled: boolean          — true = placeholder state; false = selected state
+ *   - children: ReactNode        — additional content rendered below the description
+ *                                  (visible only when an item is selected)
+ *
+ * Used by:
+ *   - ChooseCulture, ChoosePath, ChoosePatronage, and similar character
+ *     creation wizard steps
+ */
+
 'use client';
 import Icon from '@mdi/react';
 import { mdiAtom } from '@mdi/js';
