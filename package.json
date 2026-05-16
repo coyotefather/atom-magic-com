@@ -74,7 +74,7 @@
     "@vitejs/plugin-react": "^6.0.0",
     "eslint": "^10.2.1",
     "eslint-config-next": "^16.2.4",
-    "jsdom": "^29.1.0",
+    "jsdom": "^29.1.1",
     "patch-package": "^8.0.1",
     "postcss": "^8.5.12",
     "sharp": "^0.34.5",
