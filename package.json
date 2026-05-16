@@ -25,7 +25,7 @@
     "@payloadcms/richtext-lexical": "^3.84.1",
     "@payloadcms/storage-vercel-blob": "^3.84.1",
     "@reduxjs/toolkit": "^2.11.2",
-    "@serwist/next": "^9.5.7",
+    "@serwist/next": "^9.5.11",
     "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
     "@types/leaflet": "^1.9.21",
     "@types/react-transition-group": "^4.4.12",
