@@ -9,7 +9,7 @@ const withSerwist = withSerwistInit({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ['@payloadcms/plugin-mcp', 'mcp-handler', '@modelcontextprotocol/sdk'],
+  serverExternalPackages: ['@payloadcms/plugin-mcp', 'mcp-handler', '@modelcontextprotocol/sdk', 'pino', 'pino-pretty', 'thread-stream'],
   images: {
     remotePatterns: [
       {
