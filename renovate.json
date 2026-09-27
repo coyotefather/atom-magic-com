@@ -8,5 +8,13 @@
   ],
   "constraints": {
     "npm": "^11.0.0"
-  }
+  },
+  "packageRules": [
+    {
+      "description": "Keep the npm 11 pin until npm 12 fixes EALLOWREMOTE on bundled deps",
+      "matchDepNames": ["npm"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    }
+  ]
 }
