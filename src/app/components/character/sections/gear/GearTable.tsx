@@ -41,7 +41,7 @@ const columns = [
 
 const GearTable = ({ gear }: { gear: CharacterGearItem[] }) => {
 	return (
-		<Table>
+		<Table variant="secondary">
 			<Table.ScrollContainer>
 				<Table.Content aria-label="Gear">
 					<Table.Header className="marcellus text-md">
@@ -49,6 +49,7 @@ const GearTable = ({ gear }: { gear: CharacterGearItem[] }) => {
 							<Table.Column
 								key={column.key}
 								id={column.key}
+								isRowHeader={column.key === "name"}
 								className={clsx("bg-transparent border-b-2", { "pl-0": column.key === "name" })}
 							>
 								{column.label}
@@ -73,8 +74,8 @@ const GearTable = ({ gear }: { gear: CharacterGearItem[] }) => {
 														<div className="flex gap-2 pt-1 mb-2">
 															<Chip size="sm" className="bg-black capitalize text-white">{g.type}</Chip>
 															<Chip size="sm" className="bg-parchment capitalize text-black">{g.category}</Chip>
-															<Chip size="sm" className="bg-stone/20 capitalize text-stone-dark">Tier {g.tier}</Chip>
-															{g.isExotic && <Chip size="sm" className="bg-gold/20 text-gold">Exotic</Chip>}
+															<Chip size="sm" className="bg-stone/20 capitalize text-black">Tier {g.tier}</Chip>
+															{g.isExotic && <Chip size="sm" className="bg-gold text-black">Exotic</Chip>}
 														</div>
 														{g.description && <div className="text-sm text-stone">{g.description}</div>}
 													</div>

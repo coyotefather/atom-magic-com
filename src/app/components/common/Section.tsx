@@ -80,7 +80,6 @@ const Section = ({
 	const overlayState = useOverlayState();
 	const isOpen = overlayState.isOpen;
 	const onOpen = overlayState.open;
-	const onOpenChange = (open: boolean) => open ? overlayState.open() : overlayState.close();
 	const sectionRef = useRef(null);
 	const buttonRef = useRef(null);
 	const bottomRef = useRef<null | HTMLDivElement>(null);
@@ -195,7 +194,7 @@ const Section = ({
 							buttonText="Close"
 							incomplete={incomplete}
 							isOpen={isOpen}
-							onOpenChange={onOpenChange} />
+							onOpenChange={overlayState.setOpen} />
 					</div>
 					<div ref={bottomRef}></div>
 				</div>

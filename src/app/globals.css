@@ -14,7 +14,8 @@
 */
 
 /* Classical gold gradient - warm metallic feel */
-.gold-gradient {
+/* Declared as a utility so variants like hover:gold-gradient work */
+@utility gold-gradient {
   background: linear-gradient(135deg, #BB9731 0%, #D4AF37 50%, #E2B944 100%);
 }
 

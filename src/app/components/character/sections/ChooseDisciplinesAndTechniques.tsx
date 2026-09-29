@@ -48,7 +48,7 @@ import { RichText } from '@/app/components/common/RichText';
 import type { NormedDiscipline } from '@/lib/character-types';
 import clsx from 'clsx';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import { Checkbox, Label } from "@heroui/react";
+import { Checkbox, Description } from "@heroui/react";
 
 interface ChooseDisciplinesAndTechniquesProps {
 	incompleteFields: string;
@@ -169,17 +169,16 @@ const ChooseDisciplinesAndTechniques = ({
 									{disciplinesForPath.map(d => (
 										<div key={d._id} className="mb-2">
 											<Checkbox
-												id={d._id}
 												className="mb-1"
 												isSelected={characterDisciplines.includes(d._id)}
 												isDisabled={characterDisciplines.length >= 2 && !characterDisciplines.includes(d._id)}
 												onChange={(checked) => handleDisciplineCheck(d._id, checked)}
 											>
-												<Checkbox.Control>
-													<Checkbox.Indicator />
-												</Checkbox.Control>
 												<Checkbox.Content>
-													<Label htmlFor={d._id}>{d.title}</Label>
+													<Checkbox.Control>
+														<Checkbox.Indicator />
+													</Checkbox.Control>
+													{d.title}
 												</Checkbox.Content>
 											</Checkbox>
 											<div className={clsx(
@@ -189,28 +188,27 @@ const ChooseDisciplinesAndTechniques = ({
 												{characterDisciplines.includes(d._id) && d.techniques?.map(t => (
 													<Checkbox
 														key={t._id}
-														id={t._id}
 														isSelected={characterTechniques.includes(t._id)}
 														isDisabled={characterTechniques.length >= 4 && !characterTechniques.includes(t._id)}
-														className="items-start w-full"
+														className="w-full"
 														onChange={(checked) => handleTechniqueCheck(t._id, checked)}
 													>
-														<Checkbox.Control>
-															<Checkbox.Indicator />
-														</Checkbox.Control>
-														<Checkbox.Content>
-															<div>
-																<div>{t.title}</div>
+														<Checkbox.Content className="items-start">
+															<Checkbox.Control>
+																<Checkbox.Indicator />
+															</Checkbox.Control>
+															<span>
+																<span className="block">{t.title}</span>
 																{t.latin && (
-																	<div className="lapideum text-xxs text-stone uppercase mb-1">
+																	<span className="block lapideum text-xxs text-stone-dark uppercase mb-1">
 																		{t.latin}
-																	</div>
+																	</span>
 																)}
-																<div className="text-sm w-full">
-																	<RichText content={t.description} />
-																</div>
-															</div>
+															</span>
 														</Checkbox.Content>
+														<Description elementType="div" className="text-sm text-inherit w-full">
+															<RichText content={t.description} />
+														</Description>
 													</Checkbox>
 												))}
 											</div>

@@ -24,7 +24,7 @@
  * progress, though this is not currently used in practice).
  *
  * The local `CheckboxItem` sub-component is a wrapper that reduces boilerplate for
- * HeroUI's compound Checkbox pattern (Control → Indicator, Content → Label).
+ * HeroUI's compound Checkbox pattern (Content → Control → Indicator, then label text).
  *
  * Props:
  *   - options: GearRollingOptionsType — current filter state (controlled component)
@@ -84,11 +84,11 @@ const GearRollingOptions = ({ options, onChange, disabled = false }: GearRolling
       isDisabled={itemDisabled}
       onChange={onChange}
     >
-      <Checkbox.Control>
-        <Checkbox.Indicator />
-      </Checkbox.Control>
       <Checkbox.Content>
-        <Label>{label}</Label>
+        <Checkbox.Control>
+          <Checkbox.Indicator />
+        </Checkbox.Control>
+        {label}
       </Checkbox.Content>
     </Checkbox>
   );

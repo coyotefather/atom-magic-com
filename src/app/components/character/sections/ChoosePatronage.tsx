@@ -74,12 +74,12 @@ const ChoosePatronage = ({
 		const cardinal = patronages.find((c) => c._id === patronageId);
 		if (cardinal != undefined && cardinal.effects) {
 			const patronageEffects = (
-				<Table>
+				<Table variant="secondary">
 					<Table.ScrollContainer>
 						<Table.Content aria-label={`${cardinal.title} Patronage Effects`} className="mt-8">
 							<Table.Header>
-								{["Name","Description"].map((tc) => (
-									<Table.Column key={tc} id={tc} className="bg-transparent border-b-2 pl-0">
+								{["Name","Description"].map((tc, i) => (
+									<Table.Column key={tc} id={tc} isRowHeader={i === 0} className="bg-transparent border-b-2 pl-0">
 										{tc}
 									</Table.Column>
 								))}
@@ -143,7 +143,7 @@ const ChoosePatronage = ({
 						<Select
 							isRequired
 							isInvalid={!!(incompleteFields && incompleteFields !== "init")}
-							value={currentPatronage ?? ""}
+							value={currentPatronage || null}
 							onChange={handleSelectChange}
 							placeholder="Select a Patron"
 							className="w-96 mt-8"
@@ -153,9 +153,7 @@ const ChoosePatronage = ({
 								<Select.Value />
 								<Select.Indicator />
 							</Select.Trigger>
-							{!!(incompleteFields && incompleteFields !== "init") && (
-								<FieldError>Please select a patronage.</FieldError>
-							)}
+							<FieldError>Please select a patronage.</FieldError>
 							<Select.Popover>
 								<ListBox>
 									{patronages.map((patron) => (

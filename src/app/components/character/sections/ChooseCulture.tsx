@@ -76,12 +76,12 @@ const ChooseCulture = ({
 		const chosenCulture = cultures.find((c) => c._id === cultureId);
 		if (chosenCulture != undefined && chosenCulture.aspects !== null) {
 			const aspects = (
-				<Table>
+				<Table variant="secondary">
 					<Table.ScrollContainer>
 						<Table.Content aria-label={`${chosenCulture.title}`} className="mt-8">
 							<Table.Header>
-								{["Aspect","Description"].map((tc) => (
-									<Table.Column key={tc} id={tc} className="bg-transparent border-b-2 pl-0">
+								{["Aspect","Description"].map((tc, i) => (
+									<Table.Column key={tc} id={tc} isRowHeader={i === 0} className="bg-transparent border-b-2 pl-0">
 										{tc}
 									</Table.Column>
 								))}
@@ -145,7 +145,7 @@ const ChooseCulture = ({
 						<Select
 							isRequired
 							isInvalid={!!(incompleteFields && incompleteFields !== "init")}
-							value={currentCulture ?? ""}
+							value={currentCulture || null}
 							onChange={handleSelectChange}
 							placeholder="Select a Culture"
 							className="w-96 mt-8"
@@ -155,9 +155,7 @@ const ChooseCulture = ({
 								<Select.Value />
 								<Select.Indicator />
 							</Select.Trigger>
-							{!!(incompleteFields && incompleteFields !== "init") && (
-								<FieldError>Please select a culture.</FieldError>
-							)}
+							<FieldError>Please select a culture.</FieldError>
 							<Select.Popover>
 								<ListBox>
 									{cultures.map((culture) => (

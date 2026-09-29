@@ -174,7 +174,7 @@ const SubScore = ({
 				<Accordion className="border-0 outline-hidden pl-0 pr-0 w-full">
 					<Accordion.Item>
 						<Accordion.Heading className="bg-white pl-0 pr-0">
-							<Accordion.Trigger className="border-0 pl-0 pr-0" aria-label={`${subscore}_modifiers`}>
+							<Accordion.Trigger className="border-0 pl-0 pr-0" aria-label={`${subscore} modifiers`}>
 								<span className="text-right text-sm notoserif">Modifiers</span>
 								<Accordion.Indicator />
 							</Accordion.Trigger>

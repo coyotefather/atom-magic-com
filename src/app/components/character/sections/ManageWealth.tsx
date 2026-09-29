@@ -100,12 +100,12 @@ const ManageGear = ({
 
 			content = (
 				<div className="overflow-x-auto">
-					<Table>
+					<Table variant="secondary">
 						<Table.ScrollContainer>
 							<Table.Content aria-label="Wealth">
 								<Table.Header>
-									{["Name","Description","Type","Quantity"].map((tc) => (
-										<Table.Column key={tc} id={tc} className="bg-transparent border-b-2 pl-0 font-bold">
+									{["Name","Description","Type","Quantity"].map((tc, i) => (
+										<Table.Column key={tc} id={tc} isRowHeader={i === 0} className="bg-transparent border-b-2 pl-0 font-bold">
 											{tc}
 										</Table.Column>
 									))}

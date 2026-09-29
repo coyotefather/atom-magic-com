@@ -8,107 +8,67 @@
  *
  * Selection is a two-step cascade:
  *   1. "Animal Family" dropdown — picks a broad taxonomic group (Canidae, Felidae,
- *      Rodentia, Primates, Aves, Reptilia, Other) from a hard-coded list.
- *   2. "Animal" dropdown — narrows to specific animals within that family, populated
- *      from the `ANIMAL_COMPANIONS` constant in `global-data.ts`.
- *   3. "Name" text field — becomes enabled once an animal type is chosen, letting the
- *      player give their companion a personal name.
- *   4. "Details" textarea — free-form text for backstory, personality, etc.
+ *      Rodentia, Primates, Aves, Reptilia, Other) from `ANIMAL_COMPANIONS`.
+ *   2. "Animal" dropdown — narrows to specific animals within that family.
+ *   3. "Name" text field — enabled once an animal is chosen.
+ *   4. "Details" text area — free-form text for backstory, personality, etc.
  *
- * The right panel shows an animated `SelectDetailExpanded` preview that updates
- * whenever the animal ID or name changes (the `detailsUpdated` boolean toggle is used
- * as the CSSTransition key to trigger the fade-grow animation).
+ * Redux is the single source of truth: every field reads from and dispatches
+ * `setAnimalCompanion()` directly, so a loaded or shared character shows its saved
+ * companion. The family and animal type are derived from the stored animal `id`;
+ * the only local state is a family the player has picked before choosing an animal.
  *
- * All four fields dispatch `setAnimalCompanion()` to Redux via a single `useEffect`
- * that watches `animalId`, `animalType`, `name`, and `description`.
+ * The right panel shows an animated `SelectDetailExpanded` preview once the companion
+ * has both an animal and a name (the filled/empty state is the CSSTransition key).
  *
  * This section is marked optional in the wizard — the Section's `incomplete` prop is
  * always an empty string, meaning it will never block advancing to WrapUp.
- *
- * Props:
- *   - incompleteFields: validation error string (always empty; section is optional)
  *
  * Used by:
  *   - Sections.tsx (ninth wizard section, after ManageWealth)
  */
 'use client';
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
-import ExternalLink from '@/app/components/common/ExternalLink';
 import { ANIMAL_COMPANIONS } from '@/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setAnimalCompanion } from "@/lib/slices/characterSlice";
-import { Select, Label, ListBox, TextField, Input } from "@heroui/react";
-import { useState, useRef, useEffect } from 'react';
+import { Select, Label, ListBox, TextField, Input, TextArea } from "@heroui/react";
+import { useState, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
-interface AnimalCompanion {
-	id: string,
-	name: string,
-	description: string
-};
+type FamilyId = keyof typeof ANIMAL_COMPANIONS;
 
-const ChooseAnimalCompanion = ({
-		incompleteFields
-	}: {
-		incompleteFields: string
-	}) => {
+const FAMILIES = Object.values(ANIMAL_COMPANIONS);
+
+/** Finds the family containing a given animal id, if any. */
+const findFamily = (animalId: string) =>
+	FAMILIES.find((f) => f.children.some((c) => c.id === animalId));
+
+const ChooseAnimalCompanion = () => {
 	const detailsRef = useRef(null);
 	const dispatch = useAppDispatch();
-	const [detailsUpdated, setDetailsUpdated] = useState(false);
-	const [selectedFamily, setSelectedFamily] = useState<AnimalCompanion[]>([]);
-	const [animalId, setAnimalId] = useState("");
-	const [animalType, setAnimalType] = useState("");
-	const [name, setName] = useState("");
-	const animalCompanion = useAppSelector(state => state.character.animalCompanion);
-	const [description, setDescription] = useState("");
-	const [details, setDetails] = useState(
-		<SelectDetailExpanded
-			imagePath=""
-			name="Choose an Animal Companion"
-			description="Select a path from the dropdown."
-			disabled={true}>
-			<div></div>
-		</SelectDetailExpanded>
-	);
+	const companion = useAppSelector(state => state.character.animalCompanion);
 
-	useEffect( () => {
-		dispatch(setAnimalCompanion(
-			{
-				id: animalId,
-				name: name,
-				details: description
-			}
-		));
-		if( animalId && name ) {
-			setDetails(
-				<SelectDetailExpanded
-					imagePath=""
-					name={animalCompanion.name}
-					description={`Type: ${animalType}`}
-					disabled={false}>
-					<div>
-						{animalCompanion.details}
-					</div>
-				</SelectDetailExpanded>
-			);
-		}
-	},[animalId, animalType, name, description, dispatch, animalCompanion] );
+	// A saved animal determines its family; otherwise use the family the player picked
+	const [pickedFamily, setPickedFamily] = useState<FamilyId | null>(null);
+	const savedFamily = companion.id ? findFamily(companion.id) : undefined;
+	const familyId = (savedFamily?.id as FamilyId | undefined) ?? pickedFamily;
+	const animals = familyId ? ANIMAL_COMPANIONS[familyId].children : [];
+	const animal = savedFamily?.children.find((c) => c.id === companion.id);
+	const isComplete = !!(animal && companion.name);
 
-	const handleSelectOneChange = (val: React.Key | null) => {
-		if (val) {
-			let children = ANIMAL_COMPANIONS[String(val) as keyof typeof ANIMAL_COMPANIONS].children;
-			setSelectedFamily(children);
-		}
+	const update = (changes: Partial<typeof companion>) =>
+		dispatch(setAnimalCompanion({ ...companion, ...changes }));
+
+	const handleFamilyChange = (val: React.Key | null) => {
+		if (!val || val === familyId) return;
+		setPickedFamily(val as FamilyId);
+		// The previously chosen animal belongs to another family, so clear it
+		if (companion.id) update({ id: "" });
 	};
 
-	const handleSelectTwoChange = (val: React.Key | null) => {
-		if (val) {
-			let companion = selectedFamily.find((c) => c.id === String(val));
-			if(companion) {
-				setAnimalId(companion.id);
-				setAnimalType(companion.name);
-			}
-		}
+	const handleAnimalChange = (val: React.Key | null) => {
+		if (val) update({ id: String(val) });
 	};
 
 	return (
@@ -117,14 +77,11 @@ const ChooseAnimalCompanion = ({
 				<div className="max-w-[673px] md:pr-4">
 					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose an Animal Companion (optional)</h2>
 					<p className="pb-2">
-						There are many cultures across Solum, though most beings are a member of one of the five main cultures. Choosing a culture will give you two unique aspects.
-					</p>
-					<p>
-						For more information, see <ExternalLink href="https://atom-magic.com/codex/Cultures" name="Cultures" />
+						An animal companion is optional and purely for roleplaying; it does not affect scores. Choose a family, then an animal, and give your companion a name and any details.
 					</p>
 					<div className="m-auto">
 						<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 mb-4">
-							<Select onChange={handleSelectOneChange} placeholder="Select a Family">
+							<Select value={familyId} onChange={handleFamilyChange} placeholder="Select a Family">
 								<Label>Animal Family</Label>
 								<Select.Trigger>
 									<Select.Value />
@@ -132,17 +89,9 @@ const ChooseAnimalCompanion = ({
 								</Select.Trigger>
 								<Select.Popover>
 									<ListBox>
-										{[
-											{ id: "canidae", label: "Canidae" },
-											{ id: "felidae", label: "Felidae" },
-											{ id: "rodentia", label: "Rodentia" },
-											{ id: "primates", label: "Primates" },
-											{ id: "aves", label: "Aves" },
-											{ id: "reptilia", label: "Reptilia" },
-											{ id: "other", label: "Other" },
-										].map((item) => (
-											<ListBox.Item key={item.id} id={item.id} textValue={item.label}>
-												{item.label}
+										{FAMILIES.map((f) => (
+											<ListBox.Item key={f.id} id={f.id} textValue={f.name}>
+												{f.name}
 												<ListBox.ItemIndicator />
 											</ListBox.Item>
 										))}
@@ -150,8 +99,9 @@ const ChooseAnimalCompanion = ({
 								</Select.Popover>
 							</Select>
 							<Select
-								isDisabled={selectedFamily.length === 0}
-								onChange={handleSelectTwoChange}
+								isDisabled={animals.length === 0}
+								value={companion.id || null}
+								onChange={handleAnimalChange}
 								placeholder="Select an Animal"
 							>
 								<Label>Animal</Label>
@@ -161,7 +111,7 @@ const ChooseAnimalCompanion = ({
 								</Select.Trigger>
 								<Select.Popover>
 									<ListBox>
-										{selectedFamily.map((a) => (
+										{animals.map((a) => (
 											<ListBox.Item key={a.id} id={a.id} textValue={a.name}>
 												{a.name}
 												<ListBox.ItemIndicator />
@@ -170,32 +120,27 @@ const ChooseAnimalCompanion = ({
 									</ListBox>
 								</Select.Popover>
 							</Select>
-							<TextField isDisabled={!animalId}>
+							<TextField
+								isDisabled={!companion.id}
+								value={companion.name}
+								onChange={(name) => update({ name })}
+							>
 								<Label>Name</Label>
-								<Input
-									type="text"
-									placeholder="Enter Animal Name"
-									onChange={(e) => {
-										const val = e.target.value;
-										if (val) {
-											if (name === "") setDetailsUpdated(cur => !cur);
-											setName(val);
-										}
-									}}
-								/>
+								<Input type="text" placeholder="Enter Animal Name" />
 							</TextField>
 						</div>
-						<div className="flex flex-col gap-1">
-							<label className={`text-sm ${!animalId ? 'opacity-50' : ''}`}>Details</label>
-							<textarea
-								disabled={!animalId}
+						<TextField
+							isDisabled={!companion.id}
+							value={companion.details}
+							onChange={(details) => update({ details })}
+							className="flex flex-col gap-1"
+						>
+							<Label>Details</Label>
+							<TextArea
 								placeholder="Enter Animal Companion Details"
-								className="border-2 border-stone p-2 w-full min-h-[100px] bg-white disabled:opacity-50"
-								onChange={(e) => {
-									if (e.target.value) setDescription(e.target.value);
-								}}
+								className="border-2 border-stone p-2 w-full min-h-[100px] bg-white"
 							/>
-						</div>
+						</TextField>
 					</div>
 				</div>
 			</div>
@@ -203,14 +148,32 @@ const ChooseAnimalCompanion = ({
 				<div className="max-w-[673px] md:pl-4">
 					<SwitchTransition mode="out-in">
 						<CSSTransition
-				   		key={detailsUpdated ? "x" : "y"}
-				   		nodeRef={detailsRef}
-				   		timeout={300}
-				   		classNames='fade-grow'
-				 		>
-				 			<div ref={detailsRef}>
-					 			{details}
-				 			</div>
+							key={isComplete ? "x" : "y"}
+							nodeRef={detailsRef}
+							timeout={300}
+							classNames='fade-grow'
+						>
+							<div ref={detailsRef}>
+								{isComplete ? (
+									<SelectDetailExpanded
+										imagePath=""
+										name={companion.name}
+										description={`Type: ${animal?.name}`}
+										disabled={false}>
+										<div>
+											{companion.details}
+										</div>
+									</SelectDetailExpanded>
+								) : (
+									<SelectDetailExpanded
+										imagePath=""
+										name="Choose an Animal Companion"
+										description="Select an animal from the dropdowns."
+										disabled={true}>
+										<div></div>
+									</SelectDetailExpanded>
+								)}
+							</div>
 						</CSSTransition>
 					</SwitchTransition>
 				</div>
