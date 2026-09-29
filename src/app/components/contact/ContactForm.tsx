@@ -8,7 +8,6 @@
  * - Honeypot field (`website`) hidden from real users; if filled, the submit is
  *   silently rejected on the server
  * - Privacy consent checkbox required before submission
- * - Offline guard using OfflineContext — disables submission when no network
  *
  * Server-side protections are in `src/app/api/contact/route.ts` (rate limiting,
  * HTML sanitization, field validation).
@@ -19,10 +18,9 @@
 'use client';
 
 import { useState } from 'react';
-import { mdiSend, mdiWifiOff } from '@mdi/js';
+import { mdiSend } from '@mdi/js';
 import Icon from '@mdi/react';
 import StatusMessage from '@/app/components/common/StatusMessage';
-import { useOffline } from '@/lib/OfflineContext';
 
 interface FormData {
 	name: string;
@@ -51,7 +49,6 @@ const ContactForm = ({ recipientEmail }: { recipientEmail?: string }) => {
 	});
 
 	const [status, setStatus] = useState<FormStatus>({ type: 'idle' });
-	const { isOffline } = useOffline();
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -176,14 +173,6 @@ const ContactForm = ({ recipientEmail }: { recipientEmail?: string }) => {
 
 	return (
 		<>
-			{isOffline && (
-				<div className="mb-6 flex items-center gap-3 py-4 px-4 border-2 border-stone bg-parchment dark:bg-charcoal/20">
-					<Icon path={mdiWifiOff} size={1} className="text-stone flex-shrink-0" />
-					<p className="text-stone dark:text-stone/80 text-sm">
-						Contact form requires an internet connection. Please reconnect to send your message.
-					</p>
-				</div>
-			)}
 			<form onSubmit={handleSubmit} className="space-y-6">
 				{/* Honeypot field - hidden from humans, bots will fill it */}
 			<div className="absolute -left-[9999px]" aria-hidden="true">
@@ -287,20 +276,15 @@ const ContactForm = ({ recipientEmail }: { recipientEmail?: string }) => {
 			<div>
 				<button
 					type="submit"
-					disabled={status.type === 'loading' || isOffline}
+					disabled={status.type === 'loading'}
 					className={`w-full py-4 px-6 marcellus text-lg flex items-center justify-center gap-2 transition-colors ${
-						status.type === 'loading' || isOffline
+						status.type === 'loading'
 							? 'bg-stone/50 text-white cursor-not-allowed'
 							: 'bg-gold text-black hover:bg-brightgold'
 					}`}
 				>
 					{status.type === 'loading' ? (
 						'Sending...'
-					) : isOffline ? (
-						<>
-							<Icon path={mdiWifiOff} size={0.9} />
-							Offline
-						</>
 					) : (
 						<>
 							<Icon path={mdiSend} size={0.9} />

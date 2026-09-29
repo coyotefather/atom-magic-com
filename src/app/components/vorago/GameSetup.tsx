@@ -11,9 +11,8 @@
  * initialises the full board state. It then calls the `onStart` prop to tell
  * the parent page to switch from the setup view to the board view.
  *
- * If the device is offline (detected via `useOffline()`), the AI difficulty
- * controls are replaced with an offline warning and the Start Game button is
- * disabled, because the AI opponent calls a server-side API route.
+ * The AI opponent calls a server-side API route; if that request fails, the
+ * AI thunk shows an error and ends its turn (see voragoAIThunk.ts).
  *
  * A short "Quick Rules" summary is displayed below the form so new players
  * understand the core loop before the game begins.
@@ -28,8 +27,7 @@ import { useAppDispatch } from '@/lib/hooks';
 import { newGame, setPlayerNames, setAIMode } from '@/lib/slices/voragoSlice';
 import { useState } from 'react';
 import Icon from '@mdi/react';
-import { mdiRobot, mdiAccountGroup, mdiWifiOff } from '@mdi/js';
-import { useOffline } from '@/lib/OfflineContext';
+import { mdiRobot, mdiAccountGroup } from '@mdi/js';
 
 interface GameSetupProps {
 	onStart: () => void;
@@ -43,7 +41,6 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 	const [aiDifficulty, setAIDifficulty] = useState<'easy' | 'medium' | 'hard'>(
 		'medium'
 	);
-	const { isOffline } = useOffline();
 
 	const handleStartGame = () => {
 		dispatch(
@@ -125,37 +122,26 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 								<label className="block mb-2 text-sm uppercase tracking-wider text-stone">
 									AI Difficulty
 								</label>
-								{isOffline ? (
-									<div className="flex items-center gap-2 py-3 px-4 border-2 border-stone bg-parchment">
-										<Icon path={mdiWifiOff} size={0.8} className="text-stone" />
-										<span className="text-stone text-sm">
-											AI opponent requires internet connection
-										</span>
-									</div>
-								) : (
-									<>
-										<div className="grid grid-cols-3 gap-3">
-											{(['easy', 'medium', 'hard'] as const).map((level) => (
-												<button
-													key={level}
-													onClick={() => setAIDifficulty(level)}
-													className={`py-3 px-4 border-2 transition-all capitalize marcellus ${
-														aiDifficulty === level
-															? 'bg-laurel text-white border-laurel'
-															: 'bg-white text-black border-stone hover:border-laurel'
-													}`}
-												>
-													{level}
-												</button>
-											))}
-										</div>
-										<p className="text-sm text-stone mt-2">
-											{aiDifficulty === 'easy' && 'AI makes basic moves'}
-											{aiDifficulty === 'medium' && 'AI uses simple strategy'}
-											{aiDifficulty === 'hard' && 'AI plays competitively'}
-										</p>
-									</>
-								)}
+								<div className="grid grid-cols-3 gap-3">
+									{(['easy', 'medium', 'hard'] as const).map((level) => (
+										<button
+											key={level}
+											onClick={() => setAIDifficulty(level)}
+											className={`py-3 px-4 border-2 transition-all capitalize marcellus ${
+												aiDifficulty === level
+													? 'bg-laurel text-white border-laurel'
+													: 'bg-white text-black border-stone hover:border-laurel'
+											}`}
+										>
+											{level}
+										</button>
+									))}
+								</div>
+								<p className="text-sm text-stone mt-2">
+									{aiDifficulty === 'easy' && 'AI makes basic moves'}
+									{aiDifficulty === 'medium' && 'AI uses simple strategy'}
+									{aiDifficulty === 'hard' && 'AI plays competitively'}
+								</p>
 							</div>
 						)}
 
@@ -178,14 +164,9 @@ const GameSetup = ({ onStart }: GameSetupProps) => {
 						{/* Start Button */}
 						<button
 							onClick={handleStartGame}
-							disabled={vsAI && isOffline}
-							className={`w-full py-4 px-6 border-2 marcellus text-xl transition-colors ${
-								vsAI && isOffline
-									? 'bg-stone/50 text-white border-stone cursor-not-allowed'
-									: 'bg-laurel text-white border-laurel hover:bg-laurel-dark'
-							}`}
+							className="w-full py-4 px-6 border-2 marcellus text-xl transition-colors bg-laurel text-white border-laurel hover:bg-laurel-dark"
 						>
-							{vsAI && isOffline ? 'AI Requires Internet' : 'Start Game'}
+							Start Game
 						</button>
 					</div>
 				</div>
