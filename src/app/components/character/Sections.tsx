@@ -131,7 +131,6 @@ const Sections = ({
 		disciplinesIncomplete,
 		gearIncomplete,
 		wealthIncomplete,
-		animalCompanionIncomplete,
 		clickCheck,
 		setClickCheck,
 	} = useCharacterValidation();
@@ -422,7 +421,7 @@ const Sections = ({
 				variant="dual"
 				clickCheck={setClickCheck}
 				expandFunction={() => setShowWrapUp(true)}>
-				<ChooseAnimalCompanion incompleteFields={animalCompanionIncomplete} />
+				<ChooseAnimalCompanion />
 			</Section>
 			<Section
 				expanded={showWrapUp}

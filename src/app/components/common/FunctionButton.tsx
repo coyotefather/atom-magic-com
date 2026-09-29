@@ -45,7 +45,12 @@ type Variant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'chip' | 'tab' | '
 type Size = 'sm' | 'md' | 'lg';
 
 interface FunctionButtonProps {
-  /** Click handler (event parameter optional for stopPropagation etc.) */
+  /**
+   * Click handler. Plain-button variants (ghost, chip, tab, toggle) receive the
+   * mouse event, e.g. for stopPropagation. HeroUI-backed variants (primary,
+   * secondary, danger) are called with no event: React Aria's press handling
+   * already stops the click from propagating to parent elements.
+   */
   onClick?: (e?: React.MouseEvent) => void;
   /** MDI icon path (optional) */
   icon?: string;
