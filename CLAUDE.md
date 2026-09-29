@@ -120,6 +120,16 @@ The `RichText` component is at `src/app/components/common/RichText.tsx` and uses
 
 ---
 
+## HeroUI v3
+
+The project uses **HeroUI v3** (`@heroui/react`), which is built on React Aria and uses compound components (e.g. `Select`, `Label`, `ListBox`, `Table`). It is **not** v2: v2 props like `radius`, `color` and `variant="bordered"` don't exist.
+
+- **Check the HeroUI MCP before using or changing a HeroUI component.** Call `list_components` to confirm the component exists in v3, then `get_component_docs` for its API and anatomy. For theming, use `get_docs` with `/docs/react/getting-started/theming` or call `get_theme_variables`.
+- **Theming**: HeroUI's CSS variables are overridden in `src/app/globals.css` (the "HeroUI v3 theme overrides" block). `--radius: 0` squares every component. `--accent` is gold, `--danger` oxblood, `--success` laurel, `--warning` bronze, and the surfaces and borders map to the `--theme-*` tokens so dark mode follows `.dark`. Change colors there, not per component.
+- **Per-component styling**: use `className` with Tailwind utilities, or target HeroUI's BEM classes (e.g. `.button--primary`) inside `@layer components`.
+
+---
+
 ## Character Manager
 
 ### Overview
@@ -220,7 +230,7 @@ Set `DEBUG_MODE = true` in `VoragoBoard.tsx` to show ring rotations and cell ind
 - Border-based card styling with `border-2 border-stone`
 - Marcellus font for headings
 - Noto Serif for body text
-- HeroUI components with `radius="none"`
+- HeroUI corners are squared globally via `--radius: 0` in `globals.css` (v3 has no `radius` prop)
 
 ### Spacing Standards
 - Section padding: `py-12 md:py-16`
@@ -273,7 +283,7 @@ interface PageHeroProps {
 
 **FunctionButton** (`src/app/components/common/FunctionButton.tsx`):
 - Same variants as LinkButton plus `danger` (oxblood)
-- Uses HeroUI Button with `radius="none"`
+- Uses HeroUI Button (square corners come from the global theme)
 
 ---
 
@@ -493,7 +503,7 @@ src/app/components/
 - API routes can log errors server-side
 
 ### Component Patterns
-- HeroUI components always use `radius="none"` for classical aesthetic
+- HeroUI components get square corners and palette colors from the theme overrides in `globals.css`. Don't pass `radius` props (that's HeroUI v2)
 - Page heroes use `PageHero` component with accent colors matching page theme
 - Cards use `border-2 border-stone` instead of shadows or rounded corners
 
@@ -562,7 +572,7 @@ Dark mode uses CSS variables `--theme-bg`, `--theme-text`, `--theme-border` that
 
 - **IMPORTANT**: Use Tailwind CSS 4 utility classes — no inline styles, no CSS modules, no styled-components
 - **IMPORTANT**: No rounded corners (`rounded-*`) — the classical aesthetic uses sharp edges only
-- **IMPORTANT**: HeroUI components always pass `radius="none"`
+- **IMPORTANT**: Don't pass `radius` props to HeroUI (v3 has none). Corners and colors come from the HeroUI theme overrides in `globals.css`
 - Borders use `border-2 border-stone` (cards) or `border-2 border-gold` (highlighted)
 - Section padding: `py-12 md:py-16` — container padding: `px-6 md:px-8`
 - Page backgrounds: `bg-parchment` for content areas, `bg-black` for high-contrast sections
@@ -600,3 +610,13 @@ import { mdiSword } from '@mdi/js';
 - Map terrain icons (PNGs): `public/map-icons/`
 - CMS media images: served via Vercel Blob — access via `(doc.mainImage as Media).url` after depth-resolving the relationship
 - **IMPORTANT**: If Figma MCP server returns a localhost source for an image or SVG, use that source directly — do not create placeholders
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
