@@ -138,6 +138,55 @@
   --color-parchment-dark: #252220;
 }
 
+/*
+  HeroUI v3 theme overrides. HeroUI declares its variables inside @layer theme,
+  so these unlayered rules win. Most values reference --theme-* / --color-*
+  tokens above, which already flip under .dark.
+*/
+:root {
+  /* Sharp corners everywhere (all --radius-* and field radii derive from these) */
+  --radius: 0;
+  --field-radius: 0;
+
+  --background: var(--theme-bg);
+  --foreground: var(--theme-text);
+  --surface: var(--theme-bg-elevated);
+  --surface-foreground: var(--theme-text);
+  --overlay: var(--theme-bg-elevated);
+  --overlay-foreground: var(--theme-text);
+  --default: var(--theme-bg-alt);
+  --default-foreground: var(--theme-text);
+  --segment: var(--theme-bg-elevated);
+  --segment-foreground: var(--theme-text);
+  --muted: var(--theme-text-muted);
+
+  --accent: var(--color-gold);
+  --accent-foreground: var(--color-black);
+  --focus: var(--color-gold-dark);
+  --link: var(--color-gold-dark);
+
+  --success: var(--color-laurel);
+  --success-foreground: var(--color-ivory);
+  --warning: var(--color-bronze);
+  --warning-foreground: var(--color-ivory);
+  --danger: var(--color-oxblood);
+  --danger-foreground: var(--color-ivory);
+
+  --border: var(--theme-border);
+  --separator: var(--theme-border-subtle);
+
+  --field-background: var(--theme-bg-elevated);
+  --field-foreground: var(--theme-text);
+  --field-placeholder: var(--theme-text-muted);
+}
+
+.dark {
+  --success: var(--color-laurel-light);
+  --warning: var(--color-bronze-light);
+  --warning-foreground: var(--color-black);
+  --danger: var(--color-oxblood-light);
+}
+
 @layer base {
   *,
   ::after,
