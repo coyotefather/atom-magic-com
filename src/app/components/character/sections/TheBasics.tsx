@@ -36,7 +36,7 @@
 import { useState, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setCharacterName, setCharacterAge, setCharacterPronouns, setCharacterDescription } from "@/lib/slices/characterSlice";
-import { TextField, Label, Input, FieldError } from "@heroui/react";
+import { TextField, Label, Input, TextArea, FieldError } from "@heroui/react";
 import SelectDetailExpanded from '@/app/components/common/SelectDetailExpanded';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import ExternalLink from '@/app/components/common/ExternalLink';
@@ -52,34 +52,29 @@ const TheBasics = ({
 	const age = useAppSelector(state => state.character.age);
 	const pronouns = useAppSelector(state => state.character.pronouns);
 	const description = useAppSelector(state => state.character.description);
-	const [detailsUpdated, setDetailsUpdated] = useState(false);
+	// Start "updated" if a loaded character already has basics, so the preview shows them
+	const [detailsUpdated, setDetailsUpdated] = useState(() => !!(name || age || pronouns || description));
 	const dispatch = useAppDispatch()
+	const isNameInvalid = !!(incompleteFields && incompleteFields !== "init");
 
-	const handleChange  = (
-		event: React.ChangeEvent<HTMLInputElement>,
-		updateType: string): void => {
-
-		const inputTarget = event.target as HTMLInputElement;
+	const handleChange = (value: string, updateType: string): void => {
 		switch(updateType) {
 			case "update_name":
-				dispatch(setCharacterName(inputTarget.value));
-				setDetailsUpdated(true);
+				dispatch(setCharacterName(value));
 				break;
 			case "update_age":
-				dispatch(setCharacterAge(Number(inputTarget.value)));
-				setDetailsUpdated(true);
+				dispatch(setCharacterAge(Number(value)));
 				break;
 			case "update_pronouns":
-				dispatch(setCharacterPronouns(inputTarget.value));
-				setDetailsUpdated(true);
+				dispatch(setCharacterPronouns(value));
 				break;
 			case "update_description":
-				dispatch(setCharacterDescription(inputTarget.value));
-				setDetailsUpdated(true);
+				dispatch(setCharacterDescription(value));
 				break;
 			default:
-				break;
+				return;
 		}
+		setDetailsUpdated(true);
 	}
 
 	let subtitle = "";
@@ -105,47 +100,44 @@ const TheBasics = ({
 					<div className="mb-2 flex flex-col sm:flex-row gap-2 sm:gap-4">
 						<TextField
 							isRequired
-							isInvalid={!!(incompleteFields && incompleteFields !== "init")}
+							isInvalid={isNameInvalid}
+							value={name}
+							onChange={(v) => handleChange(v, 'update_name')}
 							className="w-full sm:flex-1"
 						>
 							<Label>Name</Label>
-							<Input
-								type="text"
-								placeholder="Enter Character Name"
-								onChange={(e) => handleChange(e, 'update_name')}
-							/>
-							{!!(incompleteFields && incompleteFields !== "init") && (
-								<FieldError>Please enter a name.</FieldError>
-							)}
+							<Input type="text" placeholder="Enter Character Name" />
+							<FieldError>Please enter a name.</FieldError>
 						</TextField>
-						<TextField className="w-full sm:w-24">
+						<TextField
+							type="number"
+							value={age ? String(age) : ""}
+							onChange={(v) => handleChange(v, 'update_age')}
+							className="w-full sm:w-24"
+						>
 							<Label>Age</Label>
-							<Input
-								type="number"
-								placeholder="Age"
-								onChange={(e) => handleChange(e, 'update_age')}
-							/>
+							<Input placeholder="Age" />
 						</TextField>
-						<TextField className="w-full sm:w-40">
+						<TextField
+							value={pronouns}
+							onChange={(v) => handleChange(v, 'update_pronouns')}
+							className="w-full sm:w-40"
+						>
 							<Label>Pronouns</Label>
-							<Input
-								type="text"
-								placeholder="Pronouns"
-								onChange={(e) => handleChange(e, 'update_pronouns')}
-							/>
+							<Input type="text" placeholder="Pronouns" />
 						</TextField>
 					</div>
-					<div className="flex flex-col gap-1">
-						<label className="text-sm text-stone">Description</label>
-						<textarea
-							onChange={(e) => {
-								dispatch(setCharacterDescription(e.target.value));
-								setDetailsUpdated(true);
-							}}
+					<TextField
+						value={description}
+						onChange={(v) => handleChange(v, 'update_description')}
+						className="flex flex-col gap-1"
+					>
+						<Label>Description</Label>
+						<TextArea
 							className="border-2 border-stone p-2 w-full min-h-[100px] bg-white"
 							placeholder="Enter Character Description"
 						/>
-					</div>
+					</TextField>
 				</div>
 			</div>
 			<div className="py-8 md:py-16 px-4 md:px-0">

@@ -37,7 +37,7 @@ import ExternalLink from '@/app/components/common/ExternalLink';
 import { ANIMAL_COMPANIONS } from '@/lib/global-data';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'
 import { setAnimalCompanion } from "@/lib/slices/characterSlice";
-import { Select, Label, ListBox, TextField, Input } from "@heroui/react";
+import { Select, Label, ListBox, TextField, Input, TextArea } from "@heroui/react";
 import { useState, useRef, useEffect } from 'react';
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
@@ -65,7 +65,7 @@ const ChooseAnimalCompanion = ({
 		<SelectDetailExpanded
 			imagePath=""
 			name="Choose an Animal Companion"
-			description="Select a path from the dropdown."
+			description="Select an animal from the dropdowns."
 			disabled={true}>
 			<div></div>
 		</SelectDetailExpanded>
@@ -117,10 +117,7 @@ const ChooseAnimalCompanion = ({
 				<div className="max-w-[673px] md:pr-4">
 					<h2 className="marcellus text-3xl border-b-2 border-solid mb-4">Choose an Animal Companion (optional)</h2>
 					<p className="pb-2">
-						There are many cultures across Solum, though most beings are a member of one of the five main cultures. Choosing a culture will give you two unique aspects.
-					</p>
-					<p>
-						For more information, see <ExternalLink href="https://atom-magic.com/codex/Cultures" name="Cultures" />
+						An animal companion is optional and purely for roleplaying; it does not affect scores. Choose a family, then an animal, and give your companion a name and any details.
 					</p>
 					<div className="m-auto">
 						<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 mb-4">
@@ -170,32 +167,30 @@ const ChooseAnimalCompanion = ({
 									</ListBox>
 								</Select.Popover>
 							</Select>
-							<TextField isDisabled={!animalId}>
+							<TextField
+								isDisabled={!animalId}
+								value={name}
+								onChange={(val) => {
+									if (name === "" && val) setDetailsUpdated(cur => !cur);
+									setName(val);
+								}}
+							>
 								<Label>Name</Label>
-								<Input
-									type="text"
-									placeholder="Enter Animal Name"
-									onChange={(e) => {
-										const val = e.target.value;
-										if (val) {
-											if (name === "") setDetailsUpdated(cur => !cur);
-											setName(val);
-										}
-									}}
-								/>
+								<Input type="text" placeholder="Enter Animal Name" />
 							</TextField>
 						</div>
-						<div className="flex flex-col gap-1">
-							<label className={`text-sm ${!animalId ? 'opacity-50' : ''}`}>Details</label>
-							<textarea
-								disabled={!animalId}
+						<TextField
+							isDisabled={!animalId}
+							value={description}
+							onChange={setDescription}
+							className="flex flex-col gap-1"
+						>
+							<Label>Details</Label>
+							<TextArea
 								placeholder="Enter Animal Companion Details"
-								className="border-2 border-stone p-2 w-full min-h-[100px] bg-white disabled:opacity-50"
-								onChange={(e) => {
-									if (e.target.value) setDescription(e.target.value);
-								}}
+								className="border-2 border-stone p-2 w-full min-h-[100px] bg-white"
 							/>
-						</div>
+						</TextField>
 					</div>
 				</div>
 			</div>

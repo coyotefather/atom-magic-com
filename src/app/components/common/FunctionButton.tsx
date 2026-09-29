@@ -22,7 +22,7 @@
  * <button> elements with Tailwind classes only.
  *
  * All variants share Marcellus font, uppercase tracking, and sharp corners
- * (`radius="none"` equivalent via Tailwind — no rounded classes applied).
+ * (HeroUI corners are squared globally by `--radius: 0` in globals.css).
  *
  * Three size presets: "sm", "md" (default), "lg" — control padding, font
  * size, and icon size together.
@@ -89,7 +89,7 @@ const variantConfig: Record<Variant, { base: string; active: string; inactive: s
     inactive: '',
   },
   danger: {
-    base: 'bg-oxblood text-white hover:bg-oxblood-dark border-0',
+    base: 'bg-oxblood text-white hover:bg-oxblood-light border-0',
     active: '',
     inactive: '',
   },
@@ -274,7 +274,10 @@ const FunctionButton = ({
       isDisabled={isDisabled}
       onPress={() => onClick?.()}
       isIconOnly={isIconOnly}
-      aria-label={title}
+      // Only icon-only buttons need an aria-label; otherwise the visible text is the name.
+      // React Aria drops `title`, so re-add it on the DOM button for the tooltip.
+      aria-label={isIconOnly || !children ? title : undefined}
+      render={title ? (props) => <button {...props} title={title} /> : undefined}
       className={clsx(
         'marcellus uppercase tracking-widest font-bold transition-colors',
         padding,

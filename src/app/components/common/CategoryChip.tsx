@@ -40,7 +40,7 @@ const CategoryChip = ({
 		<Link href={`/codex/categories/${category?.slug}`}>
 			<Chip
 				style={{ backgroundColor: category.chipColor?.hex ?? '#BB9731' }}
-				className="rounded-full hover:gold-gradient text-black font-semibold hover:text-black hover:font-bold"
+				className="hover:gold-gradient text-black font-semibold hover:font-bold"
 			>
 				{category?.title}
 			</Chip>

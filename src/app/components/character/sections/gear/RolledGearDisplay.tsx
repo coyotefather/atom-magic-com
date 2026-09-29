@@ -47,8 +47,8 @@ const WeaponDisplay = ({ weapon, enhancement }: { weapon: Weapon; enhancement?: 
         <span className="marcellus font-semibold">{weapon.name}</span>
       </IconLabel>
       <div className="flex gap-2 mb-2">
-        <Chip size="sm" className="bg-stone capitalize text-white">{weapon.category}</Chip>
-        <Chip size="sm" className="bg-stone capitalize text-white">{weapon.type}</Chip>
+        <Chip size="sm" className="bg-stone-dark capitalize text-white">{weapon.category}</Chip>
+        <Chip size="sm" className="bg-stone-dark capitalize text-white">{weapon.type}</Chip>
         <Chip size="sm" className="bg-brightgold text-black">Tier {weapon.tier}</Chip>
         {weapon.isExotic && (
           <Chip size="sm" className="bg-oxblood text-white">
@@ -86,7 +86,7 @@ const ArmorDisplay = ({ armor, enhancement }: { armor: Armor; enhancement?: Enha
         <span className="marcellus font-semibold">{armor.name}</span>
       </IconLabel>
       <div className="flex gap-2 mb-2">
-        <Chip size="sm" className="bg-stone capitalize text-white">{armor.category}</Chip>
+        <Chip size="sm" className="bg-stone-dark capitalize text-white">{armor.category}</Chip>
         <Chip size="sm" className="bg-brightgold text-black">Tier {armor.tier}</Chip>
         {armor.isExotic && (
           <Chip size="sm" className="bg-oxblood text-white">

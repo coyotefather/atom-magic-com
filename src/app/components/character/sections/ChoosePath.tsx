@@ -75,12 +75,12 @@ const ChoosePath = ({
 		const chosenPath = paths.find((p) => p._id === pathId);
 		if (chosenPath && chosenPath.modifiers !== null) {
 			const modifiers = (
-				<Table>
+				<Table variant="secondary">
 					<Table.ScrollContainer>
 						<Table.Content aria-label={`${chosenPath.title} Modifiers`} className="mt-8">
 							<Table.Header>
-								{["Score", "Subscore","Modifier"].map((tc) => (
-									<Table.Column key={tc} id={tc} className="bg-transparent border-b-2 pl-0">
+								{["Score", "Subscore","Modifier"].map((tc, i) => (
+									<Table.Column key={tc} id={tc} isRowHeader={i === 0} className="bg-transparent border-b-2 pl-0">
 										{tc}
 									</Table.Column>
 								))}
@@ -155,7 +155,7 @@ const ChoosePath = ({
 						<Select
 							isRequired
 							isInvalid={!!(incompleteFields && incompleteFields !== "init")}
-							value={currentPath ?? ""}
+							value={currentPath || null}
 							onChange={handleSelectChange}
 							placeholder="Select a Path"
 							className="w-96 mt-8"
@@ -165,9 +165,7 @@ const ChoosePath = ({
 								<Select.Value />
 								<Select.Indicator />
 							</Select.Trigger>
-							{!!(incompleteFields && incompleteFields !== "init") && (
-								<FieldError>Please select a path.</FieldError>
-							)}
+							<FieldError>Please select a path.</FieldError>
 							<Select.Popover>
 								<ListBox>
 									{paths.map((path) => (
