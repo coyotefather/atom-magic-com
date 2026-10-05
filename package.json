@@ -46,7 +46,7 @@
     "react-markdown": "^10.0.1",
     "react-redux": "^9.2.0",
     "react-transition-group": "^4.4.5",
-    "remark-definition-list": "^2.0.0",
+    "remark-definition-list": "^2.0.1",
     "remark-extended-table": "^2.0.3",
     "remark-gfm": "^4.0.0",
     "remark-heading-id": "^1.0.1",
