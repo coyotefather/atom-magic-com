@@ -1,8 +1,8 @@
 diff --git a/node_modules/@payloadcms/plugin-mcp/dist/mcp/tools/resource/update.js b/node_modules/@payloadcms/plugin-mcp/dist/mcp/tools/resource/update.js
-index 1a81ee7..5b31a83 100644
+index ddcfadd..12bcd06 100644
 --- a/node_modules/@payloadcms/plugin-mcp/dist/mcp/tools/resource/update.js
 +++ b/node_modules/@payloadcms/plugin-mcp/dist/mcp/tools/resource/update.js
-@@ -226,7 +226,7 @@ ${JSON.stringify(errors)}
+@@ -197,7 +197,7 @@ ${JSON.stringify(errors)}
          // Create a new schema that combines the converted fields with update-specific parameters
          // Use .partial() to make all fields optional for partial updates
          const updateResourceSchema = z.object({
