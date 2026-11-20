@@ -125,7 +125,7 @@ The `RichText` component is at `src/app/components/common/RichText.tsx` and uses
 The project uses **HeroUI v3** (`@heroui/react`), which is built on React Aria and uses compound components (e.g. `Select`, `Label`, `ListBox`, `Table`). It is **not** v2: v2 props like `radius`, `color` and `variant="bordered"` don't exist.
 
 - **Check the HeroUI MCP before using or changing a HeroUI component.** Call `list_components` to confirm the component exists in v3, then `get_component_docs` for its API and anatomy. For theming, use `get_docs` with `/docs/react/getting-started/theming` or call `get_theme_variables`.
-- **Theming**: HeroUI's CSS variables are overridden in `src/app/globals.css` (the "HeroUI v3 theme overrides" block). `--radius: 0` squares every component. `--accent` is gold, `--danger` oxblood, `--success` laurel, `--warning` bronze, and the surfaces and borders map to the `--theme-*` tokens so dark mode follows `.dark`. Change colors there, not per component.
+- **Theming**: HeroUI's CSS variables are overridden in `src/app/globals.css` (the "HeroUI v3 theme overrides" block). `--radius: 0` squares every component. `--accent` is olive, `--danger` gold, `--success` laurel, `--warning` bronze, and the surfaces and borders map to the `--theme-*` tokens so dark mode follows `.dark`. Change colors there, not per component.
 - **Per-component styling**: use `className` with Tailwind utilities, or target HeroUI's BEM classes (e.g. `.button--primary`) inside `@layer components`.
 
 ---
@@ -215,15 +215,21 @@ Set `DEBUG_MODE = true` in `VoragoBoard.tsx` to show ring rotations and cell ind
 ### Color Palette (Light Mode)
 | Name | Hex | CSS Variable |
 |------|-----|--------------|
-| Gold | `#BB9731` | `--color-gold` |
-| Gold Dark | `#836A22` | `--color-gold-dark` |
-| Bright Gold | `#D4AF37` | `--color-brightgold` |
-| Oxblood | `#722F37` | `--color-oxblood` |
-| Laurel | `#5A6F4E` | `--color-laurel` |
-| Bronze | `#8C7853` | `--color-bronze` |
-| Stone | `#9A9A8E` | `--color-stone` |
-| Stone Dark | `#6B6B62` | `--color-stone-dark` |
-| Parchment | `#F5F0E1` | `--color-parchment` |
+| Olive | `#716D3D` | `--color-olive` (fills, primary actions) |
+| Olive Dark | `#56522D` | `--color-olive-dark` (hover) |
+| Olive Bright | `#B9B17B` | `--color-olive-bright` (accent on dark surfaces) |
+| Olive FG | `#56522D` / dark `#B9B17B` | `--color-olive-fg` (theme-aware text/border/icon accent) |
+| Gold | `#906820` | `--color-gold` (supporting accent, danger fill) |
+| Gold Dark | `#725016` | `--color-gold-dark` (danger hover) |
+| Gold Bright | `#D6B75C` | `--color-gold-bright` (accent on dark surfaces) |
+| Gold FG | `#906820` / dark `#D6B75C` | `--color-gold-fg` (theme-aware) |
+| Laurel | `#536347` | `--color-laurel` |
+| Bronze | `#80633E` | `--color-bronze` |
+| Stone | `#938D77` | `--color-stone` |
+| Stone Dark | `#68634F` | `--color-stone-dark` |
+| Parchment | `#F7F8F4` | `--color-parchment` (soft off-white; legacy name) |
+
+Palette follows the Figma "Warm Olive" update (20 Nov 2026): former gold became **olive**, former oxblood became **gold**. Use `bg-*` with the fixed fill tokens and `text-/border-/ring-*-fg` for accents that must adapt to dark mode; on permanently dark surfaces (Hero, Footer, Nav, `bg-black` sections) use `-bright`. Filled olive/gold buttons use white labels.
 
 ### UI Patterns
 - No rounded corners (classical aesthetic)
@@ -246,7 +252,7 @@ interface PageHeroProps {
   title: string;
   description?: string;
   icon: string;                                      // MDI icon path
-  accentColor: 'gold' | 'oxblood' | 'laurel' | 'bronze' | 'stone';
+  accentColor: 'olive' | 'gold' | 'laurel' | 'bronze' | 'stone';
   variant?: 'full' | 'compact' | 'inline';           // Default: 'full'
   theme?: 'dark' | 'light';                          // Default: 'dark'
   cta?: { label: string; href: string };
@@ -261,28 +267,28 @@ interface PageHeroProps {
 **Usage by page:**
 | Page | Accent Color | Variant | Theme |
 |------|--------------|---------|-------|
-| Character Manager | oxblood | full/compact | dark |
+| Character Manager | gold | full/compact | dark |
 | Vorago | laurel | full/compact | dark |
-| Codex | gold | full | light |
+| Codex | olive | full | light |
 | Timeline | laurel | full | light |
 | Creatures | bronze | full | dark |
 | Creature Manager | bronze | full | dark |
 | Encounters | bronze | full | dark |
 | Adventure Log | bronze | full | dark |
-| Dice Roller | gold | inline | dark |
-| Loot Roller | gold | inline | dark |
-| Tools | gold | inline | dark |
-| Quick Reference | gold | inline | dark |
+| Dice Roller | olive | inline | dark |
+| Loot Roller | olive | inline | dark |
+| Tools | olive | inline | dark |
+| Quick Reference | olive | inline | dark |
 | Map | laurel | full | light |
 
 ### Button Components
 **LinkButton** (`src/app/components/common/LinkButton.tsx`):
-- Primary: `bg-gold text-black hover:bg-brightgold`
-- Secondary: `border-2 border-gold text-gold bg-transparent hover:bg-gold/10`
+- Primary: `bg-olive text-white hover:bg-olive-dark`
+- Secondary: `border-2 border-olive-fg text-olive-fg bg-transparent hover:bg-olive/10`
 - Styling: `px-8 py-3 marcellus uppercase tracking-widest text-sm font-bold`
 
 **FunctionButton** (`src/app/components/common/FunctionButton.tsx`):
-- Same variants as LinkButton plus `danger` (oxblood)
+- Same variants as LinkButton plus `danger` (gold)
 - Uses HeroUI Button (square corners come from the global theme)
 
 ---
@@ -367,7 +373,7 @@ import IconLabel from '@/app/components/common/IconLabel';
 import { mdiHeart, mdiStar } from '@mdi/js';
 
 // Simple icon + value
-<IconLabel icon={mdiHeart} iconColor="text-oxblood">10</IconLabel>
+<IconLabel icon={mdiHeart} iconColor="text-gold-fg">10</IconLabel>
 
 // Icon + label prefix + value
 <IconLabel icon={mdiStar} label="Enhancement">{name}</IconLabel>
@@ -543,16 +549,15 @@ This is the source of truth for the design system: use it with the Figma MCP (`c
 
 | Token | Tailwind class | CSS variable |
 |-------|---------------|--------------|
-| Gold | `text-gold` / `bg-gold` | `--color-gold` |
-| Gold Dark | `text-gold-dark` | `--color-gold-dark` |
-| Bright Gold | `bg-brightgold` | `--color-brightgold` |
-| Oxblood | `text-oxblood` / `bg-oxblood` | `--color-oxblood` |
+| Olive | `bg-olive` / `text-olive-fg` / `text-olive-bright` | `--color-olive`, `--color-olive-fg` |
+| Olive Dark | `bg-olive-dark` | `--color-olive-dark` |
+| Gold | `bg-gold` / `text-gold-fg` / `text-gold-bright` | `--color-gold`, `--color-gold-fg` |
 | Laurel | `text-laurel` / `bg-laurel` | `--color-laurel` |
 | Bronze | `text-bronze` / `bg-bronze` | `--color-bronze` |
 | Stone | `text-stone` / `bg-stone` | `--color-stone` |
 | Stone Dark | `text-stone-dark` | `--color-stone-dark` |
 | Parchment | `bg-parchment` | `--color-parchment` |
-| Black | `text-black` / `bg-black` | `rgb(35, 31, 32)` |
+| Black | `text-black` / `bg-black` | `#27271E` |
 
 Dark mode uses CSS variables `--theme-bg`, `--theme-text`, `--theme-border` that flip automatically via `.dark` class.
 
@@ -575,7 +580,7 @@ Dark mode uses CSS variables `--theme-bg`, `--theme-text`, `--theme-border` that
 - **IMPORTANT**: Use Tailwind CSS 4 utility classes — no inline styles, no CSS modules, no styled-components
 - **IMPORTANT**: No rounded corners (`rounded-*`) — the classical aesthetic uses sharp edges only
 - **IMPORTANT**: Don't pass `radius` props to HeroUI (v3 has none). Corners and colors come from the HeroUI theme overrides in `globals.css`
-- Borders use `border-2 border-stone` (cards) or `border-2 border-gold` (highlighted)
+- Borders use `border-2 border-stone` (cards) or `border-2 border-olive-fg` (highlighted)
 - Section padding: `py-12 md:py-16` — container padding: `px-6 md:px-8`
 - Page backgrounds: `bg-parchment` for content areas, `bg-black` for high-contrast sections
 - Shadows: avoid — use borders instead
@@ -588,7 +593,7 @@ Icons use `@mdi/react` with Material Design Icons paths from `@mdi/js`:
 import Icon from '@mdi/react';
 import { mdiSword } from '@mdi/js';
 
-<Icon path={mdiSword} size={1} className="text-gold" />
+<Icon path={mdiSword} size={1} className="text-olive-fg" />
 ```
 
 - **IMPORTANT**: Do not install new icon packages — use MDI only
