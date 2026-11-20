@@ -524,7 +524,9 @@ The Figma plugin (`figma@claude-plugins-official`) is installed globally and pro
 ### Design System File
 
 Figma file: **"Atom Magic — Design System"** (key: `NOJ9ybTsaubW6DKkdTeA6u`)  
-Published as a shared library. All components are available to page capture files in the Atom Magic Figma project.
+URL: https://www.figma.com/design/NOJ9ybTsaubW6DKkdTeA6u/Atom-Magic-%E2%80%94-Design-System?node-id=123-7 (node `123:7` is the starting point in the file)  
+Published as a shared library. All components are available to page capture files in the Atom Magic Figma project.  
+This is the source of truth for the design system: use it with the Figma MCP (`create_session`, `search_design_system`, `get_design_context`, `get_variable_defs`) when building or checking UI.
 
 ### Required Figma-to-Code Flow
 
