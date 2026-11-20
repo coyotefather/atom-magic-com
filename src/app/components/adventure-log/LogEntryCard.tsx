@@ -62,7 +62,7 @@ const LogEntryCard = ({ entry, onToggleKeyEvent, onDelete }: LogEntryCardProps) 
 	const getEntryColor = () => {
 		switch (entry.type) {
 			case 'roll':
-				return 'border-l-gold';
+				return 'border-l-olive-fg';
 			case 'action':
 				return 'border-l-bronze';
 			case 'note':
@@ -73,7 +73,7 @@ const LogEntryCard = ({ entry, onToggleKeyEvent, onDelete }: LogEntryCardProps) 
 	const getIconColor = () => {
 		switch (entry.type) {
 			case 'roll':
-				return 'text-gold';
+				return 'text-olive-fg';
 			case 'action':
 				return 'text-bronze';
 			case 'note':
@@ -84,7 +84,7 @@ const LogEntryCard = ({ entry, onToggleKeyEvent, onDelete }: LogEntryCardProps) 
 	return (
 		<div
 			className={`group bg-white border-2 border-stone/30 border-l-4 ${getEntryColor()} ${
-				entry.isKeyEvent ? 'ring-2 ring-gold/30' : ''
+				entry.isKeyEvent ? 'ring-2 ring-olive-fg/30' : ''
 			}`}
 		>
 			<div className="p-3">
@@ -155,7 +155,7 @@ const LogEntryCard = ({ entry, onToggleKeyEvent, onDelete }: LogEntryCardProps) 
 							icon={entry.isKeyEvent ? mdiStar : mdiStarOutline}
 							isActive={entry.isKeyEvent}
 							title={entry.isKeyEvent ? 'Remove from key events' : 'Mark as key event'}
-							className={entry.isKeyEvent ? '' : 'border-0 text-stone/50 hover:text-gold'}
+							className={entry.isKeyEvent ? '' : 'border-0 text-stone/50 hover:text-olive-fg'}
 						/>
 						<FunctionButton
 							variant="ghost"
@@ -163,7 +163,7 @@ const LogEntryCard = ({ entry, onToggleKeyEvent, onDelete }: LogEntryCardProps) 
 							onClick={() => onDelete(entry.id)}
 							icon={mdiClose}
 							title="Delete entry"
-							className="text-stone/50 hover:text-oxblood opacity-0 group-hover:opacity-100"
+							className="text-stone/50 hover:text-gold-fg opacity-0 group-hover:opacity-100"
 						/>
 					</div>
 				</div>

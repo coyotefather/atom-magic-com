@@ -24,7 +24,7 @@
  *   - href: string           — navigation target
  *   - icon?: string          — MDI icon path (optional)
  *   - accentColor?: string   — CSS color value for the top accent bar and icon
- *                              (defaults to var(--color-gold))
+ *                              (defaults to var(--color-olive-fg))
  *   - variant?: 'default' | 'compact' | 'large'
  *   - showArrow?: boolean    — whether to show the "Enter →" footer (default true)
  *   - className?: string     — additional classes on the outer Link wrapper
@@ -56,7 +56,7 @@ const ContentCard = ({
 	description,
 	href,
 	icon,
-	accentColor = 'var(--color-gold)',
+	accentColor = 'var(--color-olive-fg)',
 	variant = 'default',
 	showArrow = true,
 	className,
@@ -68,7 +68,7 @@ const ContentCard = ({
 		<Link href={href} className={clsx('group block no-underline', className)}>
 			<article
 				className={clsx(
-					'relative h-full bg-white border-2 border-stone hover:border-gold transition-colors',
+					'relative h-full bg-white border-2 border-stone hover:border-olive-fg transition-colors',
 					{
 						'p-4': isCompact,
 						'p-6 md:p-8': !isCompact,
@@ -77,7 +77,7 @@ const ContentCard = ({
 			>
 				{/* Accent line at top */}
 				<div
-					className="absolute top-0 left-0 w-full h-1 transition-all group-hover:h-1.5"
+					className="absolute top-0 left-0 w-full h-px transition-all group-hover:h-1"
 					style={{ backgroundColor: accentColor }}
 				/>
 
@@ -105,7 +105,7 @@ const ContentCard = ({
 				{/* Title */}
 				<h3
 					className={clsx(
-						'marcellus text-black group-hover:text-gold transition-colors',
+						'marcellus text-black group-hover:text-olive-fg transition-colors',
 						{
 							'text-lg mb-2': isCompact,
 							'text-2xl mb-3': !isCompact && !isLarge,
@@ -132,7 +132,7 @@ const ContentCard = ({
 				{showArrow && (
 					<div
 						className={clsx(
-							'flex items-center gap-2 text-stone group-hover:text-gold transition-colors',
+							'flex items-center gap-2 text-stone-dark group-hover:text-olive-fg transition-colors',
 							{
 								'mt-3': isCompact,
 								'mt-6': !isCompact,

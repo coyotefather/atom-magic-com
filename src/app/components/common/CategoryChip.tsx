@@ -7,7 +7,7 @@
  *
  * The background color is driven by the `chipColor.hex` value stored on the
  * category document in Payload CMS. If no color is set, it falls back to the
- * project's gold color (`#BB9731`). Text is always black for contrast.
+ * project's bright olive (`#B9B17B`). Text is always black for contrast.
  *
  * Note: this component intentionally uses `rounded-full` (pill shape) rather
  * than the project's usual sharp-corner aesthetic, following the convention
@@ -39,8 +39,8 @@ const CategoryChip = ({
 	return (
 		<Link href={`/codex/categories/${category?.slug}`}>
 			<Chip
-				style={{ backgroundColor: category.chipColor?.hex ?? '#BB9731' }}
-				className="hover:gold-gradient text-black font-semibold hover:font-bold"
+				style={{ backgroundColor: category.chipColor?.hex ?? '#B9B17B' }}
+				className="text-black font-semibold hover:font-bold"
 			>
 				{category?.title}
 			</Chip>

@@ -126,9 +126,9 @@ export const getDifficultyColor = (rating: DifficultyRating): string => {
 	const colors: Record<DifficultyRating, string> = {
 		trivial: 'text-stone',
 		easy: 'text-laurel',
-		moderate: 'text-gold',
+		moderate: 'text-olive-fg',
 		hard: 'text-bronze',
-		deadly: 'text-oxblood',
+		deadly: 'text-gold-fg',
 	};
 	return colors[rating];
 };
@@ -141,9 +141,9 @@ export const getChallengeLevelColor = (challengeLevel: string): string => {
 		harmless: 'bg-stone/10 text-stone-dark',
 		trivial: 'bg-stone/20 text-stone',
 		easy: 'bg-laurel/20 text-laurel',
-		moderate: 'bg-gold/20 text-gold',
+		moderate: 'bg-olive/20 text-olive-fg',
 		hard: 'bg-bronze/20 text-bronze',
-		deadly: 'bg-oxblood/20 text-oxblood',
+		deadly: 'bg-gold/20 text-gold-fg',
 	};
 	return colors[challengeLevel] ?? 'bg-stone/10 text-stone';
 };

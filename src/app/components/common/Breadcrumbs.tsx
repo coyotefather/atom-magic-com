@@ -50,7 +50,7 @@ export const BreadcrumbItem = ({
 			<a
 				href={url}
 				className=
-					"flex items-center text-gold whitespace-nowrap line-clamp-1  outline-hidden hover:contrast-100 hover:saturate-150 hover:brightness-100 cursor-pointer hover:text-brightgold">
+					"flex items-center text-olive-bright whitespace-nowrap line-clamp-1  outline-hidden hover:contrast-100 hover:saturate-150 hover:brightness-100 cursor-pointer hover:text-white">
 				{title}
 			</a>
 		);

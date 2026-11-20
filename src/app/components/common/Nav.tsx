@@ -3,12 +3,12 @@
  *
  * The site navigation link list, used inside the global site header. Renders
  * a set of Next.js Links styled with Marcellus font, wide letter-spacing, and
- * gold highlighting for the active route.
+ * olive highlighting for the active route.
  *
  * Active route detection: a link is considered active if the current pathname
  * starts with the link's `href` (or is an exact match for the root "/").
- * Active links receive a gold underline border in extended mode, or simply
- * gold text in compact mode.
+ * Active links receive an olive underline border in extended mode, or simply
+ * olive text in compact mode.
  *
  * The `extended` flag controls two layout modes:
  *   - extended = true  — shows ALL nav items with `p-1` spacing and an
@@ -63,14 +63,14 @@ const Nav = ({
 					const active = isActive(item.href);
 					if(extended) {
 						return <Link
-									className={`p-1 text-lg tracking-widest no-underline font-extrabold transition-colors ${active ? 'text-gold border-b-2 border-gold' : 'hover:text-gold'}`}
+									className={`p-1 text-lg tracking-widest no-underline font-extrabold transition-colors ${active ? 'text-olive-fg border-b-2 border-olive-fg' : 'hover:text-olive-fg'}`}
 									href={item.href}
 									key={item.name}
 									aria-current={active ? 'page' : undefined}
 								>{item.name}</Link>;
 					} else if(extended === false && item.extended !== true ) {
 						return <Link
-									className={`p-5 text-lg tracking-widest no-underline font-extrabold transition-colors ${active ? 'text-gold' : 'hover:text-gold'}`}
+									className={`p-5 text-lg tracking-widest no-underline font-extrabold transition-colors ${active ? 'text-olive-fg' : 'hover:text-olive-fg'}`}
 									href={item.href}
 									key={item.name}
 									aria-current={active ? 'page' : undefined}

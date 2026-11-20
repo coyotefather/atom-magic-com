@@ -58,21 +58,21 @@ const CharacterOptionCard = ({
 	onClick,
 }: CharacterOptionCardProps) => {
 	return (
-		<div className="bg-white border-2 border-stone hover:border-oxblood transition-colors group">
-			<div className="h-1 bg-oxblood" />
+		<div className="bg-white border-2 border-stone hover:border-gold-fg transition-colors group">
+			<div className="h-1 bg-gold" />
 			<div className="p-6 text-center">
-				<div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center border-2 border-stone group-hover:border-oxblood transition-colors">
+				<div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center border-2 border-stone group-hover:border-gold-fg transition-colors">
 					<Icon
 						path={icon}
 						size={1.25}
-						className="text-stone group-hover:text-oxblood transition-colors"
+						className="text-stone group-hover:text-gold-fg transition-colors"
 					/>
 				</div>
 				<h3 className="marcellus text-xl text-black mb-2">{title}</h3>
 				<p className="text-sm text-stone-dark mb-4">{description}</p>
 				<button
 					onClick={onClick}
-					className="w-full py-3 px-6 bg-gold text-black marcellus uppercase tracking-widest text-sm font-bold hover:bg-brightgold transition-colors"
+					className="w-full py-3 px-6 bg-olive text-white marcellus uppercase tracking-widest text-sm font-bold hover:bg-olive-dark transition-colors"
 				>
 					{buttonText}
 				</button>
@@ -204,7 +204,7 @@ const CharacterOptions = ({
 
 				{/* Error message */}
 				{importError && (
-					<div className="mt-6 max-w-md mx-auto p-4 bg-oxblood/10 border border-oxblood text-oxblood text-center text-sm">
+					<div className="mt-6 max-w-md mx-auto p-4 bg-gold/10 border border-gold-fg text-gold-fg text-center text-sm">
 						{importError}
 					</div>
 				)}

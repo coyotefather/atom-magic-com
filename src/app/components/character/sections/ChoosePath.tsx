@@ -13,7 +13,7 @@
  *   Right: An animated `SelectDetailExpanded` panel showing the selected path's
  *          name, description, and a HeroUI Table of its score modifiers (Score,
  *          Subscore, Modifier columns). Positive modifiers are displayed in green
- *          (laurel), negative modifiers in red (oxblood).
+ *          (laurel), negative modifiers in gold.
  *
  * When a path is selected:
  *   1. `setPath(id)` is dispatched to Redux.
@@ -97,7 +97,7 @@ const ChoosePath = ({
 										<Table.Cell className={clsx(
 											'pl-0 font-bold',
 											{
-												'text-oxblood': m.modifierValue && m.modifierValue < 0
+												'text-gold-fg': m.modifierValue && m.modifierValue < 0
 											},
 											{
 												'text-laurel': m.modifierValue && m.modifierValue > 0

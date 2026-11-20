@@ -21,14 +21,14 @@ const tools = [
 		description: 'Quickly generate NPCs or starting characters. Choose an archetype or lock specific choices and randomize the rest.',
 		href: '/generator',
 		icon: mdiAccountCog,
-		color: 'oxblood',
+		color: 'gold',
 	},
 	{
 		name: 'Dice Roller',
 		description: 'Roll dice for your sessions with support for all standard dice types, modifiers, and roll history.',
 		href: '/dice',
 		icon: mdiDice6,
-		color: 'gold',
+		color: 'olive',
 	},
 	{
 		name: 'Creature Roller',
@@ -42,7 +42,7 @@ const tools = [
 		description: 'Build and balance encounters. Select creatures, adjust quantities, and calculate threat levels for your party.',
 		href: '/encounters',
 		icon: mdiSwordCross,
-		color: 'oxblood',
+		color: 'gold',
 	},
 	{
 		name: 'Creature Manager',
@@ -82,15 +82,15 @@ const tools = [
 ];
 
 const colorClasses: Record<string, { bg: string; border: string; icon: string }> = {
+	olive: {
+		bg: 'bg-olive/10',
+		border: 'border-olive-fg',
+		icon: 'text-olive-fg',
+	},
 	gold: {
 		bg: 'bg-gold/10',
-		border: 'border-gold',
-		icon: 'text-gold',
-	},
-	oxblood: {
-		bg: 'bg-oxblood/10',
-		border: 'border-oxblood',
-		icon: 'text-oxblood',
+		border: 'border-gold-fg',
+		icon: 'text-gold-fg',
 	},
 	laurel: {
 		bg: 'bg-laurel/10',
@@ -116,7 +116,7 @@ export default function ToolsPage() {
 				title="Tools"
 				description="Utility tools for your Atom Magic tabletop sessions"
 				icon={mdiTools}
-				accentColor="gold"
+				accentColor="olive"
 				variant="inline"
 			/>
 
@@ -128,14 +128,14 @@ export default function ToolsPage() {
 							<Link
 								key={tool.href}
 								href={tool.href}
-								className="group block bg-white border-2 border-stone hover:border-gold transition-colors no-underline"
+								className="group block bg-white border-2 border-stone hover:border-olive-fg transition-colors no-underline"
 							>
 								<div className={`p-6 ${colors.bg} border-b-2 ${colors.border}`}>
 									<div className="flex items-center gap-4">
 										<div className={`w-12 h-12 flex items-center justify-center border-2 ${colors.border} bg-white`}>
 											<Icon path={tool.icon} size={1.25} className={colors.icon} />
 										</div>
-										<h2 className="marcellus text-xl text-black group-hover:text-gold transition-colors">
+										<h2 className="marcellus text-xl text-black group-hover:text-olive-fg transition-colors">
 											{tool.name}
 										</h2>
 									</div>
@@ -144,7 +144,7 @@ export default function ToolsPage() {
 									<p className="text-stone text-sm mb-4">
 										{tool.description}
 									</p>
-									<span className="inline-flex items-center gap-1 text-sm text-bronze group-hover:text-gold transition-colors marcellus uppercase tracking-wider">
+									<span className="inline-flex items-center gap-1 text-sm text-bronze group-hover:text-olive-fg transition-colors marcellus uppercase tracking-wider">
 										Open tool
 										<Icon path={mdiArrowRight} size={0.625} />
 									</span>

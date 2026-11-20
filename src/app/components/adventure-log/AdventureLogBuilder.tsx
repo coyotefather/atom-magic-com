@@ -268,7 +268,7 @@ const AdventureLogBuilder = () => {
 						</p>
 						<button
 							onClick={handleNewSession}
-							className="px-6 py-3 bg-bronze text-white marcellus uppercase tracking-wider hover:bg-gold transition-colors"
+							className="px-6 py-3 bg-bronze text-white marcellus uppercase tracking-wider hover:bg-olive transition-colors"
 						>
 							New Session
 						</button>

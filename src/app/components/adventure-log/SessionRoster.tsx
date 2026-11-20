@@ -85,7 +85,7 @@ const SessionRoster = ({
 													{session.entryCount} entr{session.entryCount !== 1 ? 'ies' : 'y'}
 												</span>
 												{session.keyEventCount > 0 && (
-													<span className="flex items-center gap-1 text-gold">
+													<span className="flex items-center gap-1 text-olive-fg">
 														<Icon path={mdiStar} size={0.5} />
 														{session.keyEventCount} key
 													</span>
@@ -110,7 +110,7 @@ const SessionRoster = ({
 											}}
 											icon={mdiDelete}
 											title="Delete session"
-											className="opacity-0 group-hover:opacity-100 hover:text-oxblood"
+											className="opacity-0 group-hover:opacity-100 hover:text-gold-fg"
 										/>
 									</div>
 								</div>
@@ -129,7 +129,7 @@ const SessionRoster = ({
 					fullWidth
 					onClick={onNew}
 					icon={mdiPlus}
-					className="bg-bronze hover:bg-gold"
+					className="bg-bronze hover:bg-olive"
 				>
 					New Session
 				</FunctionButton>

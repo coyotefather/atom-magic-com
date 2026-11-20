@@ -75,7 +75,7 @@ const DiceDisplay = ({ result, isRolling }: DiceDisplayProps) => {
 			>
 				<div
 					className={`w-32 h-32 flex items-center justify-center border-4 ${
-						isRolling ? 'border-stone bg-parchment' : 'border-gold bg-white'
+						isRolling ? 'border-stone bg-parchment' : 'border-olive-fg bg-white'
 					}`}
 				>
 					<span
@@ -88,10 +88,10 @@ const DiceDisplay = ({ result, isRolling }: DiceDisplayProps) => {
 				</div>
 
 				{/* Corner decorations */}
-				<div className="absolute -top-1 -left-1 w-3 h-3 border-t-2 border-l-2 border-gold" />
-				<div className="absolute -top-1 -right-1 w-3 h-3 border-t-2 border-r-2 border-gold" />
-				<div className="absolute -bottom-1 -left-1 w-3 h-3 border-b-2 border-l-2 border-gold" />
-				<div className="absolute -bottom-1 -right-1 w-3 h-3 border-b-2 border-r-2 border-gold" />
+				<div className="absolute -top-1 -left-1 w-3 h-3 border-t-2 border-l-2 border-olive-fg" />
+				<div className="absolute -top-1 -right-1 w-3 h-3 border-t-2 border-r-2 border-olive-fg" />
+				<div className="absolute -bottom-1 -left-1 w-3 h-3 border-b-2 border-l-2 border-olive-fg" />
+				<div className="absolute -bottom-1 -right-1 w-3 h-3 border-b-2 border-r-2 border-olive-fg" />
 			</div>
 
 			{/* Roll notation */}

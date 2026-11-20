@@ -100,7 +100,7 @@ export function UnifiedEntry({
 	return (
 		<article className="notoserif bg-white">
 			{/* Breadcrumb bar */}
-			<div className="bg-black border-b-2 border-gold">
+			<div className="bg-black border-b-2 border-olive-bright">
 				<div className="container px-6 md:px-8 py-4">
 					<Breadcrumbs currentPage={displayTitle ?? ''} parents={parents} />
 				</div>
@@ -113,7 +113,7 @@ export function UnifiedEntry({
 					<aside className="md:order-first order-last">
 						<div className="border-2 border-stone bg-parchment sticky top-4">
 							{/* Gold accent line */}
-							<div className="h-1 bg-gold" />
+							<div className="h-1 bg-olive" />
 
 							{/* Image */}
 							{mainImage?.url && (
@@ -149,7 +149,7 @@ export function UnifiedEntry({
 
 					{/* Main content */}
 					<section className="md:col-span-2">
-						<h1 className="marcellus text-3xl md:text-4xl text-black mb-6 pb-4 border-b-2 border-gold">
+						<h1 className="marcellus text-3xl md:text-4xl text-black mb-6 pb-4 border-b-2 border-olive-fg">
 							{displayTitle}
 						</h1>
 
@@ -174,7 +174,7 @@ export function UnifiedEntry({
 				<div className="container px-6 md:px-8 py-6">
 					<Link
 						href="/codex"
-						className="inline-flex items-center gap-2 text-stone hover:text-gold transition-colors no-underline"
+						className="inline-flex items-center gap-2 text-stone hover:text-olive-fg transition-colors no-underline"
 					>
 						<Icon path={mdiArrowLeft} size={0.875} />
 						<span className="marcellus uppercase tracking-wider text-sm">
@@ -193,9 +193,9 @@ function CreatureSidebar({ entry }: { entry: Creature }) {
 		harmless: 'text-stone-dark',
 		trivial: 'text-stone',
 		easy: 'text-laurel',
-		moderate: 'text-gold',
+		moderate: 'text-olive-fg',
 		hard: 'text-bronze',
-		deadly: 'text-oxblood',
+		deadly: 'text-gold-fg',
 	};
 
 	return (
@@ -236,7 +236,7 @@ function CreatureSidebar({ entry }: { entry: Creature }) {
 				<dd className="flex flex-wrap gap-3 text-black">
 					{entry.health != null && (
 						<span className="flex items-center gap-1">
-							<Icon path={mdiHeart} size={0.5} className="text-oxblood" />
+							<Icon path={mdiHeart} size={0.5} className="text-gold-fg" />
 							{entry.health}
 						</span>
 					)}
@@ -385,7 +385,7 @@ function DisciplineHeader({ entry }: { entry: Discipline }) {
 					<Link
 						key={tech.id}
 						href={tech.slug ? `/codex/entries/${tech.slug}` : '#'}
-						className="block text-sm bg-white p-3 border-l-2 border-laurel hover:border-gold transition-colors no-underline"
+						className="block text-sm bg-white p-3 border-l-2 border-laurel hover:border-olive-fg transition-colors no-underline"
 					>
 						<span className="font-semibold text-black">{tech.title}</span>
 						{tech.latin && (
@@ -458,7 +458,7 @@ function PathSidebar({ entry }: { entry: Path }) {
 							return (
 								<div key={idx} className="text-black">
 									{sub?.title}:{' '}
-									<span className={(mod.modifierValue || 0) > 0 ? 'text-laurel' : 'text-oxblood'}>
+									<span className={(mod.modifierValue || 0) > 0 ? 'text-laurel' : 'text-gold-fg'}>
 										{(mod.modifierValue || 0) > 0 ? '+' : ''}
 										{mod.modifierValue}
 									</span>

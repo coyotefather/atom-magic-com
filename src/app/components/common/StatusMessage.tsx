@@ -5,9 +5,9 @@
  * submissions, save confirmations, validation errors, and informational
  * notices. It maps four semantic states to the project's design palette:
  *   - "success"  — laurel green (check-circle icon)
- *   - "error"    — oxblood red (alert-circle icon)
+ *   - "error"    — gold (alert-circle icon)
  *   - "warning"  — bronze amber (alert-circle icon)
- *   - "info"     — gold (information icon)
+ *   - "info"     — olive (information icon)
  *
  * Two display sizes:
  *   - "inline" (default) — compact horizontal bar; icon on the left, message
@@ -63,9 +63,9 @@ const variantConfig: Record<Variant, {
     icon: mdiCheckCircle,
   },
   error: {
-    bg: 'bg-oxblood/10',
-    border: 'border-oxblood',
-    text: 'text-oxblood',
+    bg: 'bg-gold/10',
+    border: 'border-gold-fg',
+    text: 'text-gold-fg',
     icon: mdiAlertCircle,
   },
   warning: {
@@ -75,9 +75,9 @@ const variantConfig: Record<Variant, {
     icon: mdiAlertCircle,
   },
   info: {
-    bg: 'bg-gold/10',
-    border: 'border-gold',
-    text: 'text-gold',
+    bg: 'bg-olive-fg/10',
+    border: 'border-olive-fg',
+    text: 'text-olive-fg',
     icon: mdiInformation,
   },
 };
@@ -114,11 +114,11 @@ const StatusMessage = ({
   if (size === 'full') {
     return (
       <div className={`${bg} border-2 ${border} p-8 text-center ${className}`}>
-        <Icon path={icon} size={2} className={`${text} mx-auto mb-4`} />
+        <Icon path={icon} size={2} className={`${text} mx-auto mb-3`} />
         {title && (
-          <h3 className={`text-xl marcellus ${text} mb-2`}>{title}</h3>
+          <h3 className="text-lg marcellus text-black mb-3">{title}</h3>
         )}
-        <p className="text-charcoal dark:text-parchment">{message}</p>
+        <p className="text-black">{message}</p>
         {children && <div className="mt-4">{children}</div>}
       </div>
     );
@@ -126,9 +126,9 @@ const StatusMessage = ({
 
   // Inline variant
   return (
-    <div className={`${bg} border-2 ${border} p-4 flex items-center gap-3 ${className}`}>
+    <div className={`${bg} border-4 ${border} px-4 py-3 flex items-center gap-3 ${className}`}>
       <Icon path={icon} size={1} className={`${text} flex-shrink-0`} />
-      <p className={text}>{message}</p>
+      <p className="text-black">{message}</p>
     </div>
   );
 };

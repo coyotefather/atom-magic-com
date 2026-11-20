@@ -4,7 +4,7 @@
  * A styled anchor tag for links that open outside the Atom Magic site.
  * Renders the link text followed by a small "open in new tab" icon
  * (mdiOpenInNew at 0.5 size) so users can tell at a glance that the link
- * leaves the site. The tab target is "_new" and the link turns oxblood on
+ * leaves the site. The tab target is "_new" and the link turns gold on
  * hover.
  *
  * Props:
@@ -27,7 +27,7 @@ const ExternalLink = ({
 		name: string
 	}) => {
 	return (
-		<a href={href} target="_new" className="hover:text-oxblood font-extrabold">
+		<a href={href} target="_new" className="hover:text-gold-fg font-extrabold">
 			{name}
 			<Icon className="ml-1 inline-block align-baseline" size={0.5} path={mdiOpenInNew} />
 		</a>

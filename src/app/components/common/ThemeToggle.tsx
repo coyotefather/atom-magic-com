@@ -12,7 +12,7 @@
  * correctly.
  *
  * No border is rendered — the button uses only padding and icon color,
- * turning gold on hover, so it sits unobtrusively in the site header.
+ * turning olive on hover, so it sits unobtrusively in the site header.
  *
  * Used by:
  *   - Global site header (alongside the Nav component)
@@ -30,7 +30,7 @@ const ThemeToggle = () => {
 	return (
 		<button
 			onClick={toggleTheme}
-			className="p-2 border-0 text-stone-dark hover:text-gold transition-colors"
+			className="p-2 border-0 text-stone-dark hover:text-olive-fg transition-colors"
 			aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
 			title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
 		>

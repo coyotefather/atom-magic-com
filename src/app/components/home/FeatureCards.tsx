@@ -30,7 +30,7 @@ const FeatureCard = ({ title, description, href, icon, accentColor }: FeatureCar
 			href={href}
 			className="group block no-underline"
 		>
-			<article className="relative h-full bg-white border-2 border-stone hover:border-gold transition-colors p-6 md:p-8">
+			<article className="relative h-full bg-white border-2 border-stone hover:border-olive-fg transition-colors p-6 md:p-8">
 				{/* Accent line */}
 				<div
 					className="absolute top-0 left-0 w-full h-1 transition-all group-hover:h-1.5"
@@ -50,7 +50,7 @@ const FeatureCard = ({ title, description, href, icon, accentColor }: FeatureCar
 				</div>
 
 				{/* Content */}
-				<h3 className="marcellus text-2xl text-black mb-3 group-hover:text-gold transition-colors">
+				<h3 className="marcellus text-2xl text-black mb-3 group-hover:text-olive-fg transition-colors">
 					{title}
 				</h3>
 				<p className="text-stone-dark leading-relaxed text-sm md:text-base">
@@ -58,7 +58,7 @@ const FeatureCard = ({ title, description, href, icon, accentColor }: FeatureCar
 				</p>
 
 				{/* Arrow indicator */}
-				<div className="mt-6 flex items-center gap-2 text-stone group-hover:text-gold transition-colors">
+				<div className="mt-6 flex items-center gap-2 text-stone group-hover:text-olive-fg transition-colors">
 					<span className="text-sm marcellus uppercase tracking-wider">Enter</span>
 					<span className="transform group-hover:translate-x-1 transition-transform">&rarr;</span>
 				</div>
@@ -74,14 +74,14 @@ const FeatureCards = () => {
 			description: 'Discover the lore of Solum, master the disciplines of atomic manipulation, and learn the rules that govern this world.',
 			href: '/codex',
 			icon: mdiBookOpenPageVariant,
-			accentColor: 'var(--color-gold)',
+			accentColor: 'var(--color-olive-fg)',
 		},
 		{
 			title: 'Character Manager',
 			description: 'Build a practitioner from the ground up. Choose your culture, path, and disciplines, then roll for gear and wealth.',
 			href: '/character',
 			icon: mdiAccountEdit,
-			accentColor: 'var(--color-oxblood)',
+			accentColor: 'var(--color-gold-fg)',
 		},
 		{
 			title: 'Vorago',

@@ -157,7 +157,7 @@ const ShareCharacterModal = ({ isOpen, onClose, character }: ShareCharacterModal
                   <Icon
                     path={mdiAlertCircleOutline}
                     size={2}
-                    className="text-oxblood"
+                    className="text-gold-fg"
                   />
                   <p className="text-center text-stone-dark dark:text-stone-light">
                     Unable to generate share link. The character data may be too large to share via URL.

@@ -30,7 +30,7 @@ export default function CustomHitsPerPage(props: UseHitsPerPageProps) {
 					refine(Number(event.target.value));
 				}}
 				value={String(currentValue)}
-				className="px-3 py-2 border-2 border-stone text-sm bg-white focus:border-gold focus:outline-none transition-colors cursor-pointer"
+				className="px-3 py-2 border-2 border-stone text-sm bg-white focus:border-olive-fg focus:outline-none transition-colors cursor-pointer"
 			>
 				{items.map((item) => (
 					<option key={item.value} value={item.value}>

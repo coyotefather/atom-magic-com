@@ -95,7 +95,7 @@ const SelectDetail = ({
 	return (
 		<>
 			<div className={clsx(
-			'p-4 border-2 border-gold bg-white',
+			'p-4 border-2 border-olive-fg bg-white',
 			{
 				'hidden': disabled === true,
 			})}>

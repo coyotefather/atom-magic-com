@@ -192,7 +192,7 @@ const SubScore = ({
 								<div className={clsx(
 									"text-sm border-b flex justify-between",
 									{
-										"text-oxblood font-semibold" : pathModifierTotal < 0
+										"text-gold-fg font-semibold" : pathModifierTotal < 0
 									},
 									{
 										"text-laurel font-semibold" : pathModifierTotal > 0
@@ -207,7 +207,7 @@ const SubScore = ({
 								<div className={clsx(
 									"text-sm flex justify-between",
 									{
-										"text-oxblood font-semibold" : gearModifierTotal < 0
+										"text-gold-fg font-semibold" : gearModifierTotal < 0
 									},
 									{
 										"text-laurel font-semibold" : gearModifierTotal > 0

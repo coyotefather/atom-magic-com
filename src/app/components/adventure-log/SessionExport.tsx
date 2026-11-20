@@ -92,7 +92,7 @@ const SessionExport = ({ session }: SessionExportProps) => {
 								fullWidth
 								onClick={handleCopy}
 								icon={mdiContentCopy}
-								className="bg-bronze hover:bg-gold"
+								className="bg-bronze hover:bg-olive"
 							>
 								{copySuccess ? 'Copied!' : 'Copy to Clipboard'}
 							</FunctionButton>

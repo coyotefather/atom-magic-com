@@ -185,7 +185,7 @@ const CustomCreatureEditor = ({
 							Based on:{' '}
 							<Link
 								href={`/codex/entries/${basedOnCreature.slug}`}
-								className="text-bronze hover:text-gold underline"
+								className="text-bronze hover:text-olive-fg underline"
 							>
 								{basedOnCreature.name}
 							</Link>
@@ -433,7 +433,7 @@ const CustomCreatureEditor = ({
 								onClick={() =>
 									dispatch(removeAttack(attack.id))
 								}
-								className="text-stone hover:text-oxblood transition-colors p-1"
+								className="text-stone hover:text-gold-fg transition-colors p-1"
 								title="Remove attack"
 							>
 								<Icon path={mdiClose} size={0.75} />
@@ -504,7 +504,7 @@ const CustomCreatureEditor = ({
 								onClick={() =>
 									dispatch(removeSpecialAbility(ability.id))
 								}
-								className="text-stone hover:text-oxblood transition-colors p-1"
+								className="text-stone hover:text-gold-fg transition-colors p-1"
 								title="Remove ability"
 							>
 								<Icon path={mdiClose} size={0.75} />
@@ -558,7 +558,7 @@ const CustomCreatureEditor = ({
 											onClick={() =>
 												handleRemoveEnvironment(env)
 											}
-											className="text-stone hover:text-oxblood transition-colors"
+											className="text-stone hover:text-gold-fg transition-colors"
 											title={`Remove ${env}`}
 										>
 											<Icon

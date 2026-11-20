@@ -11,7 +11,7 @@
  *     table stay compact while still exposing full item details on demand.
  *   - Stats: Damage (for weapons), Capacity (for armor), penalties text, and any
  *     non-zero Physical/Psychic shield bonuses. Positive shield bonuses are displayed
- *     in green (laurel), negative in red (oxblood).
+ *     in green (laurel), negative in gold.
  *   - Enhancement: If the item has an attached enhancement, shows its name and
  *     description. Empty for unenhanced items.
  *
@@ -75,7 +75,7 @@ const GearTable = ({ gear }: { gear: CharacterGearItem[] }) => {
 															<Chip size="sm" className="bg-black capitalize text-white">{g.type}</Chip>
 															<Chip size="sm" className="bg-parchment capitalize text-black">{g.category}</Chip>
 															<Chip size="sm" className="bg-stone/20 capitalize text-black">Tier {g.tier}</Chip>
-															{g.isExotic && <Chip size="sm" className="bg-gold text-black">Exotic</Chip>}
+															{g.isExotic && <Chip size="sm" className="bg-olive text-white">Exotic</Chip>}
 														</div>
 														{g.description && <div className="text-sm text-stone">{g.description}</div>}
 													</div>
@@ -89,12 +89,12 @@ const GearTable = ({ gear }: { gear: CharacterGearItem[] }) => {
 									{g.capacity != null && <div><span className="text-stone text-xs uppercase tracking-wider">CAP </span>{g.capacity}</div>}
 									{g.penalties && <div className="text-stone text-xs">{g.penalties}</div>}
 									{(g.physicalShieldBonus != null && g.physicalShieldBonus !== 0) && (
-										<div className={clsx({ "text-laurel font-bold": g.physicalShieldBonus > 0, "text-oxblood font-bold": g.physicalShieldBonus < 0 })}>
+										<div className={clsx({ "text-laurel font-bold": g.physicalShieldBonus > 0, "text-gold-fg font-bold": g.physicalShieldBonus < 0 })}>
 											PHY {g.physicalShieldBonus > 0 ? `+${g.physicalShieldBonus}` : g.physicalShieldBonus}
 										</div>
 									)}
 									{(g.psychicShieldBonus != null && g.psychicShieldBonus !== 0) && (
-										<div className={clsx({ "text-laurel font-bold": g.psychicShieldBonus > 0, "text-oxblood font-bold": g.psychicShieldBonus < 0 })}>
+										<div className={clsx({ "text-laurel font-bold": g.psychicShieldBonus > 0, "text-gold-fg font-bold": g.psychicShieldBonus < 0 })}>
 											PSY {g.psychicShieldBonus > 0 ? `+${g.psychicShieldBonus}` : g.psychicShieldBonus}
 										</div>
 									)}

@@ -132,7 +132,7 @@ const CampaignDashboard = () => {
 				</p>
 				<button
 					onClick={handleCreate}
-					className="px-6 py-3 bg-laurel text-white marcellus uppercase tracking-wider hover:bg-gold transition-colors"
+					className="px-6 py-3 bg-laurel text-white marcellus uppercase tracking-wider hover:bg-olive transition-colors"
 				>
 					Create Campaign
 				</button>

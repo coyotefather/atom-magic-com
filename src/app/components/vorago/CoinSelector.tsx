@@ -330,14 +330,14 @@ const CoinSelector = () => {
             <div className="flex gap-4 justify-center" role="group" aria-label="Spin direction">
               <button
                 onClick={() => setSpinDirection('cw')}
-                className="bg-gold text-black px-6 py-2 rounded hover:bg-brightgold focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+                className="bg-olive text-white px-6 py-2 rounded hover:bg-olive-dark focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
                 aria-label="Spin clockwise"
               >
                 <span aria-hidden="true">↻</span> Clockwise
               </button>
               <button
                 onClick={() => setSpinDirection('ccw')}
-                className="bg-gold text-black px-6 py-2 rounded hover:bg-brightgold focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+                className="bg-olive text-white px-6 py-2 rounded hover:bg-olive-dark focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
                 aria-label="Spin counter-clockwise"
               >
                 <span aria-hidden="true">↺</span> Counter-clockwise
@@ -360,7 +360,7 @@ const CoinSelector = () => {
                     className={`
                       px-4 py-2 rounded border-2 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black
                       ${canSelect
-                        ? 'bg-gold text-black border-black hover:bg-brightgold cursor-pointer'
+                        ? 'bg-olive text-white border-black hover:bg-olive-dark cursor-pointer'
                         : 'bg-gray-300 text-gray-500 border-gray-400 cursor-not-allowed'
                       }
                     `}
@@ -394,7 +394,7 @@ const CoinSelector = () => {
                 role="option"
                 aria-selected={false}
                 onClick={() => handleMagnaCoinSelect(coin.title)}
-                className="p-2 bg-gold text-black rounded hover:bg-brightgold text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+                className="p-2 bg-olive text-white rounded hover:bg-olive-dark text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
                 aria-label={`Disable ${coin.title} coin`}
               >
                 {coin.title}
@@ -438,13 +438,13 @@ const CoinSelector = () => {
                 disabled={!isClickable}
                 aria-label={`${coin.title}: ${coin.description}${statusText}`}
                 className={`
-                  p-2 border-2 transition-all relative flex flex-col items-center gap-1 text-center focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2
+                  p-2 border-2 transition-all relative flex flex-col items-center gap-1 text-center focus:outline-none focus:ring-2 focus:ring-olive-fg focus:ring-offset-2
                   ${isDisabledFromLastRound || isInapplicable
                     ? 'opacity-50 cursor-not-allowed border-gray-400 bg-gray-100'
                     : isUsedThisTurn
                       ? 'opacity-70 cursor-not-allowed border-gray-300 bg-gray-50'
                       : isSelected
-                        ? 'border-gold bg-yellow-50 ring-2 ring-gold shadow-lg scale-[1.02]'
+                        ? 'border-olive-fg bg-yellow-50 ring-2 ring-olive-fg shadow-lg scale-[1.02]'
                         : isOtherSelected
                           ? 'opacity-40 cursor-not-allowed border-gray-300 bg-gray-50'
                           : 'border-black hover:shadow-md hover:scale-[1.02] cursor-pointer bg-white'
@@ -467,7 +467,7 @@ const CoinSelector = () => {
 
                 {/* Selected indicator */}
                 {isSelected && (
-                  <div className="absolute -top-1 -left-1 px-1.5 py-0.5 bg-gold text-black rounded text-[8px] font-bold shadow-sm" aria-hidden="true">
+                  <div className="absolute -top-1 -left-1 px-1.5 py-0.5 bg-olive text-white rounded text-[8px] font-bold shadow-sm" aria-hidden="true">
                     Active
                   </div>
                 )}

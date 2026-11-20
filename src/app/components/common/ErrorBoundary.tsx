@@ -10,7 +10,7 @@
  *   1. Renders the `fallback` prop (if provided) — allows callers to show a
  *      custom recovery UI.
  *   2. Falls back to a built-in error card (styled with the project's stone/
- *      oxblood palette) that shows the error message in a collapsible
+ *      gold palette) that shows the error message in a collapsible
  *      <details> element and offers two actions:
  *        - "Try Again" — resets the error state so React re-renders the children
  *        - "Refresh Page" — reloads the browser tab
@@ -69,7 +69,7 @@ class ErrorBoundary extends Component<Props, State> {
 			return (
 				<div className="min-h-[50vh] flex items-center justify-center p-8">
 					<div className="max-w-md w-full border-2 border-stone bg-white p-8">
-						<h2 className="font-marcellus text-2xl text-oxblood mb-4">
+						<h2 className="font-marcellus text-2xl text-gold-fg mb-4">
 							Something went wrong
 						</h2>
 						<p className="font-notoserif text-stone mb-6">
@@ -77,7 +77,7 @@ class ErrorBoundary extends Component<Props, State> {
 						</p>
 						{this.state.error && (
 							<details className="mb-6">
-								<summary className="cursor-pointer text-sm text-stone hover:text-oxblood">
+								<summary className="cursor-pointer text-sm text-stone hover:text-gold-fg">
 									Error details
 								</summary>
 								<pre className="mt-2 p-4 bg-parchment text-xs overflow-auto max-h-32">
@@ -88,13 +88,13 @@ class ErrorBoundary extends Component<Props, State> {
 						<div className="flex gap-4">
 							<button
 								onClick={this.handleReset}
-								className="px-4 py-2 bg-gold text-white font-marcellus hover:bg-bronze transition-colors"
+								className="px-4 py-2 bg-olive text-white font-marcellus hover:bg-bronze transition-colors"
 							>
 								Try Again
 							</button>
 							<button
 								onClick={() => window.location.reload()}
-								className="px-4 py-2 border-2 border-stone text-stone font-marcellus hover:border-oxblood hover:text-oxblood transition-colors"
+								className="px-4 py-2 border-2 border-stone text-stone font-marcellus hover:border-gold-fg hover:text-gold-fg transition-colors"
 							>
 								Refresh Page
 							</button>

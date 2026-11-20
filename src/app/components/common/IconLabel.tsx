@@ -39,7 +39,7 @@ interface IconLabelProps {
   children?: React.ReactNode;
   /** Optional prefix label (displays before children as "Label: ") */
   label?: string;
-  /** Icon color class (e.g., "text-oxblood", "text-gold") */
+  /** Icon color class (e.g., "text-gold-fg", "text-olive-fg") */
   iconColor?: string;
   /** Text color class (defaults to inherit) */
   textColor?: string;
@@ -65,7 +65,7 @@ const sizeConfig: Record<Size, { icon: number; text: string }> = {
  *
  * @example
  * // Simple icon + value
- * <IconLabel icon={mdiHeart} iconColor="text-oxblood">10</IconLabel>
+ * <IconLabel icon={mdiHeart} iconColor="text-gold-fg">10</IconLabel>
  *
  * @example
  * // Icon + label prefix + value

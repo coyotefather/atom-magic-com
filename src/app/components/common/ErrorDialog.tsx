@@ -9,7 +9,7 @@
  * The dialog displays:
  *   - A heading (`title`) explaining the problem
  *   - A body message (`message`) with the name(s) of the missing field(s)
- *     highlighted in oxblood red (`incomplete` prop)
+ *     highlighted in gold (`incomplete` prop)
  *   - A dismissal button (`buttonText`) that closes the dialog
  *
  * Backed by a HeroUI Modal with a backdrop so the rest of the page is
@@ -20,7 +20,7 @@
  *   - title: string          — modal heading (e.g. "Please complete the missing fields.")
  *   - message: string        — explanatory body text
  *   - buttonText: string     — label for the close button
- *   - incomplete: string     — name of the missing field(s), rendered in bold oxblood
+ *   - incomplete: string     — name of the missing field(s), rendered in bold gold
  *   - isOpen: boolean        — whether the dialog is currently visible
  *   - onOpenChange: (isOpen: boolean) => void — called when the dialog should open or close
  *
@@ -60,7 +60,7 @@ const ErrorDialog = ({
 					</Modal.Header>
 					<Modal.Body>
 						<p>
-							{message} <span className="text-oxblood font-semibold">{incomplete}</span>
+							{message} <span className="text-gold-fg font-semibold">{incomplete}</span>
 						</p>
 					</Modal.Body>
 					<Modal.Footer>

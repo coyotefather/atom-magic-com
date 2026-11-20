@@ -177,7 +177,7 @@ const Section = ({
 										isDisabled={nextExpanded}
 										className={clsx("font-extrabold relative z-10 marcellus",
 											{
-												'uppercase tracking-widest px-6 py-2 bg-gold text-black border-2 border-oxblood hover:bg-brightgold transition-colors': nextExpanded === false
+												'uppercase tracking-widest px-6 py-2 bg-olive text-white border-2 border-gold-fg hover:bg-olive-dark transition-colors': nextExpanded === false
 											},
 											{
 												'cursor-default bg-white border-2 border-stone': nextExpanded === true

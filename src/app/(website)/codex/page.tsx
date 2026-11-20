@@ -18,7 +18,7 @@ const Page = async () => {
 				'Rules, character creation, disciplines, techniques, and everything you need to play.',
 			href: '/codex/categories/gameplay',
 			icon: mdiSword,
-			accentColor: 'var(--color-oxblood)',
+			accentColor: 'var(--color-gold-fg)',
 		},
 		{
 			title: 'Lore',
@@ -26,7 +26,7 @@ const Page = async () => {
 				'The history, cultures, and mysteries of Solum and its Cardinal forces.',
 			href: '/codex/categories/lore',
 			icon: mdiBookOpenVariant,
-			accentColor: 'var(--color-gold)',
+			accentColor: 'var(--color-olive-fg)',
 		},
 		{
 			title: 'Timeline',
@@ -44,7 +44,7 @@ const Page = async () => {
 				title="The Codex"
 				description="Your guide to the world of Solum. Explore the lore, master the disciplines, and learn the rules that govern practitioners of atomic manipulation."
 				icon={mdiBookOpenPageVariant}
-				accentColor="gold"
+				accentColor="olive"
 				theme="light"
 			/>
 

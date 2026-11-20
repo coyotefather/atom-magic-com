@@ -181,7 +181,7 @@ const LootRoller = () => {
 							<div className="font-semibold">{weapon.name}</div>
 							<div className="text-xs text-stone">
 								{weapon.category} {weapon.type} • Tier {weapon.tier} • {weapon.damage} damage
-								{weapon.isExotic && <span className="text-gold ml-2">Exotic</span>}
+								{weapon.isExotic && <span className="text-olive-fg ml-2">Exotic</span>}
 							</div>
 							{weapon.description && (
 								<div className="text-xs text-stone/70 mt-1">{weapon.description}</div>
@@ -199,7 +199,7 @@ const LootRoller = () => {
 							<div className="font-semibold">{armor.name}</div>
 							<div className="text-xs text-stone">
 								{armor.category} • Tier {armor.tier} • Capacity {armor.capacity}
-								{armor.isExotic && <span className="text-gold ml-2">Exotic</span>}
+								{armor.isExotic && <span className="text-olive-fg ml-2">Exotic</span>}
 							</div>
 							{armor.penalties && armor.penalties !== 'None' && (
 								<div className="text-xs text-stone/70 mt-1">Penalties: {armor.penalties}</div>
@@ -217,7 +217,7 @@ const LootRoller = () => {
 				if (coins.uranium > 0) parts.push(`${coins.uranium} uranium bar${coins.uranium > 1 ? 's' : ''}`);
 				return (
 					<div className="flex items-start gap-3">
-						<Icon path={mdiCurrencyUsd} size={0.875} className="text-gold mt-0.5" />
+						<Icon path={mdiCurrencyUsd} size={0.875} className="text-olive-fg mt-0.5" />
 						<div>
 							<div className="font-semibold">Currency</div>
 							<div className="text-xs text-stone">{parts.join(', ')}</div>
@@ -267,8 +267,8 @@ const LootRoller = () => {
 								onClick={() => setSelectedCategory(cat.id)}
 								className={`flex flex-col items-center gap-2 p-3 transition-colors ${
 									selectedCategory === cat.id
-										? 'bg-gold text-black'
-										: 'bg-parchment border-2 border-stone hover:border-gold'
+										? 'bg-olive text-white'
+										: 'bg-parchment border-2 border-stone hover:border-olive-fg'
 								}`}
 							>
 								<Icon path={cat.icon} size={1} />
@@ -298,7 +298,7 @@ const LootRoller = () => {
 												type="checkbox"
 												checked={checked}
 												onChange={(e) => setChecked(e.target.checked)}
-												className="w-4 h-4 accent-gold"
+												className="w-4 h-4 accent-olive-fg"
 											/>
 											<span className="text-sm">Tier {tier}</span>
 										</label>
@@ -316,7 +316,7 @@ const LootRoller = () => {
 									type="checkbox"
 									checked={includeExotic}
 									onChange={(e) => setIncludeExotic(e.target.checked)}
-									className="w-4 h-4 accent-gold"
+									className="w-4 h-4 accent-olive-fg"
 								/>
 								<span className="text-sm">Include exotic items</span>
 							</label>
@@ -369,7 +369,7 @@ const LootRoller = () => {
 								size="sm"
 								onClick={clearResults}
 								icon={mdiDelete}
-								className="hover:text-oxblood"
+								className="hover:text-gold-fg"
 							>
 								Clear
 							</FunctionButton>
@@ -387,7 +387,7 @@ const LootRoller = () => {
 								<div
 									key={result.id}
 									className={`p-3 border-l-2 ${
-										idx === 0 ? 'bg-gold/10 border-gold' : 'bg-parchment border-stone/30'
+										idx === 0 ? 'bg-olive/10 border-olive-fg' : 'bg-parchment border-stone/30'
 									}`}
 								>
 									{renderResult(result)}

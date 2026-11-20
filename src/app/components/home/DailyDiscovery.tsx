@@ -40,7 +40,7 @@ const DailyDiscovery = ({ entry }: { entry: DailyDiscoveryEntry }) => {
 						<Icon
 							path={mdiCompass}
 							size={0.875}
-							className="text-gold"
+							className="text-olive-fg"
 						/>
 						<span className="marcellus text-sm uppercase tracking-widest text-stone">
 							Daily Discovery
@@ -50,7 +50,7 @@ const DailyDiscovery = ({ entry }: { entry: DailyDiscoveryEntry }) => {
 					{/* Content */}
 					<div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-start">
 						<div>
-							<h3 className="marcellus text-2xl md:text-3xl text-black mb-4 border-b-2 border-gold pb-3 inline-block">
+							<h3 className="marcellus text-2xl md:text-3xl text-black mb-4 border-b-2 border-olive-fg pb-3 inline-block">
 								{title || "Codex Entry"}
 							</h3>
 							<div className="prose prose-stone prose-sm md:prose-base max-w-none">

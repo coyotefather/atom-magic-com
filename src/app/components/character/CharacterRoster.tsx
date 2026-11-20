@@ -165,7 +165,7 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 						size="sm"
 						onClick={handleImportClick}
 						icon={mdiFileImport}
-						className="border-stone text-stone hover:border-gold hover:text-gold"
+						className="border-stone text-stone hover:border-olive-fg hover:text-olive-fg"
 					>
 						Import
 					</FunctionButton>
@@ -211,7 +211,7 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 									onClick={(e) => handleShareCharacter(char.id, e)}
 									icon={mdiShareVariant}
 									title="Share character"
-									className="hover:text-gold"
+									className="hover:text-olive-fg"
 								/>
 								{activeId !== char.id && (
 									<FunctionButton
@@ -260,7 +260,7 @@ const CharacterRoster = ({ onCharacterSelected, onNewCharacter }: CharacterRoste
 										}}
 										icon={mdiDelete}
 										title="Delete character"
-										className="hover:text-oxblood"
+										className="hover:text-gold-fg"
 									/>
 								)}
 							</div>

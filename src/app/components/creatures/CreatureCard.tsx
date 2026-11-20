@@ -17,7 +17,7 @@
  *                       can fork this CMS creature into a custom one.
  *
  * Challenge level is colour-coded from harmless (stone/grey) through to deadly
- * (oxblood). Stats that are null or undefined are displayed as "n/a".
+ * (gold). Stats that are null or undefined are displayed as "n/a".
  *
  * Used by:
  *   - src/app/components/creatures/CreatureRoller.tsx (result + "show all" list)
@@ -43,12 +43,12 @@ const displayScore = (value: number | null | undefined): string => {
 
 const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: CreatureCardProps) => {
 	const challengeLevelColors: Record<string, string> = {
-		harmless: 'bg-stone/10 text-stone-dark',
-		trivial: 'bg-stone/20 text-stone',
-		easy: 'bg-laurel/20 text-laurel',
-		moderate: 'bg-gold/20 text-gold',
-		hard: 'bg-bronze/20 text-bronze',
-		deadly: 'bg-oxblood/20 text-oxblood',
+		harmless: 'bg-stone/10 text-stone-dark border border-stone-light',
+		trivial: 'bg-stone/20 text-stone-dark border border-stone-light',
+		easy: 'bg-laurel/20 text-laurel border border-stone-light',
+		moderate: 'bg-olive/20 text-olive-fg border border-stone-light',
+		hard: 'bg-bronze/20 text-bronze border border-stone-light',
+		deadly: 'bg-gold/20 text-gold-fg border border-stone-light',
 	};
 
 	const challengeLevel = creature.challengeLevel || 'moderate';
@@ -124,7 +124,7 @@ const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: C
 				{/* Combat stats */}
 				<div className="flex flex-wrap items-center gap-4 text-sm text-stone mb-4">
 					{creature.health != null && (
-						<IconLabel icon={mdiHeart} iconColor="text-oxblood">{creature.health}</IconLabel>
+						<IconLabel icon={mdiHeart} iconColor="text-gold-fg">{creature.health}</IconLabel>
 					)}
 					{creature.physicalShield != null && creature.physicalShield > 0 && (
 						<IconLabel icon={mdiShield} iconColor="text-stone">{creature.physicalShield}</IconLabel>
@@ -192,7 +192,7 @@ const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: C
 						<span className="px-2 py-0.5 text-xs bg-laurel/20 text-laurel">Swarm</span>
 					)}
 					{creature.isUnique && (
-						<span className="px-2 py-0.5 text-xs bg-gold/20 text-gold">Unique</span>
+						<span className="px-2 py-0.5 text-xs bg-olive/20 text-olive-fg">Unique</span>
 					)}
 				</div>
 
@@ -201,7 +201,7 @@ const CreatureCard = ({ creature, isSelected = false, showCustomize = false }: C
 					{creature.slug && (
 						<Link
 							href={`/codex/entries/${creature.slug}`}
-							className="inline-flex items-center gap-1 text-sm text-bronze hover:text-gold transition-colors"
+							className="inline-flex items-center gap-1 text-sm text-bronze hover:text-olive-fg transition-colors"
 						>
 							View full Codex entry
 							<Icon path={mdiOpenInNew} size={0.5} />

@@ -102,7 +102,7 @@ const CreatureFilters = ({
 						variant="ghost"
 						size="sm"
 						onClick={onClearAll}
-						className="hover:text-oxblood"
+						className="hover:text-gold-fg"
 					>
 						Clear All
 					</FunctionButton>

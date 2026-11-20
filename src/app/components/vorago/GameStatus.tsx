@@ -83,7 +83,7 @@ const GameStatus = () => {
 	  {/* Round and Turn */}
 	  <div className="flex items-center gap-2">
 		<span className="marcellus" aria-label={`Round ${round}`}>R{round}</span>
-		<span className="text-gold" aria-live="assertive">{currentPlayerName}&apos;s Turn</span>
+		<span className="text-olive-bright" aria-live="assertive">{currentPlayerName}&apos;s Turn</span>
 	  </div>
 
 	  {/* Score */}

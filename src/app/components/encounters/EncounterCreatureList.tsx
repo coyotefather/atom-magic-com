@@ -143,7 +143,7 @@ const EncounterCreatureList = ({
 								onClick={() => onRemove(creature.creatureId)}
 								icon={mdiClose}
 								title="Remove creature"
-								className="hover:text-oxblood"
+								className="hover:text-gold-fg"
 							/>
 						</div>
 					);

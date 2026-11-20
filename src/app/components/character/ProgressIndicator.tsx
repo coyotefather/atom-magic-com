@@ -72,7 +72,7 @@ const ProgressIndicator = ({ currentStep, completedSteps }: ProgressIndicatorPro
 					<span className="font-marcellus text-sm text-stone">
 						Step {currentStep + 1} of {STEPS.length}: {STEPS[currentStep]}
 					</span>
-					<span className="font-marcellus text-sm text-gold">
+					<span className="font-marcellus text-sm text-olive-fg">
 						{progress}% Complete
 					</span>
 				</div>
@@ -80,7 +80,7 @@ const ProgressIndicator = ({ currentStep, completedSteps }: ProgressIndicatorPro
 				{/* Progress bar */}
 				<div className="h-2 bg-parchment border border-stone shadow-inner">
 					<div
-						className="h-full bg-gold transition-all duration-300 ease-out shadow-sm"
+						className="h-full bg-olive transition-all duration-300 ease-out shadow-sm"
 						style={{ width: `${progress}%` }}
 					/>
 				</div>
@@ -96,9 +96,9 @@ const ProgressIndicator = ({ currentStep, completedSteps }: ProgressIndicatorPro
 								className={`
 									w-3 h-3 border-2 transition-colors
 									${completedSteps[index]
-										? 'bg-gold border-gold'
+										? 'bg-olive border-olive-fg'
 										: index === currentStep
-											? 'bg-white border-gold'
+											? 'bg-white border-olive-fg'
 											: 'bg-white border-stone'
 									}
 								`}
@@ -107,7 +107,7 @@ const ProgressIndicator = ({ currentStep, completedSteps }: ProgressIndicatorPro
 							<span
 								className={`
 									text-[10px] mt-1 font-marcellus
-									${index === currentStep ? 'text-gold font-bold' : 'text-stone'}
+									${index === currentStep ? 'text-olive-fg font-bold' : 'text-stone'}
 								`}
 							>
 								{step}

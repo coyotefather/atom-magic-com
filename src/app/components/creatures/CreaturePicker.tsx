@@ -42,12 +42,12 @@ interface CreaturePickerProps {
 }
 
 const challengeLevelColors: Record<string, string> = {
-	harmless: 'bg-stone/10 text-stone-dark',
-	trivial: 'bg-stone/20 text-stone',
-	easy: 'bg-laurel/20 text-laurel',
-	moderate: 'bg-gold/20 text-gold',
-	hard: 'bg-bronze/20 text-bronze',
-	deadly: 'bg-oxblood/20 text-oxblood',
+	harmless: 'bg-stone/10 text-stone-dark border border-stone-light',
+	trivial: 'bg-stone/20 text-stone-dark border border-stone-light',
+	easy: 'bg-laurel/20 text-laurel border border-stone-light',
+	moderate: 'bg-olive/20 text-olive-fg border border-stone-light',
+	hard: 'bg-bronze/20 text-bronze border border-stone-light',
+	deadly: 'bg-gold/20 text-gold-fg border border-stone-light',
 };
 
 const CreaturePicker = ({
@@ -169,7 +169,7 @@ const CreaturePicker = ({
 									size="sm"
 									fullWidth
 									onClick={() => onSelect(creature)}
-									className="bg-bronze hover:bg-gold"
+									className="bg-bronze hover:bg-olive"
 								>
 									Select
 								</FunctionButton>

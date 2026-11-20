@@ -6,9 +6,9 @@
  * (as opposed to navigating — use LinkButton for navigation).
  *
  * Supports seven visual variants to cover every common UI pattern:
- *   - "primary"   — gold fill, black text; the main call-to-action style
- *   - "secondary" — gold outline, transparent fill; secondary actions
- *   - "danger"    — oxblood fill, white text; destructive actions (delete, remove)
+ *   - "primary"   — olive fill, white text; the main call-to-action style
+ *   - "secondary" — olive outline, transparent fill; secondary actions
+ *   - "danger"    — gold fill, white text; destructive actions (delete, remove)
  *   - "ghost"     — no border/background; understated text buttons or icon buttons
  *   - "chip"      — small bordered pill for toggleable filter chips
  *   - "tab"       — bordered tab-style toggle for switching between modes/views
@@ -84,39 +84,39 @@ const sizeConfig: Record<Size, { padding: string; text: string; iconSize: number
 
 const variantConfig: Record<Variant, { base: string; active: string; inactive: string }> = {
   primary: {
-    base: 'bg-gold text-black hover:bg-brightgold border-0',
+    base: 'bg-olive text-white hover:bg-olive-dark border-0',
     active: '',
     inactive: '',
   },
   secondary: {
-    base: 'border-2 border-gold text-gold bg-transparent hover:bg-gold/10',
+    base: 'border-2 border-olive-fg text-olive-fg bg-transparent hover:bg-olive-fg/10',
     active: '',
     inactive: '',
   },
   danger: {
-    base: 'bg-oxblood text-white hover:bg-oxblood-light border-0',
+    base: 'bg-gold text-white hover:bg-gold-dark border-0',
     active: '',
     inactive: '',
   },
   ghost: {
-    base: 'bg-transparent border-0 hover:text-gold transition-colors',
-    active: 'text-gold',
-    inactive: 'text-stone dark:text-stone-light',
+    base: 'bg-transparent border-0 hover:text-olive-fg transition-colors',
+    active: 'text-olive-fg',
+    inactive: 'text-stone-dark dark:text-stone-light',
   },
   chip: {
-    base: 'border transition-colors',
-    active: 'bg-bronze text-white border-bronze',
-    inactive: 'bg-white dark:bg-black/20 text-stone border-stone hover:border-bronze hover:text-bronze dark:text-stone-light dark:border-stone-dark',
+    base: 'border-2 transition-colors',
+    active: 'bg-bronze/20 text-bronze border-bronze',
+    inactive: 'bg-transparent text-stone-dark border-stone hover:border-bronze hover:text-bronze dark:text-stone-light dark:border-stone-dark',
   },
   tab: {
     base: 'border-2 transition-all marcellus uppercase tracking-wider',
-    active: 'bg-gold text-white border-gold',
-    inactive: 'border-stone/30 text-stone hover:border-stone dark:border-stone-dark dark:text-stone-light dark:hover:border-stone-light',
+    active: 'bg-olive text-white border-olive-fg',
+    inactive: 'border-stone text-stone-dark hover:border-olive-fg hover:bg-olive-fg/10 hover:text-olive-fg dark:text-stone-light',
   },
   toggle: {
     base: 'p-2 border-2 transition-colors',
-    active: 'border-gold bg-gold/10 text-gold',
-    inactive: 'border-stone/30 text-stone hover:border-stone dark:border-stone-dark dark:text-stone-light',
+    active: 'border-olive-fg bg-olive-fg/10 text-olive-fg',
+    inactive: 'border-stone text-stone-dark hover:border-olive-fg hover:bg-olive-fg/5 dark:text-stone-light',
   },
 };
 

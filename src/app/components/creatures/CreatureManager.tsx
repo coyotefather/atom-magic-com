@@ -221,7 +221,7 @@ const CreatureManagerInner = ({ creatures, filters }: CreatureManagerProps) => {
 							<FunctionButton
 								variant="primary"
 								onClick={handleNewCreature}
-								className="bg-bronze hover:bg-gold"
+								className="bg-bronze hover:bg-olive"
 							>
 								New Creature
 							</FunctionButton>

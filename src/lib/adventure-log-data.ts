@@ -103,8 +103,8 @@ export interface SessionRoster {
 
 // Note category labels and colors
 export const NOTE_CATEGORIES: { value: NoteCategory; label: string; color: string }[] = [
-	{ value: 'story', label: 'Story', color: 'bg-gold/20 text-gold' },
-	{ value: 'combat', label: 'Combat', color: 'bg-oxblood/20 text-oxblood' },
+	{ value: 'story', label: 'Story', color: 'bg-olive/20 text-olive-fg' },
+	{ value: 'combat', label: 'Combat', color: 'bg-gold/20 text-gold-fg' },
 	{ value: 'npc', label: 'NPC', color: 'bg-laurel/20 text-laurel' },
 	{ value: 'discovery', label: 'Discovery', color: 'bg-bronze/20 text-bronze' },
 	{ value: 'other', label: 'Other', color: 'bg-stone/20 text-stone' },

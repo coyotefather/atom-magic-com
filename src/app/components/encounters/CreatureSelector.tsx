@@ -176,7 +176,7 @@ const CreatureSelector = ({
 												variant="ghost"
 												size="sm"
 												onClick={handleClearAll}
-												className="hover:text-oxblood"
+												className="hover:text-gold-fg"
 											>
 												Clear All
 											</FunctionButton>
@@ -324,7 +324,7 @@ const CreatureSelector = ({
 									<p className="text-sm text-stone mb-2">No custom creatures yet.</p>
 									<Link
 										href="/creatures/manager"
-										className="text-sm text-bronze hover:text-gold transition-colors"
+										className="text-sm text-bronze hover:text-olive-fg transition-colors"
 									>
 										Create one in the Creature Manager
 									</Link>

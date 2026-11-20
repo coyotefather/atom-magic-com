@@ -35,17 +35,17 @@ const Hit = memo(function Hit({ hit }: HitProps) {
 
 	return (
 		<Link href={href} className="group block no-underline">
-			<article className="h-full bg-white border-2 border-stone/50 hover:border-gold transition-colors p-4">
+			<article className="h-full bg-white border-2 border-stone/50 hover:border-olive-fg transition-colors p-4">
 				{/* Header with icon and title */}
 				<div className="flex items-start gap-3 mb-2">
-					<div className="flex-shrink-0 w-8 h-8 flex items-center justify-center border border-stone/30 group-hover:border-gold transition-colors">
+					<div className="flex-shrink-0 w-8 h-8 flex items-center justify-center border border-stone/30 group-hover:border-olive-fg transition-colors">
 						<Icon
 							path={isCategory ? mdiFolderText : mdiFileDocument}
 							size={0.75}
-							className="text-stone group-hover:text-gold transition-colors"
+							className="text-stone group-hover:text-olive-fg transition-colors"
 						/>
 					</div>
-					<h3 className="marcellus text-lg text-black group-hover:text-gold transition-colors leading-tight pt-1">
+					<h3 className="marcellus text-lg text-black group-hover:text-olive-fg transition-colors leading-tight pt-1">
 						{hit.title}
 					</h3>
 				</div>

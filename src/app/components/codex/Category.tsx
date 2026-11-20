@@ -68,7 +68,7 @@ export function Category({
 				<div className="container px-6 md:px-8 py-6">
 					<Link
 						href="/codex"
-						className="inline-flex items-center gap-2 text-stone hover:text-gold transition-colors no-underline"
+						className="inline-flex items-center gap-2 text-stone hover:text-olive-fg transition-colors no-underline"
 					>
 						<Icon path={mdiArrowLeft} size={0.875} />
 						<span className="marcellus uppercase tracking-wider text-sm">
