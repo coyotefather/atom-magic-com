@@ -173,7 +173,7 @@ const CustomCreatureRoster = ({
 									onClick={(e) => handleExportCreature(creature.id, e)}
 									icon={mdiDownload}
 									title="Export creature"
-									className="hover:text-gold"
+									className="hover:text-olive-fg"
 								/>
 								{deleteConfirm === creature.id ? (
 									<div className="flex items-center gap-1">
@@ -209,7 +209,7 @@ const CustomCreatureRoster = ({
 										}}
 										icon={mdiDelete}
 										title="Delete creature"
-										className="hover:text-oxblood"
+										className="hover:text-gold-fg"
 									/>
 								)}
 							</div>
@@ -224,7 +224,7 @@ const CustomCreatureRoster = ({
 					fullWidth
 					onClick={handleNewCreature}
 					icon={mdiPlus}
-					className="bg-bronze hover:bg-gold"
+					className="bg-bronze hover:bg-olive"
 				>
 					New Creature
 				</FunctionButton>
@@ -233,7 +233,7 @@ const CustomCreatureRoster = ({
 					fullWidth
 					onClick={handleImportClick}
 					icon={mdiFileImport}
-					className="border-stone text-stone hover:border-gold hover:text-gold"
+					className="border-stone text-stone hover:border-olive-fg hover:text-olive-fg"
 				>
 					Import
 				</FunctionButton>

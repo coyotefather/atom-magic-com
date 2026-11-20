@@ -127,16 +127,16 @@ export default function SharedCharacterPageContent({
 				<div className="container px-6 md:px-8 py-8">
 					<Link
 						href="/character"
-						className="inline-flex items-center gap-2 text-stone dark:text-stone-light hover:text-gold transition-colors mb-8"
+						className="inline-flex items-center gap-2 text-stone dark:text-stone-light hover:text-olive-fg transition-colors mb-8"
 					>
 						<Icon path={mdiArrowLeft} size={0.75} />
 						<span>Back to Character Manager</span>
 					</Link>
 
 					<div className="max-w-lg mx-auto">
-						<div className="bg-white dark:bg-black border-2 border-oxblood p-8 text-center">
-							<div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-oxblood/10 border-2 border-oxblood">
-								<Icon path={mdiAlertCircle} size={1.5} className="text-oxblood" />
+						<div className="bg-white dark:bg-black border-2 border-gold-fg p-8 text-center">
+							<div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-gold/10 border-2 border-gold-fg">
+								<Icon path={mdiAlertCircle} size={1.5} className="text-gold-fg" />
 							</div>
 
 							<h1 className="marcellus text-2xl text-black dark:text-white mb-2">
@@ -180,7 +180,7 @@ export default function SharedCharacterPageContent({
 				{/* Back link */}
 				<Link
 					href="/character"
-					className="inline-flex items-center gap-2 text-stone dark:text-stone-light hover:text-gold transition-colors mb-8"
+					className="inline-flex items-center gap-2 text-stone dark:text-stone-light hover:text-olive-fg transition-colors mb-8"
 				>
 					<Icon path={mdiArrowLeft} size={0.75} />
 					<span>Back to Character Manager</span>
@@ -230,7 +230,7 @@ export default function SharedCharacterPageContent({
 					{/* Identity */}
 					<div className="bg-white dark:bg-black border-2 border-stone p-6">
 						<h2 className="marcellus text-lg mb-4 flex items-center gap-2">
-							<Icon path={mdiAccountCircle} size={0.875} className="text-oxblood" />
+							<Icon path={mdiAccountCircle} size={0.875} className="text-gold-fg" />
 							Identity
 						</h2>
 
@@ -276,7 +276,7 @@ export default function SharedCharacterPageContent({
 					{/* Scores */}
 					<div className="bg-white dark:bg-black border-2 border-stone p-6">
 						<h2 className="marcellus text-lg mb-4 flex items-center gap-2">
-							<Icon path={mdiNumeric} size={0.875} className="text-gold" />
+							<Icon path={mdiNumeric} size={0.875} className="text-olive-fg" />
 							Scores
 						</h2>
 
@@ -394,7 +394,7 @@ export default function SharedCharacterPageContent({
 					{/* Wealth */}
 					<div className="bg-white dark:bg-black border-2 border-stone p-6">
 						<h2 className="marcellus text-lg mb-4 flex items-center gap-2">
-							<Icon path={mdiCurrencyUsd} size={0.875} className="text-gold" />
+							<Icon path={mdiCurrencyUsd} size={0.875} className="text-olive-fg" />
 							Wealth
 						</h2>
 
@@ -411,7 +411,7 @@ export default function SharedCharacterPageContent({
 								<p className="text-xs uppercase tracking-wider text-stone dark:text-stone-light mb-1">
 									Gold
 								</p>
-								<p className="marcellus text-lg text-gold">
+								<p className="marcellus text-lg text-olive-fg">
 									{character.wealth.gold}
 								</p>
 							</div>
@@ -467,7 +467,7 @@ export default function SharedCharacterPageContent({
 				</div>
 
 				{/* Bottom CTA */}
-				<div className="bg-white dark:bg-black border-2 border-gold p-6 text-center">
+				<div className="bg-white dark:bg-black border-2 border-olive-fg p-6 text-center">
 					<p className="text-stone dark:text-stone-light mb-4">
 						Add this character to your roster to edit and use them in your games.
 					</p>

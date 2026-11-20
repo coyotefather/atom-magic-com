@@ -5,7 +5,7 @@
  * Stones that have already been placed on the board are hidden from the tray;
  * a small "(N placed)" count appears once at least one stone is on the board.
  *
- * Player 1 stones are rendered in bronze, Player 2 in oxblood (matching the
+ * Player 1 stones are rendered in bronze, Player 2 in bright olive (matching the
  * colours used on the board itself). A vertical divider separates the two
  * players' trays.
  *
@@ -84,9 +84,9 @@ const StoneTray = () => {
 			   onClick={() => handleStoneSelect(1, displayIdx)}
 			   onKeyDown={(e) => handleKeyDown(e, 1, displayIdx)}
 			   className={`
-				 w-10 h-10 rounded-full border-2 transition-all focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2
+				 w-10 h-10 rounded-full border-2 transition-all focus:outline-none focus:ring-2 focus:ring-olive-fg focus:ring-offset-2
 				 ${isSelectable ? 'cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed'}
-				 ${isSelected ? 'ring-2 ring-gold scale-110' : ''}
+				 ${isSelected ? 'ring-2 ring-olive-fg scale-110' : ''}
 			   `}
 			   style={{
 				 backgroundColor: 'var(--color-bronze)',
@@ -123,12 +123,12 @@ const StoneTray = () => {
 			   onClick={() => handleStoneSelect(2, displayIdx)}
 			   onKeyDown={(e) => handleKeyDown(e, 2, displayIdx)}
 			   className={`
-				 w-10 h-10 rounded-full border-2 transition-all focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2
+				 w-10 h-10 rounded-full border-2 transition-all focus:outline-none focus:ring-2 focus:ring-olive-fg focus:ring-offset-2
 				 ${isSelectable ? 'cursor-pointer hover:scale-110' : 'opacity-50 cursor-not-allowed'}
-				 ${isSelected ? 'ring-2 ring-gold scale-110' : ''}
+				 ${isSelected ? 'ring-2 ring-olive-fg scale-110' : ''}
 			   `}
 			   style={{
-				 backgroundColor: 'var(--color-oxblood)',
+				 backgroundColor: 'var(--color-olive-bright)',
 				 borderColor: 'var(--color-black)'
 			   }}
 			 />

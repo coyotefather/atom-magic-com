@@ -47,7 +47,7 @@ const DiceHistory = ({ history }: DiceHistoryProps) => {
 					key={result.id}
 					className={`p-3 border-l-2 transition-colors ${
 						idx === 0
-							? 'bg-gold/10 border-gold'
+							? 'bg-olive/10 border-olive-fg'
 							: 'bg-parchment border-stone/30'
 					}`}
 				>

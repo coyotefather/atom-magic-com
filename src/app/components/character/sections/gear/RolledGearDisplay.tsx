@@ -49,9 +49,9 @@ const WeaponDisplay = ({ weapon, enhancement }: { weapon: Weapon; enhancement?: 
       <div className="flex gap-2 mb-2">
         <Chip size="sm" className="bg-stone-dark capitalize text-white">{weapon.category}</Chip>
         <Chip size="sm" className="bg-stone-dark capitalize text-white">{weapon.type}</Chip>
-        <Chip size="sm" className="bg-brightgold text-black">Tier {weapon.tier}</Chip>
+        <Chip size="sm" className="bg-olive-dark text-white">Tier {weapon.tier}</Chip>
         {weapon.isExotic && (
-          <Chip size="sm" className="bg-oxblood text-white">
+          <Chip size="sm" className="bg-gold text-white">
             <Icon path={mdiStar} size={0.6} />
             Exotic
           </Chip>
@@ -68,8 +68,8 @@ const WeaponDisplay = ({ weapon, enhancement }: { weapon: Weapon; enhancement?: 
         </div>
       )}
       {enhancement && (
-        <div className="mt-3 p-2 bg-parchment border border-brightgold">
-          <IconLabel icon={mdiStar} iconColor="text-gold" label="Enhancement" className="font-semibold text-gold">
+        <div className="mt-3 p-2 bg-parchment border border-olive-bright">
+          <IconLabel icon={mdiStar} iconColor="text-olive-fg" label="Enhancement" className="font-semibold text-olive-fg">
             {enhancement.name}
           </IconLabel>
           <div className="text-sm">{enhancement.description}</div>
@@ -87,9 +87,9 @@ const ArmorDisplay = ({ armor, enhancement }: { armor: Armor; enhancement?: Enha
       </IconLabel>
       <div className="flex gap-2 mb-2">
         <Chip size="sm" className="bg-stone-dark capitalize text-white">{armor.category}</Chip>
-        <Chip size="sm" className="bg-brightgold text-black">Tier {armor.tier}</Chip>
+        <Chip size="sm" className="bg-olive-dark text-white">Tier {armor.tier}</Chip>
         {armor.isExotic && (
-          <Chip size="sm" className="bg-oxblood text-white">
+          <Chip size="sm" className="bg-gold text-white">
             <Icon path={mdiStar} size={0.6} />
             Exotic
           </Chip>
@@ -109,8 +109,8 @@ const ArmorDisplay = ({ armor, enhancement }: { armor: Armor; enhancement?: Enha
         </div>
       )}
       {enhancement && (
-        <div className="mt-3 p-2 bg-parchment border border-brightgold">
-          <IconLabel icon={mdiStar} iconColor="text-gold" label="Enhancement" className="font-semibold text-gold">
+        <div className="mt-3 p-2 bg-parchment border border-olive-bright">
+          <IconLabel icon={mdiStar} iconColor="text-olive-fg" label="Enhancement" className="font-semibold text-olive-fg">
             {enhancement.name}
           </IconLabel>
           <div className="text-sm">{enhancement.description}</div>

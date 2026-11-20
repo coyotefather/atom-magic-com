@@ -22,7 +22,7 @@ const Page = () => {
 				title="Contact"
 				description="Get in touch with us."
 				icon={mdiEmail}
-				accentColor="gold"
+				accentColor="olive"
 			/>
 
 			<section className="py-12 md:py-16 px-6 md:px-8">

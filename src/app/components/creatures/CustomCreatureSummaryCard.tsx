@@ -31,12 +31,12 @@ interface CustomCreatureSummaryCardProps {
 }
 
 const challengeLevelColors: Record<string, string> = {
-	harmless: 'bg-stone/10 text-stone-dark',
-	trivial: 'bg-stone/20 text-stone',
-	easy: 'bg-laurel/20 text-laurel',
-	moderate: 'bg-gold/20 text-gold',
-	hard: 'bg-bronze/20 text-bronze',
-	deadly: 'bg-oxblood/20 text-oxblood',
+	harmless: 'bg-stone/10 text-stone-dark border border-stone-light',
+	trivial: 'bg-stone/20 text-stone-dark border border-stone-light',
+	easy: 'bg-laurel/20 text-laurel border border-stone-light',
+	moderate: 'bg-olive/20 text-olive-fg border border-stone-light',
+	hard: 'bg-bronze/20 text-bronze border border-stone-light',
+	deadly: 'bg-gold/20 text-gold-fg border border-stone-light',
 };
 
 const CustomCreatureSummaryCard = ({
@@ -48,12 +48,12 @@ const CustomCreatureSummaryCard = ({
 		<div
 			className={`relative border-2 transition-colors cursor-pointer ${
 				isActive
-					? 'border-bronze bg-white'
-					: 'border-stone/50 bg-white hover:border-bronze'
+					? 'border-stone bg-white'
+					: 'border-stone bg-white hover:border-bronze'
 			}`}
 			onClick={onClick}
 		>
-			<div className="p-3">
+			<div className={isActive ? 'py-3 pr-3 pl-5' : 'p-3'}>
 				<div className="flex items-start justify-between gap-2">
 					<div className="flex-1 min-w-0">
 						<h3 className="marcellus text-base text-black truncate">
@@ -68,13 +68,13 @@ const CustomCreatureSummaryCard = ({
 								{creature.challengeLevel}
 							</span>
 							{creature.creatureType && (
-								<span className="text-xs text-stone">
+								<span className="text-xs text-stone-dark">
 									{creature.creatureType}
 								</span>
 							)}
 						</div>
-						<div className="flex items-center gap-3 mt-2 text-xs text-stone">
-							<IconLabel icon={mdiHeart} iconColor="text-oxblood" size="xs">
+						<div className="flex items-center gap-3 mt-2 text-xs text-stone-dark">
+							<IconLabel icon={mdiHeart} iconColor="text-gold-fg" size="xs">
 								{creature.health}
 							</IconLabel>
 							{creature.attackCount > 0 && (
@@ -83,7 +83,7 @@ const CustomCreatureSummaryCard = ({
 								</IconLabel>
 							)}
 							{creature.abilityCount > 0 && (
-								<IconLabel icon={mdiStarFourPoints} iconColor="text-gold" size="xs">
+								<IconLabel icon={mdiStarFourPoints} iconColor="text-olive-fg" size="xs">
 									{creature.abilityCount}
 								</IconLabel>
 							)}

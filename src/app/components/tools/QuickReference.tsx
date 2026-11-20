@@ -48,7 +48,7 @@ const sections: ReferenceSection[] = [
 					<ul className="text-sm text-stone space-y-1">
 						<li>• Modified score = base score ± difficulty ± situational modifiers</li>
 						<li>• Rolling at or under = <span className="text-laurel font-semibold">Success</span></li>
-						<li>• Rolling over = <span className="text-oxblood font-semibold">Failure</span></li>
+						<li>• Rolling over = <span className="text-gold-fg font-semibold">Failure</span></li>
 					</ul>
 				</div>
 				<div>
@@ -65,15 +65,15 @@ const sections: ReferenceSection[] = [
 							</tr>
 							<tr className="border-b border-stone/10">
 								<td className="py-1">Hard</td>
-								<td className="py-1 text-right text-oxblood font-semibold">-20</td>
+								<td className="py-1 text-right text-gold-fg font-semibold">-20</td>
 							</tr>
 							<tr className="border-b border-stone/10">
 								<td className="py-1">Very Hard</td>
-								<td className="py-1 text-right text-oxblood font-semibold">-40</td>
+								<td className="py-1 text-right text-gold-fg font-semibold">-40</td>
 							</tr>
 							<tr>
 								<td className="py-1">Nearly Impossible</td>
-								<td className="py-1 text-right text-oxblood font-semibold">-60</td>
+								<td className="py-1 text-right text-gold-fg font-semibold">-60</td>
 							</tr>
 						</tbody>
 					</table>
@@ -116,7 +116,7 @@ const sections: ReferenceSection[] = [
 							</tr>
 							<tr className="border-b border-stone/10">
 								<td className="py-1">Each additional action</td>
-								<td className="py-1 text-right text-oxblood font-semibold">-25 each</td>
+								<td className="py-1 text-right text-gold-fg font-semibold">-25 each</td>
 							</tr>
 						</tbody>
 					</table>
@@ -131,7 +131,7 @@ const sections: ReferenceSection[] = [
 							</tr>
 							<tr className="border-b border-stone/10">
 								<td className="py-1">Caught unaware / Ambushed</td>
-								<td className="py-1 text-right text-oxblood font-semibold">-20</td>
+								<td className="py-1 text-right text-gold-fg font-semibold">-20</td>
 							</tr>
 							<tr className="border-b border-stone/10">
 								<td className="py-1">Active / Full defense (no attack)</td>
@@ -139,7 +139,7 @@ const sections: ReferenceSection[] = [
 							</tr>
 							<tr>
 								<td className="py-1">Multiple attacks same round</td>
-								<td className="py-1 text-right text-oxblood font-semibold">-10 per extra</td>
+								<td className="py-1 text-right text-gold-fg font-semibold">-10 per extra</td>
 							</tr>
 						</tbody>
 					</table>
@@ -160,7 +160,7 @@ const sections: ReferenceSection[] = [
 						<span>→</span>
 						<span className="px-2 py-1 bg-stone/10 border border-stone/30">Armor</span>
 						<span>→</span>
-						<span className="px-2 py-1 bg-oxblood/10 border border-oxblood/30 text-oxblood">Injury</span>
+						<span className="px-2 py-1 bg-gold/10 border border-gold-fg/30 text-gold-fg">Injury</span>
 					</div>
 					<p className="text-sm text-stone italic">
 						Psychic attacks bypass Shield and Armor entirely.
@@ -176,7 +176,7 @@ const sections: ReferenceSection[] = [
 				</div>
 				<div>
 					<h4 className="marcellus text-sm font-semibold mb-2">Shield Regeneration</h4>
-					<div className="p-3 bg-parchment border-l-2 border-gold">
+					<div className="p-3 bg-parchment border-l-2 border-olive-fg">
 						<p className="text-sm font-semibold">10% of total Shield per round</p>
 						<p className="text-xs text-stone mt-1">Only when fully disengaged from combat (no attacking or defending)</p>
 					</div>
@@ -205,17 +205,17 @@ const sections: ReferenceSection[] = [
 							<tr className="border-b border-stone/10">
 								<td className="py-1"><span className="font-semibold text-black">Minor</span></td>
 								<td className="py-1">1-10 damage</td>
-								<td className="py-1 text-right text-oxblood">-5 to relevant actions</td>
+								<td className="py-1 text-right text-gold-fg">-5 to relevant actions</td>
 							</tr>
 							<tr className="border-b border-stone/10">
 								<td className="py-1"><span className="font-semibold text-black">Serious</span></td>
 								<td className="py-1">11-20 damage</td>
-								<td className="py-1 text-right text-oxblood">-10 to -15</td>
+								<td className="py-1 text-right text-gold-fg">-10 to -15</td>
 							</tr>
 							<tr>
 								<td className="py-1"><span className="font-semibold text-black">Critical</span></td>
 								<td className="py-1">21+ damage</td>
-								<td className="py-1 text-right text-oxblood">-20+</td>
+								<td className="py-1 text-right text-gold-fg">-20+</td>
 							</tr>
 						</tbody>
 					</table>
@@ -420,14 +420,14 @@ const QuickReference = () => {
 			<div className="flex justify-end gap-2">
 				<button
 					onClick={expandAll}
-					className="text-xs text-stone hover:text-gold transition-colors marcellus uppercase tracking-wider"
+					className="text-xs text-stone hover:text-olive-fg transition-colors marcellus uppercase tracking-wider"
 				>
 					Expand All
 				</button>
 				<span className="text-stone/30">|</span>
 				<button
 					onClick={collapseAll}
-					className="text-xs text-stone hover:text-gold transition-colors marcellus uppercase tracking-wider"
+					className="text-xs text-stone hover:text-olive-fg transition-colors marcellus uppercase tracking-wider"
 				>
 					Collapse All
 				</button>
@@ -447,7 +447,7 @@ const QuickReference = () => {
 								className="w-full flex items-center justify-between p-4 text-left hover:bg-parchment/50 transition-colors"
 							>
 								<div className="flex items-center gap-3">
-									<Icon path={section.icon} size={0.875} className="text-gold" />
+									<Icon path={section.icon} size={0.875} className="text-olive-fg" />
 									<span className="marcellus text-lg">{section.title}</span>
 								</div>
 								<Icon

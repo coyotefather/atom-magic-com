@@ -115,7 +115,7 @@ const EncounterRoster = ({
 											}}
 											icon={mdiDelete}
 											title="Delete encounter"
-											className="opacity-0 group-hover:opacity-100 hover:text-oxblood"
+											className="opacity-0 group-hover:opacity-100 hover:text-gold-fg"
 										/>
 									</div>
 								</div>
@@ -134,7 +134,7 @@ const EncounterRoster = ({
 					fullWidth
 					onClick={onNew}
 					icon={mdiPlus}
-					className="bg-bronze hover:bg-gold"
+					className="bg-bronze hover:bg-olive"
 				>
 					New Encounter
 				</FunctionButton>

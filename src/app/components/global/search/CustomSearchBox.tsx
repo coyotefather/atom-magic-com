@@ -78,7 +78,7 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 							setQuery(event.currentTarget.value);
 						}}
 						autoFocus
-						className="w-full h-full px-4 py-3 border-2 border-stone border-r-0 text-lg focus:border-gold focus:outline-none transition-colors"
+						className="w-full h-full px-4 py-3 border-2 border-stone border-r-0 text-lg focus:border-olive-fg focus:outline-none transition-colors"
 					/>
 					{inputValue && (
 						<button
@@ -93,7 +93,7 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
 				</div>
 				<button
 					type="submit"
-					className="px-6 bg-gold text-black border-2 border-gold hover:bg-brightgold transition-colors flex items-center gap-2 marcellus uppercase tracking-wider"
+					className="px-6 bg-olive text-white border-2 border-olive-fg hover:bg-olive-dark transition-colors flex items-center gap-2 marcellus uppercase tracking-wider"
 				>
 					<Icon path={mdiMagnify} size={1} />
 					<span className="hidden sm:inline">Search</span>

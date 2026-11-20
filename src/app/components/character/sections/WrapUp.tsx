@@ -57,7 +57,7 @@ const WrapUp = () => {
 
 				<div className="max-w-md mx-auto">
 					<div className="bg-white border-2 border-stone p-6">
-						<div className="h-1 bg-gold -mt-6 -mx-6 mb-6" />
+						<div className="h-1 bg-olive -mt-6 -mx-6 mb-6" />
 						<div className="flex flex-col sm:flex-row justify-center gap-4">
 							<FunctionButton
 								onClick={handlePrintClick}

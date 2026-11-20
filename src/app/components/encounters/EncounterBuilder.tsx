@@ -400,7 +400,7 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 											size="sm"
 											onClick={handleClearAll}
 											icon={mdiDelete}
-											className="border border-stone-light text-stone-light hover:border-oxblood hover:text-oxblood"
+											className="border border-stone-light text-stone-light hover:border-gold-bright hover:text-gold-bright"
 										>
 											Clear All
 										</FunctionButton>
@@ -411,7 +411,7 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 										onClick={handleCopySummary}
 										isDisabled={currentEncounter.creatures.length === 0}
 										icon={mdiContentCopy}
-										className="bg-bronze hover:bg-gold"
+										className="bg-bronze hover:bg-olive"
 									>
 										{copySuccess ? 'Copied!' : 'Copy Summary'}
 									</FunctionButton>
@@ -432,7 +432,7 @@ const EncounterBuilder = ({ creatures, filters }: EncounterBuilderProps) => {
 						<FunctionButton
 							variant="primary"
 							onClick={handleNewEncounter}
-							className="bg-bronze hover:bg-gold"
+							className="bg-bronze hover:bg-olive"
 						>
 							New Encounter
 						</FunctionButton>

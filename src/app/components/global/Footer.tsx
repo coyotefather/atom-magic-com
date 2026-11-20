@@ -57,12 +57,12 @@ const Footer = () => {
 
 	return (
 		<footer
-			className="notoserif bg-black text-white"
+			className="notoserif bg-night text-white"
 			role="contentinfo"
 			aria-label="Site footer"
 		>
-			{/* Gold accent line */}
-			<div className="h-1 bg-gold" />
+			{/* Olive accent line */}
+			<div className="h-1 bg-olive-bright" />
 
 			<div className="container px-6 md:px-8 py-12">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
@@ -90,7 +90,7 @@ const Footer = () => {
 							href="https://store.atom-magic.com"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="inline-flex items-center gap-2 px-4 py-2 bg-gold text-black marcellus uppercase tracking-wider text-xs hover:bg-brightgold transition-colors no-underline"
+							className="inline-flex items-center gap-2 px-4 py-2 bg-olive text-white marcellus uppercase tracking-wider text-xs hover:bg-olive-dark transition-colors no-underline"
 						>
 							Visit Store
 							<Icon path={mdiOpenInNew} size={0.625} aria-hidden="true" />
@@ -100,7 +100,7 @@ const Footer = () => {
 
 					{/* Main links */}
 					<nav aria-label="Main pages">
-						<h3 className="marcellus text-sm uppercase tracking-wider text-gold mb-4">
+						<h3 className="marcellus text-xs uppercase tracking-wider text-olive-bright mb-4">
 							Explore
 						</h3>
 						<ul className="space-y-2">
@@ -110,8 +110,8 @@ const Footer = () => {
 										href={link.href}
 										className={`text-sm transition-colors no-underline ${
 											isActive(link.href)
-												? 'text-gold'
-												: 'text-stone-light hover:text-gold'
+												? 'text-olive-bright'
+												: 'text-stone-light hover:text-olive-bright'
 										}`}
 										aria-current={isActive(link.href) ? 'page' : undefined}
 									>
@@ -124,7 +124,7 @@ const Footer = () => {
 
 					{/* Tool links */}
 					<nav aria-label="Tools">
-						<h3 className="marcellus text-sm uppercase tracking-wider text-gold mb-4">
+						<h3 className="marcellus text-xs uppercase tracking-wider text-olive-bright mb-4">
 							Tools
 						</h3>
 						<ul className="space-y-2">
@@ -134,8 +134,8 @@ const Footer = () => {
 										href={link.href}
 										className={`text-sm transition-colors no-underline ${
 											isActive(link.href)
-												? 'text-gold'
-												: 'text-stone-light hover:text-gold'
+												? 'text-olive-bright'
+												: 'text-stone-light hover:text-olive-bright'
 										}`}
 										aria-current={isActive(link.href) ? 'page' : undefined}
 									>
@@ -148,7 +148,7 @@ const Footer = () => {
 
 					{/* Resource links */}
 					<nav aria-label="Resources">
-						<h3 className="marcellus text-sm uppercase tracking-wider text-gold mb-4">
+						<h3 className="marcellus text-xs uppercase tracking-wider text-olive-bright mb-4">
 							Resources
 						</h3>
 						<ul className="space-y-2">
@@ -158,8 +158,8 @@ const Footer = () => {
 										href={link.href}
 										className={`text-sm transition-colors no-underline ${
 											isActive(link.href)
-												? 'text-gold'
-												: 'text-stone-light hover:text-gold'
+												? 'text-olive-bright'
+												: 'text-stone-light hover:text-olive-bright'
 										}`}
 										aria-current={isActive(link.href) ? 'page' : undefined}
 									>
@@ -172,7 +172,7 @@ const Footer = () => {
 
 					{/* Legal links */}
 					<nav aria-label="Legal">
-						<h3 className="marcellus text-sm uppercase tracking-wider text-gold mb-4">
+						<h3 className="marcellus text-xs uppercase tracking-wider text-olive-bright mb-4">
 							Legal
 						</h3>
 						<ul className="space-y-2">
@@ -182,8 +182,8 @@ const Footer = () => {
 										href={link.href}
 										className={`text-sm transition-colors no-underline ${
 											isActive(link.href)
-												? 'text-gold'
-												: 'text-stone-light hover:text-gold'
+												? 'text-olive-bright'
+												: 'text-stone-light hover:text-olive-bright'
 										}`}
 										aria-current={isActive(link.href) ? 'page' : undefined}
 									>
@@ -196,7 +196,7 @@ const Footer = () => {
 				</div>
 
 				{/* Bottom bar */}
-				<div className="mt-12 pt-6 border-t border-stone/30">
+				<div className="mt-12 pt-6 border-t border-night-border">
 					<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-xs text-stone-light">
 						<p>
 							&copy; {currentYear} Adam J. Butler. All rights reserved.
@@ -207,7 +207,7 @@ const Footer = () => {
 								href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
 								target="_blank"
 								rel="noopener noreferrer"
-								className="text-gold hover:text-brightgold transition-colors"
+								className="text-olive-bright hover:text-white transition-colors"
 							>
 								CC BY-NC-SA 4.0
 								<span className="sr-only">

@@ -20,7 +20,7 @@ export default function QuickReferencePage() {
 				title="Quick Reference"
 				description="Essential rules at a glance"
 				icon={mdiBookOpenPageVariant}
-				accentColor="gold"
+				accentColor="olive"
 				variant="inline"
 			/>
 

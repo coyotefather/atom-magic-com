@@ -84,7 +84,7 @@ const TimelineItem = ({
 					<Link
 						href={t.url}
 						className={clsx(
-							'inline-block mt-2 text-gold hover:text-brightgold transition-colors no-underline',
+							'inline-block mt-2 text-olive-fg hover:text-olive-bright transition-colors no-underline',
 							{
 								'text-sm': isMajor,
 								'text-xs': !isMajor,
@@ -108,7 +108,7 @@ const TimelineItem = ({
 			>
 				<div
 					className={clsx('flex items-center justify-center', {
-						'w-10 h-10 bg-gold border-2 border-gold': isRubiconEvent,
+						'w-10 h-10 bg-olive border-2 border-olive-fg': isRubiconEvent,
 						'w-8 h-8 bg-black border-2 border-black': isMajor && !isRubiconEvent,
 						'w-6 h-6 bg-white border-2 border-stone': !isMajor && !isRubiconEvent,
 					})}
@@ -133,7 +133,7 @@ const TimelineItem = ({
 						'text-sm my-2': !isMajor,
 					})}
 				>
-					<span className={clsx({ 'text-gold': isRubiconEvent })}>{year}</span>
+					<span className={clsx({ 'text-olive-fg': isRubiconEvent })}>{year}</span>
 					{t.year !== 0 && (
 						<span
 							className={clsx('ml-1 text-stone', {

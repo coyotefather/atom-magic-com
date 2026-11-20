@@ -333,8 +333,8 @@ const BoardCell = memo(function BoardCell({
               cx={center.x}
               cy={center.y}
               r="14"
-              fill={cellData.stone.player === 1 ? '#8C7853' : '#722F37'}
-              stroke={isSelected ? '#d4af37' : '#000'}
+              fill={cellData.stone.player === 1 ? '#80633E' : '#B9B17B'}
+              stroke={isSelected ? '#D6B75C' : '#000'}
               strokeWidth={isSelected ? '4' : '2.5'}
               className="cursor-pointer"
               onClick={onClick}
@@ -362,7 +362,7 @@ const BoardCell = memo(function BoardCell({
             cy={center.y}
             r="20"
             fill="none"
-            stroke="#d4af37"
+            stroke="#D6B75C"
             strokeWidth="3"
             className="pointer-events-none"
           />
@@ -654,7 +654,7 @@ const VoragoBoard = () => {
 		  cx={BOARD_CENTER}
 		  cy={BOARD_CENTER}
 		  r="40"
-		  fill="#d4af37"
+		  fill="#D6B75C"
 		  stroke="#000"
 		  strokeWidth="4"
 		  className="cursor-pointer"

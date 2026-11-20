@@ -78,7 +78,7 @@ const CampaignHeader = ({
 				<div className="flex-shrink-0">
 					{confirmDelete ? (
 						<div className="flex flex-col gap-2 items-end">
-							<p className="text-xs text-oxblood">Delete this campaign?</p>
+							<p className="text-xs text-gold-fg">Delete this campaign?</p>
 							<div className="flex gap-2">
 								<FunctionButton
 									variant="ghost"
@@ -104,7 +104,7 @@ const CampaignHeader = ({
 							onClick={handleDeleteClick}
 							icon={mdiDelete}
 							title="Delete campaign"
-							className="text-stone hover:text-oxblood"
+							className="text-stone hover:text-gold-fg"
 						>
 							Delete
 						</FunctionButton>

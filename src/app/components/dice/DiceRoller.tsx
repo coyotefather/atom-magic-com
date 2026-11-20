@@ -120,7 +120,7 @@ const DiceRoller = () => {
 				title="Dice Roller"
 				description="Roll dice for your Atom Magic sessions"
 				icon={mdiDice6}
-				accentColor="gold"
+				accentColor="olive"
 				variant="inline"
 			/>
 
@@ -139,7 +139,7 @@ const DiceRoller = () => {
 						{/* Dice selector */}
 						<div className="bg-white border-2 border-stone p-6">
 							<h2 className="marcellus text-lg mb-4 flex items-center gap-2">
-								<Icon path={mdiDice6} size={0.875} className="text-gold" />
+								<Icon path={mdiDice6} size={0.875} className="text-olive-fg" />
 								Select Dice
 							</h2>
 
@@ -170,7 +170,7 @@ const DiceRoller = () => {
 											variant="secondary"
 											size="sm"
 											onClick={() => setNumDice(Math.max(1, numDice - 1))}
-											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-gold hover:text-gold"
+											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-olive-fg hover:text-olive-fg"
 										>
 											-
 										</FunctionButton>
@@ -186,7 +186,7 @@ const DiceRoller = () => {
 											variant="secondary"
 											size="sm"
 											onClick={() => setNumDice(Math.min(20, numDice + 1))}
-											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-gold hover:text-gold"
+											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-olive-fg hover:text-olive-fg"
 										>
 											+
 										</FunctionButton>
@@ -202,7 +202,7 @@ const DiceRoller = () => {
 											variant="secondary"
 											size="sm"
 											onClick={() => setModifier(modifier - 1)}
-											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-gold hover:text-gold"
+											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-olive-fg hover:text-olive-fg"
 										>
 											-
 										</FunctionButton>
@@ -216,7 +216,7 @@ const DiceRoller = () => {
 											variant="secondary"
 											size="sm"
 											onClick={() => setModifier(modifier + 1)}
-											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-gold hover:text-gold"
+											className="w-10 h-10 px-0 border-stone text-stone-dark hover:border-olive-fg hover:text-olive-fg"
 										>
 											+
 										</FunctionButton>
@@ -240,7 +240,7 @@ const DiceRoller = () => {
 						{/* Quick presets */}
 						<div className="bg-white border-2 border-stone p-6">
 							<h2 className="marcellus text-lg mb-4 flex items-center gap-2">
-								<Icon path={mdiLightningBolt} size={0.875} className="text-gold" />
+								<Icon path={mdiLightningBolt} size={0.875} className="text-olive-fg" />
 								Quick Rolls
 							</h2>
 							<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
@@ -265,7 +265,7 @@ const DiceRoller = () => {
 						<div className="bg-white border-2 border-stone p-6 sticky top-4">
 							<div className="flex items-center justify-between mb-4">
 								<h2 className="marcellus text-lg flex items-center gap-2">
-									<Icon path={mdiHistory} size={0.875} className="text-gold" />
+									<Icon path={mdiHistory} size={0.875} className="text-olive-fg" />
 									History
 								</h2>
 								{history.length > 0 && (
@@ -273,7 +273,7 @@ const DiceRoller = () => {
 										variant="ghost"
 										size="sm"
 										onClick={clearHistory}
-										className="hover:text-oxblood"
+										className="hover:text-gold-fg"
 									>
 										Clear
 									</FunctionButton>

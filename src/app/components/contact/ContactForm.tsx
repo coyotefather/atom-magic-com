@@ -129,7 +129,7 @@ const ContactForm = ({ recipientEmail }: { recipientEmail?: string }) => {
 	};
 
 	const inputClasses =
-		'w-full px-4 py-3 border-2 border-stone bg-white dark:bg-darkbg dark:border-stone/50 focus:border-gold dark:focus:border-gold focus:outline-none transition-colors text-charcoal dark:text-parchment';
+		'w-full px-4 py-3 border-2 border-stone bg-white dark:bg-darkbg dark:border-stone/50 focus:border-olive-fg dark:focus:border-olive-fg focus:outline-none transition-colors text-charcoal dark:text-parchment';
 	const labelClasses =
 		'block mb-2 text-sm uppercase tracking-wider text-stone dark:text-stone/80 marcellus';
 
@@ -143,7 +143,7 @@ const ContactForm = ({ recipientEmail }: { recipientEmail?: string }) => {
 			>
 				<button
 					onClick={() => setStatus({ type: 'idle' })}
-					className="text-gold hover:text-brightgold underline transition-colors"
+					className="text-olive-fg hover:text-olive-bright underline transition-colors"
 				>
 					Send another message
 				</button>
@@ -162,7 +162,7 @@ const ContactForm = ({ recipientEmail }: { recipientEmail?: string }) => {
 				{recipientEmail && (
 					<a
 						href={`mailto:${recipientEmail}`}
-						className="text-gold hover:text-brightgold underline transition-colors"
+						className="text-olive-fg hover:text-olive-bright underline transition-colors"
 					>
 						Email us directly
 					</a>
@@ -261,7 +261,7 @@ const ContactForm = ({ recipientEmail }: { recipientEmail?: string }) => {
 					name="privacyConsent"
 					checked={formData.privacyConsent}
 					onChange={handleChange}
-					className="mt-1 w-5 h-5 accent-gold"
+					className="mt-1 w-5 h-5 accent-olive-fg"
 				/>
 				<label htmlFor="privacyConsent" className="text-sm text-stone dark:text-stone/80">
 					I consent to having this website store my submitted information so they can
@@ -280,7 +280,7 @@ const ContactForm = ({ recipientEmail }: { recipientEmail?: string }) => {
 					className={`w-full py-4 px-6 marcellus text-lg flex items-center justify-center gap-2 transition-colors ${
 						status.type === 'loading'
 							? 'bg-stone/50 text-white cursor-not-allowed'
-							: 'bg-gold text-black hover:bg-brightgold'
+							: 'bg-olive text-white hover:bg-olive-dark'
 					}`}
 				>
 					{status.type === 'loading' ? (

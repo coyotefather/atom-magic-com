@@ -77,7 +77,7 @@ const PartyRoster = ({ partyCharacterIds, onAdd, onRemove }: PartyRosterProps) =
 								onClick={() => onRemove(character.id)}
 								icon={mdiClose}
 								title="Remove from party"
-								className="text-stone hover:text-oxblood flex-shrink-0"
+								className="text-stone hover:text-gold-fg flex-shrink-0"
 							/>
 						</div>
 					))}

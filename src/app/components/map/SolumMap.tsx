@@ -184,7 +184,7 @@ const SolumMap = () => {
 				<svg width={18} height={18} viewBox="0 0 24 24">
 					<path
 						d={mdiPencil}
-						fill={annotationsVisible ? '#F5F0E1' : '#6B5B3E'}
+						fill={annotationsVisible ? '#F7F8F4' : '#6B5B3E'}
 					/>
 				</svg>
 			</button>

@@ -216,7 +216,7 @@ const Sections = ({
 				title="Character Manager"
 				description="Create your practitioner and begin your journey across the world of Solum. Choose your culture, path, and disciplines, then equip yourself for adventure."
 				icon={mdiAccountEdit}
-				accentColor="oxblood"
+				accentColor="gold"
 				variant={hasStarted ? 'compact' : 'full'}
 			/>
 
@@ -232,7 +232,7 @@ const Sections = ({
 			{showResumePrompt && (
 				<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 					<div className="bg-white border-2 border-stone max-w-md mx-4">
-						<div className="h-1 bg-oxblood" />
+						<div className="h-1 bg-gold" />
 						<div className="p-8">
 							<h2 className="marcellus text-xl text-black mb-4">
 								Resume Previous Character?
@@ -244,13 +244,13 @@ const Sections = ({
 							<div className="flex gap-4 justify-end">
 								<button
 									onClick={startFresh}
-									className="px-4 py-2 border-2 border-stone text-stone marcellus uppercase tracking-wider text-sm hover:border-oxblood hover:text-oxblood transition-colors"
+									className="px-4 py-2 border-2 border-stone text-stone marcellus uppercase tracking-wider text-sm hover:border-gold-fg hover:text-gold-fg transition-colors"
 								>
 									Start Fresh
 								</button>
 								<button
 									onClick={resumeCharacter}
-									className="px-4 py-2 bg-oxblood text-white marcellus uppercase tracking-wider text-sm hover:bg-oxblood-dark transition-colors"
+									className="px-4 py-2 bg-gold text-white marcellus uppercase tracking-wider text-sm hover:bg-gold-dark transition-colors"
 								>
 									Resume
 								</button>
@@ -277,7 +277,7 @@ const Sections = ({
 					<div className="container px-6 md:px-8 pt-4 flex items-center justify-between">
 						<button
 							onClick={showCharacterRoster}
-							className="py-3 px-6 bg-gold text-black marcellus uppercase tracking-widest text-sm font-bold hover:bg-brightgold transition-colors flex items-center gap-1"
+							className="py-3 px-6 bg-olive text-white marcellus uppercase tracking-widest text-sm font-bold hover:bg-olive-dark transition-colors flex items-center gap-1"
 						>
 							← Back to Characters
 						</button>

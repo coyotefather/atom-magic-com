@@ -307,7 +307,7 @@ const CharacterGenerator = ({
 								<select
 									value={archetype}
 									onChange={(e) => setArchetype(e.target.value)}
-									className="w-full p-3 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-gold outline-none"
+									className="w-full p-3 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-olive-fg outline-none"
 								>
 									{ARCHETYPES.map((arch) => (
 										<option key={arch.id} value={arch.id}>
@@ -330,7 +330,7 @@ const CharacterGenerator = ({
 								<select
 									value={pathPreference}
 									onChange={(e) => setPathPreference(e.target.value)}
-									className="w-full p-3 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-gold outline-none"
+									className="w-full p-3 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-olive-fg outline-none"
 								>
 									<option value="">Any Path</option>
 									{paths.map((path) => (
@@ -364,7 +364,7 @@ const CharacterGenerator = ({
 										value={locks.culture.value}
 										onChange={(e) => updateLockValue('culture', e.target.value)}
 										disabled={!locks.culture.locked}
-										className={`w-full p-2 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-gold outline-none ${
+										className={`w-full p-2 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-olive-fg outline-none ${
 											!locks.culture.locked ? 'opacity-50' : ''
 										}`}
 									>
@@ -395,7 +395,7 @@ const CharacterGenerator = ({
 										value={locks.path.value}
 										onChange={(e) => updateLockValue('path', e.target.value)}
 										disabled={!locks.path.locked}
-										className={`w-full p-2 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-gold outline-none ${
+										className={`w-full p-2 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-olive-fg outline-none ${
 											!locks.path.locked ? 'opacity-50' : ''
 										}`}
 									>
@@ -426,7 +426,7 @@ const CharacterGenerator = ({
 										value={locks.patronage.value}
 										onChange={(e) => updateLockValue('patronage', e.target.value)}
 										disabled={!locks.patronage.locked}
-										className={`w-full p-2 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-gold outline-none ${
+										className={`w-full p-2 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-olive-fg outline-none ${
 											!locks.patronage.locked ? 'opacity-50' : ''
 										}`}
 									>
@@ -448,7 +448,7 @@ const CharacterGenerator = ({
 								<select
 									value={archetype}
 									onChange={(e) => setArchetype(e.target.value)}
-									className="w-full p-3 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-gold outline-none"
+									className="w-full p-3 border-2 border-stone/30 dark:border-stone-dark bg-white dark:bg-black/20 text-black dark:text-parchment focus:border-olive-fg outline-none"
 								>
 									{ARCHETYPES.map((arch) => (
 										<option key={arch.id} value={arch.id}>
@@ -574,7 +574,7 @@ const CharacterGenerator = ({
 									variant="secondary"
 									onClick={handleEdit}
 									icon={mdiPencil}
-									className="flex-1 border-stone text-stone hover:border-gold hover:text-gold dark:border-stone-light dark:text-stone-light"
+									className="flex-1 border-stone text-stone hover:border-olive-fg hover:text-olive-fg dark:border-stone-light dark:text-stone-light"
 								>
 									Edit in Manager
 								</FunctionButton>

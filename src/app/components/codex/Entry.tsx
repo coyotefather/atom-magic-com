@@ -52,7 +52,7 @@ export function Entry({ entry }: { entry: PayloadEntry }) {
 
 	return (
 		<article className="notoserif bg-white">
-			<div className="bg-black border-b-2 border-gold">
+			<div className="bg-black border-b-2 border-olive-bright">
 				<div className="container px-6 md:px-8 py-4">
 					<Breadcrumbs currentPage={title ?? ''} parents={parents} />
 				</div>
@@ -62,7 +62,7 @@ export function Entry({ entry }: { entry: PayloadEntry }) {
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 					<aside className="md:order-first order-last">
 						<div className="border-2 border-stone bg-parchment sticky top-4">
-							<div className="h-1 bg-gold" />
+							<div className="h-1 bg-olive" />
 							{image?.url && (
 								<div className="border-b-2 border-stone">
 									<Image
@@ -101,7 +101,7 @@ export function Entry({ entry }: { entry: PayloadEntry }) {
 					</aside>
 
 					<section className="md:col-span-2">
-						<h1 className="marcellus text-3xl md:text-4xl text-black mb-6 pb-4 border-b-2 border-gold">{title}</h1>
+						<h1 className="marcellus text-3xl md:text-4xl text-black mb-6 pb-4 border-b-2 border-olive-fg">{title}</h1>
 						<div className="prose prose-stone prose-lg max-w-none first-letter:text-4xl first-letter:font-bold first-letter:mr-1 first-letter:float-left first-letter:marcellus">
 							<RichText content={entryBody} />
 						</div>
@@ -111,7 +111,7 @@ export function Entry({ entry }: { entry: PayloadEntry }) {
 
 			<section className="bg-parchment border-t-2 border-stone">
 				<div className="container px-6 md:px-8 py-6">
-					<Link href="/codex" className="inline-flex items-center gap-2 text-stone hover:text-gold transition-colors no-underline">
+					<Link href="/codex" className="inline-flex items-center gap-2 text-stone hover:text-olive-fg transition-colors no-underline">
 						<Icon path={mdiArrowLeft} size={0.875} />
 						<span className="marcellus uppercase tracking-wider text-sm">Return to Codex</span>
 					</Link>

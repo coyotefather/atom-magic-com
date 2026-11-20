@@ -20,7 +20,7 @@ export default function LootPage() {
 				title="Loot Roller"
 				description="Generate random treasure and rewards"
 				icon={mdiTreasureChest}
-				accentColor="gold"
+				accentColor="olive"
 				variant="inline"
 			/>
 

@@ -6,8 +6,8 @@
  * Link). For click handlers that execute JavaScript, use FunctionButton instead.
  *
  * Two variants:
- *   - "primary"   — solid gold background, black text; turns bright gold on hover
- *   - "secondary" — gold outline with transparent background; subtle gold tint on hover
+ *   - "primary"   — solid olive background, white text; deepens to dark olive on hover
+ *   - "secondary" — olive outline with transparent background; subtle olive tint on hover
  *
  * Typography is always Marcellus, uppercase, widely tracked — consistent with
  * FunctionButton so both button types look identical in context.
@@ -43,8 +43,8 @@ const LinkButton = ({
 			className={clsx(
 				'inline-block px-8 py-3 marcellus uppercase tracking-widest text-sm font-bold transition-colors no-underline',
 				{
-					'bg-gold text-black hover:bg-brightgold': variant === 'primary',
-					'border-2 border-gold text-gold bg-transparent hover:bg-gold/10':
+					'bg-olive text-white hover:bg-olive-dark': variant === 'primary',
+					'border-2 border-olive-fg text-olive-fg bg-transparent hover:bg-olive-fg/10':
 						variant === 'secondary',
 				}
 			)}

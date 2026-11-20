@@ -153,8 +153,8 @@ function PaginationButton({
 				baseClasses,
 				'no-underline',
 				isActive
-					? 'bg-gold border-gold text-black'
-					: 'border-stone text-stone hover:border-gold hover:text-gold'
+					? 'bg-olive border-olive-fg text-white'
+					: 'border-stone text-stone hover:border-olive-fg hover:text-olive-fg'
 			)}
 			{...props}
 		>

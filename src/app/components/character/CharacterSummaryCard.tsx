@@ -50,8 +50,8 @@ const CharacterSummaryCard = ({ character, isActive = false, onClick }: Characte
 			className={`
 				border-2 p-4 transition-all cursor-pointer
 				${isActive
-					? 'border-gold bg-gold/5'
-					: 'border-stone/30 hover:border-stone hover:bg-parchment/50'
+					? 'border-olive-fg bg-olive-fg/[0.08]'
+					: 'border-stone bg-parchment hover:border-olive-fg'
 				}
 			`}
 		>
@@ -79,14 +79,14 @@ const CharacterSummaryCard = ({ character, isActive = false, onClick }: Characte
 						)}
 					</div>
 					{/* Identity line */}
-					<div className="text-sm text-stone mt-1">
+					<div className="text-sm text-stone-dark mt-1">
 						{[character.path, character.culture].filter(Boolean).join(' · ') || 'No path or culture selected'}
 					</div>
 				</div>
 
 				{/* Active badge */}
 				{isActive && (
-					<span className="px-2 py-0.5 text-xs bg-gold/20 text-gold-dark marcellus uppercase shrink-0">
+					<span className="px-2 py-[3px] text-[11px] bg-olive-fg/15 border border-olive-fg text-olive-fg shrink-0">
 						Active
 					</span>
 				)}

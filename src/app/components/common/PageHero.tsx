@@ -32,7 +32,7 @@
  *   "dark" (default) — black background, white heading, light stone description
  *   "light"          — parchment background, black heading, dark stone description
  *
- * Five accent colors: 'gold' | 'oxblood' | 'laurel' | 'bronze' | 'stone'
+ * Five accent colors: 'olive' | 'gold' | 'laurel' | 'bronze' | 'stone'
  * Each maps to a set of Tailwind border/text/bg/divider classes defined in
  * the `colorClasses` lookup table.
  *
@@ -44,7 +44,7 @@
  *   - variant?: 'full' | 'compact' | 'inline'  (default: 'full')
  *   - theme?: 'dark' | 'light'                 (default: 'dark')
  *   - cta?: { label, href }   — optional call-to-action link button
- *                               (full variant only; rendered as a gold LinkButton)
+ *                               (full variant only; rendered as an olive LinkButton)
  *
  * Used by:
  *   - Every major page in the (website) route group
@@ -53,7 +53,7 @@
 import Icon from '@mdi/react';
 import Link from 'next/link';
 
-type AccentColor = 'gold' | 'oxblood' | 'laurel' | 'bronze' | 'stone';
+type AccentColor = 'olive' | 'gold' | 'laurel' | 'bronze' | 'stone';
 
 interface PageHeroProps {
 	title: string;
@@ -74,17 +74,17 @@ const colorClasses: Record<AccentColor, {
 	bg: string;
 	divider: string;
 }> = {
-	gold: {
-		border: 'border-gold',
-		text: 'text-gold',
-		bg: 'bg-gold',
-		divider: 'border-gold/50',
+	olive: {
+		border: 'border-olive-fg',
+		text: 'text-olive-fg',
+		bg: 'bg-olive',
+		divider: 'border-olive-fg/50',
 	},
-	oxblood: {
-		border: 'border-oxblood',
-		text: 'text-oxblood',
-		bg: 'bg-oxblood',
-		divider: 'border-oxblood/50',
+	gold: {
+		border: 'border-gold-fg',
+		text: 'text-gold-fg',
+		bg: 'bg-gold',
+		divider: 'border-gold-fg/50',
 	},
 	laurel: {
 		border: 'border-laurel',
@@ -106,6 +106,21 @@ const colorClasses: Record<AccentColor, {
 	},
 };
 
+// Dark heroes sit on a black surface in both modes, so the olive and gold
+// accents use their bright steps there (Figma: PageHero Theme=Dark).
+const darkColorOverrides: Partial<Record<AccentColor, Partial<(typeof colorClasses)[AccentColor]>>> = {
+	olive: {
+		border: 'border-olive-bright',
+		text: 'text-olive-bright',
+		divider: 'border-olive-bright/50',
+	},
+	gold: {
+		border: 'border-gold-bright',
+		text: 'text-gold-bright',
+		divider: 'border-gold-bright/50',
+	},
+};
+
 const PageHero = ({
 	title,
 	description,
@@ -115,13 +130,15 @@ const PageHero = ({
 	theme = 'dark',
 	cta,
 }: PageHeroProps) => {
-	const colors = colorClasses[accentColor];
 	const isDark = theme === 'dark';
+	const colors = isDark
+		? { ...colorClasses[accentColor], ...darkColorOverrides[accentColor] }
+		: colorClasses[accentColor];
 
 	// Compact variant - minimal horizontal layout
 	if (variant === 'compact') {
 		return (
-			<section className={`${isDark ? 'bg-black' : 'bg-parchment'} border-b-2 ${colors.border}`}>
+			<section className={`${isDark ? 'bg-night' : 'bg-parchment'} border-b-2 ${colors.border}`}>
 				<div className="container px-6 md:px-8 py-4">
 					<div className="flex items-center gap-3">
 						<div className={`w-10 h-10 flex items-center justify-center border-2 ${colors.border}`}>
@@ -139,7 +156,7 @@ const PageHero = ({
 	// Inline variant - horizontal layout with description
 	if (variant === 'inline') {
 		return (
-			<section className={`${isDark ? 'bg-black' : 'bg-parchment'} border-b-2 ${colors.border}`}>
+			<section className={`${isDark ? 'bg-night' : 'bg-parchment'} border-b-2 ${colors.border}`}>
 				<div className="container px-6 md:px-8 py-8 md:py-12">
 					<div className="flex items-center gap-4">
 						<div className={`w-12 h-12 flex items-center justify-center border-2 ${colors.border}`}>
@@ -163,7 +180,7 @@ const PageHero = ({
 
 	// Full variant - centered layout with decorative elements
 	return (
-		<section className={`relative ${isDark ? 'bg-black' : 'bg-parchment'} border-b-2 ${colors.border} overflow-hidden`}>
+		<section className={`relative ${isDark ? 'bg-night' : 'bg-parchment'} border-b-2 ${colors.border} overflow-hidden`}>
 			{/* Subtle diagonal pattern */}
 			<div
 				className="absolute inset-0 opacity-[0.03]"
@@ -214,7 +231,7 @@ const PageHero = ({
 						<div className="mt-8">
 							<Link
 								href={cta.href}
-								className="inline-block px-8 py-3 bg-gold text-black marcellus uppercase tracking-widest text-sm font-bold hover:bg-brightgold transition-colors no-underline"
+								className="inline-block px-8 py-3 bg-olive text-white marcellus uppercase tracking-widest text-sm font-bold hover:bg-olive-dark transition-colors no-underline"
 							>
 								{cta.label}
 							</Link>

@@ -288,7 +288,7 @@ const EntryComposer = ({
 							onClick={handleAddAction}
 							isDisabled={!actionDescription.trim()}
 							icon={mdiPlus}
-							className="bg-bronze hover:bg-gold"
+							className="bg-bronze hover:bg-olive"
 						>
 							Add Action
 						</FunctionButton>

@@ -115,7 +115,7 @@ const SessionLinker = ({
 											{summary.entryCount} entr{summary.entryCount !== 1 ? 'ies' : 'y'}
 										</span>
 										{summary.keyEventCount > 0 && (
-											<span className="flex items-center gap-1 text-gold">
+											<span className="flex items-center gap-1 text-olive-fg">
 												<Icon path={mdiStar} size={0.5} />
 												{summary.keyEventCount} key
 											</span>
@@ -139,7 +139,7 @@ const SessionLinker = ({
 										onClick={() => onUnlink(summary.id)}
 										icon={mdiLinkOff}
 										title="Unlink from campaign"
-										className="text-stone hover:text-oxblood"
+										className="text-stone hover:text-gold-fg"
 									/>
 								</div>
 							</div>
@@ -163,7 +163,7 @@ const SessionLinker = ({
 
 										return text ? (
 											<div key={entry.id} className="flex items-start gap-2 text-sm">
-												<Icon path={mdiStar} size={0.5} className="text-gold mt-0.5 flex-shrink-0" />
+												<Icon path={mdiStar} size={0.5} className="text-olive-fg mt-0.5 flex-shrink-0" />
 												<span className="text-stone">{text}</span>
 											</div>
 										) : null;

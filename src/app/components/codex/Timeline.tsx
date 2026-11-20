@@ -62,7 +62,7 @@ export default function Timeline({
 				<div className="relative mx-auto max-w-4xl">
 					{/* Central timeline bar */}
 					<div className="absolute h-full w-[4px] mx-auto left-0 right-0 z-1">
-						<div className="w-[4px] mt-6 h-full bg-gradient-to-b from-gold via-gold to-stone/20" />
+						<div className="w-[4px] mt-6 h-full bg-gradient-to-b from-olive via-olive to-stone/20" />
 					</div>
 
 					{/* Timeline items */}

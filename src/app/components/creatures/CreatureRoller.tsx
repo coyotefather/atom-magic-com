@@ -142,7 +142,7 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 						onClick={handleRoll}
 						isDisabled={filteredCreatures.length === 0 || isRolling}
 						icon={mdiDiceMultiple}
-						className={`bg-bronze hover:bg-gold ${isRolling ? '[&_svg]:animate-spin' : ''}`}
+						className={`bg-bronze hover:bg-olive ${isRolling ? '[&_svg]:animate-spin' : ''}`}
 					>
 						{isRolling ? 'Rolling...' : 'Roll Random Creature'}
 					</FunctionButton>
@@ -163,7 +163,7 @@ const CreatureRoller = ({ creatures, filters }: CreatureRollerProps) => {
 				{filteredCreatures.length === 0 && (
 					<div className="bg-parchment border-2 border-stone p-12 text-center">
 						<p className="text-stone mb-4">No creatures match your current filters.</p>
-						<FunctionButton variant="ghost" onClick={handleClearAll} className="hover:text-gold">
+						<FunctionButton variant="ghost" onClick={handleClearAll} className="hover:text-olive-fg">
 							Clear all filters
 						</FunctionButton>
 					</div>
